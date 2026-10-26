@@ -93,9 +93,18 @@ Contributor setup is in [.github/CONTRIBUTING.md](.github/CONTRIBUTING.md).
   PR runs cancel older runs by ref; main runs have SHA-distinct concurrency groups.
 - **Manual native workflow:** the same cheap gate, then build/reinstall-test/audit/source.
 - **Release:** serialized, non-cancelling component releases and an isolated OIDC publisher.
+- **Developer sandbox:** after a change reaches `main`, `publish-sandbox.yml` publishes the locked `default` and `agent-tools` Linux environments to `sandbox/developer-linux-64`. This is a Git transport branch for restoring developer tools, not a package release.
 
-These conventions adapt `Archont561/pixi-sandbox` at `1903b088a0896126dee82e2a8b6b007942303ffc`.
-No automatic version bump or release-per-session policy was copied.
+Restore the published environment from a repository checkout with:
+
+```bash
+./restore.sh
+```
+
+The restore script fetches the matching sandbox branch when needed. On shared or locked-down machines, opt out of per-user Pixi tool registration with `PIXI_SANDBOX_USER_TOOLS=skip ./restore.sh`.
+
+Backlog conventions adapt `Archont561/pixi-sandbox` at `1903b088a0896126dee82e2a8b6b007942303ffc`; the generated sandbox workflows/bootstrap are based on v0.9.0 at `603166a44c24bfba9d82d62f9f5638ca6ba31d9e`.
+No automatic component version bump or release-per-session policy was copied.
 
 ## Repository layout
 

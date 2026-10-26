@@ -29,13 +29,15 @@ lint = "python scripts/lint.py"
 agents = "python scripts/check_agents.py"
 unit = "python -m unittest discover -s tests -v"
 # Explicit files also work from a source-only ZIP without a Git root.
-workflows = "actionlint -shellcheck shellcheck .github/workflows/ci.yml .github/workflows/build.yml .github/workflows/release.yml"
+workflows = "actionlint -shellcheck shellcheck .github/workflows/ci.yml .github/workflows/build.yml .github/workflows/release.yml .github/workflows/publish-sandbox.yml .github/workflows/relock.yml"
+restore-shell = "shellcheck restore.sh"
 static = { depends-on = [
   "python-lint",
   "toml-check",
   "lint",
   "agents",
   "workflows",
+  "restore-shell",
 ] }
 agent-check = { depends-on = [
   { task = "skills-check", environment = "agent-tools" },

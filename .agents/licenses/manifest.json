@@ -18,6 +18,12 @@
       "license": "MIT",
       "file": "pixi-sandbox-MIT.txt",
       "url": "https://raw.githubusercontent.com/Archont561/pixi-sandbox/1903b088a0896126dee82e2a8b6b007942303ffc/LICENSE"
+    },
+    "Archont561/pixi-sandbox-generated": {
+      "ref": "603166a44c24bfba9d82d62f9f5638ca6ba31d9e",
+      "license": "MIT",
+      "file": "pixi-sandbox-MIT.txt",
+      "url": "https://raw.githubusercontent.com/Archont561/pixi-sandbox/603166a44c24bfba9d82d62f9f5638ca6ba31d9e/LICENSE"
     }
   }
 }

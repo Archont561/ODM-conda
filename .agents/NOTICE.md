@@ -17,9 +17,12 @@ immutable source-license URLs. This is provenance/integrity checking, not a secu
 
 Local `session`, `backlog`, `odm-packaging`, and `release-review` skills are maintained
 here. Backlog/session routing and the tooling pattern are adapted from
-Archont561/pixi-sandbox @ 1903b088a0896126dee82e2a8b6b007942303ffc; its MIT notice
-(including the upstream OWNER copyright placeholder) is preserved verbatim in
-`licenses/pixi-sandbox-MIT.txt`. No automatic-release/session policy was adopted.
+Archont561/pixi-sandbox @ 1903b088a0896126dee82e2a8b6b007942303ffc. The generated
+sandbox publisher, relock workflow, and restore bootstrap are based on v0.9.0 at
+`603166a44c24bfba9d82d62f9f5638ca6ba31d9e`. Both pinned source revisions use the
+same MIT notice (including the upstream OWNER copyright placeholder), preserved
+verbatim in `licenses/pixi-sandbox-MIT.txt`; see `licenses/manifest.json`. No
+automatic component version-bump/release policy was adopted.
 
 Updating a managed copy is a deliberate dependency change: use the locked skills
 CLI with a reviewed full commit URL, preserve its new lock output, refresh the

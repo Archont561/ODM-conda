@@ -23,7 +23,7 @@ class AgentSetupTests(unittest.TestCase):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         root = Path(temporary.name)
-        for name in ("AGENTS.md", "README.md", "LICENSE", "pixi.toml", "pixi.lock", ".gitignore", "package.json", "bun.lock", "skills-lock.json"):
+        for name in ("AGENTS.md", "README.md", "LICENSE", "pixi.toml", "pixi.lock", "pixi-sandbox.toml", "restore.sh", ".gitattributes", ".gitignore", "package.json", "bun.lock", "skills-lock.json"):
             shutil.copy2(ROOT / name, root / name)
         for name in ("backlog", ".agents", ".github", "recipes", ".config"):
             shutil.copytree(ROOT / name, root / name, ignore=shutil.ignore_patterns(".cache", "node_modules", "__pycache__"))
@@ -139,6 +139,9 @@ class AgentSetupTests(unittest.TestCase):
         self.assertIn("AGENTS.md", files)
         self.assertIn("bun.lock", files)
         self.assertIn("skills-lock.json", files)
+        self.assertIn("pixi-sandbox.toml", files)
+        self.assertIn("restore.sh", files)
+        self.assertIn(".gitattributes", files)
         self.assertIn(".agents/skills/tdd/SKILL.md", files)
         self.assertIn("backlog/config.yml", files)
         self.assertTrue(any(path.startswith("backlog/tasks/") for path in files))
@@ -213,7 +216,7 @@ class AgentSetupTests(unittest.TestCase):
             "backlog/config.yml", "backlog/docs/guides/guide.md",
             "backlog/tasks/task-example.md", ".agents/skills/session/SKILL.md",
             "LICENSE", "README.md", "pixi.lock", "bun.lock", "skills-lock.json",
-            "package.json", "recipes/tool/recipe.yaml", "recipes/variants.yaml",
+            "package.json", "recipes/tool/recipe.yaml", "recipes/variants.yaml", ".pixi/config.toml",
             "recipes/components.json", ".config/lefthook.yml", ".config/convco.yml", ".github/CONTRIBUTING.md",
             "backlog/milestones/m-0 - dem2points.md",
         }
@@ -264,6 +267,26 @@ class AgentSetupTests(unittest.TestCase):
         data["concurrency"]["group"] = "checks-${{ github.ref }}"
         path.write_text(yaml.safe_dump(data))
         with self.assertRaisesRegex(ScaffoldError, "SHA-distinct"):
+            check_workflow_policy(root)
+
+    def test_sandbox_publisher_is_main_only(self):
+        root = self.fixture()
+        path = root / ".github/workflows/publish-sandbox.yml"
+        document = yaml.safe_load(path.read_text())
+        triggers = document.get("on", document.get(True, {}))
+        triggers["pull_request"] = {}
+        path.write_text(yaml.safe_dump(document, sort_keys=False))
+        with self.assertRaisesRegex(ScaffoldError, "Never publish a sandbox from pull request code"):
+            check_workflow_policy(root)
+
+    def test_sandbox_relock_can_only_commit_the_lockfile(self):
+        root = self.fixture()
+        path = root / ".github/workflows/relock.yml"
+        document = yaml.safe_load(path.read_text())
+        auto_commit = next(step for step in document["jobs"]["relock"]["steps"] if step.get("uses", "").startswith("stefanzweifel/git-auto-commit-action@"))
+        auto_commit["with"]["file_pattern"] = "**/*"
+        path.write_text(yaml.safe_dump(document, sort_keys=False))
+        with self.assertRaisesRegex(ScaffoldError, "Automatic relock may commit only pixi.lock"):
             check_workflow_policy(root)
 
     def test_project_shell_cannot_replace_thin_uncredentialed_steps(self):

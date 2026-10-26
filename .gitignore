@@ -1,5 +1,6 @@
 # Installed repository tools and local caches.
-.pixi/
+.pixi/*
+!.pixi/config.toml
 node_modules/
 .cache/
 __pycache__/
