@@ -1,0 +1,14 @@
+schema = 1
+branch_prefix = "sandbox"
+cargo_vendor = false
+
+[budgets]
+max_blob_mib = 95
+max_transport_mib = 2048
+max_repository_push_mib = 2048
+max_restore_required_mib = 8192
+
+[[bundle]]
+name = "developer"
+environments = ["default", "agent-tools"]
+platforms = ["linux-64"]

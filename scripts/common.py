@@ -140,7 +140,7 @@ def find_package(name: str, component: dict[str, Any], output: Path) -> Path:
 def repository_files(root: Path = ROOT) -> list[Path]:
     """Explicit source-bundle allowlist: no .git, credentials, caches or binaries."""
     files: list[Path] = []
-    for name in ("README.md", "LICENSE", ".github/CONTRIBUTING.md", "AGENTS.md", "recipes/components.json", "pixi.toml", "pixi.lock", "recipes/variants.yaml", ".config/lefthook.yml", ".config/convco.yml", "package.json", "bun.lock", "skills-lock.json", ".gitignore"):
+    for name in ("README.md", "LICENSE", ".github/CONTRIBUTING.md", "AGENTS.md", "recipes/components.json", "pixi.toml", "pixi.lock", "pixi-sandbox.toml", "restore.sh", ".gitattributes", "recipes/variants.yaml", ".config/lefthook.yml", ".config/convco.yml", "package.json", "bun.lock", "skills-lock.json", ".gitignore"):
         path = root / name
         if not path.is_file() or path.is_symlink():
             raise ScaffoldError(f"Required packaging source is missing or a symlink: {path}")
