@@ -1,0 +1,116 @@
+name: Publish reviewed component
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.workflow }}-archont561-archont561
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.event.release.prerelease == false && github.event.release.draft == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    outputs:
+      component: ${{ steps.guard.outputs.component }}
+    steps:
+      - name: Check out trusted default branch, not arbitrary release code
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up locked Pixi tooling
+        uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default agent-tools
+      - name: Require reviewed component and exact HEAD/tag identity
+        id: guard
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: pixi run release-check --tag "$RELEASE_TAG" --check-git --github-output "$GITHUB_OUTPUT"
+      - name: Shared local and CI gate
+        run: pixi run check
+      - name: Build selected component
+        env:
+          COMPONENT: ${{ steps.guard.outputs.component }}
+        run: pixi run build --component "$COMPONENT"
+      - name: Retest in a fresh environment
+        env:
+          COMPONENT: ${{ steps.guard.outputs.component }}
+        run: pixi run test --component "$COMPONENT"
+      - name: Audit component
+        env:
+          COMPONENT: ${{ steps.guard.outputs.component }}
+        run: pixi run audit --component "$COMPONENT"
+      - name: Stage binary, audit and corresponding source
+        env:
+          COMPONENT: ${{ steps.guard.outputs.component }}
+        run: pixi run stage-release --component "$COMPONENT"
+      - name: Save complete release set
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: reviewed-release
+          path: release-artifacts/*
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
+
+  publish:
+    needs: build
+    if: github.event.release.prerelease == false && github.event.release.draft == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: prefix
+    permissions:
+      contents: write
+      id-token: write
+    # This job intentionally does not check out or execute repository scripts.
+    steps:
+      - name: Download reviewed artifact set
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: reviewed-release
+          path: artifacts
+      - name: Verify checksums and artifact counts
+        working-directory: artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          packages=(*.conda)
+          sources=(source-*.tar.gz)
+          test "${#packages[@]}" -eq 1
+          test "${#sources[@]}" -eq 1
+          test -s audit.json
+          sha256sum --strict --check SHA256SUMS
+      - name: Make source available BEFORE distributing the channel binary
+        working-directory: artifacts
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+          gh release upload "$RELEASE_TAG" source-*.tar.gz audit.json SHA256SUMS --repo "$GITHUB_REPOSITORY"
+      - name: Set up pinned upload client
+        uses: prefix-dev/rattler-build-action@1ca5f45832f419a46d1326ccc5861d7e14d67c44 # v0.2.39
+        with:
+          setup-only: true
+          rattler-build-version: v0.68.0
+      - name: Publish to existing channel with OIDC and attestation
+        shell: bash
+        run: rattler-build upload prefix --channel archont561/archont561 --generate-attestation artifacts/*.conda
+      - name: Attach successfully published binary to GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$RELEASE_TAG" artifacts/*.conda --repo "$GITHUB_REPOSITORY"

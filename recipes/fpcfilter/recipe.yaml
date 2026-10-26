@@ -1,0 +1,74 @@
+schema_version: 1
+
+context:
+  name: fpcfilter
+  version: "0.2"
+  upstream_commit: "6e0c1c0113939823b2ff3c2eef4d5907e7f5db6b"
+  source_sha256: "fb303e298ad5e5f246a20095ce0992b97e0cf6605387df5fd3e2d930516025a8"
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  # Immutable source archive; no network fetches are allowed inside the build.
+  url: https://codeload.github.com/OpenDroneMap/FPCFilter/tar.gz/6e0c1c0113939823b2ff3c2eef4d5907e7f5db6b
+  sha256: ${{ source_sha256 }}
+
+build:
+  number: 0
+  skip: target_platform != "linux-64"
+  script:
+    file: ../../scripts/build_component.py
+    interpreter: python
+
+requirements:
+  build:
+    - python >=3.12,<3.13
+    - cmake >=3.31,<3.32
+    - ninja >=1.11,<2
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+  host:
+    - libgomp >=14
+  run:
+    - libgomp >=14
+
+tests:
+  - package_contents:
+      files:
+        - bin/FPCFilter
+        - share/licenses/fpcfilter/*
+        - share/odm-conda/fpcfilter/SOURCE.txt
+        - share/odm-conda/fpcfilter/functional_test.py
+  - script:
+      interpreter: python
+      content: |
+        import runpy
+        import sys
+        from pathlib import Path
+        installed = Path(sys.prefix) / "share" / "odm-conda" / "fpcfilter" / "functional_test.py"
+        runpy.run_path(str(installed), run_name="__main__")
+    requirements:
+      run:
+        - python >=3.12,<3.13
+
+about:
+  homepage: https://github.com/OpenDroneMap/FPCFilter
+  repository: https://github.com/OpenDroneMap/FPCFilter
+  summary: Fast point-cloud cropping, sampling, and outlier filtering
+  description: >-
+    Unofficial native packaging of the component revision used by OpenDroneMap.
+    This component package is not the complete ODM engine.
+  license: GPL-3.0-only AND BSD-2-Clause AND MIT
+  license_file:
+    - .conda-notices/FPCFilter-GPL-3.0.txt
+    - .conda-notices/cxxopts-MIT.txt
+    - .conda-notices/json-MIT.txt
+    - .conda-notices/nanoflann-BSD-2-Clause.txt
+    - .conda-notices/packaging-MIT.txt
+
+extra:
+  recipe-maintainers:
+    - archont561

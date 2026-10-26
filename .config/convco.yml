@@ -1,0 +1,56 @@
+# Convco 0.7.2 policy, selected explicitly by both Pixi commit-check tasks.
+# Adapted from Archont561/pixi-sandbox @ 1903b088a0896126dee82e2a8b6b007942303ffc.
+# Upstream MIT notice: .agents/licenses/pixi-sandbox-MIT.txt; see .agents/NOTICE.md.
+# No component-version bump or release automation is configured here.
+header: |
+  # Packaging changelog
+
+  Notable changes to the unofficial ODM packaging repository.
+  Commit messages follow Conventional Commits; native component versions and
+  release approvals remain independent packaging metadata.
+
+types:
+  - type: feat
+    section: Features
+    hidden: false
+  - type: fix
+    section: Fixes
+    hidden: false
+  - type: perf
+    section: Performance
+    hidden: false
+  - type: refactor
+    section: Refactoring
+    hidden: false
+  - type: docs
+    section: Documentation
+    hidden: false
+  - type: build
+    section: Build System
+    hidden: false
+  - type: ci
+    section: CI
+    hidden: false
+  - type: test
+    section: Tests
+    hidden: true
+  - type: chore
+    section: Maintenance
+    hidden: true
+  - type: style
+    section: Styling
+    hidden: true
+
+issuePrefixes: ["#"]
+host: https://github.com
+owner: Archont561
+repository: ODM-conda
+# Anchor both ends: Convco otherwise accepts a valid substring of a bad scope.
+scopeRegex: "^[[:alnum:]]+(?:[-_/][[:alnum:]]+)*$"
+# Changelog wrapping preference, not a commit-subject length limit.
+lineLength: 100
+wrapDisabled: false
+linkCompare: true
+linkReferences: true
+merges: false
+firstParent: false

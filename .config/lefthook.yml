@@ -1,0 +1,36 @@
+# Local convenience, not a substitute for CI or maintainer release review.
+# The hook/task split follows the pinned pixi-sandbox pattern; see .agents/NOTICE.md.
+min_version: "2.1.14"
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: python-syntax
+      glob: "*.py"
+      run: pixi run python-lint {staged_files}
+    - name: toml-format
+      glob: "*.toml"
+      run: pixi run toml-format {staged_files}
+      stage_fixed: true
+    - name: workflows
+      glob: ".github/workflows/*.{yml,yaml}"
+      run: pixi run workflows
+
+commit-msg:
+  jobs:
+    - name: conventional-commit
+      run: pixi run commit-lint < {1}
+
+pre-push:
+  # No glob/files filters: deletion-only or unusual pushes must not bypass gates.
+  # Sequential and fail-fast; compiling native engines remains an explicit task.
+  piped: true
+  jobs:
+    - name: static
+      run: pixi run static
+    - name: unit
+      run: pixi run unit
+    - name: agent-tools
+      run: pixi run agent-check
+    - name: render
+      run: pixi run render

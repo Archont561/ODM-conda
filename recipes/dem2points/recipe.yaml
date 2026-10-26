@@ -1,0 +1,72 @@
+schema_version: 1
+
+context:
+  name: dem2points
+  version: "0.0.0.dev20220721"
+  upstream_commit: "4527122615f41044bde0e79850464ed33549ceeb"
+  source_sha256: "b5d87bcafd52fd4c52f5c8828086f2ea34338742ae293cbd21bde1fd55b9fa67"
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  # Immutable source archive; no network fetches are allowed inside the build.
+  url: https://codeload.github.com/OpenDroneMap/dem2points/tar.gz/4527122615f41044bde0e79850464ed33549ceeb
+  sha256: ${{ source_sha256 }}
+
+build:
+  number: 0
+  skip: target_platform != "linux-64"
+  script:
+    file: ../../scripts/build_component.py
+    interpreter: python
+
+requirements:
+  build:
+    - python >=3.12,<3.13
+    - cmake >=3.31,<3.32
+    - ninja >=1.11,<2
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+  host:
+    - libgdal-core >=3.11,<3.12
+  run:
+    - libgdal-core >=3.11,<3.12
+
+tests:
+  - package_contents:
+      files:
+        - bin/dem2points
+        - share/licenses/dem2points/*
+        - share/odm-conda/dem2points/SOURCE.txt
+        - share/odm-conda/dem2points/functional_test.py
+  - script:
+      interpreter: python
+      content: |
+        import runpy
+        import sys
+        from pathlib import Path
+        installed = Path(sys.prefix) / "share" / "odm-conda" / "dem2points" / "functional_test.py"
+        runpy.run_path(str(installed), run_name="__main__")
+    requirements:
+      run:
+        - python >=3.12,<3.13
+
+about:
+  homepage: https://github.com/OpenDroneMap/dem2points
+  repository: https://github.com/OpenDroneMap/dem2points
+  summary: Extract 3D points from a digital elevation model
+  description: >-
+    Unofficial native packaging of the component revision used by OpenDroneMap.
+    This component package is not the complete ODM engine.
+  license: GPL-3.0-only AND BSD-3-Clause AND MIT
+  license_file:
+    - .conda-notices/dem2points-GPL-3.0.txt
+    - .conda-notices/CmdLineParser-BSD-3-Clause.txt
+    - .conda-notices/packaging-MIT.txt
+
+extra:
+  recipe-maintainers:
+    - archont561

@@ -1,0 +1,13 @@
+# Linux CPU toolchain baseline. These selectors are passed explicitly by build.py.
+c_compiler:
+  - gcc
+c_compiler_version:
+  - "14"
+cxx_compiler:
+  - gxx
+cxx_compiler_version:
+  - "14"
+c_stdlib:
+  - sysroot
+c_stdlib_version:
+  - "2.28"
