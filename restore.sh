@@ -18,7 +18,7 @@ if [ -z "$BRANCH" ] && [ -r "$CONFIG" ]; then
   # <branch_prefix>/<bundle>-<platform>, read off the same reviewed plan the publisher uses.
   PREFIX=$(sed -n "s/^[[:space:]]*branch_prefix[[:space:]]*=[[:space:]]*[\"']\([^\"']*\).*/\1/p" "$CONFIG" | sed 1q)
   BUNDLES=$(tr '\n' ' ' <"$CONFIG" | sed 's/\[\[[[:space:]]*bundle[[:space:]]*\]\]/\
-/g' | grep -E "platforms[^]]*[\"']$PLATFORM[\"']" |
+/g' | grep -E "platforms[^]]*[\"']${PLATFORM}[\"']" |
     sed -n "s/.*name[[:space:]]*=[[:space:]]*[\"']\([^\"']*\).*/\1/p" || true)
   if [ -n "${PIXI_SANDBOX_BUNDLE:-}" ]; then
     BUNDLES=$(printf '%s\n' "$BUNDLES" | grep -Fx "$PIXI_SANDBOX_BUNDLE" || true)
