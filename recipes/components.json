@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "distribution": {
+    "repository": "Archont561/ODM-conda",
+    "channel": "archont561/archont561",
+    "platform": "linux-64",
+    "github_environment": "prefix",
+    "reference_odm": {
+      "version": "3.6.2",
+      "commit": "47f41f1f2d09f7c15dff33dd3c15ab29c8a97d45"
+    },
+    "scaffold_date": "2026-10-26"
+  },
+  "tools": {
+    "pixi": "0.82.0",
+    "rattler_build": "0.68.0"
+  },
+  "components": {
+    "dem2points": {
+      "version": "0.0.0.dev20220721",
+      "version_note": "Snapshot version; upstream does not declare a release version. Date is the pinned commit date, not the packaging date.",
+      "build_number": 0,
+      "recipe": "recipes/dem2points/recipe.yaml",
+      "executable": "dem2points",
+      "source": {
+        "repository": "https://github.com/OpenDroneMap/dem2points",
+        "reference_in_odm": "master",
+        "commit": "4527122615f41044bde0e79850464ed33549ceeb",
+        "url": "https://codeload.github.com/OpenDroneMap/dem2points/tar.gz/4527122615f41044bde0e79850464ed33549ceeb",
+        "sha256": "b5d87bcafd52fd4c52f5c8828086f2ea34338742ae293cbd21bde1fd55b9fa67",
+        "additional_sources": [],
+        "disabled_build_trees": []
+      },
+      "license": "GPL-3.0-only AND BSD-3-Clause AND MIT",
+      "license_note": "Conservative v3-only metadata pending review of the upstream grant. MIT covers original installed packaging/test code only.",
+      "notices": [
+        {
+          "source": "LICENSE",
+          "target": "dem2points-GPL-3.0.txt",
+          "kind": "verbatim"
+        },
+        {
+          "source": "src/CmdLineParser.h",
+          "target": "CmdLineParser-BSD-3-Clause.txt",
+          "kind": "first-comment"
+        }
+      ],
+      "release_checks": {
+        "publishable": false,
+        "license_reviewed": false,
+        "source_completeness_reviewed": false,
+        "native_validation_passed": false
+      }
+    },
+    "fpcfilter": {
+      "version": "0.2",
+      "version_note": "Matches upstream CMake project version at ODM tag 331.",
+      "build_number": 0,
+      "recipe": "recipes/fpcfilter/recipe.yaml",
+      "executable": "FPCFilter",
+      "source": {
+        "repository": "https://github.com/OpenDroneMap/FPCFilter",
+        "reference_in_odm": "331",
+        "commit": "6e0c1c0113939823b2ff3c2eef4d5907e7f5db6b",
+        "url": "https://codeload.github.com/OpenDroneMap/FPCFilter/tar.gz/6e0c1c0113939823b2ff3c2eef4d5907e7f5db6b",
+        "sha256": "fb303e298ad5e5f246a20095ce0992b97e0cf6605387df5fd3e2d930516025a8",
+        "additional_sources": [],
+        "disabled_build_trees": [
+          "test"
+        ]
+      },
+      "license": "GPL-3.0-only AND BSD-2-Clause AND MIT",
+      "license_note": "Conservative v3-only metadata pending review of the upstream grant; vendored nanoflann is BSD-2-Clause, cxxopts/json are MIT.",
+      "notices": [
+        {
+          "source": "LICENSE",
+          "target": "FPCFilter-GPL-3.0.txt",
+          "kind": "verbatim"
+        },
+        {
+          "source": "vendor/cxxopts.hpp",
+          "target": "cxxopts-MIT.txt",
+          "kind": "first-comment"
+        },
+        {
+          "source": "vendor/json.hpp",
+          "target": "json-MIT.txt",
+          "kind": "first-comment"
+        },
+        {
+          "source": "vendor/nanoflann.hpp",
+          "target": "nanoflann-BSD-2-Clause.txt",
+          "kind": "first-comment"
+        }
+      ],
+      "release_checks": {
+        "publishable": false,
+        "license_reviewed": false,
+        "source_completeness_reviewed": false,
+        "native_validation_passed": false
+      }
+    }
+  }
+}

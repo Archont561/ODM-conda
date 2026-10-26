@@ -1,0 +1,57 @@
+name: Build and test native components
+
+on:
+  workflow_dispatch:
+    inputs:
+      component:
+        description: Implemented component to build (no publishing)
+        type: choice
+        options: [all, dem2points, fpcfilter]
+        default: all
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-build-${{ github.sha }}-${{ inputs.component }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      COMPONENT: ${{ inputs.component }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - name: Set up locked Pixi tooling
+        uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default agent-tools
+      - name: Shared local and CI gate
+        run: pixi run check
+      - name: Build and run packaged tests
+        run: pixi run build --component "$COMPONENT"
+      - name: Retest artifacts in fresh environments
+        run: pixi run test --component "$COMPONENT"
+      - name: Audit artifacts
+        run: pixi run audit --component "$COMPONENT"
+      - name: Assemble corresponding-source bundles
+        run: pixi run sources --component "$COMPONENT"
+      - name: Save non-published artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: odm-components-linux-64
+          path: |
+            output/linux-64/*.conda
+            reports/audit-*.json
+            source-bundles/source-*.tar.gz
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14

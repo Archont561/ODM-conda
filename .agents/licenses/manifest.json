@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "sources": {
+    "mattpocock/skills": {
+      "ref": "5beb35b040e3de97e54fa9e386d7e42d15c295c2",
+      "license": "MIT",
+      "file": "mattpocock-skills-MIT.txt",
+      "url": "https://raw.githubusercontent.com/mattpocock/skills/5beb35b040e3de97e54fa9e386d7e42d15c295c2/LICENSE"
+    },
+    "github/awesome-copilot": {
+      "ref": "b1a00457c0b8794243883f387e7de71e88800e3e",
+      "license": "MIT",
+      "file": "github-awesome-copilot-MIT.txt",
+      "url": "https://raw.githubusercontent.com/github/awesome-copilot/b1a00457c0b8794243883f387e7de71e88800e3e/LICENSE"
+    },
+    "Archont561/pixi-sandbox": {
+      "ref": "1903b088a0896126dee82e2a8b6b007942303ffc",
+      "license": "MIT",
+      "file": "pixi-sandbox-MIT.txt",
+      "url": "https://raw.githubusercontent.com/Archont561/pixi-sandbox/1903b088a0896126dee82e2a8b6b007942303ffc/LICENSE"
+    }
+  }
+}

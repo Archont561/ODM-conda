@@ -1,0 +1,32 @@
+# Installed repository tools and local caches.
+.pixi/
+node_modules/
+.cache/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Generated native packages, audits, source bundles and release staging.
+/output/
+/reports/
+/source-bundles/
+/release-artifacts/
+/artifacts/
+*.conda
+*.tar.bz2
+*.tar.gz
+*.zip
+*.log
+
+# Obsolete manual-doc/export and research trees, not backlog/docs/.
+/docs/
+/.odm-scaffold-research/
+
+# Secrets, machine-specific preferences and editor/OS metadata.
+.env
+.env.*
+!.env.example
+backlog/local.yml
+backlog/local.yaml
+lefthook-local.yml
+.DS_Store
