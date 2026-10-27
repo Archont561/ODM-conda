@@ -7,7 +7,7 @@ Target: the existing **`archont561/archont561`** Prefix channel, shared with Clo
 > **Starter scaffold, not a full ODM/NodeODM distribution.** Two Linux CPU component
 > recipes have been built and tested locally. `fpcfilter 0.2` build 1 was published
 > to the channel on 2026-10-27 (OIDC + attestation, TASK-15). All four `dem2points`
-> release acknowledgements remain false.
+> release gates are owner-approved `true` (2026-10-27); no dem2points binary is published yet.
 
 ## Implemented components
 
@@ -29,6 +29,11 @@ The project owner approved the patch, the license expression and build 1 on
 release gates are `true`. Build 1 was published to `archont561/archont561`
 via the OIDC release workflow on 2026-10-27 (**TASK-15** publisher proof;
 `pixi add fpcfilter --channel archont561/archont561`).
+
+The project owner approved `dem2points 0.0.0.dev20220721` build 0 on
+2026-10-27 (Backlog **TASK-3**, readiness review **TASK-23**, CI validation
+run 40532334352); all four dem2points release gates are `true`. It has not
+been published yet — publication stays a separate deliberate Release.
 
 ## Quick start
 
