@@ -10,5 +10,5 @@ max_restore_required_mib = 8192
 
 [[bundle]]
 name = "developer"
-environments = ["default", "agent-tools"]
+environments = ["default", "agent-tools", "odm-dev"]
 platforms = ["linux-64"]

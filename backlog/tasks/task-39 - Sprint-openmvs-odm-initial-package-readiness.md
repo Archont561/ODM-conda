@@ -4,7 +4,7 @@ title: 'Sprint: openmvs-odm initial package readiness'
 status: To Do
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-26 20:59'
+updated_date: '2026-10-27 08:38'
 labels:
   - sprint
   - coordination
@@ -29,3 +29,9 @@ One undated delivery coordinator for the openmvs-odm package milestone. Execute 
 - [ ] #2 The package's implementation/validation and independent readiness review are linked, with exact source/artifact identities, known limitations and any remaining owner actions stated honestly.
 - [ ] #3 Close only this planning/readiness gate after the work is verified; no automatic release flags, public upload, deadline or support claim follows from Sprint completion.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Rescoped for MVP: this gate now covers the OpenMVS ReconstructMesh target only (doc-11).
+<!-- SECTION:NOTES:END -->

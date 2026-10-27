@@ -14,9 +14,13 @@ source:
   # Immutable source archive; no network fetches are allowed inside the build.
   url: https://codeload.github.com/OpenDroneMap/FPCFilter/tar.gz/6e0c1c0113939823b2ff3c2eef4d5907e7f5db6b
   sha256: ${{ source_sha256 }}
+  # Local packaging patch for Backlog TASK-2 (no-normals radius sampling). Applied
+  # after the immutable archive is verified; the upstream archive itself is unchanged.
+  patches:
+    - patches/0001-Write-no-normals-radius-sampling-results-back.patch
 
 build:
-  number: 0
+  number: 1
   skip: target_platform != "linux-64"
   script:
     file: ../../scripts/build_component.py

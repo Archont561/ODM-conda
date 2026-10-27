@@ -81,3 +81,13 @@ node_modules/cache and host Git/shell, with telemetry disabled in the test.
 That observation does not certify a cold-cache install, machine relocation,
 additional platforms, skill updates, native compilation or full ODM execution.
 No portable transport was built and no sandbox publisher was added.
+
+## Local pixi-sandbox pack and restore — 2026-10-27
+
+Performed on this host only. Nothing was published and no sandbox branch was pushed.
+
+- Lock check: `pixi install --locked --all` succeeded for default and agent-tools, so `pixi.lock` matches `pixi.toml` (linux-64 only, the only platform the project declares).
+- Tool: pixi-sandbox 0.9.0 standalone, checked against the release `SHA256SUMS` before use. `plan --config pixi-sandbox.toml --json` emitted one linux-64 developer bundle for `default,agent-tools` on `sandbox/developer-linux-64`.
+- Pack: `pixi-sandbox pack --envs default,agent-tools --platform linux-64 --pixi-bin <pixi> --self-bin <pixi-sandbox>` produced 80 blobs, 205.8 MiB, recorded at commit `8ee417b`. The first pack omitted `--self-bin`; `restore.sh` expects that binary under `.pixi-sandbox/tools/linux-64/`, so it is required.
+- Verify: `doctor --verify` passed (0 failures). Restore into a scratch copy of the committed tree passed `--verify-restored` for both environments. `pixi install --frozen --offline` was a no-op there, and `python`, `bun` and `rattler-build` ran offline.
+- Not covered: Bun `node_modules` is not packed (pixi-sandbox has no mechanism for it); native build environments for the recipes are rattler-build's; other platforms are not declared by the project.

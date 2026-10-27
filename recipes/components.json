@@ -55,7 +55,7 @@
     "fpcfilter": {
       "version": "0.2",
       "version_note": "Matches upstream CMake project version at ODM tag 331.",
-      "build_number": 0,
+      "build_number": 1,
       "recipe": "recipes/fpcfilter/recipe.yaml",
       "executable": "FPCFilter",
       "source": {
@@ -67,10 +67,20 @@
         "additional_sources": [],
         "disabled_build_trees": [
           "test"
+        ],
+        "patches": [
+          {
+            "file": "recipes/fpcfilter/patches/0001-Write-no-normals-radius-sampling-results-back.patch",
+            "sha256": "aae6c9914478ecfaa5d2cd5c8704342752dc2c24d8a441e02c728e60728faa6a",
+            "upstream_file": "fastsamplefilter.hpp",
+            "backlog": "TASK-2",
+            "summary": "Write no-normals radius sampling results back to file.points (upstream erased from a local copy).",
+            "review": "not reviewed upstream; modified-source notice required in every build"
+          }
         ]
       },
       "license": "GPL-3.0-only AND BSD-2-Clause AND MIT",
-      "license_note": "Conservative v3-only metadata pending review of the upstream grant; vendored nanoflann is BSD-2-Clause, cxxopts/json are MIT.",
+      "license_note": "Conservative v3-only metadata pending review of the upstream grant; vendored nanoflann is BSD-2-Clause, cxxopts/json are MIT. Build 1 contains a local modification of fastsamplefilter.hpp (see source.patches); modified-source status must stay in SOURCE.txt and the release notes.",
       "notices": [
         {
           "source": "LICENSE",

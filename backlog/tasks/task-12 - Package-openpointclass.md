@@ -4,7 +4,7 @@ title: Package openpointclass
 status: To Do
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-26 20:59'
+updated_date: '2026-10-27 08:38'
 labels:
   - component
   - openpointclass
@@ -29,3 +29,9 @@ Read the exact ODM reference recorded in components.json before choosing source 
 - [ ] #2 A real recipe declares build/host/run dependencies, carries the applicable notices/source, and passes installed-prefix functional tests.
 - [ ] #3 components.json, source staging, artifact audits and human release gates are extended intentionally; no placeholder package is published.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Deferred from the fast-orthophoto MVP (doc-11, approved). Not a gate for TASK-13. Resume after the MVP ships.
+<!-- SECTION:NOTES:END -->

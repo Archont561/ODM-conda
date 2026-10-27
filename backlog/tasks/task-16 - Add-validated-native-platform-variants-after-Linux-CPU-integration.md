@@ -4,7 +4,7 @@ title: Add validated native platform variants after Linux CPU integration
 status: To Do
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-26 20:59'
+updated_date: '2026-10-27 08:38'
 labels:
   - platforms
 dependencies:
@@ -26,3 +26,9 @@ Linux x86-64 CPU is the only implemented target. Add native Windows and Apple Si
 - [ ] #2 CI, selectors, source staging and release records agree on the actually supported targets.
 - [ ] #3 GPU packaging is kept separate until both technical behavior and redistribution/copy-left compatibility are reviewed.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Deferred from the fast-orthophoto MVP (doc-11, approved). Not a gate for TASK-13. Resume after the MVP ships.
+<!-- SECTION:NOTES:END -->

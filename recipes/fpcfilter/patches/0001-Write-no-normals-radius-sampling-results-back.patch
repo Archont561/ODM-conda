@@ -1,0 +1,47 @@
+From: ODM-conda packaging <packaging@odm-conda.invalid>
+Subject: [PATCH] Write no-normals radius sampling results back to the point list
+
+Upstream commit 6e0c1c0113939823b2ff3c2eef4d5907e7f5db6b (ODM tag 331).
+
+FastSampleFilter::run() copies file.points into a local vector. For point
+clouds without normals, the sampling branch erased rejected points from that
+local copy only, so the output kept every input point. The branch now builds
+the kept list and assigns it to file.points. Without normals, file.extras stays
+empty, so it is not touched.
+
+Normals-bearing input follows the unchanged branch, so its output is unchanged.
+
+Status: local packaging patch, not reviewed upstream. Licensing and
+corresponding-source review remain open in Backlog TASK-2 and TASK-3.
+---
+diff --git a/fastsamplefilter.hpp b/fastsamplefilter.hpp
+index dda0dc6..95432ee 100644
+--- a/fastsamplefilter.hpp
++++ b/fastsamplefilter.hpp
+@@ -97,9 +97,23 @@ namespace FPCFilter {
+ 
+             } else {
+ 
+-                auto res = std::remove_if(points.begin(), points.end(), [this](PlyPoint& point) { return !this->safe_voxelize(point); });
+-                points.erase(res, points.end());
+-                
++                // Write the kept points back: erasing from the local copy alone
++                // leaves file.points unchanged. Without normals, extras stay empty.
++                std::vector<PlyPoint> newPoints;
++                newPoints.reserve(cnt);
++
++                for (std::size_t n = 0; n < cnt; n++) {
++                    const auto& point = points[n];
++
++                    if (this->safe_voxelize(point)) {
++                        newPoints.push_back(point);
++                    }
++                }
++
++                newPoints.shrink_to_fit();
++
++                file.points = newPoints;
++
+             }
+         }
+ 
