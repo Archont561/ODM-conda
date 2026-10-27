@@ -3,7 +3,7 @@ id: doc-7
 title: Publish to the existing Prefix channel
 type: other
 created_date: '2026-10-26 19:39'
-updated_date: '2026-10-27 14:01'
+updated_date: '2026-10-27 16:34'
 ---
 # Publish to the existing Prefix channel
 
@@ -79,6 +79,12 @@ Release/tag were deleted, retry by re-pushing the same annotated tag on the
 same default-branch HEAD and recreating the Release with identical notes —
 the guard's tag == HEAD check leaves no other latitude, and a UI re-run of an
 old run cannot work once the tag is gone.
+
+A successful upload may not appear in the public repodata immediately: during
+the dem2points publication (2026-10-27) the prefix.dev edge cache kept serving
+a copy generated seconds after the upload for several minutes. Re-fetch the
+repodata with a cache-busting query parameter before diagnosing a "missing"
+package.
 
 ## First validation, without publication
 
