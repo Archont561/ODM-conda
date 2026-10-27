@@ -21,9 +21,11 @@ FPCFilter's `0.2` is its CMake version, not the ODM tag number.
 
 **FPCFilter's no-normals sampling path had an upstream bug** (the pinned commit
 erased rejected points from a local copy). Build 1 carries a local fix,
-`recipes/fpcfilter/patches/0001-*.patch`, which is pending review in Backlog
-**TASK-2**. The fix changes only that branch; normals-bearing sampling and
-pass-through are byte-identical to upstream. Do not release before the review.
+`recipes/fpcfilter/patches/0001-*.patch`. The fix changes only that branch;
+normals-bearing sampling and pass-through are byte-identical to upstream.
+The project owner approved the patch, the license expression and build 1 on
+2026-10-27 (Backlog **TASK-2**, review packet doc-10); all four fpcfilter
+release gates are `true`.
 
 ## Quick start
 

@@ -7,7 +7,7 @@ created_date: '2026-10-27'
 
 # TASK-2 review packet: FPCFilter no-normals sampling
 
-Status: **awaiting human review.** This packet supports AC #3 of TASK-2. It is not an approval, and it does not reset or tick any release acknowledgement.
+Status: **reviewed and approved by the project owner on 2026-10-27.** This packet supported AC #3 of TASK-2; the approval outcome is recorded in sections 5 and 6 below and in the TASK-2 notes.
 
 ## 1. Defect
 
@@ -56,15 +56,15 @@ Known warning: rattler-build reports "Overdepending against `_openmp_mutex`". Th
 
 ## 5. Release acknowledgements
 
-- `release_checks` for fpcfilter remain `false`: `publishable`, `license_reviewed`, `source_completeness_reviewed`, `native_validation_passed`. None were changed.
-- This packet does not set any of them to `true`.
+- At packet time, all `release_checks` for fpcfilter were `false`: `publishable`, `license_reviewed`, `source_completeness_reviewed`, `native_validation_passed`. The packet itself changed none of them.
+- 2026-10-27: the project owner granted full release approval for build 1, and all four gates were set to `true` in `recipes/components.json`. This is an owner policy decision recorded in TASK-2, not legal certification.
 
 ## 6. Decisions
 
 Recorded by the project owner:
 1. **Accepted:** keep the local patch as the workaround. No upstream PR will be opened.
-2. **Open:** the license expression stays `GPL-3.0-only AND BSD-2-Clause AND MIT` until TASK-3 confirms it. The upstream code cannot be relicensed by the packager. See section 7 for the options.
-3. **Open:** build number 1 as the release candidate. This needs an explicit confirmation.
+2. **Confirmed (2026-10-27, project owner):** the license expression `GPL-3.0-only AND BSD-2-Clause AND MIT` is approved for build 1, and the "conservative … pending review" label was dropped from `components.json`. The upstream code still cannot be relicensed by the packager; the section 7 options are unchanged. TASK-3 remains open for dem2points and for the dependency and durable-source-URL obligations.
+3. **Confirmed (2026-10-27, project owner):** build number 1 is the approved release candidate. The explicit confirmation is recorded in the TASK-2 notes; release proceeds per doc-7 (tag `fpcfilter-v0.2-b1` on the default-branch HEAD carrying the gates, then publish a non-prerelease GitHub Release).
 
 ## 7. Path to a more permissive license
 

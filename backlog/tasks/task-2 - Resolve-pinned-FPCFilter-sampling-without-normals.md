@@ -1,10 +1,10 @@
 ---
 id: TASK-2
 title: Resolve pinned FPCFilter sampling without normals
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-26 23:55'
+updated_date: '2026-10-27 09:46'
 labels:
   - bug
   - upstream
@@ -25,7 +25,7 @@ Observed while validating upstream commit 6e0c1c0113939823b2ff3c2eef4d5907e7f5db
 <!-- AC:BEGIN -->
 - [x] #1 A generated no-normals near-duplicate PLY fixture demonstrates the original behavior and verifies the chosen fix or documented limitation.
 - [x] #2 Normals-bearing PLY sampling and pass-through remain covered and pass.
-- [ ] #3 Any patch, modified-source notice, license expression, source archive and build number are reviewed; all affected release acknowledgements are reset.
+- [x] #3 Any patch, modified-source notice, license expression, source archive and build number are reviewed; all affected release acknowledgements are reset.
 <!-- AC:END -->
 
 ## Implementation Notes
@@ -49,4 +49,6 @@ NOT done: AC #3. The patch, modified-source notice (SOURCE.txt now says Modified
 Packaged A/B (build 0 rebuilt from commit 825ba09, artifact fpcfilter-0.2-h873e7db_0.conda, outside the repo; build 1 artifact in output/linux-64): the current no-normals regression test fails on build 0 (kept 6 of 6) and passes on build 1. Build 0 installs no patch notice in SOURCE.txt, as expected.
 
 Decision (project owner): accept the local patch 0001 as the workaround; no upstream PR. Build 1 is the candidate pending explicit confirmation. License: upstream LICENSE is GPL-3.0 text with no or-later grant, so GPL-3.0-only AND BSD-2-Clause AND MIT is the accurate expression; AC #3 stays open until TASK-3 confirms it. Permissive relicensing needs the upstream copyright holders or a clean-room MIT/BSD reimplementation (see review packet doc-10, section 7).
+
+2026-10-27 approval (project owner, full release approval): local patch 0001, the modified-source notice in SOURCE.txt, the GPL-3.0-only AND BSD-2-Clause AND MIT expression, the source-fpcfilter-0.2-b1.tar.gz bundle and build number 1 are confirmed; doc-10 decisions 6.2 and 6.3 are closed. All four fpcfilter release_checks are now true in recipes/components.json. This supersedes the "NOT done: AC #3" and "Release checks remain false" statements above. Next per doc-7: merge these gates to the default branch, tag that exact HEAD fpcfilter-v0.2-b1, and publish a non-prerelease GitHub Release; release.yml then builds, audits and publishes to the Prefix channel via OIDC.
 <!-- SECTION:NOTES:END -->

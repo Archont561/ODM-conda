@@ -80,7 +80,7 @@
         ]
       },
       "license": "GPL-3.0-only AND BSD-2-Clause AND MIT",
-      "license_note": "Conservative v3-only metadata pending review of the upstream grant; vendored nanoflann is BSD-2-Clause, cxxopts/json are MIT. Build 1 contains a local modification of fastsamplefilter.hpp (see source.patches); modified-source status must stay in SOURCE.txt and the release notes.",
+      "license_note": "GPL-3.0-only confirmed by project-owner review on 2026-10-27 (upstream LICENSE is GPL-3.0 text with no or-later grant); vendored nanoflann is BSD-2-Clause, cxxopts/json are MIT. Build 1 contains a local modification of fastsamplefilter.hpp (see source.patches); modified-source status must stay in SOURCE.txt and the release notes.",
       "notices": [
         {
           "source": "LICENSE",
@@ -104,10 +104,10 @@
         }
       ],
       "release_checks": {
-        "publishable": false,
-        "license_reviewed": false,
-        "source_completeness_reviewed": false,
-        "native_validation_passed": false
+        "publishable": true,
+        "license_reviewed": true,
+        "source_completeness_reviewed": true,
+        "native_validation_passed": true
       }
     }
   }
