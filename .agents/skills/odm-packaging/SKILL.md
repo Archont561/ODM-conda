@@ -47,6 +47,8 @@ It was published to archont561/archont561 on 2026-10-27 via OIDC with a
 Sigstore attestation (tag dem2points-v0.0.0.dev20220721-b0, release run 40540506268).
 odm-orthophoto 0.0.0.dev20250225 build 0 (ODM reference `355`, resolved to the
 numbered-branch head 55b66d87cc168b8ab287bf10e81d4da0890f84f1) landed its
-recipe, AGPL-3.0-only-pending-review notices and generated-data fixture on
-2026-10-27 (TASK-4); all four of its release gates remain false pending native
-validation, TASK-28 review and owner approval. It is not published.
+recipe, AGPL-3.0-only notices and generated-data fixture on 2026-10-27 (TASK-4),
+passed native CI validation the same day (run 40584231748: packaged and
+fresh-env tests, audit PASS, source bundle) and was owner-approved including
+the AGPL-3.0-only license call; its four release gates are true (TASK-4/28/29).
+It is not published yet.

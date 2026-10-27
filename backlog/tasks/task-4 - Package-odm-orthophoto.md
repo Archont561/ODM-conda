@@ -1,10 +1,10 @@
 ---
 id: TASK-4
 title: Package odm-orthophoto
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-27 21:12'
+updated_date: '2026-10-27 21:50'
 labels:
   - component
   - odm-orthophoto
@@ -25,9 +25,9 @@ Read the exact ODM reference recorded in components.json before choosing source 
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The source graph is pinned to immutable commits and archive checksums, with ODM-required patches reviewed.
-- [ ] #2 A real recipe declares build/host/run dependencies, carries the applicable notices/source, and passes installed-prefix functional tests.
-- [ ] #3 components.json, source staging, artifact audits and human release gates are extended intentionally; no placeholder package is published.
+- [x] #1 The source graph is pinned to immutable commits and archive checksums, with ODM-required patches reviewed.
+- [x] #2 A real recipe declares build/host/run dependencies, carries the applicable notices/source, and passes installed-prefix functional tests.
+- [x] #3 components.json, source staging, artifact audits and human release gates are extended intentionally; no placeholder package is published.
 <!-- AC:END -->
 
 ## Implementation Notes
@@ -42,4 +42,6 @@ Read the exact ODM reference recorded in components.json before choosing source 
 2026-10-27 correction — true root cause (third native run 40581957902, main bd68dd5): the dont_write_bytecode retest changed nothing; the audit again refused the identical `functional_test.cpython-315.pyc`. The previous paragraph's runpy hypothesis is hereby corrected: CPython's `runpy.run_path` compiles source in memory and writes no bytecode cache in any version (verified against CPython 3.15's Lib/runpy.py), so the retest never was the writer. The actual writer is rattler-build itself: packaging post-processing (`crates/rattler_build_core/src/packaging.rs` → `post_process/python.rs::compile_pyc`, v0.68.0) runs `$HOST_PREFIX/bin/python -Wi -m py_compile` over every packaged `.py` file outside `bin/` and seals the resulting `__pycache__/*.pyc` into the artifact BEFORE the tests run. dem2points/fpcfilter host prefixes contain no Python, so compilation is skipped and their artifacts were always clean; odm-orthophoto's `libopencv` host dependency transitively provides a host Python (3.15.x here — proven by the cpython-315 cache tag). Fix per rattler-build's documented `build.python.skip_pyc_compilation` option (docs/build_options.md — which explicitly covers shipping .py files that must not be compiled at build time): all three recipes now skip `share/odm-conda/**/*.py`, and the ineffective dont_write_bytecode lines were reverted. The earlier observations stand but are reclassified: the fresh-env retest resolving python 3.15.2 without the recipe test pin is a rattler `test --package-file` behavior unrelated to the leak, and the fixture remains proven under both python 3.12 and 3.15. One further build.yml re-dispatch is needed to close AC #2; gates remain false.
 
 2026-10-27 success (fourth native run 40584231748, main bef20d9): the skip_pyc_compilation fix closed the leak — every step green in a 50 s cached run: build + packaged tests ✓, fresh-env retest ✓, Audit ✓, source bundle ✓, artifact save ✓. The build-phase host table visibly contains python 3.15.2 h6e52b48_100_cp315 (the libopencv transitive graph — root cause now confirmed on the record), yet compile_pyc skips share/odm-conda/**/*.py and the sealed artifact odm-orthophoto-0.0.0.dev20250225-h873e7db_0.conda (114.05 KiB) is clean: audit PASS → reports/audit-odm-orthophoto.json, no __pycache__ rejection. Retest spec python >=3.12,<3.13 applied; fresh env python 3.12.16; functional test PASS (fixture now proven under 3.12 in both the packaged test and a fresh env, and under 3.15 in earlier retests). Run-dependency re-pins identical to prior runs: __glibc >=2.28,<3.0.a0; _openmp_mutex >=4.5; libgcc/libgomp/libstdcxx >=14; libgdal-core >=3.11.5,<3.12.0a0; libopencv >=4.12.0,<4.12.1.0a0. Source bundle source-odm-orthophoto-0.0.0.dev20250225-b0.tar.gz, sha256 c02b61f6fe14cc030afe21b846dbb4d9f36f441b142a8af14eb66cc380bc0c68. Uploaded CI artifact odm-components-linux-64 (ID 12770762758, 341062 B, zip sha256 9f28220652217fcfb234d992d1b316a8936944ca64b3a02ea9068e5c254a3820, retention to 2026-11-10) carries the .conda + audit JSON + source bundle — the full evidence set, matching the published siblings' pattern. Only build-summary warning is the benign "Overdepending against _openmp_mutex". AC #2 is closed; the engineering work for this task is complete. Remaining steps are owner decisions: the AGPL-3.0-only license call (license_reviewed still false), then gates true + publication (tag odm-orthophoto-v0.0.0.dev20250225-b0 on a gates-true main HEAD + GitHub Release firing release.yml).
+
+2026-10-27 approval and closure: the project owner accepted the AGPL-3.0-only expression (§13 network copyleft acknowledged as policy for this ODM-ecosystem component) and approved build 0 for publication. All four release_checks flipped `true` in the approval commit; `release_guard.py --tag odm-orthophoto-v0.0.0.dev20250225-b0` verified locally: "Release gates passed … This is a policy check, not legal certification." TASK-28 (readiness review) and TASK-29 (sprint) closed alongside; README, SKILL.md and doc-6 updated to the approved state. Owner policy approval, not legal certification. Remaining owner actions are the publication mechanics only: tag `odm-orthophoto-v0.0.0.dev20250225-b0` on the approved main HEAD and the manual GitHub Release firing release.yml (the TASK-15 publisher flow). This step changes no recipe or code and publishes nothing; all three acceptance criteria stand met (pinning, native installed-prefix validation via run 40584231748, intentional machinery extension with no placeholder published).
 <!-- SECTION:NOTES:END -->

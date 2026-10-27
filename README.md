@@ -7,9 +7,10 @@ Target: the existing **`archont561/archont561`** Prefix channel, shared with Clo
 > **Starter scaffold, not a full ODM/NodeODM distribution.** The two published
 > Linux CPU components (OIDC + attestation, 2026-10-27) are `fpcfilter 0.2`
 > build 1 (TASK-15) and `dem2points 0.0.0.dev20220721` build 0; their eight
-> release gates are owner-approved `true`. A third recipe, `odm-orthophoto`
-> (TASK-4, ODM reference `355`), is implemented but not yet natively validated,
-> reviewed or approved; its four release gates are `false`.
+> release gates are owner-approved `true`. The third component, `odm-orthophoto`
+> (TASK-4, ODM reference `355`), is natively validated (CI run 40584231748),
+> reviewed (TASK-28) and owner-approved on 2026-10-27; its four release gates
+> are `true`, and only the tag + manual Release remain to publish it.
 
 ## Implemented components
 
@@ -17,7 +18,7 @@ Target: the existing **`archont561/archont561`** Prefix channel, shared with Clo
 | --- | --- | --- |
 | `dem2points` | `4527122615f41044bde0e79850464ed33549ceeb` | Synthetic DEM → PLY, coordinates, normals, linkage |
 | `fpcfilter` | ODM tag `331`, commit `6e0c1c0113939823b2ff3c2eef4d5907e7f5db6b`, plus local patch 0001 (build 1) | ASCII pass-through; no-normals sampling (regression for TASK-2); normals-bearing binary PLY sampling; linkage |
-| `odm-orthophoto` | ODM reference `355` (numbered branch head), commit `55b66d87cc168b8ab287bf10e81d4da0890f84f1` | Synthetic textured OBJ quad → GeoTIFF structure, corner bounds, exact pixel data, linkage (pending first native run) |
+| `odm-orthophoto` | ODM reference `355` (numbered branch head), commit `55b66d87cc168b8ab287bf10e81d4da0890f84f1` | Synthetic textured OBJ quad → GeoTIFF structure, corner bounds, exact pixel data, linkage |
 
 The reference is **ODM 3.6.2** (`47f41f1f2d09f7c15dff33dd3c15ab29c8a97d45`),
 not moving ODM master. `dem2points` uses snapshot version `0.0.0.dev20220721`;
@@ -43,13 +44,16 @@ published to `archont561/archont561` via the OIDC release workflow on
 2026-10-27 (tag `dem2points-v0.0.0.dev20220721-b0`, release run 40540506268;
 `pixi add dem2points --channel archont561/archont561`).
 
-`odm-orthophoto 0.0.0.dev20250225` build 0 (Backlog **TASK-4**) is implemented
-with all four release gates `false`: recipe, notices and the installed-prefix
-fixture landed 2026-10-27, pending native CI validation (owner-dispatched
-`build.yml`), evidence review (**TASK-28**) and owner approval (**TASK-29**
-sprint). Upstream is AGPL-3.0 (network copyleft); the conservative
-`AGPL-3.0-only AND MIT` expression awaits owner license review. Nothing is
-published for this component.
+The project owner approved `odm-orthophoto 0.0.0.dev20250225` build 0 on
+2026-10-27 (Backlog **TASK-4**, readiness review **TASK-28**, sprint
+**TASK-29**, CI validation run 40584231748: packaged + fresh-env functional
+tests, dependency audit PASS, source bundle `c02b61f6…`); all four
+odm-orthophoto release gates are `true`. Upstream is AGPL-3.0 (network
+copyleft); the owner confirmed the `AGPL-3.0-only AND MIT` expression and
+accepted §13 as policy for this ODM-ecosystem component. Nothing is published
+for this component yet: publication requires the tag
+`odm-orthophoto-v0.0.0.dev20250225-b0` on the approved HEAD and the manual
+Release firing the OIDC publisher.
 
 ## Quick start
 
