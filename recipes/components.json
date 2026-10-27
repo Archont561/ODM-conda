@@ -126,7 +126,7 @@
         "disabled_build_trees": []
       },
       "license": "AGPL-3.0-only AND MIT",
-      "license_note": "Conservative v3-only AGPL metadata pending review of the upstream grant (repository LICENSE is AGPL-3.0 text; source files carry no separate headers and no or-later grant; no vendored third-party code). MIT covers original installed packaging/test code only.",
+      "license_note": "AGPL-3.0-only confirmed by project-owner review on 2026-10-27 (upstream LICENSE is AGPL-3.0 text with no or-later grant; source files carry no separate headers; no vendored third-party code). The owner accepted AGPL §13's network-copyleft implications as policy for this ODM-ecosystem component; the verbatim LICENSE notice ships in every package and the corresponding-source bundle accompanies every artifact. MIT covers original installed packaging/test code only.",
       "notices": [
         {
           "source": "LICENSE",
@@ -135,10 +135,10 @@
         }
       ],
       "release_checks": {
-        "publishable": false,
-        "license_reviewed": false,
-        "source_completeness_reviewed": false,
-        "native_validation_passed": false
+        "publishable": true,
+        "license_reviewed": true,
+        "source_completeness_reviewed": true,
+        "native_validation_passed": true
       }
     }
   }

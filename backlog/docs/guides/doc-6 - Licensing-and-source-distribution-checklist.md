@@ -74,9 +74,10 @@ Current recipe expression: `GPL-3.0-only AND BSD-2-Clause AND MIT`.
   `55b66d87cc168b8ab287bf10e81d4da0890f84f1` (verified 2026-10-27).
 - Upstream root `LICENSE`: GNU Affero GPL version 3 text; source files carry no
   separate headers and there is no or-later grant outside the license
-  boilerplate. Metadata conservatively uses `AGPL-3.0-only` until the
-  maintainer confirms the applicable grant/version choice. AGPL §13's network
-  clause is an explicit review point for any service use of built binaries.
+  boilerplate. The project owner confirmed `AGPL-3.0-only` on 2026-10-27
+  (release gates include `license_reviewed: true`). AGPL §13's network clause
+  was accepted as policy and remains an explicit review point for any service
+  use of built binaries.
 - No vendored third-party code: `src/` contains only project-original sources
   (Logger, OdmOrthoPhoto, main).
 - Runtime GDAL, OpenCV and Eigen are separate Conda dependencies, not copied
