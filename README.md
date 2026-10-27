@@ -4,13 +4,11 @@
 
 Target: the existing **`archont561/archont561`** Prefix channel, shared with CloudCompare.
 
-> **Starter scaffold, not a full ODM/NodeODM distribution.** The two published
-> Linux CPU components (OIDC + attestation, 2026-10-27) are `fpcfilter 0.2`
-> build 1 (TASK-15) and `dem2points 0.0.0.dev20220721` build 0; their eight
-> release gates are owner-approved `true`. The third component, `odm-orthophoto`
-> (TASK-4, ODM reference `355`), is natively validated (CI run 40584231748),
-> reviewed (TASK-28) and owner-approved on 2026-10-27; its four release gates
-> are `true`, and only the tag + manual Release remain to publish it.
+> **Starter scaffold, not a full ODM/NodeODM distribution.** The three
+> published Linux CPU components (OIDC + attestation, 2026-10-27) are
+> `fpcfilter 0.2` build 1 (TASK-15), `dem2points 0.0.0.dev20220721` build 0
+> and `odm-orthophoto 0.0.0.dev20250225` build 0; their twelve release gates
+> are owner-approved `true`.
 
 ## Implemented components
 
@@ -50,10 +48,11 @@ The project owner approved `odm-orthophoto 0.0.0.dev20250225` build 0 on
 tests, dependency audit PASS, source bundle `c02b61f6…`); all four
 odm-orthophoto release gates are `true`. Upstream is AGPL-3.0 (network
 copyleft); the owner confirmed the `AGPL-3.0-only AND MIT` expression and
-accepted §13 as policy for this ODM-ecosystem component. Nothing is published
-for this component yet: publication requires the tag
-`odm-orthophoto-v0.0.0.dev20250225-b0` on the approved HEAD and the manual
-Release firing the OIDC publisher.
+accepted §13 as policy for this ODM-ecosystem component. Build 0 was published
+to `archont561/archont561` via the OIDC release workflow on 2026-10-27 (tag
+`odm-orthophoto-v0.0.0.dev20250225-b0`, release run 40592230904, green on
+attempt 5 after the owner extended the package-scoped prefix.dev upload grant;
+`pixi add odm-orthophoto --channel archont561/archont561`).
 
 ## Quick start
 

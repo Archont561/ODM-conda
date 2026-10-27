@@ -51,4 +51,9 @@ recipe, AGPL-3.0-only notices and generated-data fixture on 2026-10-27 (TASK-4),
 passed native CI validation the same day (run 40584231748: packaged and
 fresh-env tests, audit PASS, source bundle) and was owner-approved including
 the AGPL-3.0-only license call; its four release gates are true (TASK-4/28/29).
-It is not published yet.
+It was published to archont561/archont561 on 2026-10-27 via OIDC with a
+Sigstore attestation (tag odm-orthophoto-v0.0.0.dev20250225-b0, release run
+40592230904 attempt 5; attempts 1-2 hit an HTTP 403 because the prefix.dev
+upload grant was scoped to a package list that did not yet include
+odm-orthophoto - owner-fixed; attempts 3-4 tripped the no-clobber
+gh release upload step on already-attached assets - cleared before attempt 5).
