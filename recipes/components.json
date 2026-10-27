@@ -109,6 +109,37 @@
         "source_completeness_reviewed": true,
         "native_validation_passed": true
       }
+    },
+    "odm-orthophoto": {
+      "version": "0.0.0.dev20250225",
+      "version_note": "Snapshot version; upstream does not declare a release version. Date is the pinned commit date, not the packaging date.",
+      "build_number": 0,
+      "recipe": "recipes/odm-orthophoto/recipe.yaml",
+      "executable": "odm_orthophoto",
+      "source": {
+        "repository": "https://github.com/OpenDroneMap/odm_orthophoto",
+        "reference_in_odm": "355",
+        "commit": "55b66d87cc168b8ab287bf10e81d4da0890f84f1",
+        "url": "https://codeload.github.com/OpenDroneMap/odm_orthophoto/tar.gz/55b66d87cc168b8ab287bf10e81d4da0890f84f1",
+        "sha256": "a3f3410b85504898c788eb2be096c1153e9ac58d4a6139a5d3087d92f5b528d2",
+        "additional_sources": [],
+        "disabled_build_trees": []
+      },
+      "license": "AGPL-3.0-only AND MIT",
+      "license_note": "Conservative v3-only AGPL metadata pending review of the upstream grant (repository LICENSE is AGPL-3.0 text; source files carry no separate headers and no or-later grant; no vendored third-party code). MIT covers original installed packaging/test code only.",
+      "notices": [
+        {
+          "source": "LICENSE",
+          "target": "odm-orthophoto-AGPL-3.0.txt",
+          "kind": "verbatim"
+        }
+      ],
+      "release_checks": {
+        "publishable": false,
+        "license_reviewed": false,
+        "source_completeness_reviewed": false,
+        "native_validation_passed": false
+      }
     }
   }
 }

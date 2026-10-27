@@ -11,7 +11,7 @@ from common import ROOT, ScaffoldError, config, fail_cli, rattler, run, select_c
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--component", default="all", help="dem2points, fpcfilter, or all (default)")
+    parser.add_argument("--component", default="all", help="dem2points, fpcfilter, odm-orthophoto, or all (default)")
     parser.add_argument("--render-only", action="store_true", help="Validate rendered recipes without solving/building")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "output")
     options = parser.parse_args()

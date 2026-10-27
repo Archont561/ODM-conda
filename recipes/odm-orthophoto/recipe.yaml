@@ -1,0 +1,79 @@
+schema_version: 1
+
+context:
+  name: odm-orthophoto
+  version: "0.0.0.dev20250225"
+  upstream_commit: "55b66d87cc168b8ab287bf10e81d4da0890f84f1"
+  source_sha256: "a3f3410b85504898c788eb2be096c1153e9ac58d4a6139a5d3087d92f5b528d2"
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  # Immutable source archive; no network fetches are allowed inside the build.
+  # ODM 3.6.2's SuperBuild pins odm_orthophoto at GIT_TAG 355; upstream uses
+  # numbered branches instead of tags, and refs/heads/355 pointed at this commit
+  # when verified on 2026-10-27.
+  url: https://codeload.github.com/OpenDroneMap/odm_orthophoto/tar.gz/55b66d87cc168b8ab287bf10e81d4da0890f84f1
+  sha256: ${{ source_sha256 }}
+
+build:
+  number: 0
+  skip: target_platform != "linux-64"
+  script:
+    file: ../../scripts/build_component.py
+    interpreter: python
+
+requirements:
+  build:
+    - python >=3.12,<3.13
+    - cmake >=3.31,<3.32
+    - ninja >=1.11,<2
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+  host:
+    - eigen >=3.4,<4
+    - libgdal-core >=3.11,<3.12
+    - libgomp >=14
+    - libopencv >=4.12,<4.13
+  run:
+    - libgdal-core >=3.11,<3.12
+    - libgomp >=14
+    - libopencv >=4.12,<4.13
+
+tests:
+  - package_contents:
+      files:
+        - bin/odm_orthophoto
+        - share/licenses/odm-orthophoto/*
+        - share/odm-conda/odm-orthophoto/SOURCE.txt
+        - share/odm-conda/odm-orthophoto/functional_test.py
+  - script:
+      interpreter: python
+      content: |
+        import runpy
+        import sys
+        from pathlib import Path
+        installed = Path(sys.prefix) / "share" / "odm-conda" / "odm-orthophoto" / "functional_test.py"
+        runpy.run_path(str(installed), run_name="__main__")
+    requirements:
+      run:
+        - python >=3.12,<3.13
+
+about:
+  homepage: https://github.com/OpenDroneMap/odm_orthophoto
+  repository: https://github.com/OpenDroneMap/odm_orthophoto
+  summary: Rasterize textured 3D models into orthophotos
+  description: >-
+    Unofficial native packaging of the component revision used by OpenDroneMap.
+    This component package is not the complete ODM engine.
+  license: AGPL-3.0-only AND MIT
+  license_file:
+    - .conda-notices/odm-orthophoto-AGPL-3.0.txt
+    - .conda-notices/packaging-MIT.txt
+
+extra:
+  recipe-maintainers:
+    - archont561
