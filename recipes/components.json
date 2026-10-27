@@ -52,6 +52,47 @@
         "native_validation_passed": true
       }
     },
+    "fastrasterfilter": {
+      "version": "1.0",
+      "version_note": "Matches upstream CMake project version at the pinned main commit (project(fastrasterfilter VERSION 1.0)).",
+      "build_number": 0,
+      "recipe": "recipes/fastrasterfilter/recipe.yaml",
+      "executable": "fastrasterfilter",
+      "source": {
+        "repository": "https://github.com/OpenDroneMap/FastRasterFilter",
+        "reference_in_odm": "main",
+        "commit": "c5d6c074619e573f641c808f9bdd9d431a0b7e4b",
+        "url": "https://codeload.github.com/OpenDroneMap/FastRasterFilter/tar.gz/c5d6c074619e573f641c808f9bdd9d431a0b7e4b",
+        "sha256": "0dbbb42c4ac63adce825447641b366db1566bffee5d45b3e5fdae757f565993e",
+        "additional_sources": [],
+        "disabled_build_trees": []
+      },
+      "license": "AGPL-3.0-only AND MIT",
+      "license_note": "Proposed expression pending explicit project-owner review; all release gates stay false until then. Upstream root LICENSE is AGPL-3.0 text with no or-later grant and source files carry no separate headers (README states AGPLv3), so metadata conservatively uses AGPL-3.0-only; the owner-approved odm-orthophoto precedent (including AGPL §13 acceptance) does not transfer automatically. Vendored mf2d (compiled into the executable) and vendored cxxopts.hpp are MIT and their notices ship verbatim/first-comment. MIT also covers original installed packaging/test code only.",
+      "notices": [
+        {
+          "source": "LICENSE",
+          "target": "fastrasterfilter-AGPL-3.0.txt",
+          "kind": "verbatim"
+        },
+        {
+          "source": "vendor/mf2d/LICENSE",
+          "target": "mf2d-MIT.txt",
+          "kind": "verbatim"
+        },
+        {
+          "source": "vendor/cxxopts.hpp",
+          "target": "cxxopts-MIT.txt",
+          "kind": "first-comment"
+        }
+      ],
+      "release_checks": {
+        "publishable": false,
+        "license_reviewed": false,
+        "source_completeness_reviewed": false,
+        "native_validation_passed": false
+      }
+    },
     "fpcfilter": {
       "version": "0.2",
       "version_note": "Matches upstream CMake project version at ODM tag 331.",

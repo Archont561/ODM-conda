@@ -195,11 +195,93 @@ def test_odm_orthophoto(executable: Path, directory: Path) -> None:
     assert pixels == {bytes((255, 0, 0, 255))}, pixels
 
 
+def write_tiff_f32(path: Path, width: int, height: int, values: list[float]) -> None:
+    """Write a minimal uncompressed single-strip Float32 GeoTIFF without a CRS.
+
+    ModelPixelScale/ModelTiepoint encode the geotransform (100, 1, 0, 200, 0, -1)
+    that fastrasterfilter must copy into its output. The input format must be a
+    real writable raster format: upstream creates the output through
+    GDALDataset::GetDriver()->Create() on the INPUT's driver, so a VRT input
+    would make the write path fail.
+    """
+    pixel_scale = struct.pack("<3d", 1.0, 1.0, 0.0)
+    tiepoint = struct.pack("<6d", 0.0, 0.0, 0.0, 100.0, 200.0, 0.0)
+    ifd_offset = 8
+    overflow_offset = ifd_offset + 2 + 12 * 12 + 4
+    scale_offset = overflow_offset
+    tiepoint_offset = scale_offset + len(pixel_scale)
+    strip_offset = tiepoint_offset + len(tiepoint)
+    entries = [
+        (256, 4, 1, struct.pack("<I", width)),        # ImageWidth
+        (257, 4, 1, struct.pack("<I", height)),       # ImageLength
+        (258, 3, 1, struct.pack("<HH", 32, 0)),       # BitsPerSample
+        (259, 3, 1, struct.pack("<HH", 1, 0)),        # Compression: none
+        (262, 3, 1, struct.pack("<HH", 1, 0)),        # Photometric: BlackIsZero
+        (273, 4, 1, struct.pack("<I", strip_offset)),  # StripOffsets
+        (277, 3, 1, struct.pack("<HH", 1, 0)),        # SamplesPerPixel
+        (278, 4, 1, struct.pack("<I", height)),       # RowsPerStrip: single strip
+        (279, 4, 1, struct.pack("<I", 4 * width * height)),  # StripByteCounts
+        (339, 3, 1, struct.pack("<HH", 3, 0)),        # SampleFormat: IEEE float
+        (33550, 12, 3, struct.pack("<I", scale_offset)),     # ModelPixelScale
+        (33922, 12, 6, struct.pack("<I", tiepoint_offset)),  # ModelTiepoint
+    ]
+    ifd = struct.pack("<H", len(entries)) + b"".join(
+        struct.pack("<HHI", tag, field_type, count) + value for tag, field_type, count, value in entries
+    ) + struct.pack("<I", 0)
+    raster = struct.pack(f"<{len(values)}f", *values)
+    path.write_bytes(b"II\x2a\x00" + struct.pack("<I", ifd_offset) + ifd + pixel_scale + tiepoint + raster)
+
+
+def test_fastrasterfilter(executable: Path, directory: Path) -> None:
+    # Synthetic 8x8 Float32 DEM: a constant 123.5 field with a diagonal spike
+    # pair (-999.0 at (3,3), +999.0 at (4,4)). With radius 1, mf2d clamps its
+    # median windows at the image border, so border pixels of the constant
+    # field stay constant, and every window sees at most two outliers among
+    # its samples. The exact expected output is therefore 123.5 everywhere.
+    width = height = 8
+    values = [123.5] * (width * height)
+    values[3 * width + 3] = -999.0
+    values[4 * width + 4] = 999.0
+    write_tiff_f32(directory / "dem.tif", width, height, values)
+
+    # Run once with the default 512 window (a single block) and once with a
+    # 4-pixel window (four interior-padded blocks), which exercises the block
+    # padding logic fixed by the pinned "Fix padding overflow fault" commit.
+    # Both runs must produce the identical median-filtered raster.
+    runs = []
+    for name, arguments in (("single-block", ["-o", "single-block.tif"]),
+                            ("tiled", ["-o", "tiled.tif", "-w", "4"])):
+        completed = execute([str(executable), "-i", "dem.tif", "-r", "1", *arguments], directory)
+        assert "done" in completed.stdout, completed.stdout
+        data = (directory / f"{name}.tif").read_bytes()
+        tags = tiff_first_ifd(data)
+        assert tags[256] == (8,), tags[256]                  # ImageWidth
+        assert tags[257] == (8,), tags[257]                  # ImageLength
+        assert tags[258] == (32,), tags[258]                 # BitsPerSample: Float32 output
+        assert tags.get(259, (1,)) == (1,), tags.get(259)    # Compression: none (spec default)
+        assert tags.get(277, (1,)) == (1,), tags.get(277)    # SamplesPerPixel: one band
+        assert tags[339] == (3,), tags[339]                  # SampleFormat: IEEE floating point
+        # The input geotransform survives via ModelPixelScale/ModelTiepoint.
+        assert tags[33550] == (1.0, 1.0, 0.0), tags[33550]
+        assert tags[33922] == (0.0, 0.0, 0.0, 100.0, 200.0, 0.0), tags[33922]
+        strips = b"".join(data[start:start + size] for start, size in zip(tags[273], tags[279]))
+        assert len(strips) == 4 * width * height, len(strips)
+        runs.append(struct.unpack(f"<{width * height}f", strips))
+    for pixels in runs:
+        assert pixels == (123.5,) * (width * height), sorted(set(pixels))
+    assert runs[0] == runs[1], "Windowed tiling changed the filter result"
+
+    # The no-input invocation prints usage and exits 0 (upstream help path).
+    help_run = subprocess.run([str(executable)], cwd=directory, text=True, capture_output=True, timeout=60)
+    assert help_run.returncode == 0, help_run
+    assert "radius" in help_run.stdout and "window-size" in help_run.stdout, help_run.stdout
+
+
 def main() -> None:
     installed_directory = Path(__file__).resolve().parent
     name = installed_directory.name
     # This script is deliberately usable only from the installed package layout.
-    if installed_directory.parent.name != "odm-conda" or name not in ("dem2points", "fpcfilter", "odm-orthophoto"):
+    if installed_directory.parent.name != "odm-conda" or name not in ("dem2points", "fastrasterfilter", "fpcfilter", "odm-orthophoto"):
         raise SystemExit("Run through an installed package / rattler-build test, not directly from the checkout")
     prefix = installed_directory.parents[2]
     executable_names = {"fpcfilter": "FPCFilter", "odm-orthophoto": "odm_orthophoto"}
@@ -212,6 +294,8 @@ def main() -> None:
         directory = Path(temp)
         if name == "dem2points":
             test_dem2points(executable, directory)
+        elif name == "fastrasterfilter":
+            test_fastrasterfilter(executable, directory)
         elif name == "fpcfilter":
             test_fpcfilter(executable, directory)
         else:

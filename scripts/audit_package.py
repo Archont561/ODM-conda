@@ -27,7 +27,8 @@ def audit(name: str, component: dict, package: Path, root: Path = ROOT) -> dict:
     if about.get("license") != component["license"]:
         raise ScaffoldError("Artifact license metadata does not match recipes/components.json")
     runtime_names = {dependency.split()[0] for dependency in index.get("depends", [])}
-    extra_runtime = {"dem2points": {"libgdal-core"}, "fpcfilter": {"libgomp"},
+    extra_runtime = {"dem2points": {"libgdal-core"}, "fastrasterfilter": {"libgdal-core", "libgomp"},
+                     "fpcfilter": {"libgomp"},
                      "odm-orthophoto": {"libgdal-core", "libgomp", "libopencv"}}
     required_runtime = {"__glibc", "libgcc", "libstdcxx"} | extra_runtime.get(name, set())
     if not required_runtime.issubset(runtime_names):

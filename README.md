@@ -145,7 +145,7 @@ package.json / bun.lock      # private, exact JS development tools
 AGENTS.md / .agents/          # scoped local skills, managed copies, notices
 skills-lock.json             # manager-generated source refs and content hashes
 backlog/                     # CLI-managed tasks, plans, guides, decisions and evidence
-recipes/                     # two native component recipes
+recipes/                     # native component recipes (one directory each)
 recipes/components.json     # shared pins, notices, versions and human gates
 recipes/variants.yaml        # shared, versioned compiler/sysroot baseline
 scripts/ / tests/            # packaging/check helpers and generated-data tests
