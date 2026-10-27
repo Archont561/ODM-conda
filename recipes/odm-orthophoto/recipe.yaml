@@ -21,6 +21,13 @@ source:
 build:
   number: 0
   skip: target_platform != "linux-64"
+  python:
+    # rattler-build post-processing compiles every packaged .py file (outside
+    # bin/) with the HOST prefix's Python whenever host dependencies provide
+    # one — libopencv transitively does — and seals the __pycache__ result into
+    # the artifact. Installed test scripts must never be compiled into it.
+    skip_pyc_compilation:
+      - share/odm-conda/**/*.py
   script:
     file: ../../scripts/build_component.py
     interpreter: python
@@ -56,10 +63,6 @@ tests:
         import runpy
         import sys
         from pathlib import Path
-        # Fresh-environment retests may resolve a newer Python than this pin:
-        # Python 3.13+ runpy caches bytecode next to the loaded file, which must
-        # never be written into an installed (and re-packed) package prefix.
-        sys.dont_write_bytecode = True
         installed = Path(sys.prefix) / "share" / "odm-conda" / "odm-orthophoto" / "functional_test.py"
         runpy.run_path(str(installed), run_name="__main__")
     requirements:
