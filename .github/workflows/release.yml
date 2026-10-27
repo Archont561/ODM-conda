@@ -99,7 +99,32 @@ jobs:
           RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
           set -euo pipefail
-          gh release upload "$RELEASE_TAG" source-*.tar.gz audit.json SHA256SUMS --repo "$GITHUB_REPOSITORY"
+          # Rerun-safe attachment without clobber-style replacement (forbidden
+          # here by the immutability lint): attach when absent, keep
+          # byte-identical assets, fail loudly on divergence. Never replaces
+          # published bytes.
+          attach_once() {
+            local file="$1" name="${1##*/}" tmp
+            if ! gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq ".assets[].name" | grep -Fxq "$name"; then
+              gh release upload "$RELEASE_TAG" "$file" --repo "$GITHUB_REPOSITORY"
+              return
+            fi
+            tmp="$(mktemp -d)"
+            gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$name" --dir "$tmp"
+            if cmp -s "$file" "$tmp/$name"; then
+              echo "$name is already attached with identical bytes; keeping the immutable copy"
+            else
+              echo "$name is attached with different bytes; refusing to replace an immutable release asset" >&2
+              exit 1
+            fi
+            rm -rf "$tmp"
+          }
+          shopt -s nullglob
+          sources=(source-*.tar.gz)
+          test "${#sources[@]}" -eq 1
+          attach_once "${sources[0]}"
+          attach_once audit.json
+          attach_once SHA256SUMS
       - name: Set up pinned upload client
         uses: prefix-dev/rattler-build-action@1ca5f45832f419a46d1326ccc5861d7e14d67c44 # v0.2.39
         with:
@@ -113,4 +138,27 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.event.release.tag_name }}
-        run: gh release upload "$RELEASE_TAG" artifacts/*.conda --repo "$GITHUB_REPOSITORY"
+        run: |
+          set -euo pipefail
+          # Same reviewed helper as the source-attachment step, duplicated
+          # because this job intentionally never checks out repository code.
+          attach_once() {
+            local file="$1" name="${1##*/}" tmp
+            if ! gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq ".assets[].name" | grep -Fxq "$name"; then
+              gh release upload "$RELEASE_TAG" "$file" --repo "$GITHUB_REPOSITORY"
+              return
+            fi
+            tmp="$(mktemp -d)"
+            gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$name" --dir "$tmp"
+            if cmp -s "$file" "$tmp/$name"; then
+              echo "$name is already attached with identical bytes; keeping the immutable copy"
+            else
+              echo "$name is attached with different bytes; refusing to replace an immutable release asset" >&2
+              exit 1
+            fi
+            rm -rf "$tmp"
+          }
+          shopt -s nullglob
+          packages=(artifacts/*.conda)
+          test "${#packages[@]}" -eq 1
+          attach_once "${packages[0]}"
