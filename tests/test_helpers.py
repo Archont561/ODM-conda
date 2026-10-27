@@ -14,10 +14,10 @@ from release_guard import reviewed_component
 
 class HelperTests(unittest.TestCase):
     def test_manifest_and_recipe_invariants(self):
-        self.assertEqual(check_repository(), 2)
+        self.assertEqual(check_repository(), 3)
 
     def test_only_implemented_components_are_buildable(self):
-        self.assertEqual(set(select_components("all")), {"dem2points", "fpcfilter"})
+        self.assertEqual(set(select_components("all")), {"dem2points", "fpcfilter", "odm-orthophoto"})
         for name in ("opendronemap", "opensfm-odm", "../fpcfilter", "all; echo unsafe"):
             with self.assertRaises(ScaffoldError):
                 select_components(name)

@@ -6,7 +6,7 @@ on:
       component:
         description: Implemented component to build (no publishing)
         type: choice
-        options: [all, dem2points, fpcfilter]
+        options: [all, dem2points, fpcfilter, odm-orthophoto]
         default: all
         required: true
 

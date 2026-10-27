@@ -4,10 +4,12 @@
 
 Target: the existing **`archont561/archont561`** Prefix channel, shared with CloudCompare.
 
-> **Starter scaffold, not a full ODM/NodeODM distribution.** Two Linux CPU component
-> recipes have been built and tested locally, and both are published to the channel
-> (OIDC + attestation, 2026-10-27): `fpcfilter 0.2` build 1 (TASK-15) and
-> `dem2points 0.0.0.dev20220721` build 0. All eight release gates are owner-approved `true`.
+> **Starter scaffold, not a full ODM/NodeODM distribution.** The two published
+> Linux CPU components (OIDC + attestation, 2026-10-27) are `fpcfilter 0.2`
+> build 1 (TASK-15) and `dem2points 0.0.0.dev20220721` build 0; their eight
+> release gates are owner-approved `true`. A third recipe, `odm-orthophoto`
+> (TASK-4, ODM reference `355`), is implemented but not yet natively validated,
+> reviewed or approved; its four release gates are `false`.
 
 ## Implemented components
 
@@ -15,10 +17,14 @@ Target: the existing **`archont561/archont561`** Prefix channel, shared with Clo
 | --- | --- | --- |
 | `dem2points` | `4527122615f41044bde0e79850464ed33549ceeb` | Synthetic DEM → PLY, coordinates, normals, linkage |
 | `fpcfilter` | ODM tag `331`, commit `6e0c1c0113939823b2ff3c2eef4d5907e7f5db6b`, plus local patch 0001 (build 1) | ASCII pass-through; no-normals sampling (regression for TASK-2); normals-bearing binary PLY sampling; linkage |
+| `odm-orthophoto` | ODM reference `355` (numbered branch head), commit `55b66d87cc168b8ab287bf10e81d4da0890f84f1` | Synthetic textured OBJ quad → GeoTIFF structure, corner bounds, exact pixel data, linkage (pending first native run) |
 
 The reference is **ODM 3.6.2** (`47f41f1f2d09f7c15dff33dd3c15ab29c8a97d45`),
 not moving ODM master. `dem2points` uses snapshot version `0.0.0.dev20220721`;
 FPCFilter's `0.2` is its CMake version, not the ODM tag number.
+`odm-orthophoto` uses snapshot version `0.0.0.dev20250225` (pinned commit
+date); its ODM reference `355` is a numbered branch in the upstream repository,
+whose head is the pinned commit.
 
 **FPCFilter's no-normals sampling path had an upstream bug** (the pinned commit
 erased rejected points from a local copy). Build 1 carries a local fix,
@@ -37,6 +43,14 @@ published to `archont561/archont561` via the OIDC release workflow on
 2026-10-27 (tag `dem2points-v0.0.0.dev20220721-b0`, release run 40540506268;
 `pixi add dem2points --channel archont561/archont561`).
 
+`odm-orthophoto 0.0.0.dev20250225` build 0 (Backlog **TASK-4**) is implemented
+with all four release gates `false`: recipe, notices and the installed-prefix
+fixture landed 2026-10-27, pending native CI validation (owner-dispatched
+`build.yml`), evidence review (**TASK-28**) and owner approval (**TASK-29**
+sprint). Upstream is AGPL-3.0 (network copyleft); the conservative
+`AGPL-3.0-only AND MIT` expression awaits owner license review. Nothing is
+published for this component.
+
 ## Quick start
 
 Requirements: Linux x86-64, Git, **Pixi 0.82.0**, and network access for initial
@@ -49,7 +63,7 @@ pixi install --locked -e agent-tools
 pixi run check
 pixi run hooks-install
 
-# Build one starter, or omit --component to build both.
+# Build one component, or omit --component to build all implemented components.
 pixi run build --component fpcfilter
 pixi run test --component fpcfilter
 pixi run audit --component fpcfilter

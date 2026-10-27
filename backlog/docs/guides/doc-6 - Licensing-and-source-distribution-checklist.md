@@ -3,7 +3,7 @@ id: doc-6
 title: Licensing and source-distribution checklist
 type: other
 created_date: '2026-10-26 19:39'
-updated_date: '2026-10-26 20:16'
+updated_date: '2026-10-27 20:05'
 ---
 # Licensing and source-distribution checklist
 
@@ -18,7 +18,7 @@ remove applicable copyleft obligations.
 
 ## What this scaffold does
 
-- Pins the two upstream archives to immutable commits and SHA256 checksums.
+- Pins every implemented upstream archive to immutable commits and SHA256 checksums.
 - Records each package's proposed SPDX expression and specific notice paths.
 - Preserves root licenses and original vendored header notice bytes.
 - Includes notices in Conda metadata and installed `share/licenses/<name>/`.
@@ -65,6 +65,25 @@ Current recipe expression: `GPL-3.0-only AND BSD-3-Clause AND MIT`.
 - Installed original packaging/test code adds an MIT notice.
 
 Current recipe expression: `GPL-3.0-only AND BSD-2-Clause AND MIT`.
+
+### odm-orthophoto
+
+- Repository: https://github.com/OpenDroneMap/odm_orthophoto
+- ODM reference: SuperBuild `GIT_TAG 355`; upstream uses numbered branches
+  instead of tags, and `refs/heads/355` resolved to commit
+  `55b66d87cc168b8ab287bf10e81d4da0890f84f1` (verified 2026-10-27).
+- Upstream root `LICENSE`: GNU Affero GPL version 3 text; source files carry no
+  separate headers and there is no or-later grant outside the license
+  boilerplate. Metadata conservatively uses `AGPL-3.0-only` until the
+  maintainer confirms the applicable grant/version choice. AGPL §13's network
+  clause is an explicit review point for any service use of built binaries.
+- No vendored third-party code: `src/` contains only project-original sources
+  (Logger, OdmOrthoPhoto, main).
+- Runtime GDAL, OpenCV and Eigen are separate Conda dependencies, not copied
+  into this package.
+- Installed original packaging/test code adds an MIT notice.
+
+Current recipe expression: `AGPL-3.0-only AND MIT`.
 
 ## Notice preservation
 

@@ -12,6 +12,7 @@ import struct
 import subprocess
 import sys
 import tempfile
+import zlib
 from pathlib import Path
 
 
@@ -120,14 +121,88 @@ def test_fpcfilter(executable: Path, directory: Path) -> None:
     assert any(abs(x - 10.0) < 0.01 and abs(y) < 0.01 for x, y, _ in kept), kept
 
 
+def write_png(path: Path, width: int, height: int, rgb: tuple[int, int, int]) -> None:
+    def chunk(tag: bytes, payload: bytes) -> bytes:
+        return struct.pack(">I", len(payload)) + tag + payload + struct.pack(">I", zlib.crc32(tag + payload))
+    raw = b"".join(b"\x00" + bytes(rgb) * width for _ in range(height))
+    path.write_bytes(b"\x89PNG\r\n\x1a\n"
+                     + chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0))
+                     + chunk(b"IDAT", zlib.compress(raw))
+                     + chunk(b"IEND", b""))
+
+
+TIFF_FIELD_FORMATS = {1: ("B", 1), 2: ("c", 1), 3: ("H", 2), 4: ("I", 4), 5: ("I", 8), 6: ("b", 1), 7: ("B", 1), 11: ("f", 4), 12: ("d", 8)}
+
+
+def tiff_first_ifd(data: bytes) -> dict[int, tuple]:
+    if data[:4] != b"II\x2a\x00":
+        raise AssertionError("Output is not a little-endian classic TIFF (expected GDAL GTiff)")
+    offset = struct.unpack_from("<I", data, 4)[0]
+    count = struct.unpack_from("<H", data, offset)[0]
+    tags: dict[int, tuple] = {}
+    for index in range(count):
+        entry = offset + 2 + 12 * index
+        tag, field_type, values = struct.unpack_from("<HHI", data, entry)
+        if field_type not in TIFF_FIELD_FORMATS or values == 0:
+            raise AssertionError(f"Unexpected TIFF field type {field_type} or count {values} for tag {tag}")
+        character, item_size = TIFF_FIELD_FORMATS[field_type]
+        at = entry + 8 if item_size * values <= 4 else struct.unpack_from("<I", data, entry + 8)[0]
+        if field_type == 5:  # RATIONAL pairs; only default resolution fields use them here.
+            tags[tag] = tuple(struct.unpack_from("<II", data, at + 8 * i) for i in range(values))
+        else:
+            tags[tag] = struct.unpack_from("<" + character * values, data, at)
+    return tags
+
+
+def test_odm_orthophoto(executable: Path, directory: Path) -> None:
+    # A solid-textured 2 m x 2 m quad at x 100..102, y 200..202 is the hermetic
+    # input mesh; -resolution 2 gives upstream ceil(2*2) = a 4x4 raster.
+    write_png(directory / "texture.png", 4, 4, (255, 0, 0))
+    (directory / "model.mtl").write_text("newmtl mat0\nmap_Kd texture.png\n", encoding="ascii")
+    # Texture coordinates are inset to 0.25..0.75 because upstream's bilinear
+    # lookup also reads the (left+1, top+1) texel; the inset keeps every read
+    # inside the generated texture.
+    (directory / "model.obj").write_text(
+        "mtllib model.mtl\n"
+        "v 100 200 0\nv 102 200 0\nv 102 202 0\nv 100 202 0\n"
+        "vt 0.25 0.25\nvt 0.75 0.25\nvt 0.75 0.75\nvt 0.25 0.75\n"
+        "usemtl mat0\n"
+        "f 1/1 2/2 3/3\nf 1/1 3/3 4/4\n", encoding="ascii")
+    output = directory / "ortho.tif"
+    corners = directory / "corners.txt"
+    # -outputDepthIdx 0 is mandatory: without it upstream never probes a texture
+    # bit depth and exits 1 with "Unsupported bit depth value: -1".
+    execute([str(executable), "-inputFiles", "model.obj", "-outputFile", str(output),
+             "-resolution", "2", "-outputDepthIdx", "0", "-outputCornerFile", str(corners)], directory)
+
+    bounds = [float(value) for value in corners.read_text().split()]
+    assert bounds == [100.0, 200.0, 102.0, 202.0], bounds
+
+    data = output.read_bytes()
+    tags = tiff_first_ifd(data)
+    assert tags[256] == (4,), tags[256]          # ImageWidth
+    assert tags[257] == (4,), tags[257]          # ImageLength
+    assert tags[277] == (4,), tags[277]          # SamplesPerPixel: 3 texture channels + alpha
+    assert tags[258] == (8, 8, 8, 8), tags[258]  # BitsPerSample
+    assert tags.get(284, (1,)) == (1,), tags.get(284)  # PlanarConfiguration: contiguous
+    strips = b"".join(data[start:start + size] for start, size in zip(tags[273], tags[279]))
+    assert len(strips) == 4 * 4 * 4, len(strips)  # uncompressed GDAL GTiff strips
+    # cv::imread reads the solid red PNG as BGR and upstream writes texture
+    # channel i into band i before appending the alpha band (-bands only sets
+    # ColorInterp metadata), so every rendered pixel is (0, 0, 255, 255).
+    pixels = {strips[index * 4:index * 4 + 4] for index in range(16)}
+    assert pixels == {bytes((0, 0, 255, 255))}, pixels
+
+
 def main() -> None:
     installed_directory = Path(__file__).resolve().parent
     name = installed_directory.name
     # This script is deliberately usable only from the installed package layout.
-    if installed_directory.parent.name != "odm-conda" or name not in ("dem2points", "fpcfilter"):
+    if installed_directory.parent.name != "odm-conda" or name not in ("dem2points", "fpcfilter", "odm-orthophoto"):
         raise SystemExit("Run through an installed package / rattler-build test, not directly from the checkout")
     prefix = installed_directory.parents[2]
-    executable = prefix / "bin" / ("FPCFilter" if name == "fpcfilter" else name)
+    executable_names = {"fpcfilter": "FPCFilter", "odm-orthophoto": "odm_orthophoto"}
+    executable = prefix / "bin" / executable_names.get(name, name)
     assert executable.is_file(), executable
     assert (prefix / "share" / "licenses" / name / "packaging-MIT.txt").is_file()
     assert (installed_directory / "SOURCE.txt").is_file()
@@ -136,8 +211,10 @@ def main() -> None:
         directory = Path(temp)
         if name == "dem2points":
             test_dem2points(executable, directory)
-        else:
+        elif name == "fpcfilter":
             test_fpcfilter(executable, directory)
+        else:
+            test_odm_orthophoto(executable, directory)
     print(f"PASS: {name} installed-prefix linkage and generated-data functional tests")
 
 
