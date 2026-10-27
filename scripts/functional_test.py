@@ -187,11 +187,12 @@ def test_odm_orthophoto(executable: Path, directory: Path) -> None:
     assert tags.get(284, (1,)) == (1,), tags.get(284)  # PlanarConfiguration: contiguous
     strips = b"".join(data[start:start + size] for start, size in zip(tags[273], tags[279]))
     assert len(strips) == 4 * 4 * 4, len(strips)  # uncompressed GDAL GTiff strips
-    # cv::imread reads the solid red PNG as BGR and upstream writes texture
-    # channel i into band i before appending the alpha band (-bands only sets
-    # ColorInterp metadata), so every rendered pixel is (0, 0, 255, 255).
+    # Upstream converts cv::imread's BGR texture to RGB before rendering
+    # (cvtColor BGR2RGB in readTexture), writes channel i into band i — matching
+    # the -bands red,green,blue ColorInterp metadata — and appends the alpha
+    # band last, so every rendered pixel is (255, 0, 0, 255).
     pixels = {strips[index * 4:index * 4 + 4] for index in range(16)}
-    assert pixels == {bytes((0, 0, 255, 255))}, pixels
+    assert pixels == {bytes((255, 0, 0, 255))}, pixels
 
 
 def main() -> None:
