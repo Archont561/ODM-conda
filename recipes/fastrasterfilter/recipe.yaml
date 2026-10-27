@@ -1,0 +1,84 @@
+schema_version: 1
+
+context:
+  name: fastrasterfilter
+  version: "1.0"
+  upstream_commit: "c5d6c074619e573f641c808f9bdd9d431a0b7e4b"
+  source_sha256: "0dbbb42c4ac63adce825447641b366db1566bffee5d45b3e5fdae757f565993e"
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  # Immutable source archive; no network fetches are allowed inside the build.
+  # ODM 3.6.2's SuperBuild pins fastrasterfilter at GIT_TAG main; upstream
+  # publishes no tags, and refs/heads/main pointed at this commit
+  # ("Fix padding overflow fault", 2024-01-12) when verified on 2026-10-28.
+  url: https://codeload.github.com/OpenDroneMap/FastRasterFilter/tar.gz/c5d6c074619e573f641c808f9bdd9d431a0b7e4b
+  sha256: ${{ source_sha256 }}
+
+build:
+  number: 0
+  skip: target_platform != "linux-64"
+  python:
+    # Guard: rattler-build compiles packaged .py files with the HOST prefix's
+    # Python when host dependencies provide one. This host has none today; keep
+    # installed test scripts out of the artifact even if the host graph drifts.
+    skip_pyc_compilation:
+      - share/odm-conda/**/*.py
+  script:
+    file: ../../scripts/build_component.py
+    interpreter: python
+
+requirements:
+  build:
+    - python >=3.12,<3.13
+    - cmake >=3.31,<3.32
+    - ninja >=1.11,<2
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+  host:
+    - libgdal-core >=3.11,<3.12
+    - libgomp >=14
+  run:
+    - libgdal-core >=3.11,<3.12
+    - libgomp >=14
+
+tests:
+  - package_contents:
+      files:
+        - bin/fastrasterfilter
+        - share/licenses/fastrasterfilter/*
+        - share/odm-conda/fastrasterfilter/SOURCE.txt
+        - share/odm-conda/fastrasterfilter/functional_test.py
+  - script:
+      interpreter: python
+      content: |
+        import runpy
+        import sys
+        from pathlib import Path
+        installed = Path(sys.prefix) / "share" / "odm-conda" / "fastrasterfilter" / "functional_test.py"
+        runpy.run_path(str(installed), run_name="__main__")
+    requirements:
+      run:
+        - python >=3.12,<3.13
+
+about:
+  homepage: https://github.com/OpenDroneMap/FastRasterFilter
+  repository: https://github.com/OpenDroneMap/FastRasterFilter
+  summary: Fast median filtering of georeferenced raster DEMs
+  description: >-
+    Unofficial native packaging of the component revision used by OpenDroneMap.
+    This component package is not the complete ODM engine.
+  license: AGPL-3.0-only AND MIT
+  license_file:
+    - .conda-notices/fastrasterfilter-AGPL-3.0.txt
+    - .conda-notices/mf2d-MIT.txt
+    - .conda-notices/cxxopts-MIT.txt
+    - .conda-notices/packaging-MIT.txt
+
+extra:
+  recipe-maintainers:
+    - archont561

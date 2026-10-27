@@ -86,6 +86,31 @@ Current recipe expression: `GPL-3.0-only AND BSD-2-Clause AND MIT`.
 
 Current recipe expression: `AGPL-3.0-only AND MIT`.
 
+### FastRasterFilter
+
+- Repository: https://github.com/OpenDroneMap/FastRasterFilter
+- ODM reference: SuperBuild `GIT_TAG main`; upstream publishes no tags and
+  `refs/heads/main` resolved to commit
+  `c5d6c074619e573f641c808f9bdd9d431a0b7e4b` ("Fix padding overflow fault",
+  2024-01-12; verified 2026-10-28).
+- Upstream root `LICENSE`: GNU Affero GPL version 3 text; the README states
+  "AGPLv3"; source files carry no separate headers and there is no or-later
+  grant. Metadata conservatively proposes `AGPL-3.0-only` pending explicit
+  project-owner review; the owner-approved odm-orthophoto precedent (AGPL §13
+  network clause accepted as policy) does not transfer automatically and §13
+  remains an explicit review point for any service use of built binaries.
+- `vendor/mf2d/LICENSE`: MIT (Jukka Suomela, 2014). The mf2d median-filter
+  sources are compiled into the executable; the license file ships verbatim.
+- `vendor/cxxopts.hpp`: MIT notice in the leading comment (same vendored
+  library as FPCFilter).
+- No other vendored code: `main.cpp` and `utils.hpp` are project-original.
+- Runtime GDAL and OpenMP are separate Conda dependencies, not copied into
+  this package.
+- Installed original packaging/test code adds an MIT notice.
+
+Proposed recipe expression: `AGPL-3.0-only AND MIT` (pending owner review;
+all four release gates are `false`).
+
 ## Notice preservation
 
 `scripts/build_component.py` copies the root license and extracts the first
