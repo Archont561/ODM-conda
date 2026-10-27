@@ -4,7 +4,7 @@ title: Review dem2points package-readiness evidence
 status: Done
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-27 15:44'
+updated_date: '2026-10-27 16:34'
 labels:
   - packaging
   - review
@@ -85,4 +85,19 @@ snapshot version `0.0.0.dev20220721` is intentional — upstream declares no
 release version; (4) no platform beyond linux-64 is built or certified.
 Closing this task flips no flags, publishes nothing and certifies no untested
 platform.
+Post-publication addendum (2026-10-27): the remaining owner conditions from
+AC #3 were executed the same day. The gates were flipped by owner approval
+(PR #9, merged as `05a761f`), the tag `dem2points-v0.0.0.dev20220721-b0` was
+placed on that HEAD, and the manual Release fired run
+[40540506268](https://github.com/Archont561/ODM-conda/actions/runs/40540506268)
+— green (build ✓ 36 s, publish ✓ 18 s; source uploaded before the binary;
+OIDC + Sigstore attestation). Channel record verified in the linux-64
+repodata: `dem2points-0.0.0.dev20220721-h873e7db_0.conda`, sha256
+`80840e8befa0b0dbdf3d99777032b40bfe87b774c3823a3201f3550535eec2da`,
+attestations_sha256
+`7dec913f8fb5f19754492d66580579280b5e083e2d008448534cd845b0e39386`, size
+55,883 B matching the Release asset; installable via
+`pixi add dem2points --channel archont561/archont561`. Observation: the
+prefix.dev repodata edge cache served a stale copy for several minutes after
+the successful upload — verified with a cache-busted re-fetch.
 <!-- SECTION:NOTES:END -->

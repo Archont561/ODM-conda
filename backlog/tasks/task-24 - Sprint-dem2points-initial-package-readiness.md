@@ -4,7 +4,7 @@ title: 'Sprint: dem2points initial package readiness'
 status: Done
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-27 16:00'
+updated_date: '2026-10-27 16:34'
 labels:
   - sprint
   - coordination
@@ -61,4 +61,13 @@ decision.
 AC #3: this closure is the planning/readiness gate only. The release flags
 were enabled by the owner's explicit approval in the same changeset, not by
 this Sprint; no public upload, deadline or support claim follows from it.
+Post-publication addendum (2026-10-27): the optional, separate owner decision
+noted at closure was taken the same day — after PR #9 merged the approved
+gates (main `05a761f`), the tag `dem2points-v0.0.0.dev20220721-b0` was placed
+on that exact HEAD and the manual Release ran the guarded pipeline (run
+[40540506268](https://github.com/Archont561/ODM-conda/actions/runs/40540506268),
+green), publishing `dem2points-0.0.0.dev20220721-h873e7db_0.conda` to
+`archont561/archont561` with a Sigstore attestation. Consistent with AC #3,
+the Sprint closure did not cause the publication; it followed an explicit
+owner instruction. Evidence details: TASK-23 addendum.
 <!-- SECTION:NOTES:END -->
