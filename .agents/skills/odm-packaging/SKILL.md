@@ -37,5 +37,5 @@ Read that release's SuperBuild definitions before selecting component sources.
 
 Full ODM must consume the component packages, handle its SuperBuild-relative
 paths/resources/launcher and pass a licensed end-to-end dataset. The two starter
-recipes alone are not a photogrammetry engine. FPCFilter's non-normals sampling
-limitation remains TASK-2 until actually resolved.
+recipes alone are not a photogrammetry engine. FPCFilter's no-normals sampling fix (local patch 0001, build 1) stays under
+TASK-2 review until a human approves it.

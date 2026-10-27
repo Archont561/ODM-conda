@@ -83,11 +83,18 @@ def main() -> None:
     metadata = {"name": name, "version": component["version"], "build_number": component["build_number"],
                 "source": component["source"], "license": component["license"], "corresponding_source": source_url(name, component)}
     (share / "upstream.json").write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
+    patches = component["source"].get("patches", [])
+    modified_line = (
+        "Modified: yes. Local patches applied to the upstream source:\n"
+        + "".join(f"  - {patch['file']} (SHA256 {patch['sha256']}): {patch['summary']}\n" for patch in patches)
+        if patches else "Modified: no. Built from the unmodified upstream archive.\n"
+    )
     (share / "SOURCE.txt").write_text(
         f"Unofficial {name} package\n\n"
         f"Upstream: {component['source']['repository']}\n"
         f"Commit: {component['source']['commit']}\n"
         f"Archive SHA256: {component['source']['sha256']}\n"
+        f"{modified_line}"
         f"Packaging: https://github.com/{data['distribution']['repository']}\n"
         f"Corresponding source for a published build: {source_url(name, component)}\n\n"
         "This URL is populated BEFORE publication to the channel. Local/scaffold builds are not published.\n"

@@ -146,7 +146,7 @@ def check_sandbox_workflow_policy(root: Path, workflow_paths: list[Path]) -> Non
     require(len(bundles) == 1, "Publish one explicit developer bundle")
     bundle = bundles[0]
     require(bundle.get("name") == "developer", "Use the documented developer sandbox bundle name")
-    require(bundle.get("environments") == ["default", "agent-tools"], "Publish both locked project environments")
+    require(bundle.get("environments") == ["default", "agent-tools", "odm-dev"], "Publish all locked project environments")
     require(bundle.get("platforms") == ["linux-64"], "Do not publish untested sandbox platforms")
     require(all(isinstance(sandbox.get("budgets", {}).get(key), int) and sandbox["budgets"][key] > 0 for key in ("max_blob_mib", "max_transport_mib", "max_repository_push_mib", "max_restore_required_mib")), "Set positive transport safety budgets")
 

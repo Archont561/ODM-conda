@@ -73,14 +73,14 @@ class HelperTests(unittest.TestCase):
         data = copy.deepcopy(config())
         for component in data["components"].values():
             component["release_checks"] = {key: True for key in component["release_checks"]}
-        for bad in ("v3.6.2", "fpcfilter-v0.2", "fpcfilter-v0.2-b1", "fpcfilter-v0.2-b0\nanything"):
+        for bad in ("v3.6.2", "fpcfilter-v0.2", "fpcfilter-v0.2-b0", "fpcfilter-v0.2-b2", "fpcfilter-v0.2-b1\nanything"):
             with self.assertRaises(ScaffoldError):
                 reviewed_component(bad, data)
 
     def test_source_url_has_exact_release_asset(self):
         component = config()["components"]["fpcfilter"]
         self.assertEqual(source_url("fpcfilter", component),
-                         "https://github.com/Archont561/ODM-conda/releases/download/fpcfilter-v0.2-b0/source-fpcfilter-0.2-b0.tar.gz")
+                         "https://github.com/Archont561/ODM-conda/releases/download/fpcfilter-v0.2-b1/source-fpcfilter-0.2-b1.tar.gz")
 
     def test_cached_archive_is_always_rehashed(self):
         component = config()["components"]["dem2points"]

@@ -13,15 +13,17 @@ Target: the existing **`archont561/archont561`** Prefix channel, shared with Clo
 | Component | Pinned source | Installed-test coverage |
 | --- | --- | --- |
 | `dem2points` | `4527122615f41044bde0e79850464ed33549ceeb` | Synthetic DEM → PLY, coordinates, normals, linkage |
-| `fpcfilter` | ODM tag `331`, commit `6e0c1c0113939823b2ff3c2eef4d5907e7f5db6b` | ASCII pass-through; normals-bearing binary PLY sampling; linkage |
+| `fpcfilter` | ODM tag `331`, commit `6e0c1c0113939823b2ff3c2eef4d5907e7f5db6b`, plus local patch 0001 (build 1) | ASCII pass-through; no-normals sampling (regression for TASK-2); normals-bearing binary PLY sampling; linkage |
 
 The reference is **ODM 3.6.2** (`47f41f1f2d09f7c15dff33dd3c15ab29c8a97d45`),
 not moving ODM master. `dem2points` uses snapshot version `0.0.0.dev20220721`;
 FPCFilter's `0.2` is its CMake version, not the ODM tag number.
 
-**FPCFilter's pinned non-normals sampling path has an unresolved upstream bug:**
-see Backlog **TASK-2** before considering release. The working test mode is not
-proof that every filtering mode works.
+**FPCFilter's no-normals sampling path had an upstream bug** (the pinned commit
+erased rejected points from a local copy). Build 1 carries a local fix,
+`recipes/fpcfilter/patches/0001-*.patch`, which is pending review in Backlog
+**TASK-2**. The fix changes only that branch; normals-bearing sampling and
+pass-through are byte-identical to upstream. Do not release before the review.
 
 ## Quick start
 

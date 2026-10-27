@@ -7,7 +7,8 @@ channels = ["conda-forge"]
 platforms = ["linux-64"]
 
 [dependencies]
-# Repository tools only. Application dependencies belong in component recipes.
+# Repository tools only. Component build dependencies belong in component recipes.
+# The odm-dev environment below is a local development shell for ODM system libraries.
 # Mirror pixi-sandbox's explicit direct pins; transitive builds are in pixi.lock.
 rattler-build = "==0.68.0"
 python = "==3.12.16"
@@ -70,6 +71,40 @@ agent-unit = { depends-on = [
   "bun-install",
 ], cmd = "bun test tests/agent_skills.test.mjs" }
 
+# Local ODM development shell. Only OpenCV 4.12 and OpenSSL 3 are pinned to ODM/Ubuntu 24.04
+# versions. Ceres, PROJ, Boost and Eigen track conda-forge latest: pdal 2.10 needs new
+# Ceres, PROJ and Eigen 5, and Boost 1.83 needs ICU 73, which conflicts with the Python 3.12
+# pin's ICU 78. CGAL is left out: conda-forge 6.x needs Python 3.13+ and 5.6
+# needs Boost 1.82.
+# ODM references it only in packaging files. Not packed into recipes; solved separately.
+[feature.odm-dev.dependencies]
+ceres-solver = "*"
+cmake = "*"
+eigen = "*"
+exiftool = "*"
+flann = "*"
+libgdal = "*"
+gflags = "*"
+geos = "*"
+geotiff = "*"
+glog = "*"
+hdf5 = "*"
+libjpeg-turbo = "*"
+libjxl = "*"
+libpng = "*"
+libtiff = "*"
+libusb = "*"
+ninja = "*"
+openmpi = "*"
+openssl = ">=3,<4"
+libopencv = "==4.12.0"
+pdal = "*"
+pkg-config = "*"
+proj = "*"
+suitesparse = "*"
+tbb = "*"
+
 [environments]
 default = []
 agent-tools = { features = ["agent-tools"], no-default-feature = true }
+odm-dev = { features = ["odm-dev"], solve-group = "odm-dev" }

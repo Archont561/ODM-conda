@@ -88,9 +88,9 @@ def test_fpcfilter(executable: Path, directory: Path) -> None:
     assert "format binary_little_endian 1.0" in lines, lines
     assert count == len(coordinates), count
     assert body, "FPCFilter emitted no point records"
-    # ODM's normals-bearing binary layout exercises the working sampling branch.
-    # The pinned upstream non-normals sampling branch has a known copy/assignment
-    # issue; it is documented in Backlog TASK-2, not silently patched here.
+    # ODM's normals-bearing binary layout exercises the normals sampling branch.
+    # The no-normals sampling branch is covered below (TASK-2 regression); its fix
+    # is the local packaging patch in recipes/fpcfilter/patches/.
     normals = directory / "normals.ply"
     header = ("ply\nformat binary_little_endian 1.0\nelement vertex 6\n"
               "property float32 x\nproperty float32 y\nproperty float32 z\n"
@@ -106,6 +106,18 @@ def test_fpcfilter(executable: Path, directory: Path) -> None:
     _, sampled_count, sampled_body = ply_header(sampled)
     assert 0 < sampled_count < count, (sampled_count, count)
     assert sampled_body, "Sampling produced an empty body"
+    # TASK-2 regression: ODM's fast-orthophoto path feeds reconstruction.ply, which has
+    # no normals. The no-normals sampling branch must write its kept points back.
+    # Each tight group keeps exactly one point, so two points remain: one per group.
+    ascii_sampled = directory / "sampled-no-normals.ply"
+    execute([str(executable), "--input", str(fixture), "--output", str(ascii_sampled),
+             "--radius", "0.5", "--concurrency", "1"], directory)
+    _, kept_count, kept_body = ply_header(ascii_sampled)
+    assert kept_count == 2, f"no-normals sampling kept {kept_count} of {count} points"
+    assert len(kept_body) == kept_count * 16, len(kept_body)
+    kept = [(x, y, z) for x, y, z, *_ in struct.iter_unpack("<3f4B", kept_body)]
+    assert any(abs(x) < 0.01 and abs(y) < 0.01 for x, y, _ in kept), kept
+    assert any(abs(x - 10.0) < 0.01 and abs(y) < 0.01 for x, y, _ in kept), kept
 
 
 def main() -> None:
