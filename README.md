@@ -5,8 +5,9 @@
 Target: the existing **`archont561/archont561`** Prefix channel, shared with CloudCompare.
 
 > **Starter scaffold, not a full ODM/NodeODM distribution.** Two Linux CPU component
-> recipes have been built and tested locally. Nothing has been published. All
-> four human release acknowledgements remain false for both components.
+> recipes have been built and tested locally. `fpcfilter 0.2` build 1 was published
+> to the channel on 2026-10-27 (OIDC + attestation, TASK-15). All four `dem2points`
+> release acknowledgements remain false.
 
 ## Implemented components
 
@@ -25,7 +26,9 @@ erased rejected points from a local copy). Build 1 carries a local fix,
 normals-bearing sampling and pass-through are byte-identical to upstream.
 The project owner approved the patch, the license expression and build 1 on
 2026-10-27 (Backlog **TASK-2**, review packet doc-10); all four fpcfilter
-release gates are `true`.
+release gates are `true`. Build 1 was published to `archont561/archont561`
+via the OIDC release workflow on 2026-10-27 (**TASK-15** publisher proof;
+`pixi add fpcfilter --channel archont561/archont561`).
 
 ## Quick start
 
