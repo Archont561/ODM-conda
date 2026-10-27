@@ -18,6 +18,12 @@ source:
 build:
   number: 0
   skip: target_platform != "linux-64"
+  python:
+    # Guard: rattler-build compiles packaged .py files with the HOST prefix's
+    # Python when host dependencies provide one. This host has none today; keep
+    # installed test scripts out of the artifact even if the host graph drifts.
+    skip_pyc_compilation:
+      - share/odm-conda/**/*.py
   script:
     file: ../../scripts/build_component.py
     interpreter: python
@@ -48,10 +54,6 @@ tests:
         import runpy
         import sys
         from pathlib import Path
-        # Fresh-environment retests may resolve a newer Python than this pin:
-        # Python 3.13+ runpy caches bytecode next to the loaded file, which must
-        # never be written into an installed (and re-packed) package prefix.
-        sys.dont_write_bytecode = True
         installed = Path(sys.prefix) / "share" / "odm-conda" / "dem2points" / "functional_test.py"
         runpy.run_path(str(installed), run_name="__main__")
     requirements:
