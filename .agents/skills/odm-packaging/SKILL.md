@@ -39,3 +39,5 @@ Full ODM must consume the component packages, handle its SuperBuild-relative
 paths/resources/launcher and pass a licensed end-to-end dataset. The two starter
 recipes alone are not a photogrammetry engine. FPCFilter's no-normals sampling fix (local patch 0001, build 1) was approved
 by the project owner on 2026-10-27; TASK-2 is done and the fpcfilter release gates are true (doc-10).
+fpcfilter 0.2 build 1 was published to archont561/archont561 on 2026-10-27 via
+OIDC with a Sigstore attestation (TASK-15 proof, Actions run 40515263476).

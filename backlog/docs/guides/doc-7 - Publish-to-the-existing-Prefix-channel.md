@@ -3,13 +3,14 @@ id: doc-7
 title: Publish to the existing Prefix channel
 type: other
 created_date: '2026-10-26 19:39'
-updated_date: '2026-10-26 20:16'
+updated_date: '2026-10-27 14:01'
 ---
 # Publish to the existing Prefix channel
 
 ## Locations
 
-- Packaging repository: `Archont561/ODM-conda` (create it; this scaffold has not).
+- Packaging repository: `Archont561/ODM-conda` (created; first publication
+  2026-10-27, `fpcfilter 0.2` build 1 — see TASK-15).
 - Canonical Prefix channel: **`archont561/archont561`**.
 - Package repository URL: `https://prefix.dev/archont561/archont561`.
 - GitHub publishing workflow: **`release.yml`**.
@@ -56,6 +57,28 @@ when normal publication only needs Read/write. Keep the CloudCompare mapping.
 
 Current Prefix documentation calls this Repository Access; older pages call it
 Trusted Publishing. See https://prefix.dev/docs/prefix/channels/access.
+
+### OIDC failure signatures (learned 2026-10-27, first publication)
+
+Two distinct rattler-build failures point at different halves of the entry:
+
+- `attestation requested but trusted publishing is not configured` — the token
+  mint (`POST /api/oidc/mint_token`) failed: the job identity (owner,
+  repository, workflow file, environment) matches no authorized source, or the
+  runner cannot request an ID token.
+- `authentication failed (HTTP 403)` at the package-upload step — the mint
+  succeeded, so the identity matched, but the minted token was denied write
+  access to the target channel. Check the entry's Access mode (`Read` blocks
+  uploads; publication needs Read/write) and that the entry is attached to the
+  channel being uploaded to.
+
+The first three attempts failed with the upload-stage 403 until the owner
+corrected the entry; run 40515263476 then published
+`fpcfilter-0.2-h873e7db_1.conda` with an attestation. If a failed release's
+Release/tag were deleted, retry by re-pushing the same annotated tag on the
+same default-branch HEAD and recreating the Release with identical notes —
+the guard's tag == HEAD check leaves no other latitude, and a UI re-run of an
+old run cannot work once the tag is gone.
 
 ## First validation, without publication
 
