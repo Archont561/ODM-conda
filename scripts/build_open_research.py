@@ -15,7 +15,7 @@ from pathlib import Path
 
 from common import ROOT, ScaffoldError, fail_cli, run
 from openmvs_graph_policy import verify_openmvs_tree
-from opensfm_graph_policy import verify_opensfm_tree
+from opensfm_graph_policy import verify_opensfm_research_tree
 
 
 def main() -> None:
@@ -33,7 +33,7 @@ def main() -> None:
     if name == 'openmvs-odm':
         verify_openmvs_tree(source)
     else:
-        verify_opensfm_tree(source)
+        verify_opensfm_research_tree(source)
 
     env = os.environ.copy()
     env['CONDA_PREFIX'] = str(prefix)
@@ -46,7 +46,12 @@ def main() -> None:
             '-DFETCHCONTENT_FULLY_DISCONNECTED=ON',
             f"-DCMAKE_CXX_FLAGS={env.get('CXXFLAGS', '')} -march=x86-64 -mno-popcnt -DEIGEN_MPL2_ONLY"]
     if name == 'openmvs-odm':
-        args += [f"-DVCG_ROOT={source / '_external/vcg'}", f"-DEIGEN3_INCLUDE_DIR={source / '_external/eigen'}",
+        vcg = source / '_external/vcg'
+        if not (vcg / 'vcg/complex/complex.h').is_file():
+            raise ScaffoldError('Pinned VCG header is missing')
+        # Conda sets CMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY; a HINT outside
+        # the host prefix is re-rooted. Preseed find_path's cache result.
+        args += [f'-DVCG_DIR:PATH={vcg}', f"-DEIGEN3_INCLUDE_DIR={source / '_external/eigen'}",
                  '-DOpenMVS_USE_CUDA=OFF', '-DOpenMVS_USE_OPENGL=OFF', '-DOpenMVS_USE_BREAKPAD=OFF',
                  '-DOpenMVS_USE_CERES=OFF', '-DOpenMVS_USE_PYTHON=OFF', '-DOpenMVS_ENABLE_TESTS=OFF',
                  '-DENABLE_SSE3=OFF', '-DENABLE_SSSE3=OFF', '-DENABLE_SSE41=OFF', '-DENABLE_SSE42=OFF',
@@ -57,6 +62,10 @@ def main() -> None:
             raise ScaffoldError('The OpenSfM host prefix must contain Python')
         args += [f'-DPYTHON_EXECUTABLE={python}', '-DOPENSFM_BUILD_TESTS=OFF', '-DPYBIND11_TEST=OFF']
     run(args, cwd=source, env=env)
+    if name == 'openmvs-odm':
+        cache = (build / 'CMakeCache.txt').read_text(encoding='utf-8')
+        if f'VCG_DIR:PATH={vcg}' not in cache.splitlines():
+            raise ScaffoldError('OpenMVS did not use the pinned VCG directory')
     if name == 'opensfm-odm':
         cache = (build / 'CMakeCache.txt').read_text(encoding='utf-8')
         lines = set(cache.splitlines())
@@ -96,6 +105,11 @@ def main() -> None:
                 raise ScaffoldError(f'OpenSfM native module missing or ambiguous: {module}')
         lib.mkdir(parents=True, exist_ok=True)
         shutil.copytree(package, lib / 'opensfm', ignore=shutil.ignore_patterns('src', 'test', '__pycache__', '*.pyc'))
+        # The exact PyPI vmem sdist is pinned and fingerprinted as a local-only
+        # source. This does not resolve its separate GPL obligations.
+        shutil.copytree(source / '_external/vmem/vmem', lib / 'vmem',
+                        ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
+        shutil.copy2(source / '_external/vmem/LICENSE', license_dir / 'vmem-LICENSE.txt')
         for filename in ('opensfm_fixture.py', 'opensfm_assets_fixture.py'):
             shutil.copy2(ROOT / 'scripts' / filename, share / filename)
         shutil.copy2(source / 'bin/opensfm_main.py', share / 'opensfm_main.py')

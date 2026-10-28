@@ -10,11 +10,16 @@ from common import ROOT, config
 
 
 def test_open_research_recipes_have_sources_builds_and_installed_tests():
-    for name, expected_sources in [('openmvs-odm', 3), ('opensfm-odm', 2)]:
+    for name, expected_sources in [('openmvs-odm', 3), ('opensfm-odm', 3)]:
         recipe = yaml.safe_load((ROOT / 'research/recipes' / name / 'recipe.yaml').read_text())
         assert recipe['package']['name'] == name
         assert len(recipe['source']) == expected_sources
-        assert all(item.get('url', '').startswith('https://codeload.github.com/') and item.get('sha256') for item in recipe['source'])
+        assert all(item.get('url', '').startswith(('https://codeload.github.com/', 'https://files.pythonhosted.org/')) and item.get('sha256') for item in recipe['source'])
+        if name == 'opensfm-odm':
+            assert recipe['source'][2]['sha256'] == '95fe9ba737edea8e5737fb9ddda7031d7ca62fd53f53c1c4e95195f3c7d801fd'
+            assert {'rasterio', 'rawpy'} <= set(recipe['requirements']['run'])
+        else:
+            assert 'libboost-devel >=1.90,<1.91' in recipe['requirements']['host']
         assert recipe['build']['script']['file'].endswith('build_open_research.py')
         assert recipe['requirements']['build'] and recipe['requirements']['host'] and recipe['requirements']['run']
         assert any('script' in test for test in recipe['tests'])
@@ -23,6 +28,7 @@ def test_open_research_recipes_have_sources_builds_and_installed_tests():
     patches = {
         'openmvs-odm/patches/0001-reconstruct-only.patch': '2dc920d550119443bb8d079911b0cdfc4cc747eb916a48a01e09ebdaf6a2c96a',
         'openmvs-odm/patches/0002-visibility-check.patch': '74f36291ca9254b2fe32c600c7e939827859aa1d07f73a976217961d39624c90',
+        'openmvs-odm/patches/0003-boost-header-only-system.patch': '17b72610b3b803cd2a5002eb2a68c48fdcf55597d41b7fcb113634e833b18830',
         'opensfm-odm/patches/0001-ceres-config.patch': '1cbf2c8044e0281368c8802205f14816fc3b635fb419a7d8fa3570603fdfd773',
     }
     for path, digest in patches.items():

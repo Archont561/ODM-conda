@@ -8,6 +8,7 @@ source:
     patches:
       - patches/0001-reconstruct-only.patch
       - patches/0002-visibility-check.patch
+      - patches/0003-boost-header-only-system.patch
   - url: https://codeload.github.com/OpenDroneMap/VCG/tar.gz/3fe55c6fa48ca111dab31eaa594ecab33913a8f1
     sha256: 8f75239f9dd4ee5ba55b0cad25df1b7f9caa8a7e583f8174b40d38421b485f45
     target_directory: _external/vcg
@@ -32,7 +33,8 @@ requirements:
     - ${{ compiler('cxx') }}
     - ${{ stdlib('c') }}
   host:
-    - libboost-devel
+    # Boost.System is header-only; patch removes its obsolete CMake component.
+    - libboost-devel >=1.90,<1.91
     - cgal-cpp
     - libopencv >=4.12,<4.13
     - tbb-devel >=2023.1,<2024
@@ -41,7 +43,7 @@ requirements:
     - zlib
     - libgomp >=14
   run:
-    - libboost
+    - libboost >=1.90,<1.91
     - libopencv >=4.12,<4.13
     - tbb >=2023.1,<2024
     - mpfr

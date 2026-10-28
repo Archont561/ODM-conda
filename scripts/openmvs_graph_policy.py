@@ -36,9 +36,9 @@ EIGEN = {
 }
 
 
-# Hashes file names and bytes after applying the two documented research patches.
+# Hashes file names and bytes after applying the three recipe research patches.
 # Directory entries and executable modes are not part of this fingerprint.
-EXPECTED_TREE = (3297, 'fe27f5deb6774cd3204f8c70914a7e9fa05c7fb4ac4e1c37d7fe782658c4c668')
+EXPECTED_TREE = (3297, '4d37a931d8ac36a757007ef68661f8e362a2b9372e6916c1ad628b92ea2f558a')
 
 
 def fingerprint_tree(tree: Path, *, ignore_root_files: frozenset[str] = frozenset()) -> tuple[int, str]:
@@ -95,7 +95,8 @@ def rattler_generated_files(tree: Path, expected: list[dict[str, Any]], componen
 def verify_openmvs_tree(tree: Path) -> None:
     expected = [
         {'url': OPENMVS['url'], 'sha256': OPENMVS['sha256'],
-         'patches': ['patches/0001-reconstruct-only.patch', 'patches/0002-visibility-check.patch']},
+         'patches': ['patches/0001-reconstruct-only.patch', 'patches/0002-visibility-check.patch',
+                     'patches/0003-boost-header-only-system.patch']},
         *[{'url': item['url'], 'sha256': item['sha256'], 'target_directory': item['path']}
           for item in (VCG, EIGEN)],
     ]

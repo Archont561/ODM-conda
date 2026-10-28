@@ -24,7 +24,13 @@ PYBIND11 = {
     'path': 'opensfm/src/third_party/pybind11',
     'gitlink': True,
 }
+VMEM = {
+    'url': 'https://files.pythonhosted.org/packages/ec/56/679d06f010abf87e20dd965b46412876118a0536ab06f56a5309ec2a2b92/vmem-1.0.2.tar.gz',
+    'sha256': '95fe9ba737edea8e5737fb9ddda7031d7ca62fd53f53c1c4e95195f3c7d801fd',
+    'path': '_external/vmem',
+}
 EXPECTED_TREE = (863, '16723bb06cd6b590a291fce8528ba1afb5ebf309c47f8cea12d7b1388d1e1351')
+EXPECTED_RESEARCH_TREE = (877, 'ce4bb0569212597ee9beb34835aab3e9c234a97ab52b1e862080ee6f5cab1ab0')
 GITMODULES_SHA256 = 'b457f2f3550c9e951e0873a6e735d4722e26f9d023acf0ab73b327d33cf9e234'
 PYBIND_FETCH_EXCEPTIONS = {
     'tests/CMakeLists.txt': '17198a0ad1946c01dfacd2b0d16a0193336e3c362c2bcbb3a1cebc1a67424c78',
@@ -42,6 +48,18 @@ def verify_opensfm_archives(primary: Path, pybind11: Path) -> None:
             raise ScaffoldError(f'OpenSfM archive checksum mismatch: {path}')
     validate_upstream_archive(primary, gitmodules_sha256=GITMODULES_SHA256)
     validate_upstream_archive(pybind11, fetch_exceptions=PYBIND_FETCH_EXCEPTIONS)
+
+
+def verify_vmem_archive(path: Path) -> None:
+    from source_bundle import validate_upstream_archive
+    from source_graph import unpack_archive
+    import tempfile
+
+    if path.is_symlink() or not path.is_file() or sha256(path) != VMEM['sha256']:
+        raise ScaffoldError('vmem archive checksum mismatch')
+    validate_upstream_archive(path)
+    with tempfile.TemporaryDirectory(prefix='odm-vmem-check-') as temp:
+        unpack_archive(path, Path(temp))
 
 
 def validate_opensfm_graph(name: str, source: dict[str, Any]) -> tuple[dict[str, Any], list[dict[str, Any]]]:
@@ -77,6 +95,19 @@ def verify_opensfm_tree(tree: Path) -> None:
     ignored = rattler_generated_files(tree, expected, 'OpenSfM')
     if fingerprint_tree(tree, ignore_root_files=ignored) != EXPECTED_TREE:
         raise ScaffoldError('Unrecognized OpenSfM source tree fingerprint')
+
+
+def verify_opensfm_research_tree(tree: Path) -> None:
+    """Verify the local recipe tree, including its separately pinned GPL vmem."""
+    expected = [
+        {'url': PRIMARY['url'], 'sha256': PRIMARY['sha256'],
+         'patches': ['patches/0001-ceres-config.patch']},
+        {'url': PYBIND11['url'], 'sha256': PYBIND11['sha256'], 'target_directory': PYBIND11['path']},
+        {'url': VMEM['url'], 'sha256': VMEM['sha256'], 'target_directory': VMEM['path']},
+    ]
+    ignored = rattler_generated_files(tree, expected, 'OpenSfM')
+    if fingerprint_tree(tree, ignore_root_files=ignored) != EXPECTED_RESEARCH_TREE:
+        raise ScaffoldError('Unrecognized OpenSfM research source tree fingerprint')
 
 
 def main() -> None:

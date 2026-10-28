@@ -231,8 +231,8 @@ revision verification is separate; an archive fingerprint cannot prove it.
 The OpenMVS and OpenSfM graph checkers recognize rattler-build 0.68's generated
 work-root files only with exact expected source metadata. Their expected patch
 filenames match the experimental research recipes; neither recipe is registered
-as a production component or has passed an isolated native build. Neither check
-grants source redistribution or license approval.
+as a production component. Both have passed local-only native research runs.
+Neither check grants source redistribution or license approval.
 
 The pybind11 subproject can be configured separately with tests explicitly off:
 
@@ -253,7 +253,9 @@ other possible fetches nor establishes kernel network isolation.
 
 `research/recipes/openmvs-odm` builds the **reduced ReconstructMesh target only**;
 `research/recipes/opensfm-odm` builds the eight native bindings and installs the
-Python package, CLI and data assets. Both are experimental and their declared
+Python package, CLI and data assets, plus ODM's pinned `vmem` 1.0.2 dependency.
+The vmem sdist contains GPLv3 text and a GPLv3-or-later classifier; its exact
+license grant and compatibility remain unreviewed. Both recipes are experimental and their declared
 `LicenseRef-Unreviewed` is a warning, not a license conclusion. Do **not**
 distribute their packages, cached archives or copied data. They are deliberately
 absent from the production component list and build/release workflows.
@@ -274,5 +276,18 @@ new dispatch workflows from an unmerged branch. That workflow uploads neither
 packages nor source archives. The research audit
 is separate from, and does not replace, the production release audit. Passing
 builds will not resolve licensing, asset provenance, offline/network isolation,
-relocation beyond checked ELF RPATHs, or a full OpenSfM dataset run. No native
-Conda build of these recipes has yet passed.
+relocation beyond checked ELF RPATHs, or a full OpenSfM dataset run. Native
+research runs 40757042542 (OpenSfM) and 40759635611 (OpenMVS) passed the
+build, fresh retest and limited audit. See `open-components-license-review.md`
+for the preliminary license review and remaining blockers.
+
+The local-only OpenMVS recipe also applies
+`recipes/openmvs-odm/patches/0003-boost-header-only-system.patch`: it stops
+requesting the obsolete compiled Boost.System CMake component, since modern
+Boost.System is header-only. The recipe uses the Boost 1.90 series. The subsequent native research run
+passed; it does not change the source or distribution review status.
+
+OpenMVS run 40758772845 resolved Boost 1.90 but failed at VCG discovery:
+Conda's include root policy re-rooted the vendored-source hint. The builder now
+preseeds the exact fingerprinted VCG directory and checks the resulting CMake
+cache. Owner-dispatched native rerun 40759635611 passed.
