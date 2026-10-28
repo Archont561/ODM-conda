@@ -57,8 +57,9 @@ The helper verifies hashes and stages the graph before writing a deterministic
 archive and manifest. It refuses to overwrite a destination. This archive is
 not a release source bundle or a source-completeness certification.
 
-`mvs-texturing-notices.json` records hashes of 19 preliminary notice-bearing
-files. `openmvs-notices.json` records the local reduced-target dependency-trace
+`mvs-texturing-notices.json` records hashes of 20 preliminary notice-bearing
+files; `mvs-texturing-license-review.md` describes the separate MVE easyexif
+notice, non-free disclaimer and outstanding review decisions. `openmvs-notices.json` records the local reduced-target dependency-trace
 files plus root and third-party notices, including the excluded IBFS/TRWS
 licenses; apply both OpenMVS research patches before verifying it.
 `opensfm-notices.json` records root and third-party notices and selected

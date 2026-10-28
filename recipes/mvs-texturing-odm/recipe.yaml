@@ -31,7 +31,7 @@ source:
     target_directory: elibs/eigen
 
 build:
-  number: 0
+  number: 1
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:
@@ -53,6 +53,8 @@ requirements:
     - libjpeg-turbo
     - libpng
     - libtiff
+    # CMake FindPNG also needs zlib headers and the unversioned library.
+    - zlib
     - libgomp >=14
   run:
     - tbb >=2023.1,<2024
@@ -88,10 +90,11 @@ about:
   description: >-
     Unofficial test-stage packaging of texrecon for OpenDroneMap.
     Source completeness, native package validation, and license review remain open.
-  license: BSD-3-Clause AND Zlib AND MPL-2.0 AND LicenseRef-COLAMD AND LicenseRef-SuperLU AND MIT
+  license: BSD-3-Clause AND BSD-2-Clause AND Zlib AND MPL-2.0 AND LicenseRef-COLAMD AND LicenseRef-SuperLU AND MIT
   license_file:
     - .conda-notices/LICENSE.txt
     - .conda-notices/_external-mve-LICENSE.txt
+    - .conda-notices/_external-mve-libs-mve-image_exif.cc
     - .conda-notices/elibs-mapmap-LICENSE.txt
     - .conda-notices/elibs-mapmap-ext-dset-LICENSE.txt
     - .conda-notices/elibs-rayint-LICENSE.txt

@@ -323,7 +323,7 @@
     "mvs-texturing-odm": {
       "version": "0.0.0.dev20250818",
       "version_note": "Snapshot version dated from the pinned upstream commit; not an upstream release.",
-      "build_number": 0,
+      "build_number": 1,
       "recipe": "recipes/mvs-texturing-odm/recipe.yaml",
       "executable": "texrecon",
       "source": {
@@ -378,7 +378,7 @@
           }
         ]
       },
-      "license": "BSD-3-Clause AND Zlib AND MPL-2.0 AND LicenseRef-COLAMD AND LicenseRef-SuperLU AND MIT",
+      "license": "BSD-3-Clause AND BSD-2-Clause AND Zlib AND MPL-2.0 AND LicenseRef-COLAMD AND LicenseRef-SuperLU AND MIT",
       "license_note": "Preliminary expression including custom identifiers for COLAMD and SuperLU notices; not approved or a complete legal conclusion. License, source completeness, asset, runtime dependency and redistribution reviews remain open. This component is not publishable.",
       "notices": [
         {
@@ -389,6 +389,11 @@
         {
           "source": "_external/mve/LICENSE.txt",
           "target": "_external-mve-LICENSE.txt",
+          "kind": "verbatim"
+        },
+        {
+          "source": "_external/mve/libs/mve/image_exif.cc",
+          "target": "_external-mve-libs-mve-image_exif.cc",
           "kind": "verbatim"
         },
         {
