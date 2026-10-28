@@ -231,8 +231,8 @@ revision verification is separate; an archive fingerprint cannot prove it.
 The OpenMVS and OpenSfM graph checkers recognize rattler-build 0.68's generated
 work-root files only with exact expected source metadata. Their expected patch
 filenames match the experimental research recipes; neither recipe is registered
-as a production component or has passed an isolated native build. Neither check
-grants source redistribution or license approval.
+as a production component. Both have passed local-only native research runs.
+Neither check grants source redistribution or license approval.
 
 The pybind11 subproject can be configured separately with tests explicitly off:
 
@@ -276,18 +276,18 @@ new dispatch workflows from an unmerged branch. That workflow uploads neither
 packages nor source archives. The research audit
 is separate from, and does not replace, the production release audit. Passing
 builds will not resolve licensing, asset provenance, offline/network isolation,
-relocation beyond checked ELF RPATHs, or a full OpenSfM dataset run. No native
-Conda OpenSfM research run 40757042542 passed the build, fresh retest and
-limited audit. The OpenMVS research build has not yet passed.
+relocation beyond checked ELF RPATHs, or a full OpenSfM dataset run. Native
+research runs 40757042542 (OpenSfM) and 40759635611 (OpenMVS) passed the
+build, fresh retest and limited audit. See `open-components-license-review.md`
+for the preliminary license review and remaining blockers.
 
 The local-only OpenMVS recipe also applies
 `recipes/openmvs-odm/patches/0003-boost-header-only-system.patch`: it stops
 requesting the obsolete compiled Boost.System CMake component, since modern
-Boost.System is header-only. The recipe uses the Boost 1.90 series. A native
-isolated build and fresh retest are still required to validate this change;
-it does not change the source or distribution review status.
+Boost.System is header-only. The recipe uses the Boost 1.90 series. The subsequent native research run
+passed; it does not change the source or distribution review status.
 
 OpenMVS run 40758772845 resolved Boost 1.90 but failed at VCG discovery:
 Conda's include root policy re-rooted the vendored-source hint. The builder now
 preseeds the exact fingerprinted VCG directory and checks the resulting CMake
-cache. This configure fix still requires an owner-dispatched native rerun.
+cache. Owner-dispatched native rerun 40759635611 passed.
