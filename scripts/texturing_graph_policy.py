@@ -69,7 +69,17 @@ def verify_texturing_tree(tree: Path) -> None:
             expected.append(item)
         if not isinstance(recorded, dict) or recorded.get('sources') != expected:
             raise ScaffoldError('Unrecognized rattler source metadata')
-        ignored = frozenset({'.source_info.json'})
+        # Rattler-build 0.68 creates these root files immediately before running
+        # the recipe. They are not upstream sources and contain variable build
+        # paths/log output. Do not extend this exception to other files or trees.
+        generated = frozenset({'build_env.sh', 'conda_build.sh', 'conda_build.log'})
+        for name in generated:
+            path = tree / name
+            if path.is_symlink():
+                raise ScaffoldError(f'Rattler generated file is a symlink: {path}')
+            if path.exists() and not path.is_file():
+                raise ScaffoldError(f'Invalid rattler generated file: {path}')
+        ignored = generated | {'.source_info.json'}
     if fingerprint_tree(tree, ignore_root_files=ignored) != EXPECTED_TREE:
         raise ScaffoldError('Unrecognized texturing source tree fingerprint')
 
