@@ -286,3 +286,8 @@ requesting the obsolete compiled Boost.System CMake component, since modern
 Boost.System is header-only. The recipe uses the Boost 1.90 series. A native
 isolated build and fresh retest are still required to validate this change;
 it does not change the source or distribution review status.
+
+OpenMVS run 40758772845 resolved Boost 1.90 but failed at VCG discovery:
+Conda's include root policy re-rooted the vendored-source hint. The builder now
+preseeds the exact fingerprinted VCG directory and checks the resulting CMake
+cache. This configure fix still requires an owner-dispatched native rerun.
