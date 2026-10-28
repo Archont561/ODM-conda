@@ -2,9 +2,10 @@
 
 Status: evidence for human review, **not** legal advice, license approval, or
 permission to publish. All release checks remain false. This review concerns
-version `0.0.0.dev20250818`; build 1 adds a previously omitted notice. The
-successful native CI run [40740410329](https://github.com/Archont561/ODM-conda/actions/runs/40740410329)
-validated build 0, not this revised build 1.
+version `0.0.0.dev20250818`; build 1 adds a previously omitted notice.
+Native CI [40742094824](https://github.com/Archont561/ODM-conda/actions/runs/40742094824)
+validated build 1's package tests, fresh-environment retest, audit and source
+bundling. This does not approve the licenses or prove source completeness.
 
 ## Reviewed evidence and provisional obligations
 
@@ -36,8 +37,11 @@ reviewer must confirm the SPDX identifiers, custom references and their scope.
    restricted. The recipe builds the `mve_sfm` static library because upstream
    `FindMVE.cmake` requires it; that library's CMake glob includes both files.
    The texrecon target links MVE's `mve` and `mve_util` libraries, not the sfm
-   library directly, but no final link-map or patent analysis has established
-   whether any relevant implementation is incorporated or what rights apply.
+   library directly. The build 1 CI log confirms both `sift.cc.o` and
+   `surf.cc.o` were compiled into `mve_sfm`; this is not proof they entered
+   `texrecon`. The CI output lacks a final link map, and the archived binary
+   was not independently inspected in this review. No patent analysis has
+   established what rights apply.
    The original MVE archive containing both files is included in the source
    bundle. Preserve the disclaimer and obtain appropriate review; do not infer
    either patent infringement or patent expiration from this notice.
@@ -55,3 +59,36 @@ reviewer must confirm the SPDX identifiers, custom references and their scope.
 5. Have the owner or qualified reviewer decide and record license approval; then
    independently validate native build 1, source completeness, and the other
    release gates. No gate changes or release are authorized by this document.
+
+## Runtime dependency evidence (preliminary)
+
+The build 1 [fresh-environment retest](https://github.com/Archont561/ODM-conda/actions/runs/40742094824/job/123006108578)
+resolved `tbb 2023.1.0 haa8c3ee_2`, `libjpeg-turbo 3.2.1 h7cc23a3_0`,
+`libpng 1.6.59 h922cc85_0`, `libtiff 4.7.2 hcc2c06a_1`, `libzlib 1.3.2
+h25fd6f3_3`, and `libgcc`, `libgomp` and `libstdcxx` 16.2.0. This was a
+**test** environment, also containing Python and transitive dependencies; a
+future solve can differ. Its package list is not an inventory of all ELF
+linkage. The native build compiler was GCC 14.4.0, not 16.2.0.
+
+The following are **upstream files at matching version tags**, identified by
+immutable commit and SHA-256, not verified copies of the actual conda-forge
+package metadata or notices. They are starting points for review, not a
+complete runtime license inventory:
+
+| Runtime source evidence | SHA-256 | Preliminary review note |
+| --- | --- | --- |
+| [oneTBB 2023.1.0 LICENSE.txt](https://github.com/oneapi-src/oneTBB/blob/3046c8b0c29df995980003ea24f4d78c80ec0c8d/LICENSE.txt) | `c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4` | Apache 2.0 text. Verify applicable package notices, modification statements and source provenance. |
+| [libjpeg-turbo 3.2.1 LICENSE.md](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/7b4993786d856cbccabfc0ed2f923ba000e326cc/LICENSE.md) and [README.ijg](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/7b4993786d856cbccabfc0ed2f923ba000e326cc/README.ijg) | `ba6bceebcba0fdd35488477c2cca8c4632ce82c74dbfbc87d886ce6fc4433579`; `75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6` | Upstream describes IJG and BSD-style terms; IJG's executable-distribution terms call for the Independent JPEG Group acknowledgement in accompanying documentation. Assess whether and where it applies to the intended distribution. |
+| [libpng 1.6.59 LICENSE](https://github.com/pnggroup/libpng/blob/cd952f49f95bb27154ae77dbb103032d95f6e580/LICENSE) | `bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526` | PNG reference library license v2; the file also documents earlier licensing and notes some contributed files differ. |
+| [libtiff 4.7.2 LICENSE.md](https://github.com/libsdl-org/libtiff/blob/d01a94be176f5f6a87f7ee1c0b32e65416aa2b4d/LICENSE.md) | `0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade` | Includes libtiff's notice plus additional component notices; review the complete file and the actual package. |
+| [zlib 1.3.2 README](https://github.com/madler/zlib/blob/da607da739fa6047df13e66a2af6b8bec7c2a498/README) | `4026d921213bb2e311d8d42b44ef53361c102d5d45ae32f93f8e52eaee8d068f` | Contains the zlib notice; verify actual packaged notices and source. |
+| GCC 16.2.0 [runtime exception](https://github.com/gcc-mirror/gcc/blob/78d4ac73dd391005b895a6148cd9831e28e1208b/COPYING.RUNTIME) and [GPL text](https://github.com/gcc-mirror/gcc/blob/78d4ac73dd391005b895a6148cd9831e28e1208b/COPYING3) | `9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74`; `8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903` | The runtime exception exists upstream; verify each installed runtime's actual license, exception applicability and distribution obligations rather than assigning this text to all compiler components. |
+
+The retest also included transitive packages such as libhwloc, libxml2,
+libwebp-base, libdeflate and lerc. Their package-specific terms and the
+Python-only test dependencies have not been reviewed. The non-published CI
+artifact ID is `12840460918`, artifact ZIP SHA-256
+`c81c46c7f33fbdfb6fee1eef5269710bbdf7a8b83e91839e577fe1f8c0d379b1`; the
+CI-created source bundle SHA-256 is
+`900578aae61f9baa2129e28afb24c9fb1729eef07edd68937970ec3f07746c5c`.
+These hashes identify evidence, not approval or a guarantee of future availability.

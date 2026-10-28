@@ -4,7 +4,7 @@ title: Package mvs-texturing-odm
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 18:01'
+updated_date: '2026-10-28 18:17'
 labels:
   - component
   - mvs-texturing-odm
@@ -78,4 +78,6 @@ Additional source inspection (2026-10-28): the staged MVE CMake project adds -mp
 Local testing: recipe renders; rattler-build downloaded and patched all five inputs and its staged tree plus .source_info metadata passed the exact fingerprint policy. Isolated conda build then failed before compilation while downloading conda-forge noarch/repodata_shards.msgpack.zst (unexpected EOF). Using that rattler-staged tree with system GCC 12 and symlinked odm-dev dependencies in an artificial prefix, the actual builder compiled MVE and texrecon and the installed-layout generated texture fixture passed. This is not an isolated Conda package, relocation/ABI audit, full CPU audit, no-network proof or native CI. Production source bundling was locally exercised. Native build/retest/audit/source bundle must still be run by the owner through build.yml.
 
 2026-10-28: Native CI run 40740410329 passed build 0 build, installed test, fresh-environment retest, audit and source bundling. Subsequent license review found MVE libs/mve/image_exif.cc has an independent two-condition BSD-style notice not present in the previous 19-file inventory. Build 1 conservatively adds its verbatim notice and BSD-2-Clause to the preliminary expression; the exact source hash is recorded. This changes the package and requires a new native build and audit. MVE LICENSE also warns that sfm/sift.cc and sfm/surf.cc may be patented or otherwise restricted. The recipe builds the sfm static library while FindMVE requires it, but texrecon does not directly link it; final inclusion and patent rights remain unverified. See research/mvs-texturing-license-review.md for remaining owner and qualified-review decisions. No release gates changed.
+
+2026-10-28 follow-up: build 1 native run 40742094824 passed package build/test, fresh retest, audit and source bundle. The CI log explicitly shows compilation of sift.cc.o and surf.cc.o into MVE sfm static library; source CMake indicates texrecon links mve and mve_util rather than sfm, but final link map and binary inspection are not available. No patent or non-inclusion conclusion. research/mvs-texturing-license-review.md records upstream license evidence for runtime versions observed in the fresh retest, notably the IJG acknowledgement question, and lists unresolved transitive dependencies. Upstream version-matched texts are not verified conda package metadata. Source completeness and owner license approval remain open.
 <!-- SECTION:NOTES:END -->
