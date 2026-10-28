@@ -297,3 +297,8 @@ IBFS/TRWS and excluded dense inputs before packaging. Owner-dispatched native
 run 40762858939 passed this guard; it does not establish source redistribution
 rights. See
 `open-components-license-review.md`.
+
+Research build 1 adds hash-checked OpenMVS/VCG/Eigen notices and a conservative
+psutil BSD notice for the vmem provenance investigation. This is not a complete
+notice or legal reconciliation; build 1 still requires local-only native
+validation for each recipe. See `open-components-license-review.md`.

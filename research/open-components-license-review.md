@@ -54,9 +54,10 @@ field to a definitive SPDX expression yet.
   used headers and corresponding license notices; assess GMP, MPFR, OpenCV,
   TBB, compiler runtimes, and all other actual linked/static dependencies.
   A feedstock description is not a substitute for a build-specific SBOM.
-- The current research builder copies packaging MIT and upstream LICENSE into
-  the OpenMVS package, but not a demonstrated complete set of VCG, Eigen,
-  OpenMVS third-party and CGAL notices or corresponding source. The research
+- The updated research builder copies the OpenMVS copyright inventory, VCG
+  license text, and Eigen MPL-2.0 and licensing README, in addition to packaging
+  MIT and upstream LICENSE. It still does not demonstrate a complete set of
+  VCG, Eigen, OpenMVS third-party and CGAL notices or corresponding source. The research
   audit checks payload and ELF RPATH, not license completeness. Do not treat
   its pass as satisfying those obligations.
 
@@ -83,9 +84,9 @@ field to a definitive SPDX expression yet.
   contains GPL v3 text. However, `vmem/posix.py` and `vmem/utils.py` carry
   Giampaolo Rodola' copyright notices referring to a BSD-style license in
   LICENSE, while the sdist's LICENSE is GPL text. Trace those files and their
-  original applicable BSD notice and obtain clarification as needed. The builder
-  copies the GPL text, but this discrepancy and any required upstream BSD notice
-  remain unresolved. OpenSfM imports vmem, so do not treat its terms as irrelevant.
+  original applicable BSD notice and obtain clarification as needed. The updated research builder carries the GPL text and a conservatively
+  included historical psutil BSD-3-Clause notice. The exact provenance, other
+  applicable notices and GPL/BSD interaction remain unresolved. OpenSfM imports vmem, so do not treat its terms as irrelevant.
   Evaluate the applicable GPL version/permissions and AGPL combination for the
   actual distribution with qualified review.
 
@@ -121,8 +122,9 @@ The AST comparison supports provenance investigation; it does **not** prove
 that this is the exact source revision or the only applicable third-party
 notice, nor does it settle the GPL/BSD treatment of the combined package. A
 reviewer should trace both files and retain all applicable original notices;
-the research package currently carries only the vmem GPL text, not this psutil
-license. No redistribution approval is inferred.
+the updated research recipe carries this exact psutil license alongside the
+vmem GPL text as a conservative notice, not as proof of provenance. No
+redistribution approval is inferred.
 
 ### Additional reduced-link evidence
 
@@ -137,3 +139,18 @@ build with this guard, installed tests, fresh retest and limited audit; its
 temporary outputs were removed. Matching named link inputs cannot rule out equivalent code, prove a
 complete dependency inventory, or authorize distribution of the original source
 archive. TASK-54 and the release restrictions remain open.
+
+### Notice reconciliation in research build 1
+
+Both research recipes now use build number 1 because their payloads change.
+OpenMVS adds its COPYRIGHT.md, the exact pinned VCG LICENSE.txt, and Eigen's
+COPYING.MPL2 and COPYING.README. OpenSfM adds the historical psutil BSD-3-Clause
+notice at commit `93e1c468ab4ac7922472114b3aeeacda2c8676a1`, conservatively
+included based on the noted vmem file headers and function similarity.
+The builder checks the individual SHA256 values before copying; the limited
+research audit rejects a missing or modified added notice. See
+`research/notices/psutil-2021-BSD-3-Clause.txt` and
+`scripts/research_license_notices.py`. These additions neither assert that
+all notices are complete nor replace rights/provenance review. The earlier
+build-0 native runs do not validate these changed payloads; owner-dispatched
+local-only native build, fresh retest and audit are required for each recipe.

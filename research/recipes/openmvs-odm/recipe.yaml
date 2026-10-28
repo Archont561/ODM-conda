@@ -16,7 +16,7 @@ source:
     sha256: a14492af4d1451a686caadbfd5047ca1216b8c66e71f0e8385afc4bb3ecdc7a3
     target_directory: _external/eigen
 build:
-  number: 0
+  number: 1
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:
