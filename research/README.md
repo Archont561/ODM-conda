@@ -277,4 +277,12 @@ packages nor source archives. The research audit
 is separate from, and does not replace, the production release audit. Passing
 builds will not resolve licensing, asset provenance, offline/network isolation,
 relocation beyond checked ELF RPATHs, or a full OpenSfM dataset run. No native
-Conda build of these recipes has yet passed.
+Conda OpenSfM research run 40757042542 passed the build, fresh retest and
+limited audit. The OpenMVS research build has not yet passed.
+
+The local-only OpenMVS recipe also applies
+`recipes/openmvs-odm/patches/0003-boost-header-only-system.patch`: it stops
+requesting the obsolete compiled Boost.System CMake component, since modern
+Boost.System is header-only. The recipe uses the Boost 1.90 series. A native
+isolated build and fresh retest are still required to validate this change;
+it does not change the source or distribution review status.

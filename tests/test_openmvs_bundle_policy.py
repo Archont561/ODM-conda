@@ -159,7 +159,7 @@ def test_openmvs_rattler_metadata_and_generated_files_are_guarded(tmp_path, monk
     monkeypatch.setattr(policy, 'EXPECTED_TREE', policy.fingerprint_tree(tree))
     sources = [
         {'url': policy.OPENMVS['url'], 'sha256': policy.OPENMVS['sha256'],
-         'patches': ['patches/0001-reconstruct-only.patch', 'patches/0002-visibility-check.patch']},
+         'patches': ['patches/0001-reconstruct-only.patch', 'patches/0002-visibility-check.patch', 'patches/0003-boost-header-only-system.patch']},
         *[{'url': item['url'], 'sha256': item['sha256'], 'target_directory': item['path']}
           for item in (policy.VCG, policy.EIGEN)],
     ]

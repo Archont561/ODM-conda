@@ -1,0 +1,11 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -186,7 +186,7 @@
+ 	endif()
+ endif()
+ 
+-FIND_PACKAGE(Boost REQUIRED COMPONENTS iostreams program_options system serialization OPTIONAL_COMPONENTS python3)
++FIND_PACKAGE(Boost REQUIRED COMPONENTS iostreams program_options serialization OPTIONAL_COMPONENTS python3)
+ if(Boost_FOUND)
+ 	LIST(APPEND OpenMVS_EXTRA_INCLUDES ${Boost_INCLUDE_DIRS})
+ 	INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
