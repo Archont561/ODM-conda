@@ -3,17 +3,40 @@ name: Build and test native components
 on:
   workflow_dispatch:
     inputs:
-      component:
-        description: Component names separated by commas, or all (no publishing)
-        type: string
-        default: all
-        required: true
+      dem2mesh:
+        description: "dem2mesh (leave all unchecked to build all)"
+        type: boolean
+        default: false
+      dem2points:
+        description: "dem2points (leave all unchecked to build all)"
+        type: boolean
+        default: false
+      fastrasterfilter:
+        description: "fastrasterfilter (leave all unchecked to build all)"
+        type: boolean
+        default: false
+      fpcfilter:
+        description: "fpcfilter (leave all unchecked to build all)"
+        type: boolean
+        default: false
+      odm_orthophoto:
+        description: "odm-orthophoto (leave all unchecked to build all)"
+        type: boolean
+        default: false
+      poissonrecon_odm:
+        description: "poissonrecon-odm (leave all unchecked to build all)"
+        type: boolean
+        default: false
+      renderdem:
+        description: "renderdem (leave all unchecked to build all)"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 concurrency:
-  group: native-build-${{ github.sha }}-${{ inputs.component }}
+  group: native-build-${{ github.run_id }}
   cancel-in-progress: false
 
 jobs:
@@ -21,7 +44,13 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
-      COMPONENT: ${{ inputs.component }}
+      SELECT_DEM2MESH: ${{ inputs.dem2mesh }}
+      SELECT_DEM2POINTS: ${{ inputs.dem2points }}
+      SELECT_FASTRASTERFILTER: ${{ inputs.fastrasterfilter }}
+      SELECT_FPCFILTER: ${{ inputs.fpcfilter }}
+      SELECT_ODM_ORTHOPHOTO: ${{ inputs.odm_orthophoto }}
+      SELECT_POISSONRECON_ODM: ${{ inputs.poissonrecon_odm }}
+      SELECT_RENDERDEM: ${{ inputs.renderdem }}
     steps:
       - name: Check out repository
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -36,7 +65,7 @@ jobs:
       - name: Shared local and CI gate
         run: pixi run check
       - name: Build and run packaged tests
-        run: pixi run build --component "$COMPONENT"
+        run: pixi run build --workflow-checkboxes
       - name: Retest artifacts in fresh environments
         run: pixi run test --component "$COMPONENT"
       - name: Audit artifacts

@@ -123,11 +123,15 @@ Actionlint **with ShellCheck**, and recipe rendering. It does not compile engine
 `build` includes packaged tests; `test` reinstalls artifacts into fresh environments.
 Tests generate small fixtures, not proprietary drone datasets.
 
-The manual **Build and test native components** workflow accepts `all`, one
-component name, or a comma-separated list such as `dem2mesh,renderdem`. The
-same selection is built, retested, audited, and source-bundled in the listed
-order; invalid, empty, duplicate, or mixed `all` selections fail. The local
-commands accept the same syntax, for example:
+The manual **Build and test native components** workflow provides a checkbox
+for each implemented component. Check any combination to build, retest, audit,
+and bundle those components; leave all boxes unchecked to select all. GitHub
+limits workflow-dispatch inputs to ten, so adding a component also requires
+updating the checkbox list. Automation that used the former `component` input
+must instead pass individual boolean inputs such as `dem2mesh=true` and
+`renderdem=true`.
+
+Local commands still accept comma-separated names, for example:
 
 ```bash
 pixi run build --component 'dem2mesh,renderdem'
