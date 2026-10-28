@@ -147,3 +147,40 @@ def test_openmvs_builder_rejects_missing_or_changed_patch_metadata():
     patches[0]['sha256'] = '0' * 64
     with pytest.raises(ScaffoldError, match='patch'):
         validate_openmvs_patches({'patches': patches})
+
+
+def test_openmvs_rattler_metadata_and_generated_files_are_guarded(tmp_path, monkeypatch):
+    import json
+    import openmvs_graph_policy as policy
+
+    tree = tmp_path / 'src'
+    tree.mkdir()
+    (tree / 'CMakeLists.txt').write_text('reviewed')
+    monkeypatch.setattr(policy, 'EXPECTED_TREE', policy.fingerprint_tree(tree))
+    sources = [
+        {'url': policy.OPENMVS['url'], 'sha256': policy.OPENMVS['sha256'],
+         'patches': ['patches/0001-reconstruct-only.patch', 'patches/0002-visibility-check.patch']},
+        *[{'url': item['url'], 'sha256': item['sha256'], 'target_directory': item['path']}
+          for item in (policy.VCG, policy.EIGEN)],
+    ]
+    for name in ('build_env.sh', 'conda_build.sh', 'conda_build.log'):
+        (tree / name).write_text('generated')
+    with pytest.raises(ScaffoldError, match='fingerprint'):
+        policy.verify_openmvs_tree(tree)
+    metadata = tree / '.source_info.json'
+    metadata.write_text(json.dumps({'sources': sources}))
+    policy.verify_openmvs_tree(tree)
+    (tree / 'extra.cpp').write_text('unreviewed')
+    with pytest.raises(ScaffoldError, match='fingerprint'):
+        policy.verify_openmvs_tree(tree)
+    (tree / 'extra.cpp').unlink()
+    sources[1]['target_directory'] = 'wrong'
+    metadata.write_text(json.dumps({'sources': sources}))
+    with pytest.raises(ScaffoldError, match='metadata'):
+        policy.verify_openmvs_tree(tree)
+    sources[1]['target_directory'] = policy.VCG['path']
+    metadata.write_text(json.dumps({'sources': sources}))
+    (tree / 'conda_build.sh').unlink()
+    (tree / 'conda_build.sh').symlink_to('/etc/passwd')
+    with pytest.raises(ScaffoldError, match='symlink'):
+        policy.verify_openmvs_tree(tree)

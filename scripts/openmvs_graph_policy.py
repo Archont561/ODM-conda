@@ -8,6 +8,7 @@ source/license completeness must still be validated independently.
 from __future__ import annotations
 
 import hashlib
+import json
 from pathlib import Path
 from typing import Any
 
@@ -65,8 +66,41 @@ def fingerprint_tree(tree: Path, *, ignore_root_files: frozenset[str] = frozense
     return count, digest.hexdigest()
 
 
+def rattler_generated_files(tree: Path, expected: list[dict[str, Any]], component: str) -> frozenset[str]:
+    """Ignore only rattler 0.68 work files accompanied by exact source metadata."""
+    metadata = tree / '.source_info.json'
+    ignored = frozenset()
+    if metadata.is_symlink():
+        raise ScaffoldError(f'{component} source metadata is a symlink')
+    if metadata.exists():
+        if not metadata.is_file() or metadata.stat().st_size > 1024 * 1024:
+            raise ScaffoldError(f'Invalid {component} rattler source metadata')
+        try:
+            recorded = json.loads(metadata.read_text(encoding='utf-8'))
+        except (UnicodeError, json.JSONDecodeError) as error:
+            raise ScaffoldError(f'Invalid {component} rattler source metadata') from error
+        if not isinstance(recorded, dict) or recorded.get('sources') != expected:
+            raise ScaffoldError(f'Unrecognized {component} rattler source metadata')
+        generated = frozenset({'build_env.sh', 'conda_build.sh', 'conda_build.log'})
+        for name in generated:
+            path = tree / name
+            if path.is_symlink():
+                raise ScaffoldError(f'Rattler generated file is a symlink: {path}')
+            if path.exists() and not path.is_file():
+                raise ScaffoldError(f'Invalid rattler generated file: {path}')
+        ignored = generated | {'.source_info.json'}
+    return ignored
+
+
 def verify_openmvs_tree(tree: Path) -> None:
-    if fingerprint_tree(tree) != EXPECTED_TREE:
+    expected = [
+        {'url': OPENMVS['url'], 'sha256': OPENMVS['sha256'],
+         'patches': ['patches/0001-reconstruct-only.patch', 'patches/0002-visibility-check.patch']},
+        *[{'url': item['url'], 'sha256': item['sha256'], 'target_directory': item['path']}
+          for item in (VCG, EIGEN)],
+    ]
+    ignored = rattler_generated_files(tree, expected, 'OpenMVS')
+    if fingerprint_tree(tree, ignore_root_files=ignored) != EXPECTED_TREE:
         raise ScaffoldError('Unrecognized OpenMVS source tree fingerprint')
 
 

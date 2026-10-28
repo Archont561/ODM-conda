@@ -1,0 +1,37 @@
+name: Local-only Open component research build
+
+on:
+  workflow_dispatch:
+    inputs:
+      component:
+        description: "Research component (no artifacts are uploaded)"
+        type: choice
+        required: true
+        options:
+          - openmvs
+          - opensfm
+
+permissions:
+  contents: read
+
+jobs:
+  local-only-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      RESEARCH_COMPONENT: ${{ inputs.component }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - name: Set up locked tooling
+        uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default agent-tools
+      - name: Shared local and CI gate
+        run: pixi run check
+      - name: Build and retest without saving packages or sources
+        run: pixi run python scripts/run_open_research.py
