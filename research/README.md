@@ -72,6 +72,8 @@ OpenSfM commit `c686ad2e8c62664c63115968d86c605c83f8b04a` and renamed in
 `d8cabec9e8a510d0c1c3a5be97dd8f6657ef09f9`; that latter commit also added the
 64-word vocabulary. The pinned setup.py includes both. These Git history facts
 do not identify the training data or establish asset rights.
+`poissonrecon-readiness-review.md` records the old bundled PNG security and
+notice findings, current evidence limits and TASK-55.
 All inventories are evidence, not legal approval or complete obligations.
 
 To verify the texturing inventory against the matching staged tree, run:

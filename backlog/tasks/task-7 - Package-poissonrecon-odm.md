@@ -4,7 +4,7 @@ title: Package poissonrecon-odm
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 13:08'
+updated_date: '2026-10-28 22:41'
 labels:
   - component
   - poissonrecon-odm
@@ -30,6 +30,12 @@ Read the exact ODM reference recorded in components.json before choosing source 
 - [ ] #3 components.json, source staging, artifact audits and human release gates are extended intentionally; no placeholder package is published.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Audit pinned PoissonRecon source and actual make inputs/notices; identify bundled PNG and zlib versions and credible security evidence; compare validated commit to current scripts and record bounded native-validation and owner-review blockers without enabling release gates.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -42,4 +48,6 @@ A further single-job research compile with upstream optimization overridden to -
 2026-10-28: added a provisional linux-64 poissonrecon-odm 13.8 recipe using the pinned upstream make poissonrecon target with compiler wrappers, single-job compilation, two hash-checked makefiles, and all release checks false. Carried the root MIT license, BSD source header, and bundled libpng and zlib header notices provisionally; full notice review and security assessment of the old static libpng remain open. Added generated outward-normal unit-sphere functional fixture. It passes against a local research build with FAST_COMPILE enabled and -O0 (which limits supported degree/boundary options and is NOT the unmodified full recipe). Installed layout was manually assembled around that research build, not from a Conda artifact. Render-only and corresponding-source bundle succeeded; actual rattler-build could not solve compiler dependencies because conda.anaconda.org was unreachable. Prior attempts to compile the full variant approached 3.8 GiB RSS and were stopped; package build, isolated installed tests, audit, native CI and owner review still required.
 
 2026-10-28: GitHub Actions native validation run https://github.com/Archont561/ODM-conda/actions/runs/40686337935 at commit 21a57c9109725e5ae1713cbd0dd1ad3162080a17 selected dem2mesh, renderdem and poissonrecon-odm. All build and packaged tests, fresh-environment retests, artifact audits and corresponding-source bundling steps passed. Source bundle for poissonrecon-odm SHA256 7e2d03e07eb412b52977b3428eaa3c6db410689556cf262e48ae5e8c2d484e7c. Non-published artifact https://github.com/Archont561/ODM-conda/actions/runs/40686337935/artifacts/12815549805 (14-day retention; zip SHA256 3b33418c9111591bf5bc83127106b105e803ee4d899190f860c73699c7a411ca). Artifact-specific checksums remain in its audit report; this environment cannot download the artifact. Native evidence applies to this commit only. Source and license review, owner decisions and release gates remain open; no publication is authorized.
+
+2026-10-28: reviewed hash-verified upstream source and historical build context; added ten conservative BSD notice variants and bumped provisional recipe to build 1. Historical build 0 cannot validate it. Bundled libpng 1.2.29 falls within historical advisory ranges; actual binary linkage and exploitability unproven. See research/poissonrecon-readiness-review.md and TASK-55. Owner must dispatch native build/retest/audit/source steps for the proposed commit, inspect outputs and complete legal/security review. All release gates remain false.
 <!-- SECTION:NOTES:END -->
