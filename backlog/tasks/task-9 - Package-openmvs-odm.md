@@ -4,7 +4,7 @@ title: Package openmvs-odm (ReconstructMesh target for the fast-orthophoto MVP)
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 16:34'
+updated_date: '2026-10-28 19:08'
 labels:
   - component
   - openmvs-odm
@@ -71,4 +71,6 @@ The installed-test entry point now invokes the generated OpenMVS reconstruction 
 2026-10-28: enabled -DEIGEN_MPL2_ONLY in the reduced build to enforce the upstream Eigen COPYING.README selection; GCC 12 research rebuild completed 47/47 and synthetic reconstruction plus both visibility rejection tests passed. This does not replace review of the Eigen notice-bearing files or external dependencies. research/openmvs-notices.json tracks 499 exact file hashes from the reduced build and license evidence; it is not a final legal inventory.
 
 Source archive scanning now uses a single exact hashed Eigen lapack/CMakeLists.txt exception instead of excluding its whole lapack subtree; unrecognized fetch commands elsewhere remain rejected. No new claim of network isolation or license approval.
+
+2026-10-28: added experimental local-only reduced OpenMVS ReconstructMesh research recipe and isolated build/test runner; it is not registered as a production component and native Conda build has not run. Owner-dispatched research workflow retains no package or source artifact and performs fresh retest and a bounded leak/RPATH audit. Upstream archive contains restricted IBFS/TRWS material; no distribution or license approval is implied.
 <!-- SECTION:NOTES:END -->

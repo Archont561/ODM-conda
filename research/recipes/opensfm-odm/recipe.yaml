@@ -1,0 +1,88 @@
+schema_version: 1
+package:
+  name: opensfm-odm
+  version: "0.5.2"
+source:
+  - url: https://codeload.github.com/OpenDroneMap/OpenSfM/tar.gz/c5328439465e6ace011f39077d1077d7b1cdd65d
+    sha256: 2bd9ec9ed20c5b426ff2808734e0a8849e2375038e378105f97128e48d704f8e
+    patches:
+      - patches/0001-ceres-config.patch
+  - url: https://codeload.github.com/pybind/pybind11/tar.gz/a2e59f0e7065404b44dfe92a28aca47ba1378dc4
+    sha256: 1da0a5c38950e4f49329e9de10c59b2527840a1b963113f1c53b455971cd6aef
+    target_directory: opensfm/src/third_party/pybind11
+build:
+  number: 0
+  skip: target_platform != "linux-64"
+  python:
+    skip_pyc_compilation:
+      - lib/python*/site-packages/opensfm/**/*.py
+      - share/odm-conda/**/*.py
+  script:
+    file: ../../../scripts/build_open_research.py
+    interpreter: python
+requirements:
+  build:
+    - python >=3.12,<3.13
+    - cmake >=3.31,<3.32
+    - ninja >=1.11,<2
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+  host:
+    - python >=3.12,<3.13
+    - numpy
+    - libopencv ==4.12.*
+    - eigen
+    - ceres-solver
+    - suitesparse
+    - gflags
+    - glog
+    - libgomp >=14
+  run:
+    - python >=3.12,<3.13
+    - numpy
+    - py-opencv ==4.12.*
+    - ceres-solver
+    - suitesparse
+    - gflags
+    - glog
+    - libgomp >=14
+    - cloudpickle
+    - exifread
+    - flask
+    - fpdf2
+    - joblib
+    - matplotlib
+    - networkx
+    - pillow
+    - pyproj
+    - python-dateutil
+    - pyyaml
+    - scipy
+    - six
+    - xmltodict
+    - beautifulsoup4
+    - lxml
+tests:
+  - package_contents:
+      files:
+        - bin/opensfm
+        - share/odm-conda/opensfm-odm/opensfm_fixture.py
+        - share/odm-conda/opensfm-odm/opensfm_assets_fixture.py
+  - script:
+      interpreter: python
+      content: |
+        import subprocess, sys, sysconfig
+        from pathlib import Path
+        fixtures = Path(sys.prefix) / 'share/odm-conda/opensfm-odm'
+        root = sysconfig.get_path('purelib')
+        for name in ('opensfm_fixture.py', 'opensfm_assets_fixture.py'):
+            subprocess.run([sys.executable, str(fixtures / name), root], check=True)
+        subprocess.run([str(Path(sys.prefix) / 'bin/opensfm'), '--help'], check=True)
+    requirements:
+      run:
+        - python >=3.12,<3.13
+about:
+  homepage: https://github.com/OpenDroneMap/OpenSfM
+  summary: Local research-only OpenSfM build, not redistributable
+  license: LicenseRef-Unreviewed

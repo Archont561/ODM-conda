@@ -1,7 +1,9 @@
 # Experimental source staging
 
 `source-graphs.json` is preliminary research for the six selected components,
-not a recipe, completeness attestation, or release authorization. The plans
+not a completeness attestation or release authorization. Experimental local-only
+OpenMVS and OpenSfM recipes are separately located under `research/recipes/`;
+they are not registered production components and have not passed native builds. The plans
 record immutable archives observed during research; mutable ODM references were
 resolved at the time recorded in their Backlog tasks. They must be reviewed
 again when selecting final release sources.
@@ -227,9 +229,10 @@ source bundler does not enable the `.gitmodules` exception for OpenSfM. Gitlink
 revision verification is separate; an archive fingerprint cannot prove it.
 
 The OpenMVS and OpenSfM graph checkers recognize rattler-build 0.68's generated
-work-root files only with exact expected source metadata. Their expected recipe
-patch filenames are provisional: neither recipe has been registered or validated.
-Neither check grants source redistribution or license approval.
+work-root files only with exact expected source metadata. Their expected patch
+filenames match the experimental research recipes; neither recipe is registered
+as a production component or has passed an isolated native build. Neither check
+grants source redistribution or license approval.
 
 The pybind11 subproject can be configured separately with tests explicitly off:
 
@@ -245,3 +248,29 @@ standalone harness forces `PYBIND11_TEST` and `BUILD_TESTING` off and
 2.13.6 source and local CMake 3.31/GCC 12; the test subdirectory was not
 configured. It is not the full OpenSfM configuration, and it neither disables
 other possible fetches nor establishes kernel network isolation.
+
+### Local-only OpenMVS and OpenSfM recipes
+
+`research/recipes/openmvs-odm` builds the **reduced ReconstructMesh target only**;
+`research/recipes/opensfm-odm` builds the eight native bindings and installs the
+Python package, CLI and data assets. Both are experimental and their declared
+`LicenseRef-Unreviewed` is a warning, not a license conclusion. Do **not**
+distribute their packages, cached archives or copied data. They are deliberately
+absent from the production component list and build/release workflows.
+
+With a locked Pixi environment and Conda/source network access, run a complete
+local research build, fresh retest and limited leak/RPATH audit with:
+
+```sh
+RESEARCH_COMPONENT=openmvs pixi run python scripts/run_open_research.py
+RESEARCH_COMPONENT=opensfm pixi run python scripts/run_open_research.py
+```
+
+Each run uses a temporary directory and removes its research packages and
+source archive copies afterwards; rattler or Conda may keep their own local
+caches. The owner can instead dispatch **Local-only Open component research
+build**, which uploads neither packages nor source archives. The research audit
+is separate from, and does not replace, the production release audit. Passing
+builds will not resolve licensing, asset provenance, offline/network isolation,
+relocation beyond checked ELF RPATHs, or a full OpenSfM dataset run. No native
+Conda build of these recipes has yet passed.
