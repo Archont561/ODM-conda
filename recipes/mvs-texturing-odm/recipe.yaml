@@ -31,7 +31,7 @@ source:
     target_directory: elibs/eigen
 
 build:
-  number: 1
+  number: 2
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:

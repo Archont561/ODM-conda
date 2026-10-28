@@ -65,6 +65,11 @@ licenses; apply both OpenMVS research patches before verifying it.
 `opensfm-notices.json` records root and third-party notices and selected
 camera-database and vocabulary asset hashes. The OpenSfM README contains
 conflicting BSD/AGPL descriptions; vocabulary provenance remains unreviewed.
+The 10,000-word vocabulary was added as `bow_hahog_root_uchar.npz` in
+OpenSfM commit `c686ad2e8c62664c63115968d86c605c83f8b04a` and renamed in
+`d8cabec9e8a510d0c1c3a5be97dd8f6657ef09f9`; that latter commit also added the
+64-word vocabulary. The pinned setup.py includes both. These Git history facts
+do not identify the training data or establish asset rights.
 All inventories are evidence, not legal approval or complete obligations.
 
 To verify the texturing inventory against the matching staged tree, run:

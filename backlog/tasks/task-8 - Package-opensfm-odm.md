@@ -4,7 +4,7 @@ title: Package opensfm-odm
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 16:14'
+updated_date: '2026-10-28 18:27'
 labels:
   - component
   - opensfm-odm
@@ -44,4 +44,6 @@ Further research (2026-10-28): adding a temporary -DGLOG_USE_GLOG_EXPORT flag an
 2026-10-28: The pinned OpenSfM Git commit was fetched into a temporary local bare Git repository and scripts/verify_gitlinks.py verified its complete primary tree has exactly one gitlink: opensfm/src/third_party/pybind11 at a2e59f0e7065404b44dfe92a28aca47ba1378dc4, matching the experimental source plan. Automated negative tests reject altered, omitted and unexpected gitlinks. This does not verify nested gitlinks, archive-versus-tree equivalence, source completeness or enable production source staging.
 
 2026-10-28 source-license triage: re-staged and hash-verified pinned OpenSfM plus pybind11. research/opensfm-notices.json records hashes of 12 root/third-party notices and selected data assets. Root LICENSE contains AGPL v3 text while README says ODM fork changes are AGPLv3 and also retains upstream wording that OpenSfM is BSD-style and LICENSE is BSD; this inconsistency needs qualified file-level review, not a guessed final SPDX expression. Bundled AKAZE and pybind11 notices contain BSD-3-clause terms, VLFeat COPYING contains BSD-2-clause terms. The sensor database readme claims simplified BSD despite the fork root AGPL text, and two bundled bag-of-words NPZ vocabulary files have unverified origin/training-data rights. Hashes establish identity, not redistribution permission. No owner approval or final license decision implied.
+
+2026-10-28 follow-up source history: pinned setup.py includes both 10,000-word and 64-word NPZ vocabularies and config.py uses them as defaults. GitHub history shows the 10,000-word asset first added as opensfm/data/bow/bow_hahog_root_uchar.npz in c686ad2e8c62664c63115968d86c605c83f8b04a (feat: compute feature words), then renamed in d8cabec9e8a510d0c1c3a5be97dd8f6657ef09f9; the same latter commit added the 64-word asset. These commits establish repository history only, not training dataset provenance, model authorship or redistribution rights. AGPL/BSD ambiguity and license approval remain open; no package or publication is authorized.
 <!-- SECTION:NOTES:END -->
