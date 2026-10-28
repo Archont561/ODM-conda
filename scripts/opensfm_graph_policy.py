@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from common import ROOT, ScaffoldError, relative_path, sha256
-from openmvs_graph_policy import fingerprint_tree
+from openmvs_graph_policy import fingerprint_tree, rattler_generated_files
 
 PRIMARY = {
     'name': 'opensfm',
@@ -68,7 +68,14 @@ def validate_opensfm_patch(source: dict[str, Any], root: Path = ROOT) -> None:
 
 
 def verify_opensfm_tree(tree: Path) -> None:
-    if fingerprint_tree(tree) != EXPECTED_TREE:
+    expected = [
+        {'url': PRIMARY['url'], 'sha256': PRIMARY['sha256'],
+         'patches': ['patches/0001-ceres-config.patch']},
+        {'url': PYBIND11['url'], 'sha256': PYBIND11['sha256'],
+         'target_directory': PYBIND11['path']},
+    ]
+    ignored = rattler_generated_files(tree, expected, 'OpenSfM')
+    if fingerprint_tree(tree, ignore_root_files=ignored) != EXPECTED_TREE:
         raise ScaffoldError('Unrecognized OpenSfM source tree fingerprint')
 
 

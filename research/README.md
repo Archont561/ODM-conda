@@ -226,7 +226,22 @@ exception, not evidence that tests or downloads are disabled. The production
 source bundler does not enable the `.gitmodules` exception for OpenSfM. Gitlink
 revision verification is separate; an archive fingerprint cannot prove it.
 
-The OpenMVS graph checker also recognizes rattler-build 0.68's generated
-work-root files only with exact expected source metadata. Its expected recipe
-patch filenames are provisional: no OpenMVS recipe has been registered or
-validated. Neither check grants source redistribution or license approval.
+The OpenMVS and OpenSfM graph checkers recognize rattler-build 0.68's generated
+work-root files only with exact expected source metadata. Their expected recipe
+patch filenames are provisional: neither recipe has been registered or validated.
+Neither check grants source redistribution or license approval.
+
+The pybind11 subproject can be configured separately with tests explicitly off:
+
+```sh
+cmake -S research/pybind11-tests-disabled -B /tmp/pybind-test-off -G Ninja \
+  -DPYBIND11_SOURCE=/absolute/path/to/opensfm/opensfm/src/third_party/pybind11
+cmake --build /tmp/pybind-test-off
+```
+
+First verify the full source graph and archives as described above. This
+standalone harness forces `PYBIND11_TEST` and `BUILD_TESTING` off and
+`FETCHCONTENT_FULLY_DISCONNECTED` on. It was configured with the pinned pybind11
+2.13.6 source and local CMake 3.31/GCC 12; the test subdirectory was not
+configured. It is not the full OpenSfM configuration, and it neither disables
+other possible fetches nor establishes kernel network isolation.
