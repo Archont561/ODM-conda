@@ -10,11 +10,16 @@ from common import ROOT, config
 
 
 def test_open_research_recipes_have_sources_builds_and_installed_tests():
-    for name, expected_sources in [('openmvs-odm', 3), ('opensfm-odm', 2)]:
+    for name, expected_sources in [('openmvs-odm', 3), ('opensfm-odm', 3)]:
         recipe = yaml.safe_load((ROOT / 'research/recipes' / name / 'recipe.yaml').read_text())
         assert recipe['package']['name'] == name
         assert len(recipe['source']) == expected_sources
-        assert all(item.get('url', '').startswith('https://codeload.github.com/') and item.get('sha256') for item in recipe['source'])
+        assert all(item.get('url', '').startswith(('https://codeload.github.com/', 'https://files.pythonhosted.org/')) and item.get('sha256') for item in recipe['source'])
+        if name == 'opensfm-odm':
+            assert recipe['source'][2]['sha256'] == '95fe9ba737edea8e5737fb9ddda7031d7ca62fd53f53c1c4e95195f3c7d801fd'
+            assert {'rasterio', 'rawpy'} <= set(recipe['requirements']['run'])
+        else:
+            assert 'libboost-devel >=1.89,<1.90' in recipe['requirements']['host']
         assert recipe['build']['script']['file'].endswith('build_open_research.py')
         assert recipe['requirements']['build'] and recipe['requirements']['host'] and recipe['requirements']['run']
         assert any('script' in test for test in recipe['tests'])

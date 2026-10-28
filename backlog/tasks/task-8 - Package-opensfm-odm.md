@@ -4,7 +4,7 @@ title: Package opensfm-odm
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 19:08'
+updated_date: '2026-10-28 19:30'
 labels:
   - component
   - opensfm-odm
@@ -52,4 +52,6 @@ Further research (2026-10-28): adding a temporary -DGLOG_USE_GLOG_EXPORT flag an
 2026-10-28: OpenSfM research tree guard now permits only exact provisional rattler source metadata plus known generated files, and rejects altered metadata and symlinks; verified on the actual pinned patched source with simulated runner files. The standalone research/pybind11-tests-disabled CMake harness configured the exact pinned pybind11 2.13.6 with CMake 3.31 and GCC 12: PYBIND11_TEST=OFF, BUILD_TESTING=OFF, FETCHCONTENT_FULLY_DISCONNECTED=ON and no pybind11 test build tree. This standalone subproject experiment is not a full OpenSfM configuration or network isolation; recipe and native validation remain open.
 
 2026-10-28: added experimental local-only OpenSfM research recipe and isolated build/test runner; the recipe is not registered as a production component and native Conda build has not run. A separate owner-dispatched research workflow retains no package or source artifact and includes fresh retest and a bounded leak/RPATH audit. The package includes unresolved vocabulary assets and must not be distributed. Installed functional test currently checks native bindings, asset identity and CLI help only; an actual dataset run and review remain open.
+
+2026-10-28: native research run 40753347364 built OpenSfM and passed installed native-module and asset checks, but its CLI test failed on missing rasterio before fresh retest or audit. The ODM reference requirements also specify rawpy and vmem 1.0.2; added rasterio and rawpy runtime dependencies and pinned the PyPI vmem 1.0.2 sdist (SHA256 95fe9ba737edea8e5737fb9ddda7031d7ca62fd53f53c1c4e95195f3c7d801fd) as a local-only source, with exact tree/archive and installed file checks and its GPL license carried. Its GPL version/classifier and broader compatibility need review; this does not grant distribution rights. Native CI must be rerun by owner.
 <!-- SECTION:NOTES:END -->

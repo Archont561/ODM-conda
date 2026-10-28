@@ -253,7 +253,9 @@ other possible fetches nor establishes kernel network isolation.
 
 `research/recipes/openmvs-odm` builds the **reduced ReconstructMesh target only**;
 `research/recipes/opensfm-odm` builds the eight native bindings and installs the
-Python package, CLI and data assets. Both are experimental and their declared
+Python package, CLI and data assets, plus ODM's pinned `vmem` 1.0.2 dependency.
+The vmem sdist contains GPLv3 text and a GPLv3-or-later classifier; its exact
+license grant and compatibility remain unreviewed. Both recipes are experimental and their declared
 `LicenseRef-Unreviewed` is a warning, not a license conclusion. Do **not**
 distribute their packages, cached archives or copied data. They are deliberately
 absent from the production component list and build/release workflows.

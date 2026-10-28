@@ -15,7 +15,7 @@ from pathlib import Path
 
 from common import ROOT, ScaffoldError, fail_cli, run
 from openmvs_graph_policy import verify_openmvs_tree
-from opensfm_graph_policy import verify_opensfm_tree
+from opensfm_graph_policy import verify_opensfm_research_tree
 
 
 def main() -> None:
@@ -33,7 +33,7 @@ def main() -> None:
     if name == 'openmvs-odm':
         verify_openmvs_tree(source)
     else:
-        verify_opensfm_tree(source)
+        verify_opensfm_research_tree(source)
 
     env = os.environ.copy()
     env['CONDA_PREFIX'] = str(prefix)
@@ -96,6 +96,11 @@ def main() -> None:
                 raise ScaffoldError(f'OpenSfM native module missing or ambiguous: {module}')
         lib.mkdir(parents=True, exist_ok=True)
         shutil.copytree(package, lib / 'opensfm', ignore=shutil.ignore_patterns('src', 'test', '__pycache__', '*.pyc'))
+        # The exact PyPI vmem sdist is pinned and fingerprinted as a local-only
+        # source. This does not resolve its separate GPL obligations.
+        shutil.copytree(source / '_external/vmem/vmem', lib / 'vmem',
+                        ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
+        shutil.copy2(source / '_external/vmem/LICENSE', license_dir / 'vmem-LICENSE.txt')
         for filename in ('opensfm_fixture.py', 'opensfm_assets_fixture.py'):
             shutil.copy2(ROOT / 'scripts' / filename, share / filename)
         shutil.copy2(source / 'bin/opensfm_main.py', share / 'opensfm_main.py')

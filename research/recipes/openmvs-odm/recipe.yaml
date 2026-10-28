@@ -32,7 +32,8 @@ requirements:
     - ${{ compiler('cxx') }}
     - ${{ stdlib('c') }}
   host:
-    - libboost-devel
+    # Boost 1.90 no longer ships the system component requested upstream.
+    - libboost-devel >=1.89,<1.90
     - cgal-cpp
     - libopencv >=4.12,<4.13
     - tbb-devel >=2023.1,<2024
@@ -41,7 +42,7 @@ requirements:
     - zlib
     - libgomp >=14
   run:
-    - libboost
+    - libboost >=1.89,<1.90
     - libopencv >=4.12,<4.13
     - tbb >=2023.1,<2024
     - mpfr

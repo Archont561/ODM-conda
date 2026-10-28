@@ -10,12 +10,16 @@ source:
   - url: https://codeload.github.com/pybind/pybind11/tar.gz/a2e59f0e7065404b44dfe92a28aca47ba1378dc4
     sha256: 1da0a5c38950e4f49329e9de10c59b2527840a1b963113f1c53b455971cd6aef
     target_directory: opensfm/src/third_party/pybind11
+  - url: https://files.pythonhosted.org/packages/ec/56/679d06f010abf87e20dd965b46412876118a0536ab06f56a5309ec2a2b92/vmem-1.0.2.tar.gz
+    sha256: 95fe9ba737edea8e5737fb9ddda7031d7ca62fd53f53c1c4e95195f3c7d801fd
+    target_directory: _external/vmem
 build:
   number: 0
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:
       - lib/python*/site-packages/opensfm/**/*.py
+      - lib/python*/site-packages/vmem/**/*.py
       - share/odm-conda/**/*.py
   script:
     file: ../../../scripts/build_open_research.py
@@ -59,6 +63,8 @@ requirements:
     - python-dateutil
     - pyyaml
     - scipy
+    - rasterio
+    - rawpy
     - six
     - xmltodict
     - beautifulsoup4
@@ -73,7 +79,10 @@ tests:
       interpreter: python
       content: |
         import subprocess, sys, sysconfig
+        import vmem
         from pathlib import Path
+        memory = vmem.virtual_memory()
+        assert memory.total > 0 and 0 <= memory.available <= memory.total
         fixtures = Path(sys.prefix) / 'share/odm-conda/opensfm-odm'
         root = sysconfig.get_path('purelib')
         for name in ('opensfm_fixture.py', 'opensfm_assets_fixture.py'):
