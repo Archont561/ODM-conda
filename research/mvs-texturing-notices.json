@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "status": "preliminary evidence, not complete notice inventory or license approval",
-  "basis": "GCC -MM for 25 texturing source files in the experimental staged tree; source-level paths, not binary inclusion or legal conclusions",
+  "basis": "Preliminary source inspection and GCC -MM for 25 texturing source files; source-level paths, not binary inclusion or legal conclusions",
   "source_plan": "research/source-graphs.json:mvs-texturing",
   "entries": [
     {
@@ -11,6 +11,10 @@
     {
       "path": "_external/mve/LICENSE.txt",
       "sha256": "79c48dfce85b3658b579a6b6d80be1d8aa31f78c91bc45fcb1bc4ccab8d70c91"
+    },
+    {
+      "path": "_external/mve/libs/mve/image_exif.cc",
+      "sha256": "964dad57266458269d7cc37440bd093d8e14fb203b8f6c1cfba0195040454ca2"
     },
     {
       "path": "elibs/mapmap/LICENSE.txt",

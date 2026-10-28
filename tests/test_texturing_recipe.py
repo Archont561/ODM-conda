@@ -48,3 +48,18 @@ def test_texturing_recipe_has_zlib_development_headers_for_cmake():
     # FindPNG also invokes FindZLIB: libzlib is runtime-only and lacks the
     # unversioned library and headers needed in the isolated host environment.
     assert 'zlib' in recipe['requirements']['host']
+
+
+def test_texturing_preserves_mve_easyexif_notice():
+    import json
+    import yaml
+
+    component = config()['components']['mvs-texturing-odm']
+    entry = {'source': '_external/mve/libs/mve/image_exif.cc',
+             'target': '_external-mve-libs-mve-image_exif.cc', 'kind': 'verbatim'}
+    assert entry in component['notices']
+    assert 'BSD-2-Clause' in component['license']
+    recipe = yaml.safe_load((ROOT / component['recipe']).read_text(encoding='utf-8'))
+    assert '.conda-notices/' + entry['target'] in recipe['about']['license_file']
+    inventory = json.loads((ROOT / 'research/mvs-texturing-notices.json').read_text(encoding='utf-8'))
+    assert {'path': entry['source'], 'sha256': '964dad57266458269d7cc37440bd093d8e14fb203b8f6c1cfba0195040454ca2'} in inventory['entries']

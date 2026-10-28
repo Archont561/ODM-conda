@@ -4,7 +4,7 @@ title: Package mvs-texturing-odm
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 16:34'
+updated_date: '2026-10-28 18:01'
 labels:
   - component
   - mvs-texturing-odm
@@ -76,4 +76,6 @@ Additional source inspection (2026-10-28): the staged MVE CMake project adds -mp
 2026-10-28: added a test-stage mvs-texturing-odm 0.0.0.dev20250818 recipe for linux-64 and build.yml checkbox, pinned to the five staged source archives. The production source bundler verifies every archive and permits fetch-scan exceptions only for explicitly named, individually hashed CMake files; this is not proof of network isolation. The builder checks exact graph, both patch files and target paths, and a patched-tree fingerprint before compiling MVE and texrecon; it installs only texrecon, notices, provenance and a generated-data functional fixture. All four release gates remain false. Preliminary license metadata includes custom COLAMD/SuperLU identifiers and is not an approved expression. Owner and qualified review must still verify notices, dependency obligations and release rights.
 
 Local testing: recipe renders; rattler-build downloaded and patched all five inputs and its staged tree plus .source_info metadata passed the exact fingerprint policy. Isolated conda build then failed before compilation while downloading conda-forge noarch/repodata_shards.msgpack.zst (unexpected EOF). Using that rattler-staged tree with system GCC 12 and symlinked odm-dev dependencies in an artificial prefix, the actual builder compiled MVE and texrecon and the installed-layout generated texture fixture passed. This is not an isolated Conda package, relocation/ABI audit, full CPU audit, no-network proof or native CI. Production source bundling was locally exercised. Native build/retest/audit/source bundle must still be run by the owner through build.yml.
+
+2026-10-28: Native CI run 40740410329 passed build 0 build, installed test, fresh-environment retest, audit and source bundling. Subsequent license review found MVE libs/mve/image_exif.cc has an independent two-condition BSD-style notice not present in the previous 19-file inventory. Build 1 conservatively adds its verbatim notice and BSD-2-Clause to the preliminary expression; the exact source hash is recorded. This changes the package and requires a new native build and audit. MVE LICENSE also warns that sfm/sift.cc and sfm/surf.cc may be patented or otherwise restricted. The recipe builds the sfm static library while FindMVE requires it, but texrecon does not directly link it; final inclusion and patent rights remain unverified. See research/mvs-texturing-license-review.md for remaining owner and qualified-review decisions. No release gates changed.
 <!-- SECTION:NOTES:END -->
