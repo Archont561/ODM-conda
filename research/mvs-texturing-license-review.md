@@ -44,8 +44,10 @@ reviewer must confirm the SPDX identifiers, custom references and their scope.
    `texrecon`. The CI output lacks a final link map, and the archived binary
    was not independently inspected in this review. Build 2 asks GNU ld for a
    map of the texrecon link and fails if it is missing, incomplete, or names
-   the sfm archive or SIFT/SURF objects. A synthetic GNU link-map test passed,
-   but build 2 has not been run natively. Even a passing check cannot rule out
+   the sfm archive or SIFT/SURF objects. A synthetic GNU link-map test passed. Build 2 was subsequently run natively in
+   [run 40746814931](https://github.com/Archont561/ODM-conda/actions/runs/40746814931),
+   which passed the build, including the fail-closed link-map check, fresh retest,
+   audit and source bundling. The build map was not independently inspected for this review. Even a passing check cannot rule out
    equivalent code elsewhere or resolve the separate source-archive and patent
    questions. No patent analysis has established what rights apply.
    The original MVE archive containing both files is included in the source
@@ -63,7 +65,7 @@ reviewer must confirm the SPDX identifiers, custom references and their scope.
    the actual distribution, the source-offer URL and retention policy, and
    whether bundled source archives and all assets can be redistributed.
 5. Have the owner or qualified reviewer decide and record license approval; then
-   independently validate native build 1, source completeness, and the other
+   independently validate native build 2, source completeness, and the other
    release gates. No gate changes or release are authorized by this document.
 
 ## Runtime dependency evidence (preliminary)

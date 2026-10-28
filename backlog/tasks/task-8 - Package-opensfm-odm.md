@@ -4,7 +4,7 @@ title: Package opensfm-odm
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 19:30'
+updated_date: '2026-10-28 20:12'
 labels:
   - component
   - opensfm-odm
@@ -54,4 +54,8 @@ Further research (2026-10-28): adding a temporary -DGLOG_USE_GLOG_EXPORT flag an
 2026-10-28: added experimental local-only OpenSfM research recipe and isolated build/test runner; the recipe is not registered as a production component and native Conda build has not run. A separate owner-dispatched research workflow retains no package or source artifact and includes fresh retest and a bounded leak/RPATH audit. The package includes unresolved vocabulary assets and must not be distributed. Installed functional test currently checks native bindings, asset identity and CLI help only; an actual dataset run and review remain open.
 
 2026-10-28: native research run 40753347364 built OpenSfM and passed installed native-module and asset checks, but its CLI test failed on missing rasterio before fresh retest or audit. The ODM reference requirements also specify rawpy and vmem 1.0.2; added rasterio and rawpy runtime dependencies and pinned the PyPI vmem 1.0.2 sdist (SHA256 95fe9ba737edea8e5737fb9ddda7031d7ca62fd53f53c1c4e95195f3c7d801fd) as a local-only source, with exact tree/archive and installed file checks and its GPL license carried. Its GPL version/classifier and broader compatibility need review; this does not grant distribution rights. Native CI must be rerun by owner.
+
+2026-10-28: owner-dispatched local-only OpenSfM run https://github.com/Archont561/ODM-conda/actions/runs/40757042542 at 6f92c55295e719a14fb7423ee4a5a8bedc6bddb7 passed native build, installed tests, fresh-environment retest and limited research leak/RPATH audit. Temporary sources and package removed, no artifact uploaded. PR #35 merged at c1e191133b1cbe552b3b413ad4419e2309690382. See research/open-components-license-review.md: AGPL/BSD source wording, vocabulary and sensor-data rights, vmem BSD-header/GPL-text discrepancy, actual dependency notices and corresponding source remain unresolved; full dataset run and production registration also remain open. This is not release or license approval.
+
+2026-10-28: vmem 1.0.2 utils.py usage_percent has an identical Python AST to psutil _common.py at commit 93e1c468ab4ac7922472114b3aeeacda2c8676a1; that psutil LICENSE is BSD-3-Clause text. Both vmem posix.py and utils.py carry BSD-style Rodola headers, while the sdist LICENSE is GPLv3 text. See research/open-components-license-review.md for exact evidence, hashes and limits; ascertain provenance and applicable original notices before distribution.
 <!-- SECTION:NOTES:END -->

@@ -4,7 +4,7 @@ title: Package openmvs-odm (ReconstructMesh target for the fast-orthophoto MVP)
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 19:30'
+updated_date: '2026-10-28 20:11'
 labels:
   - component
   - openmvs-odm
@@ -75,4 +75,6 @@ Source archive scanning now uses a single exact hashed Eigen lapack/CMakeLists.t
 2026-10-28: added experimental local-only reduced OpenMVS ReconstructMesh research recipe and isolated build/test runner; it is not registered as a production component and native Conda build has not run. Owner-dispatched research workflow retains no package or source artifact and performs fresh retest and a bounded leak/RPATH audit. Upstream archive contains restricted IBFS/TRWS material; no distribution or license approval is implied.
 
 2026-10-28: native research run 40753317845 failed during OpenMVS CMake configuration because conda-forge Boost 1.90 omitted requested boost_system. The conda-forge boost-feedstock 1.89 recipe lists the system library; constrained host libboost-devel and run libboost to >=1.89,<1.90 pending owner native rerun. No build/test/audit or distribution approval is implied.
+
+2026-10-28: owner-dispatched local-only OpenMVS run https://github.com/Archont561/ODM-conda/actions/runs/40759635611 at a656bdb78c697d14d766945e17521a38e9d7cc36 passed reduced ReconstructMesh build, installed functional tests, fresh-environment retest and limited research leak/RPATH audit. Temporary sources and package removed, no artifact uploaded. PR #35 merged at c1e191133b1cbe552b3b413ad4419e2309690382. Boost 1.90 patch and explicit staged VCG cache path were used. See research/open-components-license-review.md and TASK-53/54; restricted source archive, complete notices and source rights remain unresolved. This is not release or license approval.
 <!-- SECTION:NOTES:END -->

@@ -4,7 +4,7 @@ title: Package mvs-texturing-odm
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 18:27'
+updated_date: '2026-10-28 20:13'
 labels:
   - component
   - mvs-texturing-odm
@@ -82,4 +82,8 @@ Local testing: recipe renders; rattler-build downloaded and patched all five inp
 2026-10-28 follow-up: build 1 native run 40742094824 passed package build/test, fresh retest, audit and source bundle. The CI log explicitly shows compilation of sift.cc.o and surf.cc.o into MVE sfm static library; source CMake indicates texrecon links mve and mve_util rather than sfm, but final link map and binary inspection are not available. No patent or non-inclusion conclusion. research/mvs-texturing-license-review.md records upstream license evidence for runtime versions observed in the fresh retest, notably the IJG acknowledgement question, and lists unresolved transitive dependencies. Upstream version-matched texts are not verified conda package metadata. Source completeness and owner license approval remain open.
 
 2026-10-28: build 2 adds a fail-closed GNU link-map check before packaging texrecon. It requires the map to contain expected texrecon, MVE and util inputs and rejects named mve_sfm archives or sift.cc.o/surf.cc.o. A toy native GNU ld link map passed and focused negative tests passed; this is not a build of texrecon, a link-map audit of prior build 1, a full binary/patent analysis or permission to redistribute the original MVE archive. Owner-dispatched build 2 native CI is still required, and all release gates remain false.
+
+2026-10-28: owner-dispatched build 2 run https://github.com/Archont561/ODM-conda/actions/runs/40746814931 at 902550d4f7438d382a2288e064b185a6834e53cf passed build with fail-closed named SIFT/SURF link-map check, packaged/fresh tests, artifact audit and source bundle; non-published artifact 12841144045 has GitHub-reported ZIP SHA256 5a92c91c65b56433766eddb739f5db488d4c0cf8403647274aee262c26bdd899. The map was not available for independent inspection in this review. Original MVE source and patent questions, actual dependency and notice review, source completeness and release decisions remain open. See research/mvs-texturing-license-review.md and research/component-readiness-review.md.
+
+Independent download of the build 2 artifact failed with EOF in this environment; link-map contents and the archive have not been independently inspected. GitHub job status and the build-time guard are the available evidence.
 <!-- SECTION:NOTES:END -->
