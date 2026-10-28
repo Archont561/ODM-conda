@@ -4,7 +4,7 @@ title: Package opensfm-odm
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 18:27'
+updated_date: '2026-10-28 18:53'
 labels:
   - component
   - opensfm-odm
@@ -46,4 +46,6 @@ Further research (2026-10-28): adding a temporary -DGLOG_USE_GLOG_EXPORT flag an
 2026-10-28 source-license triage: re-staged and hash-verified pinned OpenSfM plus pybind11. research/opensfm-notices.json records hashes of 12 root/third-party notices and selected data assets. Root LICENSE contains AGPL v3 text while README says ODM fork changes are AGPLv3 and also retains upstream wording that OpenSfM is BSD-style and LICENSE is BSD; this inconsistency needs qualified file-level review, not a guessed final SPDX expression. Bundled AKAZE and pybind11 notices contain BSD-3-clause terms, VLFeat COPYING contains BSD-2-clause terms. The sensor database readme claims simplified BSD despite the fork root AGPL text, and two bundled bag-of-words NPZ vocabulary files have unverified origin/training-data rights. Hashes establish identity, not redistribution permission. No owner approval or final license decision implied.
 
 2026-10-28 follow-up source history: pinned setup.py includes both 10,000-word and 64-word NPZ vocabularies and config.py uses them as defaults. GitHub history shows the 10,000-word asset first added as opensfm/data/bow/bow_hahog_root_uchar.npz in c686ad2e8c62664c63115968d86c605c83f8b04a (feat: compute feature words), then renamed in d8cabec9e8a510d0c1c3a5be97dd8f6657ef09f9; the same latter commit added the 64-word asset. These commits establish repository history only, not training dataset provenance, model authorship or redistribution rights. AGPL/BSD ambiguity and license approval remain open; no package or publication is authorized.
+
+2026-10-28 continued research: added scripts/opensfm_assets_fixture.py to verify the exact two default vocabulary files, sensor JSON and calibration YAML listed by pinned setup.py, rejecting missing, changed or symlinked assets. It passed on the hash-pinned staged source tree, with negative tests; this is an asset identity check, not an installed package, provenance review, functional dataset or distribution approval. No recipe or owner native workflow run yet.
 <!-- SECTION:NOTES:END -->

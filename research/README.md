@@ -120,8 +120,18 @@ python scripts/opensfm_fixture.py /absolute/path/to/opensfm-source-root
 ```
 
 It imports the bindings from that exact tree, checks an equatorial ECEF
-conversion and an identity pose. This is not an installed package, dataset,
-source-completeness or release test.
+conversion and an identity pose. To check the four runtime assets listed in the
+pinned upstream setup script, independently run:
+
+```sh
+python scripts/opensfm_assets_fixture.py /absolute/path/to/opensfm-source-root
+# Alternatively pass the installed site-packages directory containing opensfm/.
+```
+
+The asset checker verifies the exact bytes of the two vocabulary files, sensor
+JSON and camera calibration YAML, and rejects symlinked or missing files. It
+does not establish asset provenance or permission to distribute them. Neither
+check is a dataset, source-completeness or release test.
 
 `patches/opensfm-ceres-config.patch` is a research patch that selects the Ceres
 CMake package and propagates its target requirements to native-module consumers.
