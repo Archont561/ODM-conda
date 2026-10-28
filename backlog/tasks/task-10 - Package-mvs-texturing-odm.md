@@ -4,7 +4,7 @@ title: Package mvs-texturing-odm
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 10:18'
+updated_date: '2026-10-28 10:31'
 labels:
   - component
   - mvs-texturing-odm
@@ -62,4 +62,6 @@ Eigen exact-commit update (2026-10-28): the GitLab 3.3.2 tag commit 477d1e81928a
 Preprocessor dependency trace (2026-10-28): using system GCC 12 -MM, EIGEN_MPL2_ONLY, the staged exact-commit Eigen, staged MVE/mapmap/rayint and temporary oneTBB 2023.1.0 headers, all 25 texturing/texrecon .cpp files and 26 MVE util/mve/math .cc files generated dependency lists without errors. Texturing trace listed 341 project paths (186 Eigen, 78 mapmap, 6 rayint, 25 MVE, 43 texturing and 3 app paths); it confirms inclusion of dset/dset.h, Eigen_Colamd.h, SparseColEtree.h and SparseLU_relax_snode.h, plus other SuperLU-derived headers. This is a preprocessing-only trace for one configuration, not a compiled package, proof of complete notices, or a substitute for native CI. Collect original per-file and root notices, including the zlib-style dset, SuperLU and COLAMD notices; owner license approval remains open.
 
 Notice inventory (2026-10-28): research/mvs-texturing-notices.json records SHA256 for 19 notice-bearing files: the four component root licenses, dset license, Eigen COPYING.MPL2 and COPYING.README, and 12 SuperLU/COLAMD-bearing headers identified in the texturing preprocessor trace. scripts/verify_staged_notices.py verified all 19 against the exact-commit staged tree. A fresh experimental bundle verified all five archive hashes and included the inventory and offline patch. These 19 files are a preliminary minimum, not evidence that all copyright notices, license obligations or runtime dependencies have been reviewed; not a production release bundle.
+
+Exact-source local research build and fixture (2026-10-28): staged the five planned archives with the exact GitLab Eigen tag commit, verified all 19 preliminary notice-bearing file hashes, applied the experimental offline patch, and built MVE and texrecon locally using system GCC 12, restored odm-dev libraries and upstream oneTBB 2023.1.0 headers with a local CMake imported TBB target. A generated 64x64 color-gradient PNG, camera file and two-face PLY quad produced an OBJ with two textured triangles, an MTL and a PNG atlas; scripts/texrecon_fixture.py reproduces this research test and negative tests reject a program that only reports success or creates no output. This is not a packaged or installed-prefix build, is not network-isolated, skips global and local seam leveling, uses a manually assembled research TBB development setup, and is not native CI validation. Source completeness, full notice review, production source-bundle integration and all release gates remain open.
 <!-- SECTION:NOTES:END -->
