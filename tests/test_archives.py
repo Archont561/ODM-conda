@@ -67,6 +67,7 @@ def test_source_archive_rejects_submodules_fetches_and_traversal(tmp_path):
     cases = [{"project/.gitmodules": b"[submodule]"},
              {"project/CMakeLists.txt": b"ExternalProject_Add(nested)"},
              {"project/CMakeLists.txt": b"file(\nDOWNLOAD https://example.invalid)"},
+             {"project/CMakeLists.txt": b"file(\tDOWNLOAD https://example.invalid)"},
              {"../escape": b"x"}]
     path = tmp_path / "source.tar.gz"
     for entries in cases:
@@ -102,6 +103,7 @@ def test_source_bundle_is_deterministic_and_contains_manifest(tmp_path, monkeypa
     with tarfile.open(upstream, "w:gz") as archive:
         add_bytes(archive, "project/CMakeLists.txt", b"project(example)\n")
     component = config()["components"]["fpcfilter"]
+    component["source"]["sha256"] = hashlib.sha256(upstream.read_bytes()).hexdigest()
 
     def fail_git(*args, **kwargs):
         raise subprocess.CalledProcessError(1, ["git"])

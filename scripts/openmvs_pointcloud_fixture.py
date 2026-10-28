@@ -70,14 +70,53 @@ def test_pointcloud(executable: Path, source: Path, directory: Path) -> tuple[in
     return validate_mesh(mesh)
 
 
+def test_missing_visibility(executable: Path, source: Path, directory: Path, *, with_view_counts: bool = False) -> None:
+    """A point cloud without view indices must be rejected instead of crashing."""
+    verify_dataset(source)
+    for name in DATASET_FILES:
+        target = directory / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source / name, target)
+    check_missing_visibility(executable, directory / 'scene.mvs', directory, with_view_counts=with_view_counts)
+
+
+def check_missing_visibility(executable: Path, scene: Path, directory: Path, *, with_view_counts: bool = False) -> None:
+    """Check that separate PLY without camera indices fails without a signal."""
+    cloud = directory / 'no-views.ply'
+    with cloud.open('w', encoding='ascii') as output:
+        output.write('ply\nformat ascii 1.0\nelement vertex 400\n'
+                     'property float x\nproperty float y\nproperty float z\n')
+        if with_view_counts:
+            output.write('property uchar views\n')
+        output.write('end_header\n')
+        for i in range(20):
+            for j in range(20):
+                output.write(f'{i * 0.05} {j * 0.05} {1 + ((i + j) % 3) * 0.02}'
+                             + (' 2' if with_view_counts else '') + '\n')
+    command = [str(executable), '-i', str(scene), '-p', str(cloud),
+               '-o', str(directory / 'result.mvs'), '--archive-type', '1',
+               '--min-point-distance', '0', '--max-threads', '1']
+    completed = subprocess.run(command, cwd=directory, text=True, capture_output=True, timeout=120)
+    assert completed.returncode > 0, f'Expected a clean error, got exit {completed.returncode}'
+    assert 'point cloud requires per-point camera visibility' in (completed.stdout + completed.stderr).lower(), 'Missing visibility error'
+    assert not (directory / 'result.ply').exists(), 'Unexpected output for invalid point cloud'
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--executable', required=True, type=Path)
     parser.add_argument('--dataset', required=True, type=Path, help='Pinned upstream apps/Tests/data directory')
+    parser.add_argument('--check-visibility-rejection', action='store_true',
+                        help='Also check rejection of PLY without camera IDs (requires experimental patch)')
     args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix='openmvs-pointcloud-') as directory:
         vertices, faces = test_pointcloud(args.executable.resolve(), args.dataset.resolve(), Path(directory))
     print(f'PASS: research OpenMVS point-cloud reconstruction produced {vertices} vertices and {faces} faces')
+    if args.check_visibility_rejection:
+        for counts in (False, True):
+            with tempfile.TemporaryDirectory(prefix='openmvs-no-visibility-') as directory:
+                test_missing_visibility(args.executable.resolve(), args.dataset.resolve(), Path(directory), with_view_counts=counts)
+        print('PASS: point clouds without camera IDs are rejected without crashing')
 
 
 if __name__ == '__main__':

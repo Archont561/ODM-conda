@@ -4,7 +4,7 @@ title: Review openmvs-odm package-readiness evidence
 status: To Do
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-26 20:59'
+updated_date: '2026-10-28 15:48'
 labels:
   - packaging
   - review
@@ -12,6 +12,8 @@ labels:
 milestone: m-7
 dependencies:
   - TASK-9
+  - TASK-53
+  - TASK-54
 type: task
 ordinal: 38000
 ---
