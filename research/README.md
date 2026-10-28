@@ -62,6 +62,16 @@ a network-isolated or installed-package validation. A real TBB development
 package, complete source and license review, native CI build and installed-prefix
 functional test remain required.
 
+`patches/mve-baseline-cpu.patch` is a research patch against the pinned MVE
+archive that removes its unconditional GNU `-mpopcnt` option. Together with
+the texturing offline patch, a local GCC 12 build using `-march=x86-64
+-mno-popcnt` produced `texrecon` and passed the generated-scene fixture. The
+70 MVE object files and the resulting executable contained no POPCNT
+instructions in an `objdump` inspection; 25 texturing compile commands also
+used the requested baseline flags. This covers only the inspected build output,
+not its dynamically linked libraries, other compiler instructions, an isolated
+Conda build or a package audit. Both patches remain research-only.
+
 A generated-scene **research-only** texrecon fixture is available after building
 an executable from the pinned sources:
 

@@ -148,6 +148,15 @@ def test_experimental_texturing_patch_is_in_packaging_sources():
     assert '-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native' in text
 
 
+def test_experimental_mve_cpu_patch_is_in_packaging_sources():
+    from common import ROOT, repository_files, sha256
+
+    patch = ROOT / "research" / "patches" / "mve-baseline-cpu.patch"
+    assert patch in repository_files()
+    assert sha256(patch) == "7427f3332ba65a1ebf677940fbf9ec957c7343a311844953d829d30e0944646c"
+    assert '-        add_compile_options(-mpopcnt)' in patch.read_text()
+
+
 def test_experimental_bundle_contains_every_archive_and_patch(tmp_path, monkeypatch):
     import json
     import bundle_staged_sources

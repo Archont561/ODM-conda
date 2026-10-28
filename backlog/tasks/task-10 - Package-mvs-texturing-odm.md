@@ -4,7 +4,7 @@ title: Package mvs-texturing-odm
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 11:21'
+updated_date: '2026-10-28 13:00'
 labels:
   - component
   - mvs-texturing-odm
@@ -66,4 +66,6 @@ Notice inventory (2026-10-28): research/mvs-texturing-notices.json records SHA25
 Exact-source local research build and fixture (2026-10-28): staged the five planned archives with the exact GitLab Eigen tag commit, verified all 19 preliminary notice-bearing file hashes, applied the experimental offline patch, and built MVE and texrecon locally using system GCC 12, restored odm-dev libraries and upstream oneTBB 2023.1.0 headers with a local CMake imported TBB target. A generated 64x64 color-gradient PNG, camera file and two-face PLY quad produced an OBJ with two textured triangles, an MTL and a PNG atlas; scripts/texrecon_fixture.py reproduces this research test and negative tests reject a program that only reports success or creates no output. This is not a packaged or installed-prefix build, is not network-isolated, skips global and local seam leveling, uses a manually assembled research TBB development setup, and is not native CI validation. Source completeness, full notice review, production source-bundle integration and all release gates remain open.
 
 Additional source inspection (2026-10-28): the staged MVE CMake project adds -mpopcnt by default for GNU on x86; the existing texturing research patch removes -march=native from texturing but does not remove this MVE flag. CPU portability must be reviewed before a package can claim the linux-64 baseline.
+
+2026-10-28 baseline research: applied research/patches/mve-baseline-cpu.patch (SHA256 7427f3332ba65a1ebf677940fbf9ec957c7343a311844953d829d30e0944646c) to the pinned MVE source to remove its unconditional GNU -mpopcnt. With the texturing offline patch and all exact-commit source archives, built MVE and texrecon using system GCC 12, -march=x86-64 -mno-popcnt, restored odm-dev libraries and separately downloaded oneTBB headers with a temporary imported target. All 70 MVE object files and the final texrecon executable had no POPCNT instructions in objdump; compile commands for 25 texturing translation units had no -march=native or -mpopcnt. The generated-scene texture fixture passed. This is not an isolated Conda build, does not inspect dynamically linked dependency instructions, is not a full CPU/ABI audit and is not an installed-package or release validation; all gates remain open.
 <!-- SECTION:NOTES:END -->
