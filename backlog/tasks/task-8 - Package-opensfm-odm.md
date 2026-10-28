@@ -4,7 +4,7 @@ title: Package opensfm-odm
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 13:09'
+updated_date: '2026-10-28 16:14'
 labels:
   - component
   - opensfm-odm
@@ -42,4 +42,6 @@ Further research (2026-10-28): adding a temporary -DGLOG_USE_GLOG_EXPORT flag an
 2026-10-28: created research/patches/opensfm-ceres-config.patch (SHA256 1cbf2c8044e0281368c8802205f14816fc3b635fb419a7d8fa3570603fdfd773) to find Ceres through its exported CMake config and propagate its target usage requirements through OpenSfM libraries, rather than manually injecting glog defines or include paths. Patch applied cleanly to a freshly staged exact source graph. With GCC 12 and the restored mixed Python/odm-dev environment, a clean CMake configuration and single-job build completed; after deleting old module outputs and rebuilding, all eight extensions were recreated and the research imports/ECEF/pose fixture passed. This is an experimental patch; no Conda compiler, isolated prefix, native package, SfM dataset, full notice review or release validation was performed.
 
 2026-10-28: The pinned OpenSfM Git commit was fetched into a temporary local bare Git repository and scripts/verify_gitlinks.py verified its complete primary tree has exactly one gitlink: opensfm/src/third_party/pybind11 at a2e59f0e7065404b44dfe92a28aca47ba1378dc4, matching the experimental source plan. Automated negative tests reject altered, omitted and unexpected gitlinks. This does not verify nested gitlinks, archive-versus-tree equivalence, source completeness or enable production source staging.
+
+2026-10-28 source-license triage: re-staged and hash-verified pinned OpenSfM plus pybind11. research/opensfm-notices.json records hashes of 12 root/third-party notices and selected data assets. Root LICENSE contains AGPL v3 text while README says ODM fork changes are AGPLv3 and also retains upstream wording that OpenSfM is BSD-style and LICENSE is BSD; this inconsistency needs qualified file-level review, not a guessed final SPDX expression. Bundled AKAZE and pybind11 notices contain BSD-3-clause terms, VLFeat COPYING contains BSD-2-clause terms. The sensor database readme claims simplified BSD despite the fork root AGPL text, and two bundled bag-of-words NPZ vocabulary files have unverified origin/training-data rights. Hashes establish identity, not redistribution permission. No owner approval or final license decision implied.
 <!-- SECTION:NOTES:END -->

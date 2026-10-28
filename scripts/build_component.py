@@ -88,7 +88,7 @@ def main() -> None:
             "-DOpenMVS_USE_CERES=OFF", "-DOpenMVS_USE_PYTHON=OFF", "-DOpenMVS_ENABLE_TESTS=OFF",
             "-DENABLE_SSE3=OFF", "-DENABLE_SSSE3=OFF", "-DENABLE_SSE41=OFF", "-DENABLE_SSE42=OFF",
             "-DENABLE_AVX=OFF", "-DENABLE_AVX2=OFF",
-            f"-DCMAKE_CXX_FLAGS={env.get('CXXFLAGS', '')} -march=x86-64 -mno-popcnt",
+            f"-DCMAKE_CXX_FLAGS={env.get('CXXFLAGS', '')} -march=x86-64 -mno-popcnt -DEIGEN_MPL2_ONLY",
         ])
         run(command, cwd=source, env=env)
         run(["cmake", "--build", str(build_dir), "--target", "ReconstructMesh", "--parallel", "2"], cwd=source, env=env)

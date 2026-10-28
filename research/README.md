@@ -56,7 +56,15 @@ archive and manifest. It refuses to overwrite a destination. This archive is
 not a release source bundle or a source-completeness certification.
 
 `mvs-texturing-notices.json` records hashes of 19 preliminary notice-bearing
-files. To verify them against the matching staged tree, run:
+files. `openmvs-notices.json` records the local reduced-target dependency-trace
+files plus root and third-party notices, including the excluded IBFS/TRWS
+licenses; apply both OpenMVS research patches before verifying it.
+`opensfm-notices.json` records root and third-party notices and selected
+camera-database and vocabulary asset hashes. The OpenSfM README contains
+conflicting BSD/AGPL descriptions; vocabulary provenance remains unreviewed.
+All inventories are evidence, not legal approval or complete obligations.
+
+To verify the texturing inventory against the matching staged tree, run:
 
 ```sh
 python scripts/verify_staged_notices.py --tree /tmp/texturing-source

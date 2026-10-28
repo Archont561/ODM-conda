@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "status": "preliminary byte inventory; not complete legal review or permission to distribute",
+  "basis": "Root and third-party notice files and selected bundled camera database/vocabulary assets from pinned graph; asset hashes are evidence only and do not establish license, provenance, or redistribution permission.",
+  "entries": [
+    {
+      "path": "LICENSE",
+      "sha256": "20b067f86de375aae6db0f283ab2e65de24d537733b89bd58432c101259d84cf"
+    },
+    {
+      "path": "README.md",
+      "sha256": "408bdefa750d35c3a313da37a2609cea766ef0292a9221578bb03feaec019c36"
+    },
+    {
+      "path": "licenses.csv",
+      "sha256": "4c17e19e758fe08ee3b3e472c716117ba01509aae668d27186383182576bb410"
+    },
+    {
+      "path": "opensfm/data/bow/bow_hahog_root_uchar_10000.npz",
+      "sha256": "474a88e67ea717acf96dd5d151df7a90724e84300153a339d1fdc23ba4133b7c"
+    },
+    {
+      "path": "opensfm/data/bow/bow_hahog_root_uchar_64.npz",
+      "sha256": "e2df17d92ebfba50fcbfc934e1805e474dd4095f5ed4e1cbeae1ef1caaeb3749"
+    },
+    {
+      "path": "opensfm/data/sensor_data.json",
+      "sha256": "ecc564167bb1e7f01648094a5a9a1a3f43d7b00b3bd9afa0afca2913fd2620d8"
+    },
+    {
+      "path": "opensfm/data/sensor_data.readme.txt",
+      "sha256": "f46b641594d0a183c69554dbcdf47c2eae25a44fb9b7f1414a2b67ff8928bc1a"
+    },
+    {
+      "path": "opensfm/data/sensor_data.sqlite",
+      "sha256": "45e7b0ed2d9978ae236ae522497514ded59ffd83f76bc0180555a36b2562fa31"
+    },
+    {
+      "path": "opensfm/data/sensor_data_detailed.json",
+      "sha256": "25033c02e2dab83012a6c5377a30d146634bd96d8fbd9e5cda85bbdfbbf5dc60"
+    },
+    {
+      "path": "opensfm/src/third_party/akaze/LICENSE",
+      "sha256": "6cc8c0423679fc8c8e6d7e6b180c32ed3fa31bc5b5c1ae48fb842bec7e2a075f"
+    },
+    {
+      "path": "opensfm/src/third_party/pybind11/LICENSE",
+      "sha256": "83965b843b98f670d3a85bd041ed4b372c8ec50d7b4a5995a83ac697ba675dcb"
+    },
+    {
+      "path": "opensfm/src/third_party/vlfeat/COPYING",
+      "sha256": "33b9f7703327199088d74f884b19997a0084180f984724720095a7cb412c4d89"
+    }
+  ]
+}
