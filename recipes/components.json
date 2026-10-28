@@ -319,6 +319,170 @@
         "source_completeness_reviewed": false,
         "native_validation_passed": false
       }
+    },
+    "mvs-texturing-odm": {
+      "version": "0.0.0.dev20250818",
+      "version_note": "Snapshot version dated from the pinned upstream commit; not an upstream release.",
+      "build_number": 0,
+      "recipe": "recipes/mvs-texturing-odm/recipe.yaml",
+      "executable": "texrecon",
+      "source": {
+        "commit": "c5a4d0c9a434553533c6e39d426e349fcfa5f48d",
+        "sha256": "295b11cb35c85f44908294bc89cd7d4f1057dee0016cc4cd35a5ed01570766f8",
+        "url": "https://codeload.github.com/OpenDroneMap/mvs-texturing/tar.gz/c5a4d0c9a434553533c6e39d426e349fcfa5f48d",
+        "repository": "https://github.com/OpenDroneMap/mvs-texturing",
+        "reference_in_odm": "c5a4d0c9a434553533c6e39d426e349fcfa5f48d",
+        "additional_sources": [
+          {
+            "name": "mve",
+            "commit": "90f13c18f92db6089c06c8c2451e283911f5f634",
+            "sha256": "f4d0d76a925d7482d14c2050b4488718c824947a3895eac196eac70ef19fc699",
+            "url": "https://codeload.github.com/OpenDroneMap/mve/tar.gz/90f13c18f92db6089c06c8c2451e283911f5f634",
+            "path": "_external/mve"
+          },
+          {
+            "name": "mapmap",
+            "commit": "fa526e0963ca3e431a02aa7b9e87b85ba8a8e304",
+            "sha256": "01ab05c7f7e6e14f5a54bc2111f6af382b148a504670a30b42b70b1851767e39",
+            "url": "https://codeload.github.com/dthuerck/mapmap_cpu/tar.gz/fa526e0963ca3e431a02aa7b9e87b85ba8a8e304",
+            "path": "elibs/mapmap"
+          },
+          {
+            "name": "rayint",
+            "commit": "ad9f826a8b134090511709e5813a8ba56dc2e837",
+            "sha256": "7ed6d0af9ba58cb359eaed25bd87fa818507abe41fe56cf7ff9929dd953212a7",
+            "url": "https://codeload.github.com/pierotofy/rayint/tar.gz/ad9f826a8b134090511709e5813a8ba56dc2e837",
+            "path": "elibs/rayint"
+          },
+          {
+            "name": "eigen332",
+            "commit": "477d1e81928a8514d2cca6a6e1e7e478eecd8634",
+            "sha256": "8e473e564dcbee29154cdcf6a1ddba32863751a68f17cdb0ec49193488178960",
+            "url": "https://codeload.github.com/eigenteam/eigen-git-mirror/tar.gz/477d1e81928a8514d2cca6a6e1e7e478eecd8634",
+            "path": "elibs/eigen"
+          }
+        ],
+        "disabled_build_trees": [],
+        "patches": [
+          {
+            "file": "research/patches/mvs-texturing-offline.patch",
+            "sha256": "37d03ca8b5a50bd72b6e7a4ed2f2856e1d83c0355806f7fc9efa059f9a57ef65",
+            "target": ".",
+            "summary": "Use explicitly staged sources and remove host-native CPU selection."
+          },
+          {
+            "file": "research/patches/mve-baseline-cpu.patch",
+            "sha256": "7427f3332ba65a1ebf677940fbf9ec957c7343a311844953d829d30e0944646c",
+            "target": "_external/mve",
+            "summary": "Remove unconditional POPCNT from the MVE build."
+          }
+        ]
+      },
+      "license": "BSD-3-Clause AND Zlib AND MPL-2.0 AND LicenseRef-COLAMD AND LicenseRef-SuperLU AND MIT",
+      "license_note": "Preliminary expression including custom identifiers for COLAMD and SuperLU notices; not approved or a complete legal conclusion. License, source completeness, asset, runtime dependency and redistribution reviews remain open. This component is not publishable.",
+      "notices": [
+        {
+          "source": "LICENSE.txt",
+          "target": "LICENSE.txt",
+          "kind": "verbatim"
+        },
+        {
+          "source": "_external/mve/LICENSE.txt",
+          "target": "_external-mve-LICENSE.txt",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/mapmap/LICENSE.txt",
+          "target": "elibs-mapmap-LICENSE.txt",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/mapmap/ext/dset/LICENSE.txt",
+          "target": "elibs-mapmap-ext-dset-LICENSE.txt",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/rayint/LICENSE.txt",
+          "target": "elibs-rayint-LICENSE.txt",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/eigen/COPYING.MPL2",
+          "target": "elibs-eigen-COPYING.MPL2",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/eigen/COPYING.README",
+          "target": "elibs-eigen-COPYING.README",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/eigen/Eigen/src/OrderingMethods/Eigen_Colamd.h",
+          "target": "elibs-eigen-Eigen-src-OrderingMethods-Eigen_Colamd.h",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/eigen/Eigen/src/SparseCore/SparseColEtree.h",
+          "target": "elibs-eigen-Eigen-src-SparseCore-SparseColEtree.h",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/eigen/Eigen/src/SparseLU/SparseLU_Memory.h",
+          "target": "elibs-eigen-Eigen-src-SparseLU-SparseLU_Memory.h",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/eigen/Eigen/src/SparseLU/SparseLU_column_bmod.h",
+          "target": "elibs-eigen-Eigen-src-SparseLU-SparseLU_column_bmod.h",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/eigen/Eigen/src/SparseLU/SparseLU_column_dfs.h",
+          "target": "elibs-eigen-Eigen-src-SparseLU-SparseLU_column_dfs.h",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/eigen/Eigen/src/SparseLU/SparseLU_copy_to_ucol.h",
+          "target": "elibs-eigen-Eigen-src-SparseLU-SparseLU_copy_to_ucol.h",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/eigen/Eigen/src/SparseLU/SparseLU_heap_relax_snode.h",
+          "target": "elibs-eigen-Eigen-src-SparseLU-SparseLU_heap_relax_snode.h",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/eigen/Eigen/src/SparseLU/SparseLU_panel_bmod.h",
+          "target": "elibs-eigen-Eigen-src-SparseLU-SparseLU_panel_bmod.h",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/eigen/Eigen/src/SparseLU/SparseLU_panel_dfs.h",
+          "target": "elibs-eigen-Eigen-src-SparseLU-SparseLU_panel_dfs.h",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/eigen/Eigen/src/SparseLU/SparseLU_pivotL.h",
+          "target": "elibs-eigen-Eigen-src-SparseLU-SparseLU_pivotL.h",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/eigen/Eigen/src/SparseLU/SparseLU_pruneL.h",
+          "target": "elibs-eigen-Eigen-src-SparseLU-SparseLU_pruneL.h",
+          "kind": "verbatim"
+        },
+        {
+          "source": "elibs/eigen/Eigen/src/SparseLU/SparseLU_relax_snode.h",
+          "target": "elibs-eigen-Eigen-src-SparseLU-SparseLU_relax_snode.h",
+          "kind": "verbatim"
+        }
+      ],
+      "release_checks": {
+        "publishable": false,
+        "license_reviewed": false,
+        "source_completeness_reviewed": false,
+        "native_validation_passed": false
+      }
     }
   }
 }

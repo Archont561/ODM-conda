@@ -1,0 +1,116 @@
+schema_version: 1
+
+context:
+  name: mvs-texturing-odm
+  version: "0.0.0.dev20250818"
+  upstream_commit: "c5a4d0c9a434553533c6e39d426e349fcfa5f48d"
+  source_sha256: "295b11cb35c85f44908294bc89cd7d4f1057dee0016cc4cd35a5ed01570766f8"
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  - url: https://codeload.github.com/OpenDroneMap/mvs-texturing/tar.gz/c5a4d0c9a434553533c6e39d426e349fcfa5f48d
+    sha256: ${{ source_sha256 }}
+    patches:
+      - patches/0001-offline.patch
+  - url: https://codeload.github.com/OpenDroneMap/mve/tar.gz/90f13c18f92db6089c06c8c2451e283911f5f634
+    sha256: "f4d0d76a925d7482d14c2050b4488718c824947a3895eac196eac70ef19fc699"
+    target_directory: _external/mve
+    patches:
+      - patches/0002-mve-baseline.patch
+  - url: https://codeload.github.com/dthuerck/mapmap_cpu/tar.gz/fa526e0963ca3e431a02aa7b9e87b85ba8a8e304
+    sha256: "01ab05c7f7e6e14f5a54bc2111f6af382b148a504670a30b42b70b1851767e39"
+    target_directory: elibs/mapmap
+  - url: https://codeload.github.com/pierotofy/rayint/tar.gz/ad9f826a8b134090511709e5813a8ba56dc2e837
+    sha256: "7ed6d0af9ba58cb359eaed25bd87fa818507abe41fe56cf7ff9929dd953212a7"
+    target_directory: elibs/rayint
+  - url: https://codeload.github.com/eigenteam/eigen-git-mirror/tar.gz/477d1e81928a8514d2cca6a6e1e7e478eecd8634
+    sha256: "8e473e564dcbee29154cdcf6a1ddba32863751a68f17cdb0ec49193488178960"
+    target_directory: elibs/eigen
+
+build:
+  number: 0
+  skip: target_platform != "linux-64"
+  python:
+    skip_pyc_compilation:
+      - share/odm-conda/**/*.py
+  script:
+    file: ../../scripts/build_component.py
+    interpreter: python
+
+requirements:
+  build:
+    - python >=3.12,<3.13
+    - cmake >=3.31,<3.32
+    - ninja >=1.11,<2
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+  host:
+    - tbb-devel >=2023.1,<2024
+    - libjpeg-turbo
+    - libpng
+    - libtiff
+    - libgomp >=14
+  run:
+    - tbb >=2023.1,<2024
+    - libjpeg-turbo
+    - libpng
+    - libtiff
+    - libgomp >=14
+
+tests:
+  - package_contents:
+      files:
+        - bin/texrecon
+        - share/licenses/mvs-texturing-odm/*
+        - share/odm-conda/mvs-texturing-odm/SOURCE.txt
+        - share/odm-conda/mvs-texturing-odm/functional_test.py
+        - share/odm-conda/mvs-texturing-odm/texrecon_fixture.py
+  - script:
+      interpreter: python
+      content: |
+        import runpy
+        import sys
+        from pathlib import Path
+        installed = Path(sys.prefix) / "share" / "odm-conda" / "mvs-texturing-odm" / "functional_test.py"
+        runpy.run_path(str(installed), run_name="__main__")
+    requirements:
+      run:
+        - python >=3.12,<3.13
+
+about:
+  homepage: https://github.com/OpenDroneMap/mvs-texturing
+  repository: https://github.com/OpenDroneMap/mvs-texturing
+  summary: Texture a mesh using calibrated images
+  description: >-
+    Unofficial test-stage packaging of texrecon for OpenDroneMap.
+    Source completeness, native package validation, and license review remain open.
+  license: BSD-3-Clause AND Zlib AND MPL-2.0 AND LicenseRef-COLAMD AND LicenseRef-SuperLU AND MIT
+  license_file:
+    - .conda-notices/LICENSE.txt
+    - .conda-notices/_external-mve-LICENSE.txt
+    - .conda-notices/elibs-mapmap-LICENSE.txt
+    - .conda-notices/elibs-mapmap-ext-dset-LICENSE.txt
+    - .conda-notices/elibs-rayint-LICENSE.txt
+    - .conda-notices/elibs-eigen-COPYING.MPL2
+    - .conda-notices/elibs-eigen-COPYING.README
+    - .conda-notices/elibs-eigen-Eigen-src-OrderingMethods-Eigen_Colamd.h
+    - .conda-notices/elibs-eigen-Eigen-src-SparseCore-SparseColEtree.h
+    - .conda-notices/elibs-eigen-Eigen-src-SparseLU-SparseLU_Memory.h
+    - .conda-notices/elibs-eigen-Eigen-src-SparseLU-SparseLU_column_bmod.h
+    - .conda-notices/elibs-eigen-Eigen-src-SparseLU-SparseLU_column_dfs.h
+    - .conda-notices/elibs-eigen-Eigen-src-SparseLU-SparseLU_copy_to_ucol.h
+    - .conda-notices/elibs-eigen-Eigen-src-SparseLU-SparseLU_heap_relax_snode.h
+    - .conda-notices/elibs-eigen-Eigen-src-SparseLU-SparseLU_panel_bmod.h
+    - .conda-notices/elibs-eigen-Eigen-src-SparseLU-SparseLU_panel_dfs.h
+    - .conda-notices/elibs-eigen-Eigen-src-SparseLU-SparseLU_pivotL.h
+    - .conda-notices/elibs-eigen-Eigen-src-SparseLU-SparseLU_pruneL.h
+    - .conda-notices/elibs-eigen-Eigen-src-SparseLU-SparseLU_relax_snode.h
+    - .conda-notices/packaging-MIT.txt
+
+extra:
+  recipe-maintainers:
+    - archont561

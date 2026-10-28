@@ -40,7 +40,7 @@ EIGEN = {
 EXPECTED_TREE = (3297, 'fe27f5deb6774cd3204f8c70914a7e9fa05c7fb4ac4e1c37d7fe782658c4c668')
 
 
-def fingerprint_tree(tree: Path) -> tuple[int, str]:
+def fingerprint_tree(tree: Path, *, ignore_root_files: frozenset[str] = frozenset()) -> tuple[int, str]:
     if tree.is_symlink() or not tree.is_dir():
         raise ScaffoldError('Invalid source tree')
     digest = hashlib.sha256()
@@ -48,6 +48,8 @@ def fingerprint_tree(tree: Path) -> tuple[int, str]:
     for path in sorted(tree.rglob('*')):
         if path.is_symlink():
             raise ScaffoldError(f'Source tree contains symlink: {path}')
+        if path.parent == tree and path.name in ignore_root_files and path.is_file():
+            continue
         if path.is_dir():
             continue
         if not path.is_file():

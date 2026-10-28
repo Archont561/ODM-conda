@@ -45,6 +45,7 @@ def test_unreviewed_openmvs_graph_is_rejected(mutation):
 
 
 def test_multi_source_bundle_contains_all_verified_inputs(tmp_path, monkeypatch):
+    import hashlib
     import json
     import tarfile
 
@@ -63,6 +64,8 @@ def test_multi_source_bundle_contains_all_verified_inputs(tmp_path, monkeypatch)
     monkeypatch.setattr(policy, 'OPENMVS', primary)
     monkeypatch.setattr(policy, 'VCG', vcg)
     monkeypatch.setattr(policy, 'EIGEN', eigen)
+    monkeypatch.setattr(source_bundle, 'OPENMVS_FETCH_EXCEPTIONS', {
+        'eigen34': {'lapack/CMakeLists.txt': hashlib.sha256(b'file(DOWNLOAD x y)').hexdigest()}})
     readme = tmp_path / 'README.md'
     readme.write_text('packaging', encoding='utf-8')
     monkeypatch.setattr(source_bundle, 'repository_files', lambda *_: [readme])
@@ -82,7 +85,9 @@ def test_multi_source_bundle_contains_all_verified_inputs(tmp_path, monkeypatch)
 
 
 def test_eigen_fetch_outside_disabled_tree_is_rejected(tmp_path, monkeypatch):
+    import hashlib
     import openmvs_graph_policy as policy
+    import source_bundle
     from source_bundle import graph_archives
     from test_source_graph import cached_archive
 
@@ -97,6 +102,8 @@ def test_eigen_fetch_outside_disabled_tree_is_rejected(tmp_path, monkeypatch):
     monkeypatch.setattr(policy, 'OPENMVS', primary)
     monkeypatch.setattr(policy, 'VCG', vcg)
     monkeypatch.setattr(policy, 'EIGEN', eigen)
+    monkeypatch.setattr(source_bundle, 'OPENMVS_FETCH_EXCEPTIONS', {
+        'eigen34': {'lapack/CMakeLists.txt': hashlib.sha256(b'file(DOWNLOAD x y)').hexdigest()}})
     source = dict(primary, additional_sources=[vcg, eigen], disabled_build_trees=[])
     with pytest.raises(ScaffoldError, match='Unstaged external CMake source'):
         graph_archives('openmvs-odm', source, cache)

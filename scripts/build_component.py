@@ -14,6 +14,7 @@ from pathlib import Path
 
 from common import ROOT, ScaffoldError, config, fail_cli, first_comment, relative_path, run, sha256, source_url
 from openmvs_graph_policy import validate_openmvs_graph, validate_openmvs_patches, verify_openmvs_tree
+from texturing_graph_policy import validate_texturing_graph, validate_texturing_patches, verify_texturing_tree
 
 
 def main() -> None:
@@ -41,6 +42,10 @@ def main() -> None:
         validate_openmvs_graph(name, component["source"])
         validate_openmvs_patches(component["source"])
         verify_openmvs_tree(source)
+    elif name == "mvs-texturing-odm":
+        validate_texturing_graph(name, component["source"])
+        validate_texturing_patches(component["source"])
+        verify_texturing_tree(source)
     elif (source / ".gitmodules").exists() or component["source"]["additional_sources"]:
         raise ScaffoldError("External/submodule sources need explicit staging before this builder can support them")
     if build_file == "CMakeLists.txt":
@@ -94,6 +99,31 @@ def main() -> None:
         run(["cmake", "--build", str(build_dir), "--target", "ReconstructMesh", "--parallel", "2"], cwd=source, env=env)
         (prefix / "bin").mkdir(parents=True, exist_ok=True)
         shutil.copy2(build_dir / "bin" / "ReconstructMesh", prefix / "bin" / "ReconstructMesh")
+    elif name == "mvs-texturing-odm":
+        # Build MVE from the verified, patched graph rather than relying on
+        # ExternalProject or an ambient MVE installation.
+        mve_source = source / '_external' / 'mve'
+        mve_build = source / '.native-mve'
+        baseline = f"{env.get('CXXFLAGS', '')} -march=x86-64 -mno-popcnt"
+        mve_command = [
+            "cmake", "-S", str(mve_source), "-B", str(mve_build), "-G", "Ninja",
+            *shlex.split(env.get("CMAKE_ARGS", "")), "-DCMAKE_BUILD_TYPE=Release",
+            f"-DCMAKE_PREFIX_PATH={prefix}", f"-DCMAKE_CXX_FLAGS={baseline}",
+            "-DCMAKE_POLICY_VERSION_MINIMUM=3.5", "-DBUILD_SHARED_LIBS=OFF",
+        ]
+        run(mve_command, cwd=source, env=env)
+        run(["cmake", "--build", str(mve_build), "--target", "mve", "mve_util", "mve_sfm", "mve_dmrecon", "--parallel", "2"], cwd=source, env=env)
+        command.extend([
+            f"-DMVE_ROOT={mve_source}", f"-DCMAKE_CXX_FLAGS={baseline}", "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+            f"-DMVE_MVE_LIBRARY_RELEASE={mve_build / 'libs' / 'mve' / 'libmve.a'}",
+            f"-DMVE_UTIL_LIBRARY_RELEASE={mve_build / 'libs' / 'util' / 'libmve_util.a'}",
+            f"-DMVE_SFM_LIBRARY_RELEASE={mve_build / 'libs' / 'sfm' / 'libmve_sfm.a'}",
+            f"-DMVE_DMRECON_LIBRARY_RELEASE={mve_build / 'libs' / 'dmrecon' / 'libmve_dmrecon.a'}",
+        ])
+        run(command, cwd=source, env=env)
+        run(["cmake", "--build", str(build_dir), "--target", "texrecon", "--parallel", "2"], cwd=source, env=env)
+        (prefix / "bin").mkdir(parents=True, exist_ok=True)
+        shutil.copy2(build_dir / "apps" / "texrecon" / "texrecon", prefix / "bin" / "texrecon")
     elif name == "poissonrecon-odm":
         # Restrict make execution to the two specifically reviewed files from
         # the pinned archive; source changes require another fetch-command review.
@@ -126,13 +156,15 @@ def main() -> None:
     if name == "openmvs-odm":
         for fixture in ("openmvs_synthetic_fixture.py", "openmvs_pointcloud_fixture.py", "texrecon_fixture.py"):
             shutil.copy2(ROOT / "scripts" / fixture, share / fixture)
+    elif name == "mvs-texturing-odm":
+        shutil.copy2(ROOT / "scripts" / "texrecon_fixture.py", share / "texrecon_fixture.py")
     metadata = {"name": name, "version": component["version"], "build_number": component["build_number"],
                 "source": component["source"], "license": component["license"], "corresponding_source": source_url(name, component)}
     (share / "upstream.json").write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
     patches = component["source"].get("patches", [])
     modified_line = (
         "Modified: yes. Local patches applied to the upstream source:\n"
-        + "".join(f"  - {patch['file']} (SHA256 {patch['sha256']}): {patch['summary']}\n" for patch in patches)
+        + "".join(f"  - {patch['file']} (SHA256 {patch['sha256']}, target {patch.get('target', '.')}): {patch['summary']}\n" for patch in patches)
         if patches else "Modified: no. Built from the unmodified upstream archive.\n"
     )
     additional_line = "".join(

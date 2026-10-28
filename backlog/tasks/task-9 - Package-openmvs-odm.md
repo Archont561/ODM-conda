@@ -4,7 +4,7 @@ title: Package openmvs-odm (ReconstructMesh target for the fast-orthophoto MVP)
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 16:14'
+updated_date: '2026-10-28 16:34'
 labels:
   - component
   - openmvs-odm
@@ -69,4 +69,6 @@ The installed-test entry point now invokes the generated OpenMVS reconstruction 
 2026-10-28: implemented a fail-closed builder branch for the exact three-archive OpenMVS graph. It requires both exact patch metadata and a SHA256 fingerprint over 3297 staged file names/contents after the two patches (fe27f5deb6774cd3204f8c70914a7e9fa05c7fb4ac4e1c37d7fe782658c4c668); symlinks, special files and changes are rejected. The branch configures Eigen headers and VCG, disables nonbaseline SIMD options and optional integrations, builds only ReconstructMesh, and copies only that executable and test/provenance files. Re-staged archives, applied patches, and built 47/47 targets using system GCC 12 and symlinked Pixi dependencies into an artificial host prefix; the generated installed-layout fixture passed. This is not isolated rattler/Conda, no-network, binary/ABI or legal validation. Lint still rejects the graph until recipe integration; no recipe or workflow checkbox yet.
 
 2026-10-28: enabled -DEIGEN_MPL2_ONLY in the reduced build to enforce the upstream Eigen COPYING.README selection; GCC 12 research rebuild completed 47/47 and synthetic reconstruction plus both visibility rejection tests passed. This does not replace review of the Eigen notice-bearing files or external dependencies. research/openmvs-notices.json tracks 499 exact file hashes from the reduced build and license evidence; it is not a final legal inventory.
+
+Source archive scanning now uses a single exact hashed Eigen lapack/CMakeLists.txt exception instead of excluding its whole lapack subtree; unrecognized fetch commands elsewhere remain rejected. No new claim of network isolation or license approval.
 <!-- SECTION:NOTES:END -->

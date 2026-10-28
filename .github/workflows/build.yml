@@ -19,6 +19,10 @@ on:
         description: "fpcfilter (leave all unchecked to build all)"
         type: boolean
         default: false
+      mvs_texturing_odm:
+        description: "mvs-texturing-odm (leave all unchecked to build all)"
+        type: boolean
+        default: false
       odm_orthophoto:
         description: "odm-orthophoto (leave all unchecked to build all)"
         type: boolean
@@ -48,6 +52,7 @@ jobs:
       SELECT_DEM2POINTS: ${{ inputs.dem2points }}
       SELECT_FASTRASTERFILTER: ${{ inputs.fastrasterfilter }}
       SELECT_FPCFILTER: ${{ inputs.fpcfilter }}
+      SELECT_MVS_TEXTURING_ODM: ${{ inputs.mvs_texturing_odm }}
       SELECT_ODM_ORTHOPHOTO: ${{ inputs.odm_orthophoto }}
       SELECT_POISSONRECON_ODM: ${{ inputs.poissonrecon_odm }}
       SELECT_RENDERDEM: ${{ inputs.renderdem }}

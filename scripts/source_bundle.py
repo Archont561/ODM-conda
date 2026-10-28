@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Create a deterministic, hash-checked source + packaging archive.
 
-Single-archive components and one exact OpenMVS graph are supported.
+Single-archive components and exact OpenMVS and texturing graphs are supported.
 Source-completeness review is still required before distribution; this script
 is not a legal certification.
 """
@@ -20,10 +20,22 @@ from pathlib import Path, PurePosixPath
 from common import ROOT, ScaffoldError, config, fail_cli, fetch_pinned_archive, repository_files, select_components, sha256, source_archive, source_bundle_name
 from openmvs_graph_policy import validate_openmvs_graph
 from source_graph import stage_graph
+import texturing_graph_policy
+
+OPENMVS_FETCH_EXCEPTIONS = {
+    'eigen34': {'lapack/CMakeLists.txt': '7f134c3d27017ad89fd9afcf3d6acddbb5134a02ff334e915ff0291caa846cc9'},
+}
 
 
-def validate_upstream_archive(path: Path, disabled_build_trees: tuple[str, ...] = ()) -> None:
-    """Reject undisclosed fetches in enabled targets; keep disabled test sources intact."""
+def validate_upstream_archive(path: Path, disabled_build_trees: tuple[str, ...] = (), *,
+                              fetch_exceptions: dict[str, str] | None = None) -> None:
+    """Reject undisclosed fetches; exceptions identify exact, hashed disabled files.
+
+    A static scan cannot prove which CMake files are executed or prevent other
+    network mechanisms. Callers must separately validate build configuration.
+    """
+    exceptions = dict(fetch_exceptions or {})
+    seen: set[str] = set()
     with tarfile.open(path, "r:gz") as archive:
         for member in archive:
             parts = PurePosixPath(member.name).parts
@@ -39,9 +51,18 @@ def validate_upstream_archive(path: Path, disabled_build_trees: tuple[str, ...] 
                     continue  # These sources remain in the original archive; only fetch scanning is skipped.
                 handle = archive.extractfile(member)
                 assert handle is not None
-                text = b"".join(handle.read().lower().split())
+                raw = handle.read()
+                relative = '/'.join(relative_parts)
+                if relative in exceptions:
+                    if relative in seen or hashlib.sha256(raw).hexdigest() != exceptions[relative]:
+                        raise ScaffoldError(f"Invalid CMake fetch exception: {relative}")
+                    seen.add(relative)
+                    continue
+                text = b"".join(raw.lower().split())
                 if any(token in text for token in (b"externalproject_add(", b"fetchcontent_", b"file(download")):
                     raise ScaffoldError(f"Unstaged external CMake source in {member.name}")
+    if seen != set(exceptions):
+        raise ScaffoldError(f"Missing CMake fetch exception files: {sorted(set(exceptions) - seen)}")
 
 
 def add_bytes(archive: tarfile.TarFile, name: str, data: bytes, mode: int = 0o644) -> None:
@@ -57,18 +78,24 @@ def add_bytes(archive: tarfile.TarFile, name: str, data: bytes, mode: int = 0o64
 def graph_archives(name: str, source: dict, cache: Path) -> dict[str, bytes]:
     """Stage and scan the explicitly recognized graph; return exact archive bytes.
 
-    The Eigen lapack tree contains a download, but is not used by the
-    header-only Eigen configuration. This narrow exclusion is valid only for
-    the exact hash-checked graph; it does not establish network isolation.
+    Narrow, pinned fetch-scan exclusions do not establish network isolation;
+    the build must separately prove that these CMake files are not executed.
     """
-    primary, additional = validate_openmvs_graph(name, source)
+    if name == 'openmvs-odm':
+        primary, additional = validate_openmvs_graph(name, source)
+    elif name == 'mvs-texturing-odm':
+        primary, additional = texturing_graph_policy.validate_texturing_graph(name, source)
+    else:
+        raise ScaffoldError('Unreviewed external source graph; do not build or bundle it')
     with tempfile.TemporaryDirectory(prefix="odm-graph-check-") as temp:
         stage_graph(primary['name'], primary, additional, cache, Path(temp) / 'staged')
         entries: dict[str, bytes] = {}
         for item in [primary, *additional]:
             archive = fetch_pinned_archive(item['name'], item, cache)
-            excluded = ('lapack',) if item['name'] == 'eigen34' else ()
-            validate_upstream_archive(archive, excluded)
+            if name == 'mvs-texturing-odm':
+                validate_upstream_archive(archive, fetch_exceptions=texturing_graph_policy.FETCH_EXCEPTIONS[item['name']])
+            else:
+                validate_upstream_archive(archive, fetch_exceptions=OPENMVS_FETCH_EXCEPTIONS.get(item['name'], {}))
             raw = archive.read_bytes()
             if hashlib.sha256(raw).hexdigest() != item['sha256']:
                 raise ScaffoldError(f"Source archive changed while bundling: {item['name']}")
@@ -104,8 +131,12 @@ def make_bundle(name: str, component: dict, destination: Path, cache: Path, root
     entries["SOURCE-MANIFEST.json"] = (json.dumps(manifest, indent=2, sort_keys=True) + "\n").encode()
     graph = bool(component['source'].get('additional_sources'))
     scan_note = (
+        "The exact pinned texturing inputs contain disabled CMake download commands. The patched\n"
+        "build must not execute those files; only exact hashed files are excluded from scanning.\n"
+        "Static scanning alone does not establish network isolation or source/license completeness.\n"
+        if name == 'mvs-texturing-odm' else
         "The exact pinned Eigen archive includes a lapack download command. The reduced build\n"
-        "uses Eigen headers only; that tree is excluded from static fetch scanning, not the bundle.\n"
+        "uses Eigen headers only; that exact hashed file is excluded from scanning, not the bundle.\n"
         "Static scanning alone does not establish network isolation or source/license completeness.\n"
         if graph else
         "Enabled starter targets have no undisclosed source downloads. FPCFilter BUILD_TESTING=OFF\n"

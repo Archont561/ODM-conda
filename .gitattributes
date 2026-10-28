@@ -3,3 +3,4 @@ pixi.lock merge=binary linguist-language=YAML linguist-generated=true -diff
 
 # Unified patches prefix context lines with a space, even before upstream tabs.
 research/patches/*.patch whitespace=-blank-at-eol,-space-before-tab
+recipes/mvs-texturing-odm/patches/*.patch whitespace=-blank-at-eol,-space-before-tab

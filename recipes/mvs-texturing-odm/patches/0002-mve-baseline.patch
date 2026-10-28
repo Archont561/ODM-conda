@@ -1,0 +1,12 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -15,9 +15,6 @@
+     add_compile_options(/W3)
+ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+     add_compile_options(-Wall -Wextra -Wundef -pedantic)
+-    if(NOT (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm64") )
+-        add_compile_options(-mpopcnt)
+-    endif()
+ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+     add_compile_options(-Weverything -pedantic)
+ endif()

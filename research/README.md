@@ -39,10 +39,12 @@ GitHub mirror. Its earlier GitHub tag resolves to a different commit with an
 extra `.hgtags` file; the earlier local texrecon build used that older plan.
 For the openMVS Eigen pin, both hosts identify the same Git commit. Original
 GitLab tarball bytes, full notices and network-isolated builds remain unverified.
-The source bundler recognizes the exact pinned OpenMVS graph, and the builder
-has a fingerprint-gated reduced-target branch. Lint still rejects all external
-graph recipes until recipe integration is complete; unsupported graphs and
-unreviewed releases remain blocked. Graph recognition is not legal approval.
+The source bundler recognizes the exact pinned OpenMVS and mvs-texturing
+graphs. The builder has fingerprint-gated branches for both; the texturing
+recipe is registered for testing, while OpenMVS recipe integration remains
+unfinished. Lint rejects unrecognized external graphs, and release gates for
+the provisional texturing recipe remain closed. Graph recognition is not legal
+approval.
 
 For a **research-only** archive containing the plan, all planned upstream
 archives and packaging sources including the experimental patch:
