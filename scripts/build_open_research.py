@@ -15,6 +15,7 @@ from pathlib import Path
 
 from common import ROOT, ScaffoldError, fail_cli, run
 from openmvs_graph_policy import verify_openmvs_tree
+from openmvs_link_map import verify_openmvs_link_map
 from opensfm_graph_policy import verify_opensfm_research_tree
 
 
@@ -51,7 +52,9 @@ def main() -> None:
             raise ScaffoldError('Pinned VCG header is missing')
         # Conda sets CMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY; a HINT outside
         # the host prefix is re-rooted. Preseed find_path's cache result.
-        args += [f'-DVCG_DIR:PATH={vcg}', f"-DEIGEN3_INCLUDE_DIR={source / '_external/eigen'}",
+        link_map = build / 'ReconstructMesh-link.map'
+        link_flags = f"{env.get('LDFLAGS', '')} -Wl,-Map={link_map}"
+        args += [f'-DCMAKE_EXE_LINKER_FLAGS={link_flags}', f'-DVCG_DIR:PATH={vcg}', f"-DEIGEN3_INCLUDE_DIR={source / '_external/eigen'}",
                  '-DOpenMVS_USE_CUDA=OFF', '-DOpenMVS_USE_OPENGL=OFF', '-DOpenMVS_USE_BREAKPAD=OFF',
                  '-DOpenMVS_USE_CERES=OFF', '-DOpenMVS_USE_PYTHON=OFF', '-DOpenMVS_ENABLE_TESTS=OFF',
                  '-DENABLE_SSE3=OFF', '-DENABLE_SSSE3=OFF', '-DENABLE_SSE41=OFF', '-DENABLE_SSE42=OFF',
@@ -79,6 +82,10 @@ def main() -> None:
     if name == 'openmvs-odm':
         build_command += ['--target', 'ReconstructMesh']
     run([*build_command, '--parallel', '2'], cwd=source, env=env)
+
+    if name == 'openmvs-odm':
+        digest = verify_openmvs_link_map(link_map)
+        print(f'PASS: OpenMVS link map excludes named restricted inputs; SHA256 {digest}', flush=True)
 
     bindir = prefix / 'bin'
     bindir.mkdir(parents=True, exist_ok=True)

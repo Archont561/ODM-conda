@@ -291,3 +291,8 @@ OpenMVS run 40758772845 resolved Boost 1.90 but failed at VCG discovery:
 Conda's include root policy re-rooted the vendored-source hint. The builder now
 preseeds the exact fingerprinted VCG directory and checks the resulting CMake
 cache. Owner-dispatched native rerun 40759635611 passed.
+
+The local-only OpenMVS builder now checks the actual GNU link map for named
+IBFS/TRWS and excluded dense inputs before packaging; this guard is pending a
+new native run and does not establish source redistribution rights. See
+`open-components-license-review.md`.

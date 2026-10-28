@@ -123,3 +123,16 @@ notice, nor does it settle the GPL/BSD treatment of the combined package. A
 reviewer should trace both files and retain all applicable original notices;
 the research package currently carries only the vmem GPL text, not this psutil
 license. No redistribution approval is inferred.
+
+### Additional reduced-link evidence (pending native rerun)
+
+The local-only OpenMVS builder now requests a GNU linker map for the actual
+`ReconstructMesh` executable and fails if the map is missing or unrecognizable,
+if expected MVS/Math and reconstruction inputs are absent, or if it names IBFS,
+TRWS, MRFEnergy, or excluded dense/refine/texture objects. The map stays in the
+temporary build tree; a SHA256 is printed after a successful check. Tests cover
+negative cases and a real small GNU C++ link map. This is **not yet evidence
+from the native OpenMVS build**: an owner-dispatched research rerun must pass.
+Even then, matching named link inputs cannot rule out equivalent code, prove a
+complete dependency inventory, or authorize distribution of the original source
+archive. TASK-54 and the release restrictions remain open.
