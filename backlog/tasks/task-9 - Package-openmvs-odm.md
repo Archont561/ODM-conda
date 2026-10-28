@@ -35,4 +35,6 @@ Read the exact ODM reference recorded in components.json before choosing source 
 
 <!-- SECTION:NOTES:BEGIN -->
 Scope reduced to ReconstructMesh for the MVP. Full OpenMVS dense build is deferred. Acceptance #1 and #2 below apply to the reduced target.
+
+Preliminary source research (2026-10-28): ODM SuperBuild uses mutable openMVS branch `355`, resolved to `8e4c5f31a16e0e329132c8f26e20a8c5d7b47f53`; codeload archive SHA256 `949d420d4506ccd0189574252c8214acce666de837e400e44682e8ddc13e666b`. It also selects OpenDroneMap/VCG branch `285` (resolved `3fe55c6fa48ca111dab31eaa594ecab33913a8f1`, archive SHA256 `8f75239f9dd4ee5ba55b0cad25df1b7f9caa8a7e583f8174b40d38421b485f45`) and Eigen commit `7176ae16238ded7fb5ed30a7f5215825b3abd134`. ReconstructMesh's minimal target/dependency closure is not yet established. Archive checksums and complete notices for every enabled source still need review; no recipe or native validation exists.
 <!-- SECTION:NOTES:END -->

@@ -33,5 +33,7 @@ Read the exact ODM reference recorded in components.json before choosing source 
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-Deferred from the fast-orthophoto MVP (doc-11, approved). Not a gate for TASK-13. Resume after the MVP ships.
+Owner selected the six-component bulk scope on 2026-10-28, explicitly including dem2mesh before the fast-orthophoto MVP ships. It remains outside the TASK-13 fast-path dependency gate.
+
+Preliminary source research (2026-10-28): ODM 3.6.2 SuperBuild uses `GIT_TAG 334`, a mutable branch, whose head resolved to `623c8536941175c630fabe4f1352ddc314d98120`. Its codeload archive SHA256 is `29e2729c890118def3d727cfca81070e1cb99fa8a51212a6deef7614089ecf8b`. The inline SuperBuild definition specifies no patch command for this component. The archive vendors JMeshLib and builds it statically; its README and headers state GPL version 2 or later, while its bundled gpl.txt contains GPL v2. Review all compiled files and compatibility with the root GPL grant before deciding metadata and notices. The source graph and notices are not yet fully reviewed; no recipe or native validation exists.
 <!-- SECTION:NOTES:END -->
