@@ -16,7 +16,7 @@ source:
   sha256: ${{ source_sha256 }}
 
 build:
-  number: 0
+  number: 1
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:
@@ -33,8 +33,8 @@ requirements:
     - ${{ compiler('cxx') }}
     - ${{ stdlib('c') }}
   host:
-    # PNG.inl also includes <png.h> even though the compiled implementation
-    # and primary declarations come from the bundled PNG directory.
+    # PNG.inl also includes <png.h>; the makefile builds a bundled static
+    # archive. Actual final link inputs require inspection.
     - libpng
     - libjpeg-turbo
     # The zlib development package supplies the unversioned libz.so for -lz;
@@ -78,6 +78,16 @@ about:
     - .conda-notices/PoissonRecon-BSD-3-Clause.txt
     - .conda-notices/libpng-header-and-license.txt
     - .conda-notices/zlib-header-and-license.txt
+    - .conda-notices/BSD-Kazhdan-2016.txt
+    - .conda-notices/BSD-Kazhdan-Chuang-2011.txt
+    - .conda-notices/BSD-Kazhdan-2010.txt
+    - .conda-notices/BSD-Kazhdan-2013.txt
+    - .conda-notices/BSD-Kazhdan-2007.txt
+    - .conda-notices/BSD-Kazhdan-2017.txt
+    - .conda-notices/BSD-Georgia-Tech-2020.txt
+    - .conda-notices/BSD-Kazhdan-2020.txt
+    - .conda-notices/BSD-Kazhdan-Bolitho-2019.txt
+    - .conda-notices/BSD-Kazhdan-2019.txt
     - .conda-notices/packaging-MIT.txt
 
 extra:

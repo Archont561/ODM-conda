@@ -277,7 +277,7 @@
     "poissonrecon-odm": {
       "version": "13.8",
       "version_note": "Upstream Src/PreProcessor.h defines version 13.8; ODM reference 290 is a branch.",
-      "build_number": 0,
+      "build_number": 1,
       "recipe": "recipes/poissonrecon-odm/recipe.yaml",
       "executable": "PoissonRecon",
       "source": {
@@ -290,7 +290,7 @@
         "disabled_build_trees": []
       },
       "license": "MIT AND BSD-3-Clause AND Libpng AND Zlib",
-      "license_note": "Preliminary only: root MIT, source headers BSD-3-Clause, bundled PNG source is statically linked and its header contains the libpng notice; bundled zlib header is used. Full source and license review and owner decision remain required.",
+      "license_note": "Preliminary only: root MIT, multiple source headers carry BSD-3-Clause notices, and the bundled libpng and zlib headers carry notices. Upstream make builds a static libpng archive; its presence in the final binary and actual zlib/JPEG linkage require inspection. Full source, security and license review and owner decision remain required.",
       "notices": [
         {
           "source": "LICENSE",
@@ -311,6 +311,56 @@
           "source": "ZLIB/zlib.h",
           "target": "zlib-header-and-license.txt",
           "kind": "verbatim"
+        },
+        {
+          "source": "Src/FEMTree.Initialize.inl",
+          "target": "BSD-Kazhdan-2016.txt",
+          "kind": "first-comment"
+        },
+        {
+          "source": "Src/Array.h",
+          "target": "BSD-Kazhdan-Chuang-2011.txt",
+          "kind": "first-comment"
+        },
+        {
+          "source": "Src/BMPStream.inl",
+          "target": "BSD-Kazhdan-2010.txt",
+          "kind": "first-comment"
+        },
+        {
+          "source": "Src/SurfaceTrimmer.cpp",
+          "target": "BSD-Kazhdan-2013.txt",
+          "kind": "first-comment"
+        },
+        {
+          "source": "Src/MAT.h",
+          "target": "BSD-Kazhdan-2007.txt",
+          "kind": "first-comment"
+        },
+        {
+          "source": "Src/MyMiscellany.h",
+          "target": "BSD-Kazhdan-2017.txt",
+          "kind": "first-comment"
+        },
+        {
+          "source": "Src/Ply.h",
+          "target": "BSD-Georgia-Tech-2020.txt",
+          "kind": "first-comment"
+        },
+        {
+          "source": "Src/Ply.inl",
+          "target": "BSD-Kazhdan-2020.txt",
+          "kind": "first-comment"
+        },
+        {
+          "source": "Src/PreProcessor.h",
+          "target": "BSD-Kazhdan-Bolitho-2019.txt",
+          "kind": "first-comment"
+        },
+        {
+          "source": "Src/RegularGrid.h",
+          "target": "BSD-Kazhdan-2019.txt",
+          "kind": "first-comment"
         }
       ],
       "release_checks": {
