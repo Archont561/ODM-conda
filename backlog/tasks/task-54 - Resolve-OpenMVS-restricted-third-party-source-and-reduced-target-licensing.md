@@ -4,7 +4,7 @@ title: Resolve OpenMVS restricted third-party source and reduced target licensin
 status: In Progress
 assignee: []
 created_date: '2026-10-28 15:48'
-updated_date: '2026-10-28 16:14'
+updated_date: '2026-10-28 20:11'
 labels:
   - openmvs-odm
   - license
@@ -28,4 +28,6 @@ ordinal: 54000
 Pinned OpenMVS libs/Math/IBFS/license.txt (SHA256 9e2ccaeb2fd1b11a6615b136b0d3e43078e1bf1de68f28e47efc9241bcfffb0f) says use is for research only; original local ReconstructMesh linked IBFS symbols. TRWS LICENSE.TXT (SHA256 fdffce5aade1171223b7aa2d6d8544971b3f2af101035aa9d40d36e8b24a5ed7) permits non-commercial use and distribution only. Original MVS target compiles SceneDensify.cpp, which uses TRWS; its archive also includes restricted headers. Whether and how the full original archives may be redistributed in corresponding-source bundles requires qualified review; changing build selection does not remove those files from source archives or resolve that issue.
 
 2026-10-28 license evidence: research/openmvs-notices.json hash-records 486 pinned files from the GCC 12 reduced-target Ninja dependency trace plus 13 separate root/third-party notices, including IBFS and TRWS license files; verification against the patched staged tree passed. SceneReconstruct.cpp explicitly grants AGPL v3 or later and additional attribution terms; compiled VCG complex.h grants GPL v2 or later; Eigen/Core states MPL 2.0, its COPYING.README identifies possible LGPL/BSD components, lmfit COPYING grants FreeBSD terms, and compiled tiny_gltf.h and json.hpp contain distinct notices. Trace inclusion is not proof of linked code, a complete inventory or compatibility. IBFS license says research use only and TRWS restricts distribution to non-commercial purposes; both remain present in the complete source archive even though the reduced binary has no matching IBFS/MRFEnergy symbols. Qualified review must resolve archive redistribution and corresponding-source scope, applicable license choices, dynamic dependency obligations and complete notices. Do not approve a final SPDX expression or release based on this triage.
+
+2026-10-28: research/open-components-license-review.md records preliminary review of the restricted original archive, reduced target, VCG/Eigen/CGAL and incomplete notices. Native local-only run 40759635611 passed limited payload/RPATH audit but did not produce a retained linker map or authorize source redistribution. Corresponding-source scope, rights and qualified approval remain open; no package or archive may be published on this basis.
 <!-- SECTION:NOTES:END -->

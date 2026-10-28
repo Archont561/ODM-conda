@@ -103,3 +103,23 @@ field to a definitive SPDX expression yet.
   identified asset and grant questions, review network-service obligations,
   and have the owner and qualified legal reviewer approve the precise scope.
   A fresh review is needed if pins, recipe, bundled files or dependencies change.
+
+### vmem provenance follow-up (2026-10-28)
+
+The exact pinned vmem sdist SHA256 remains
+`95fe9ba737edea8e5737fb9ddda7031d7ca62fd53f53c1c4e95195f3c7d801fd`.
+The upstream vmem README describes it as a replacement for psutil's
+`virtual_memory`. The sdist `vmem/utils.py` function `usage_percent` has the
+same Python AST as the function of that name in psutil `_common.py` at
+[psutil commit 93e1c468ab4ac7922472114b3aeeacda2c8676a1](https://github.com/giampaolo/psutil/tree/93e1c468ab4ac7922472114b3aeeacda2c8676a1)
+(the latest commit returned by the GitHub API before vmem's 2021-04-14 first
+source commit). The two vmem files retain a 2009 Giampaolo Rodola' BSD-style
+header. At that psutil commit, [LICENSE](https://github.com/giampaolo/psutil/blob/93e1c468ab4ac7922472114b3aeeacda2c8676a1/LICENSE)
+is BSD-3-Clause text, SHA256
+`24c12984500caa07ffdce19eebc06396c5e6d244b573bc6c438f4a6ef8e56c1b`.
+The AST comparison supports provenance investigation; it does **not** prove
+that this is the exact source revision or the only applicable third-party
+notice, nor does it settle the GPL/BSD treatment of the combined package. A
+reviewer should trace both files and retain all applicable original notices;
+the research package currently carries only the vmem GPL text, not this psutil
+license. No redistribution approval is inferred.

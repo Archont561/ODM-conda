@@ -4,7 +4,7 @@ title: Package the ODM application and validate fast-orthophoto integration (MVP
 status: To Do
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-27 08:38'
+updated_date: '2026-10-28 20:12'
 labels:
   - component
   - opendronemap
@@ -46,4 +46,6 @@ Read the exact ODM reference recorded in components.json before choosing source 
 
 <!-- SECTION:NOTES:BEGIN -->
 MVP scope (approved, see doc-11): fast-orthophoto path only. Removed gates TASK-33 (dem2mesh, not used by fast mode) and TASK-45 (OpenPointClass, opt-in via --pc-classify). Kept TASK-39, rescoped to the OpenMVS ReconstructMesh target because the 2.5D poisson cleanup calls it. Acceptance #5 is now a fast-orthophoto dataset run. Full-pipeline features (dense OpenMVS, gridded DEM mesh, pc-classify) are explicitly unsupported in this MVP.
+
+2026-10-28 planning checkpoint: native component research evidence and outstanding licensing/readiness gates are summarized in research/component-readiness-review.md and research/open-components-license-review.md. TASK-35, 37, 39, 41 and 43 remain open; no complete ODM integration validation or authorization to bypass prerequisites is implied.
 <!-- SECTION:NOTES:END -->
