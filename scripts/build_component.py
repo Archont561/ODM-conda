@@ -15,6 +15,7 @@ from pathlib import Path
 from common import ROOT, ScaffoldError, config, fail_cli, first_comment, relative_path, run, sha256, source_url
 from openmvs_graph_policy import validate_openmvs_graph, validate_openmvs_patches, verify_openmvs_tree
 from texturing_graph_policy import validate_texturing_graph, validate_texturing_patches, verify_texturing_tree
+from texturing_link_map import verify_texturing_link_map
 
 
 def main() -> None:
@@ -113,7 +114,12 @@ def main() -> None:
         ]
         run(mve_command, cwd=source, env=env)
         run(["cmake", "--build", str(mve_build), "--target", "mve", "mve_util", "mve_sfm", "mve_dmrecon", "--parallel", "2"], cwd=source, env=env)
+        # Capture the actual GNU linker inputs before rattler strips the binary.
+        # This tests named link inputs, not source redistribution or patent rights.
+        link_map = build_dir / 'texrecon-link.map'
+        link_flags = f"{env.get('LDFLAGS', '')} -Wl,-Map={link_map}"
         command.extend([
+            f"-DCMAKE_EXE_LINKER_FLAGS={link_flags}",
             f"-DMVE_ROOT={mve_source}", f"-DCMAKE_CXX_FLAGS={baseline}", "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
             f"-DMVE_MVE_LIBRARY_RELEASE={mve_build / 'libs' / 'mve' / 'libmve.a'}",
             f"-DMVE_UTIL_LIBRARY_RELEASE={mve_build / 'libs' / 'util' / 'libmve_util.a'}",
@@ -122,6 +128,8 @@ def main() -> None:
         ])
         run(command, cwd=source, env=env)
         run(["cmake", "--build", str(build_dir), "--target", "texrecon", "--parallel", "2"], cwd=source, env=env)
+        digest = verify_texturing_link_map(link_map)
+        print(f"PASS: texrecon link map excludes named MVE SIFT/SURF inputs; SHA256 {digest}", flush=True)
         (prefix / "bin").mkdir(parents=True, exist_ok=True)
         shutil.copy2(build_dir / "apps" / "texrecon" / "texrecon", prefix / "bin" / "texrecon")
     elif name == "poissonrecon-odm":

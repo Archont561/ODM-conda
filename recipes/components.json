@@ -323,7 +323,7 @@
     "mvs-texturing-odm": {
       "version": "0.0.0.dev20250818",
       "version_note": "Snapshot version dated from the pinned upstream commit; not an upstream release.",
-      "build_number": 1,
+      "build_number": 2,
       "recipe": "recipes/mvs-texturing-odm/recipe.yaml",
       "executable": "texrecon",
       "source": {

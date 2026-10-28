@@ -5,7 +5,9 @@ permission to publish. All release checks remain false. This review concerns
 version `0.0.0.dev20250818`; build 1 adds a previously omitted notice.
 Native CI [40742094824](https://github.com/Archont561/ODM-conda/actions/runs/40742094824)
 validated build 1's package tests, fresh-environment retest, audit and source
-bundling. This does not approve the licenses or prove source completeness.
+bundling. Build 2 adds a fail-closed GNU link-map check, but has not yet been
+validated by native CI. Neither result approves licenses or proves source
+completeness.
 
 ## Reviewed evidence and provisional obligations
 
@@ -40,8 +42,12 @@ reviewer must confirm the SPDX identifiers, custom references and their scope.
    library directly. The build 1 CI log confirms both `sift.cc.o` and
    `surf.cc.o` were compiled into `mve_sfm`; this is not proof they entered
    `texrecon`. The CI output lacks a final link map, and the archived binary
-   was not independently inspected in this review. No patent analysis has
-   established what rights apply.
+   was not independently inspected in this review. Build 2 asks GNU ld for a
+   map of the texrecon link and fails if it is missing, incomplete, or names
+   the sfm archive or SIFT/SURF objects. A synthetic GNU link-map test passed,
+   but build 2 has not been run natively. Even a passing check cannot rule out
+   equivalent code elsewhere or resolve the separate source-archive and patent
+   questions. No patent analysis has established what rights apply.
    The original MVE archive containing both files is included in the source
    bundle. Preserve the disclaimer and obtain appropriate review; do not infer
    either patent infringement or patent expiration from this notice.
