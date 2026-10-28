@@ -1,0 +1,82 @@
+schema_version: 1
+
+context:
+  name: dem2mesh
+  version: "0.0.0.dev20231207"
+  upstream_commit: "623c8536941175c630fabe4f1352ddc314d98120"
+  source_sha256: "29e2729c890118def3d727cfca81070e1cb99fa8a51212a6deef7614089ecf8b"
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  # ODM 3.6.2 references branch 334; this pins its researched head.
+  url: https://codeload.github.com/OpenDroneMap/dem2mesh/tar.gz/623c8536941175c630fabe4f1352ddc314d98120
+  sha256: ${{ source_sha256 }}
+
+build:
+  number: 0
+  skip: target_platform != "linux-64"
+  python:
+    skip_pyc_compilation:
+      - share/odm-conda/**/*.py
+  script:
+    file: ../../scripts/build_component.py
+    interpreter: python
+
+requirements:
+  build:
+    - python >=3.12,<3.13
+    - cmake >=3.31,<3.32
+    - ninja >=1.11,<2
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+  host:
+    - libgdal-core >=3.11,<3.12
+    - libgomp >=14
+  run:
+    - libgdal-core >=3.11,<3.12
+    - libgomp >=14
+
+tests:
+  - package_contents:
+      files:
+        - bin/dem2mesh
+        - share/licenses/dem2mesh/*
+        - share/odm-conda/dem2mesh/SOURCE.txt
+        - share/odm-conda/dem2mesh/functional_test.py
+  - script:
+      interpreter: python
+      content: |
+        import runpy
+        import sys
+        from pathlib import Path
+        installed = Path(sys.prefix) / "share" / "odm-conda" / "dem2mesh" / "functional_test.py"
+        runpy.run_path(str(installed), run_name="__main__")
+    requirements:
+      run:
+        - python >=3.12,<3.13
+
+about:
+  homepage: https://github.com/OpenDroneMap/dem2mesh
+  repository: https://github.com/OpenDroneMap/dem2mesh
+  summary: Generate a mesh from a digital elevation raster
+  description: >-
+    Unofficial native packaging of a component used by OpenDroneMap.
+    This component package is not the complete ODM engine. License review
+    and native package validation are required before distribution.
+  license: GPL-3.0-or-later AND GPL-2.0-or-later AND BSD-3-Clause AND MIT
+  license_file:
+    - .conda-notices/dem2mesh-GPL-3.0.txt
+    - .conda-notices/dem2mesh-grant.txt
+    - .conda-notices/jmeshlib-GPL-2.0.txt
+    - .conda-notices/jmeshlib-grant.txt
+    - .conda-notices/CmdLineParser-BSD-3-Clause.txt
+    - .conda-notices/Simplify-source-and-MIT-notice.txt
+    - .conda-notices/packaging-MIT.txt
+
+extra:
+  recipe-maintainers:
+    - archont561

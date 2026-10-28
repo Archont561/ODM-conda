@@ -32,11 +32,14 @@ def config(root: Path = ROOT) -> dict[str, Any]:
 
 def select_components(name: str, root: Path = ROOT) -> dict[str, dict[str, Any]]:
     components = config(root)["components"]
-    if name == "all":
+    names = [part.strip() for part in name.split(",")]
+    if names == ["all"]:
         return components
-    if name not in components:
-        raise ScaffoldError(f"Unknown or unimplemented component: {name!r}. Available: {', '.join(components)}")
-    return {name: components[name]}
+    if any(not item or item == "all" or item not in components for item in names):
+        raise ScaffoldError(f"Unknown or invalid component selection: {name!r}. Available: {', '.join(components)}; use 'all' alone")
+    if len(names) != len(set(names)):
+        raise ScaffoldError("Duplicate components are not allowed")
+    return {item: components[item] for item in names}
 
 
 def relative_path(root: Path, value: str) -> Path:

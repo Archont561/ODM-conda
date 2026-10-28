@@ -4,7 +4,7 @@ title: Package mvs-texturing-odm
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 10:31'
+updated_date: '2026-10-28 11:21'
 labels:
   - component
   - mvs-texturing-odm
@@ -64,4 +64,6 @@ Preprocessor dependency trace (2026-10-28): using system GCC 12 -MM, EIGEN_MPL2_
 Notice inventory (2026-10-28): research/mvs-texturing-notices.json records SHA256 for 19 notice-bearing files: the four component root licenses, dset license, Eigen COPYING.MPL2 and COPYING.README, and 12 SuperLU/COLAMD-bearing headers identified in the texturing preprocessor trace. scripts/verify_staged_notices.py verified all 19 against the exact-commit staged tree. A fresh experimental bundle verified all five archive hashes and included the inventory and offline patch. These 19 files are a preliminary minimum, not evidence that all copyright notices, license obligations or runtime dependencies have been reviewed; not a production release bundle.
 
 Exact-source local research build and fixture (2026-10-28): staged the five planned archives with the exact GitLab Eigen tag commit, verified all 19 preliminary notice-bearing file hashes, applied the experimental offline patch, and built MVE and texrecon locally using system GCC 12, restored odm-dev libraries and upstream oneTBB 2023.1.0 headers with a local CMake imported TBB target. A generated 64x64 color-gradient PNG, camera file and two-face PLY quad produced an OBJ with two textured triangles, an MTL and a PNG atlas; scripts/texrecon_fixture.py reproduces this research test and negative tests reject a program that only reports success or creates no output. This is not a packaged or installed-prefix build, is not network-isolated, skips global and local seam leveling, uses a manually assembled research TBB development setup, and is not native CI validation. Source completeness, full notice review, production source-bundle integration and all release gates remain open.
+
+Additional source inspection (2026-10-28): the staged MVE CMake project adds -mpopcnt by default for GNU on x86; the existing texturing research patch removes -march=native from texturing but does not remove this MVE flag. CPU portability must be reviewed before a package can claim the linux-64 baseline.
 <!-- SECTION:NOTES:END -->

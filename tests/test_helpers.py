@@ -10,11 +10,11 @@ from release_guard import reviewed_component
 
 
 def test_manifest_and_recipe_invariants():
-    assert check_repository() == 4
+    assert check_repository() == 7
 
 
 def test_only_implemented_components_are_buildable():
-    assert set(select_components("all")) == {"dem2points", "fastrasterfilter", "fpcfilter", "odm-orthophoto"}
+    assert set(select_components("all")) == {"dem2mesh", "dem2points", "fastrasterfilter", "fpcfilter", "odm-orthophoto", "renderdem", "poissonrecon-odm"}
     for name in ("opendronemap", "opensfm-odm", "../fpcfilter", "all; echo unsafe"):
         with pytest.raises(ScaffoldError):
             select_components(name)

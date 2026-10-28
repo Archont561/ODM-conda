@@ -132,10 +132,15 @@ def test_validate_member_rejects_unsafe_member_names(name):
 
 
 @hermetic
-@given(name=st.text(max_size=40).filter(lambda value: value != "all" and value not in IMPLEMENTED))
+@given(name=st.text(max_size=80))
 def test_select_components_never_invents_components(name):
-    with pytest.raises(ScaffoldError):
-        select_components(name)
+    try:
+        selected = select_components(name)
+    except ScaffoldError:
+        return
+    assert selected and set(selected) <= IMPLEMENTED
+    parts = [part.strip() for part in name.split(",")]
+    assert parts == ["all"] or (len(parts) == len(set(parts)) and list(selected) == parts)
 
 
 @hermetic

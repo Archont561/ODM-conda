@@ -4,9 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       component:
-        description: Implemented component to build (no publishing)
-        type: choice
-        options: [all, dem2points, fastrasterfilter, fpcfilter, odm-orthophoto]
+        description: Component names separated by commas, or all (no publishing)
+        type: string
         default: all
         required: true
 

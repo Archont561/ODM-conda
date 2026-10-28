@@ -232,6 +232,91 @@ def write_tiff_f32(path: Path, width: int, height: int, values: list[float]) -> 
     path.write_bytes(b"II\x2a\x00" + struct.pack("<I", ifd_offset) + ifd + pixel_scale + tiepoint + raster)
 
 
+def test_poissonrecon(executable: Path, directory: Path) -> None:
+    # A synthetic unit sphere with outward normals should reconstruct a surface.
+    samples = []
+    for latitude in range(1, 16):
+        phi = math.pi * latitude / 16
+        for longitude in range(32):
+            theta = 2 * math.pi * longitude / 32
+            x, y, z = math.sin(phi) * math.cos(theta), math.sin(phi) * math.sin(theta), math.cos(phi)
+            samples.append(f"{x} {y} {z} {x} {y} {z}\n")
+    (directory / "sphere.npts").write_text("".join(samples), encoding="ascii")
+    output = directory / "sphere.ply"
+    execute([str(executable), "--in", "sphere.npts", "--out", str(output), "--depth", "5",
+             "--fullDepth", "4", "--threads", "1", "--ascii"], directory)
+    lines, count, body = ply_header(output)
+    assert "format ascii 1.0" in lines and count > 100, lines
+    face_count = next(int(line.split()[2]) for line in lines if line.startswith("element face "))
+    assert face_count > 100, face_count
+    records = body.decode("ascii").splitlines()
+    assert len(records) == count + face_count, (len(records), count, face_count)
+    for line in records[:count]:
+        values = [float(value) for value in line.split()]
+        assert len(values) >= 3 and all(math.isfinite(value) for value in values)
+        radius = math.sqrt(sum(value * value for value in values[:3]))
+        assert 0.8 < radius < 1.2, radius
+    for line in records[count:]:
+        indices = [int(value) for value in line.split()]
+        assert len(indices) == 4 and indices[0] == 3 and len(set(indices[1:])) == 3
+        assert all(0 <= index < count for index in indices[1:])
+
+
+def test_renderdem(executable: Path, directory: Path) -> None:
+    # A unit-spaced square of points at constant elevation must rasterize to 42.
+    point_file = directory / "points.ply"
+    point_file.write_text(
+        "ply\nformat ascii 1.0\nelement vertex 4225\n"
+        "property float x\nproperty float y\nproperty float z\nend_header\n"
+        + "".join(f"{x} {y} 42\n" for y in range(65) for x in range(65)), encoding="ascii")
+    # LAS 1.2 point format 0, including classification 2: exercises PDAL's
+    # LAS reader, not just the component's own PLY reader.
+    header = bytearray(227)
+    header[:4] = b"LASF"
+    header[24:26] = b"\x01\x02"
+    struct.pack_into("<HHHII", header, 90, 1, 2026, 227, 227, 0)
+    struct.pack_into("<HI", header, 105, 20, 4225)
+    struct.pack_into("<5I", header, 111, 4225, 0, 0, 0, 0)
+    struct.pack_into("<3d", header, 131, 0.01, 0.01, 0.01)
+    struct.pack_into("<6d", header, 179, 64, 0, 64, 0, 42, 42)
+    points = b"".join(struct.pack("<iiiHBBbBH", x * 100, y * 100, 4200, 0, 9, 2, 0, 0, 0)
+                      for y in range(65) for x in range(65))
+    las = directory / "points.las"
+    las.write_bytes(header + points)
+    for label, source, arguments in (("ply", point_file, []), ("las", las, ["-c", "2"])):
+        execute([str(executable), "-i", str(source), "-u", label, "-r", "1",
+                 "-s", "1.5", "-t", "256", "-x", "1", *arguments], directory)
+        outputs = list((directory / label).glob("*.tif"))
+        assert len(outputs) == 1, outputs
+        data = outputs[0].read_bytes()
+        tags = tiff_first_ifd(data)
+        assert tags[256] == (65,) and tags[257] == (65,), tags
+        assert tags[258] == (32,) and tags[339] == (3,), tags
+        assert tags.get(259, (1,)) == (1,), "Expected uncompressed Float32 GeoTIFF"
+        assert tags[33550] == (1.0, 1.0, 0.0), tags[33550]
+        assert tags[33922] == (0.0, 0.0, 0.0, 0.0, 65.0, 0.0), tags[33922]
+        pixels = b"".join(data[start:start + size] for start, size in zip(tags[273], tags[279]))
+        assert len(pixels) == 65 * 65 * 4, len(pixels)
+        assert struct.unpack("<4225f", pixels) == (42.0,) * 4225, "Unexpected raster elevations"
+
+
+def test_dem2mesh(executable: Path, directory: Path) -> None:
+    # A 1-unit grid of elevations z=x+y has 64 vertices and 2*7*7 triangles.
+    write_tiff_f32(directory / "dem.tif", 8, 8, [float(x + y) for y in range(8) for x in range(8)])
+    output = directory / "mesh.ply"
+    execute([str(executable), "-inputFile", "dem.tif", "-outputFile", str(output),
+             "-maxConcurrency", "1", "-maxVertexCount", "1000"], directory)
+    lines, count, body = ply_header(output)
+    assert "format binary_little_endian 1.0" in lines, lines
+    assert count == 64 and "element face 98" in lines, lines
+    assert len(body) == 64 * 12 + 98 * 13, len(body)
+    vertices = list(struct.iter_unpack("<3f", body[:64 * 12]))
+    assert all(all(math.isfinite(value) for value in vertex) for vertex in vertices)
+    assert sorted(z for _, _, z in vertices) == sorted(float(x + y) for y in range(8) for x in range(8))
+    for size, a, b, c in struct.iter_unpack("<B3i", body[64 * 12:]):
+        assert size == 3 and len({a, b, c}) == 3 and all(0 <= i < count for i in (a, b, c))
+
+
 def test_fastrasterfilter(executable: Path, directory: Path) -> None:
     # Synthetic 8x8 Float32 DEM: a constant 123.5 field with a diagonal spike
     # pair (-999.0 at (3,3), +999.0 at (4,4)). With radius 1, mf2d clamps its
@@ -281,10 +366,10 @@ def main() -> None:
     installed_directory = Path(__file__).resolve().parent
     name = installed_directory.name
     # This script is deliberately usable only from the installed package layout.
-    if installed_directory.parent.name != "odm-conda" or name not in ("dem2points", "fastrasterfilter", "fpcfilter", "odm-orthophoto"):
+    if installed_directory.parent.name != "odm-conda" or name not in ("dem2mesh", "dem2points", "fastrasterfilter", "fpcfilter", "odm-orthophoto", "poissonrecon-odm", "renderdem"):
         raise SystemExit("Run through an installed package / rattler-build test, not directly from the checkout")
     prefix = installed_directory.parents[2]
-    executable_names = {"fpcfilter": "FPCFilter", "odm-orthophoto": "odm_orthophoto"}
+    executable_names = {"fpcfilter": "FPCFilter", "odm-orthophoto": "odm_orthophoto", "poissonrecon-odm": "PoissonRecon"}
     executable = prefix / "bin" / executable_names.get(name, name)
     assert executable.is_file(), executable
     assert (prefix / "share" / "licenses" / name / "packaging-MIT.txt").is_file()
@@ -292,12 +377,18 @@ def main() -> None:
     check_linkage(executable)
     with tempfile.TemporaryDirectory(prefix=f"{name}-fixture-") as temp:
         directory = Path(temp)
-        if name == "dem2points":
+        if name == "dem2mesh":
+            test_dem2mesh(executable, directory)
+        elif name == "dem2points":
             test_dem2points(executable, directory)
         elif name == "fastrasterfilter":
             test_fastrasterfilter(executable, directory)
         elif name == "fpcfilter":
             test_fpcfilter(executable, directory)
+        elif name == "renderdem":
+            test_renderdem(executable, directory)
+        elif name == "poissonrecon-odm":
+            test_poissonrecon(executable, directory)
         else:
             test_odm_orthophoto(executable, directory)
     print(f"PASS: {name} installed-prefix linkage and generated-data functional tests")
