@@ -151,6 +151,9 @@ The builder checks the individual SHA256 values before copying; the limited
 research audit rejects a missing or modified added notice. See
 `research/notices/psutil-2021-BSD-3-Clause.txt` and
 `scripts/research_license_notices.py`. These additions neither assert that
-all notices are complete nor replace rights/provenance review. The earlier
-build-0 native runs do not validate these changed payloads; owner-dispatched
-local-only native build, fresh retest and audit are required for each recipe.
+all notices are complete nor replace rights/provenance review. Owner-dispatched local-only build 1 runs [40779149681](https://github.com/Archont561/ODM-conda/actions/runs/40779149681)
+(OpenMVS) and [40779183804](https://github.com/Archont561/ODM-conda/actions/runs/40779183804)
+(OpenSfM) passed native builds, fresh retests and limited research audits at
+commit `147b0584b42977b1f52e6cc65aeeb56ce1a99fc7`. Temporary packages and
+sources were removed; no artifacts were uploaded. These tests do not resolve
+the remaining licensing and redistribution questions.

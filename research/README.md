@@ -300,5 +300,6 @@ rights. See
 
 Research build 1 adds hash-checked OpenMVS/VCG/Eigen notices and a conservative
 psutil BSD notice for the vmem provenance investigation. This is not a complete
-notice or legal reconciliation; build 1 still requires local-only native
-validation for each recipe. See `open-components-license-review.md`.
+notice or legal reconciliation. Owner-dispatched local-only build 1 runs
+40779149681 (OpenMVS) and 40779183804 (OpenSfM) passed native build, fresh
+retest and limited research audit. See `open-components-license-review.md`.
