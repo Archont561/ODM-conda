@@ -18,7 +18,17 @@ Supported experimental plan names are `dem2mesh`, `poissonrecon`, `renderdem`,
 Each source archive is rehashed, and extraction rejects links, unsafe paths and
 nonempty staging destinations. Declared `.gitmodules` paths must be explicitly
 staged; gitlink commits must still be verified separately against the Git tree,
-because a source archive cannot establish them. The plans contain only sources
+because a source archive cannot establish them. With a local Git repository
+containing the pinned primary commit, run:
+
+```sh
+python scripts/verify_gitlinks.py --component opensfm --repository /path/to/opensfm-git
+```
+
+The verifier compares all primary-tree gitlink paths and revisions with entries
+marked `gitlink: true` in the plan, rejecting missing, unexpected or changed
+links. It does not verify nested repository gitlinks or equivalence of the
+archive with the Git tree, nor does it prove source or license completeness. The plans contain only sources
 identified so far. The plan and this file are included in packaging source bundles
 alongside the staging scripts; their presence does not authorize release. In particular, the staged mvs-texturing tree still contains upstream
 ExternalProject download commands, and its MVE source is in a non-default path.

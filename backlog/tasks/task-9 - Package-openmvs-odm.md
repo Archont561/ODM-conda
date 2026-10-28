@@ -4,7 +4,7 @@ title: Package openmvs-odm (ReconstructMesh target for the fast-orthophoto MVP)
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 11:21'
+updated_date: '2026-10-28 13:09'
 labels:
   - component
   - openmvs-odm
@@ -43,4 +43,6 @@ Staging research (2026-10-28): a provisional graph stages the primary archive, V
 Eigen review (2026-10-28): the GitLab API confirms that ODM's GitLab commit `7176ae16238ded7fb5ed30a7f5215825b3abd134` exists; GitHub's mirror resolves the same Git commit to tree `72916b38553c81462f2148f8a4119830830987aa`. GitLab's listed `Eigen` subtree `8ef8d3f66401215e00c9d42a80d64e4038ce0d1a` agrees with that GitHub tree. This verifies Git object identity, not equality of GitLab/GitHub tarball bytes, license coverage or target closure. GitLab API: `https://gitlab.com/api/v4/projects/libeigen%2Feigen/repository/commits/7176ae16238ded7fb5ed30a7f5215825b3abd134` and `/repository/tree?ref=7176ae16238ded7fb5ed30a7f5215825b3abd134&per_page=100`.
 
 Source-target inspection (2026-10-28): apps/ReconstructMesh/CMakeLists.txt links the MVS target; libs/MVS/CMakeLists.txt requires CGAL and VCG and links Common, Math and IO. That library globs all its C++ sources, so a ReconstructMesh-only executable target does not itself eliminate dense-source compilation. CUDA, OpenGL and Breakpad can be disabled; default build/Utils.cmake enables SSE3, SSSE3, SSE4.1 and SSE4.2 on x86_64, requiring baseline review. A local configuration attempt with those optional integrations disabled stopped at missing Boost components; CGAL is also absent from the restored odm-dev environment. The closure has not been compile-validated, and no recipe or installed test exists.
+
+2026-10-28: The pinned openMVS Git commit was fetched into a temporary local bare Git repository and scripts/verify_gitlinks.py verified the primary tree contains no Git submodule links. The separately staged VCG/Eigen dependencies are still necessary and this does not prove source completeness or isolated package support.
 <!-- SECTION:NOTES:END -->

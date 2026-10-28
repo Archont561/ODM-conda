@@ -4,7 +4,7 @@ title: Package opensfm-odm
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 11:42'
+updated_date: '2026-10-28 13:09'
 labels:
   - component
   - opensfm-odm
@@ -40,4 +40,6 @@ Preliminary source research (2026-10-28): ODM pins OpenSfM commit `c5328439465e6
 Further research (2026-10-28): adding a temporary -DGLOG_USE_GLOG_EXPORT flag and explicit odm-dev include path allowed all eight native OpenSfM modules to compile with system GCC 12 against restored Ceres/OpenCV and Python 3.12. All eight imported and scripts/opensfm_fixture.py passed basic equatorial ECEF and identity-pose checks with NumPy in the odm-dev environment. This is a mixed-environment local research build, not a tested patch, isolated Conda build, installed-prefix validation or SfM dataset test. Ceres should be integrated through proper imported targets rather than relying on the ad hoc preprocessor workaround. Production staging/bundling, Python packaging/ABI and source/license review remain unresolved.
 
 2026-10-28: created research/patches/opensfm-ceres-config.patch (SHA256 1cbf2c8044e0281368c8802205f14816fc3b635fb419a7d8fa3570603fdfd773) to find Ceres through its exported CMake config and propagate its target usage requirements through OpenSfM libraries, rather than manually injecting glog defines or include paths. Patch applied cleanly to a freshly staged exact source graph. With GCC 12 and the restored mixed Python/odm-dev environment, a clean CMake configuration and single-job build completed; after deleting old module outputs and rebuilding, all eight extensions were recreated and the research imports/ECEF/pose fixture passed. This is an experimental patch; no Conda compiler, isolated prefix, native package, SfM dataset, full notice review or release validation was performed.
+
+2026-10-28: The pinned OpenSfM Git commit was fetched into a temporary local bare Git repository and scripts/verify_gitlinks.py verified its complete primary tree has exactly one gitlink: opensfm/src/third_party/pybind11 at a2e59f0e7065404b44dfe92a28aca47ba1378dc4, matching the experimental source plan. Automated negative tests reject altered, omitted and unexpected gitlinks. This does not verify nested gitlinks, archive-versus-tree equivalence, source completeness or enable production source staging.
 <!-- SECTION:NOTES:END -->

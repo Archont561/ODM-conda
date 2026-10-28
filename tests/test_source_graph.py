@@ -238,3 +238,33 @@ def test_notice_inventory_rejects_empty_duplicate_and_invalid_hash(tmp_path):
                       {"schema_version": 1, "entries": [{**item, "sha256": "bad"}]}):
         with pytest.raises(ScaffoldError):
             verify_inventory(tmp_path, inventory)
+
+
+def test_gitlink_verification_rejects_wrong_missing_and_undeclared_revisions(tmp_path):
+    import subprocess
+    from verify_gitlinks import verify_gitlinks
+
+    repo = tmp_path / 'repo'
+    repo.mkdir()
+    subprocess.run(['git', 'init', '-q', str(repo)], check=True)
+    subprocess.run(['git', '-C', str(repo), 'update-index', '--add', '--cacheinfo',
+                    '160000,' + 'a' * 40 + ',vendor/dep'], check=True)
+    tree = subprocess.check_output(['git', '-C', str(repo), 'write-tree'], text=True).strip()
+    env = dict(__import__('os').environ, GIT_AUTHOR_NAME='test', GIT_AUTHOR_EMAIL='test@example.com',
+               GIT_COMMITTER_NAME='test', GIT_COMMITTER_EMAIL='test@example.com')
+    commit = subprocess.check_output(['git', '-C', str(repo), 'commit-tree', tree, '-m', 'fixture'], text=True, env=env).strip()
+    plan = {'primary': {'commit': commit}, 'additional': [
+        {'name': 'dep', 'path': 'vendor/dep', 'commit': 'a' * 40, 'gitlink': True},
+        {'name': 'external', 'path': 'external/lib', 'commit': 'b' * 40},
+    ]}
+    assert verify_gitlinks(repo, plan) == {'vendor/dep': 'a' * 40}
+    plan['additional'][0]['commit'] = 'c' * 40
+    with pytest.raises(ScaffoldError, match='gitlink'):
+        verify_gitlinks(repo, plan)
+    plan['additional'][0]['gitlink'] = False
+    with pytest.raises(ScaffoldError, match='gitlink'):
+        verify_gitlinks(repo, plan)
+    plan['additional'][0]['gitlink'] = True
+    plan['additional'][0]['path'] = 'vendor/missing'
+    with pytest.raises(ScaffoldError, match='gitlink'):
+        verify_gitlinks(repo, plan)

@@ -4,7 +4,7 @@ title: Package poissonrecon-odm
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 11:08'
+updated_date: '2026-10-28 13:08'
 labels:
   - component
   - poissonrecon-odm
@@ -40,4 +40,6 @@ Local research build attempt (2026-10-28): downloaded and hash-verified the pinn
 A further single-job research compile with upstream optimization overridden to -O0 still approached 3.8 GiB RSS on this 4 GiB sandbox and was stopped before an OOM; no binary was produced. Native CI or a larger build environment is required for meaningful validation.
 
 2026-10-28: added a provisional linux-64 poissonrecon-odm 13.8 recipe using the pinned upstream make poissonrecon target with compiler wrappers, single-job compilation, two hash-checked makefiles, and all release checks false. Carried the root MIT license, BSD source header, and bundled libpng and zlib header notices provisionally; full notice review and security assessment of the old static libpng remain open. Added generated outward-normal unit-sphere functional fixture. It passes against a local research build with FAST_COMPILE enabled and -O0 (which limits supported degree/boundary options and is NOT the unmodified full recipe). Installed layout was manually assembled around that research build, not from a Conda artifact. Render-only and corresponding-source bundle succeeded; actual rattler-build could not solve compiler dependencies because conda.anaconda.org was unreachable. Prior attempts to compile the full variant approached 3.8 GiB RSS and were stopped; package build, isolated installed tests, audit, native CI and owner review still required.
+
+2026-10-28: GitHub Actions native validation run https://github.com/Archont561/ODM-conda/actions/runs/40686337935 at commit 21a57c9109725e5ae1713cbd0dd1ad3162080a17 selected dem2mesh, renderdem and poissonrecon-odm. All build and packaged tests, fresh-environment retests, artifact audits and corresponding-source bundling steps passed. Source bundle for poissonrecon-odm SHA256 7e2d03e07eb412b52977b3428eaa3c6db410689556cf262e48ae5e8c2d484e7c. Non-published artifact https://github.com/Archont561/ODM-conda/actions/runs/40686337935/artifacts/12815549805 (14-day retention; zip SHA256 3b33418c9111591bf5bc83127106b105e803ee4d899190f860c73699c7a411ca). Artifact-specific checksums remain in its audit report; this environment cannot download the artifact. Native evidence applies to this commit only. Source and license review, owner decisions and release gates remain open; no publication is authorized.
 <!-- SECTION:NOTES:END -->

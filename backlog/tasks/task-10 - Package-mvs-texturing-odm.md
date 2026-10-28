@@ -4,7 +4,7 @@ title: Package mvs-texturing-odm
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 13:00'
+updated_date: '2026-10-28 13:09'
 labels:
   - component
   - mvs-texturing-odm
@@ -68,4 +68,6 @@ Exact-source local research build and fixture (2026-10-28): staged the five plan
 Additional source inspection (2026-10-28): the staged MVE CMake project adds -mpopcnt by default for GNU on x86; the existing texturing research patch removes -march=native from texturing but does not remove this MVE flag. CPU portability must be reviewed before a package can claim the linux-64 baseline.
 
 2026-10-28 baseline research: applied research/patches/mve-baseline-cpu.patch (SHA256 7427f3332ba65a1ebf677940fbf9ec957c7343a311844953d829d30e0944646c) to the pinned MVE source to remove its unconditional GNU -mpopcnt. With the texturing offline patch and all exact-commit source archives, built MVE and texrecon using system GCC 12, -march=x86-64 -mno-popcnt, restored odm-dev libraries and separately downloaded oneTBB headers with a temporary imported target. All 70 MVE object files and the final texrecon executable had no POPCNT instructions in objdump; compile commands for 25 texturing translation units had no -march=native or -mpopcnt. The generated-scene texture fixture passed. This is not an isolated Conda build, does not inspect dynamically linked dependency instructions, is not a full CPU/ABI audit and is not an installed-package or release validation; all gates remain open.
+
+2026-10-28: The pinned mvs-texturing Git commit was fetched into a temporary local bare Git repository and scripts/verify_gitlinks.py verified the primary tree contains no Git submodule links. The separately staged MVE, mapmap, rayint and Eigen dependencies remain required; this does not prove source completeness or isolated package support.
 <!-- SECTION:NOTES:END -->
