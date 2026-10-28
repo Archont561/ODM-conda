@@ -1,0 +1,42 @@
+--- a/apps/ReconstructMesh/ReconstructMesh.cpp
++++ b/apps/ReconstructMesh/ReconstructMesh.cpp
+@@ -414,6 +414,26 @@
+ 		else if (OPT::fBorderROI < 0)
+ 			scene.obb.Enlarge(-OPT::fBorderROI);
+ 		if (OPT::strMeshFileName.empty() && scene.mesh.IsEmpty()) {
++			// Reconstruction requires camera visibility for every input point.
++			// A plain PLY may provide geometry but no camera-view indices.
++			if (scene.pointcloud.points.IsEmpty() ||
++				scene.pointcloud.pointViews.GetSize() != scene.pointcloud.points.GetSize()) {
++				VERBOSE("error: point cloud requires per-point camera visibility");
++				return EXIT_FAILURE;
++			}
++			FOREACH(idxPoint, scene.pointcloud.pointViews) {
++				const PointCloud::ViewArr& views = scene.pointcloud.pointViews[idxPoint];
++				if (views.IsEmpty()) {
++					VERBOSE("error: point cloud requires per-point camera visibility");
++					return EXIT_FAILURE;
++				}
++				FOREACH(idxView, views) {
++					if (views[idxView] >= scene.images.GetSize() || !scene.images[views[idxView]].IsValid()) {
++						VERBOSE("error: point cloud requires per-point camera visibility");
++						return EXIT_FAILURE;
++					}
++				}
++			}
+ 			// reset image resolution to the original size and
+ 			// make sure the image neighbors are initialized before deleting the point-cloud
+ 			#ifdef RECMESH_USE_OPENMP
+--- a/libs/MVS/PointCloud.cpp
++++ b/libs/MVS/PointCloud.cpp
+@@ -257,7 +257,9 @@
+ 				case 0: points.resize((IDX)elem_count); break;
+ 				case 3: case 13: colors.resize((IDX)elem_count); break;
+ 				case 6: normals.resize((IDX)elem_count); break;
+-				case 9: views.resize((IDX)elem_count); break;
++				// ODM's PLY "views" property is a scalar count, not view indices.
++				// Do not fabricate an array from the uninitialized pIndices pointer.
++				case 9: break;
+ 				case 10: weights.resize((IDX)elem_count); break;
+ 				}
+ 			}

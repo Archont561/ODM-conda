@@ -67,6 +67,7 @@ def test_source_archive_rejects_submodules_fetches_and_traversal(tmp_path):
     cases = [{"project/.gitmodules": b"[submodule]"},
              {"project/CMakeLists.txt": b"ExternalProject_Add(nested)"},
              {"project/CMakeLists.txt": b"file(\nDOWNLOAD https://example.invalid)"},
+             {"project/CMakeLists.txt": b"file(\tDOWNLOAD https://example.invalid)"},
              {"../escape": b"x"}]
     path = tmp_path / "source.tar.gz"
     for entries in cases:
@@ -102,6 +103,7 @@ def test_source_bundle_is_deterministic_and_contains_manifest(tmp_path, monkeypa
     with tarfile.open(upstream, "w:gz") as archive:
         add_bytes(archive, "project/CMakeLists.txt", b"project(example)\n")
     component = config()["components"]["fpcfilter"]
+    component["source"]["sha256"] = hashlib.sha256(upstream.read_bytes()).hexdigest()
 
     def fail_git(*args, **kwargs):
         raise subprocess.CalledProcessError(1, ["git"])
@@ -118,3 +120,23 @@ def test_source_bundle_is_deterministic_and_contains_manifest(tmp_path, monkeypa
         assert manifest["files"]["packaging/README.md"] == hashlib.sha256(readme.read_bytes()).hexdigest()
         assert "README-SOURCE.txt" in archive.getnames()
         assert all(member.mtime == 0 for member in archive)
+
+
+def test_exact_hashed_disabled_fetch_file_does_not_exempt_neighbors(tmp_path):
+    path = tmp_path / 'source.tar.gz'
+    accepted = b'file(DOWNLOAD https://example.invalid file)\n'
+    expected = {'disabled/CMakeLists.txt': hashlib.sha256(accepted).hexdigest()}
+    with tarfile.open(path, 'w:gz') as archive:
+        add_bytes(archive, 'project/disabled/CMakeLists.txt', accepted)
+    validate_upstream_archive(path, fetch_exceptions=expected)
+    with pytest.raises(ScaffoldError, match='exception'):
+        validate_upstream_archive(path, fetch_exceptions={'disabled/CMakeLists.txt': '0' * 64})
+    with tarfile.open(path, 'w:gz') as archive:
+        add_bytes(archive, 'project/CMakeLists.txt', b'project(test)')
+    with pytest.raises(ScaffoldError, match='exception'):
+        validate_upstream_archive(path, fetch_exceptions={'missing/CMakeLists.txt': '0' * 64})
+    with tarfile.open(path, 'w:gz') as archive:
+        add_bytes(archive, 'project/disabled/CMakeLists.txt', accepted)
+        add_bytes(archive, 'project/disabled/neighbor.cmake', b'file(DOWNLOAD https://bad.invalid x)')
+    with pytest.raises(ScaffoldError, match='Unstaged external'):
+        validate_upstream_archive(path, fetch_exceptions=expected)

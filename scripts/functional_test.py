@@ -362,14 +362,41 @@ def test_fastrasterfilter(executable: Path, directory: Path) -> None:
     assert "radius" in help_run.stdout and "window-size" in help_run.stdout, help_run.stdout
 
 
+def test_openmvs(executable: Path, directory: Path, fixture: Path | None = None) -> None:
+    """Run the installed generated-scene and missing-visibility regressions."""
+    fixture = fixture or Path(__file__).resolve().parent / "openmvs_synthetic_fixture.py"
+    assert fixture.is_file(), f"Missing OpenMVS fixture: {fixture}"
+    env = os.environ.copy()
+    env.pop("PYTHONPATH", None)
+    env["OMP_NUM_THREADS"] = "1"
+    result = subprocess.run([sys.executable, str(fixture), "--executable", str(executable)],
+                            cwd=directory, env=env, text=True, capture_output=True, timeout=180)
+    assert result.returncode == 0, f"OpenMVS fixture failed: {result.stdout}\n{result.stderr}"
+    assert ('PASS: synthetic OpenMVS scene reconstructed' in result.stdout
+            and 'PASS: separate PLYs without camera indices are rejected without crashing' in result.stdout), 'Missing OpenMVS fixture evidence'
+
+
+def test_texturing(executable: Path, directory: Path, fixture: Path | None = None) -> None:
+    """Run the installed generated-scene texrecon regression."""
+    fixture = fixture or Path(__file__).resolve().parent / "texrecon_fixture.py"
+    assert fixture.is_file(), f"Missing texrecon fixture: {fixture}"
+    env = os.environ.copy()
+    env.pop("PYTHONPATH", None)
+    env["OMP_NUM_THREADS"] = "1"
+    result = subprocess.run([sys.executable, str(fixture), "--executable", str(executable)],
+                            cwd=directory, env=env, text=True, capture_output=True, timeout=180)
+    assert result.returncode == 0, f"texrecon fixture failed: {result.stdout}\n{result.stderr}"
+    assert 'PASS: generated texrecon scene produced a textured quad' in result.stdout, 'Missing texrecon fixture evidence'
+
+
 def main() -> None:
     installed_directory = Path(__file__).resolve().parent
     name = installed_directory.name
     # This script is deliberately usable only from the installed package layout.
-    if installed_directory.parent.name != "odm-conda" or name not in ("dem2mesh", "dem2points", "fastrasterfilter", "fpcfilter", "odm-orthophoto", "poissonrecon-odm", "renderdem"):
+    if installed_directory.parent.name != "odm-conda" or name not in ("dem2mesh", "dem2points", "fastrasterfilter", "fpcfilter", "mvs-texturing-odm", "odm-orthophoto", "openmvs-odm", "poissonrecon-odm", "renderdem"):
         raise SystemExit("Run through an installed package / rattler-build test, not directly from the checkout")
     prefix = installed_directory.parents[2]
-    executable_names = {"fpcfilter": "FPCFilter", "odm-orthophoto": "odm_orthophoto", "poissonrecon-odm": "PoissonRecon"}
+    executable_names = {"fpcfilter": "FPCFilter", "mvs-texturing-odm": "texrecon", "odm-orthophoto": "odm_orthophoto", "openmvs-odm": "ReconstructMesh", "poissonrecon-odm": "PoissonRecon"}
     executable = prefix / "bin" / executable_names.get(name, name)
     assert executable.is_file(), executable
     assert (prefix / "share" / "licenses" / name / "packaging-MIT.txt").is_file()
@@ -389,6 +416,10 @@ def main() -> None:
             test_renderdem(executable, directory)
         elif name == "poissonrecon-odm":
             test_poissonrecon(executable, directory)
+        elif name == "openmvs-odm":
+            test_openmvs(executable, directory)
+        elif name == "mvs-texturing-odm":
+            test_texturing(executable, directory)
         else:
             test_odm_orthophoto(executable, directory)
     print(f"PASS: {name} installed-prefix linkage and generated-data functional tests")

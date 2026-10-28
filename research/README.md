@@ -38,8 +38,13 @@ archive bytes. The texturing plan pins the exact GitLab 3.3.2 tag commit
 GitHub mirror. Its earlier GitHub tag resolves to a different commit with an
 extra `.hgtags` file; the earlier local texrecon build used that older plan.
 For the openMVS Eigen pin, both hosts identify the same Git commit. Original
-GitLab tarball bytes, full notices and network-isolated builds remain unverified. The production recipes, builder, corresponding-
-source bundler and release machinery continue to reject unsupported graphs.
+GitLab tarball bytes, full notices and network-isolated builds remain unverified.
+The source bundler recognizes the exact pinned OpenMVS and mvs-texturing
+graphs. The builder has fingerprint-gated branches for both; the texturing
+recipe is registered for testing, while OpenMVS recipe integration remains
+unfinished. Lint rejects unrecognized external graphs, and release gates for
+the provisional texturing recipe remain closed. Graph recognition is not legal
+approval.
 
 For a **research-only** archive containing the plan, all planned upstream
 archives and packaging sources including the experimental patch:
@@ -53,7 +58,15 @@ archive and manifest. It refuses to overwrite a destination. This archive is
 not a release source bundle or a source-completeness certification.
 
 `mvs-texturing-notices.json` records hashes of 19 preliminary notice-bearing
-files. To verify them against the matching staged tree, run:
+files. `openmvs-notices.json` records the local reduced-target dependency-trace
+files plus root and third-party notices, including the excluded IBFS/TRWS
+licenses; apply both OpenMVS research patches before verifying it.
+`opensfm-notices.json` records root and third-party notices and selected
+camera-database and vocabulary asset hashes. The OpenSfM README contains
+conflicting BSD/AGPL descriptions; vocabulary provenance remains unreviewed.
+All inventories are evidence, not legal approval or complete obligations.
+
+To verify the texturing inventory against the matching staged tree, run:
 
 ```sh
 python scripts/verify_staged_notices.py --tree /tmp/texturing-source
@@ -136,3 +149,45 @@ OpenMVS's automatic attempt to load a separate same-name PLY. The upstream test
 data is not included in this repository; its licensing and redistribution
 status remain unreviewed. This is not an installed-prefix test, a test of a
 separate dense PLY input, or an isolated Conda build.
+
+`patches/openmvs-visibility-check.patch` is an **experimental** safety patch for
+the pinned OpenMVS source. A plain separate PLY without camera visibility, and
+a PLY whose `views` field contains scalar counts rather than camera indices,
+caused the unpatched research build to segfault. The patch avoids treating
+scalar counts as camera IDs and rejects reconstruction without valid per-point
+camera visibility. With the patched research executable, use the fixture above
+with `--check-visibility-rejection` to run both negative cases as well as the
+positive scene test. It does not make arbitrary PLY point clouds reconstructible,
+establish general malformed-input safety, or replace an installed-package test.
+
+A fully generated scene avoids redistributing the unreviewed upstream test
+images. With the experimental visibility patch applied, run:
+
+```sh
+python scripts/openmvs_synthetic_fixture.py --executable /absolute/path/to/ReconstructMesh
+```
+
+It generates two images, calibrated camera poses, and 400 visible points in an
+OpenMVS v3 interface scene; it validates a reconstructed mesh and checks clean
+rejection of separate PLY clouds lacking camera IDs, both with and without
+scalar view counts. On the local patched research build it produced 53 vertices
+and 46 faces. This is not an installed-prefix test or evidence that a separate
+PLY with camera IDs is supported.
+
+`patches/openmvs-reconstruct-only.patch` is an experimental **ReconstructMesh
+only** build variant. The original OpenMVS build compiled and linked IBFS,
+whose bundled license says research use only; its dense source also uses TRWS,
+whose bundled license limits distribution to non-commercial purposes. The
+patch selects the upstream Boost max-flow branch and excludes the dense,
+texture and refine translation units and the IBFS/TRWS Math build and install
+entries. It does not provide those excluded OpenMVS tools.
+
+A local GCC 12 reduced-target build with this patch and the visibility patch
+passed the generated-scene, upstream-scene and cube fixtures. Its unstripped
+ReconstructMesh executable had no `IBFS::` or `MRFEnergy` symbols according to
+`nm -C`; the inspected Math archive lacked IBFS objects and the MVS archive
+lacked the excluded dense/texture/refine objects (the CUDA-disabled
+`SceneRefineCUDA.cpp.o` remained). This is not an exhaustive binary or legal
+analysis. The original upstream archive **still contains** IBFS and TRWS files;
+its redistribution and corresponding-source obligations require separate review
+(TASK-54), even if the binary excludes their code. No package is approved.

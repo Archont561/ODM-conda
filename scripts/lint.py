@@ -9,7 +9,8 @@ from pathlib import Path
 
 import yaml
 
-from common import CHECKS, NAME_RE, ROOT, ScaffoldError, config, fail_cli, relative_path
+from common import CHECKS, NAME_RE, ROOT, ScaffoldError, config, fail_cli, relative_path, sha256
+from texturing_graph_policy import validate_texturing_graph, validate_texturing_patches
 
 
 def require(condition: bool, message: str) -> None:
@@ -36,7 +37,11 @@ def check_repository(root: Path = ROOT) -> int:
         require(re.fullmatch(r"[0-9a-f]{40}", source["commit"]) is not None, f"Unpinned source for {name}")
         require(re.fullmatch(r"[0-9a-f]{64}", source["sha256"]) is not None, f"Missing SHA256 for {name}")
         require(source["url"].startswith("https://codeload.github.com/") and source["url"].endswith("/" + source["commit"]), f"Use an immutable source archive for {name}")
-        require(source["additional_sources"] == [], "External source graphs are not yet implemented; extend source bundling before enabling them")
+        if name == "mvs-texturing-odm":
+            validate_texturing_graph(name, source)
+            validate_texturing_patches(source, root)
+        else:
+            require(source["additional_sources"] == [], "External source graphs require explicit staging and bundling support")
         require(source.get("disabled_build_trees") == (["test"] if name == "fpcfilter" else []), "Unexpected disabled source tree; review source completeness explicitly")
         recipe_path = relative_path(root, component["recipe"])
         require(recipe_path.is_file(), f"Missing recipe: {recipe_path}")
@@ -45,8 +50,20 @@ def check_repository(root: Path = ROOT) -> int:
         require(recipe.get("schema_version") == 1, f"Wrong recipe schema for {name}")
         for key, expected in (("name", name), ("version", component["version"]), ("upstream_commit", source["commit"]), ("source_sha256", source["sha256"])):
             require(recipe["context"].get(key) == expected, f"Manifest/recipe context mismatch: {name}.{key}")
-        require(recipe["source"]["url"] == source["url"], f"Source URL mismatch: {name}")
-        require(recipe["source"]["sha256"] == "${{ source_sha256 }}", "Recipe must check its archive checksum")
+        if name == "mvs-texturing-odm":
+            expected_sources = [{"url": source["url"], "sha256": "${{ source_sha256 }}", "patches": ["patches/0001-offline.patch"]}]
+            for item in source['additional_sources']:
+                entry = {"url": item['url'], "sha256": item['sha256'], "target_directory": item['path']}
+                if item['name'] == 'mve':
+                    entry['patches'] = ["patches/0002-mve-baseline.patch"]
+                expected_sources.append(entry)
+            require(recipe['source'] == expected_sources, "Texturing recipe must stage the exact reviewed graph")
+            for filename, patch in zip(('patches/0001-offline.patch', 'patches/0002-mve-baseline.patch'), source['patches']):
+                path = relative_path(recipe_path.parent, filename)
+                require(path.is_file() and sha256(path) == patch['sha256'], f"Recipe patch checksum mismatch: {filename}")
+        else:
+            require(recipe["source"]["url"] == source["url"], f"Source URL mismatch: {name}")
+            require(recipe["source"]["sha256"] == "${{ source_sha256 }}", "Recipe must check its archive checksum")
         require(recipe["build"]["number"] == component["build_number"], f"Build-number mismatch for {name}")
         require(recipe["build"]["skip"] == 'target_platform != "linux-64"', "A recipe must skip unsupported platforms")
         script = recipe["build"]["script"]

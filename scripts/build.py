@@ -41,6 +41,11 @@ def main() -> None:
             output.write(f"COMPONENT={component_selection}\n")
         print(f"Workflow selection: {component_selection}", flush=True)
     for name, component in select_components(component_selection).items():
+        if not options.render_only and component['source'].get('additional_sources'):
+            # Verify and scan the exact graph before the isolated build; rattler
+            # independently verifies its source checksums during staging.
+            from source_bundle import graph_archives
+            graph_archives(name, component['source'], ROOT / '.cache' / 'sources')
         command = [rattler(), "build", "--recipe", str(ROOT / component["recipe"]),
                    "--target-platform", config()["distribution"]["platform"],
                    "--variant-config", str(ROOT / "recipes" / "variants.yaml"),

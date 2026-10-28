@@ -29,6 +29,7 @@ def audit(name: str, component: dict, package: Path, root: Path = ROOT) -> dict:
     runtime_names = {dependency.split()[0] for dependency in index.get("depends", [])}
     extra_runtime = {"dem2mesh": {"libgdal-core", "libgomp"}, "dem2points": {"libgdal-core"}, "fastrasterfilter": {"libgdal-core", "libgomp"},
                      "fpcfilter": {"libgomp"},
+                     "mvs-texturing-odm": {"tbb", "libjpeg-turbo", "libpng", "libtiff", "libgomp"},
                      "odm-orthophoto": {"libgdal-core", "libgomp", "libopencv"}, "renderdem": {"libpdal-core", "libgomp"}, "poissonrecon-odm": {"libjpeg-turbo", "libzlib", "libgomp"}}
     required_runtime = {"__glibc", "libgcc", "libstdcxx"} | extra_runtime.get(name, set())
     if not required_runtime.issubset(runtime_names):
@@ -37,6 +38,8 @@ def audit(name: str, component: dict, package: Path, root: Path = ROOT) -> dict:
     expected = {f"bin/{component['executable']}", f"{prefix}/SOURCE.txt", f"{prefix}/upstream.json", f"{prefix}/functional_test.py",
                 f"share/licenses/{name}/packaging-MIT.txt"}
     expected.update(f"share/licenses/{name}/{notice['target']}" for notice in component["notices"])
+    if name == "mvs-texturing-odm":
+        expected.add(f"{prefix}/texrecon_fixture.py")
     missing = expected - payload.keys()
     if missing:
         raise ScaffoldError(f"Missing packaged files: {sorted(missing)}")

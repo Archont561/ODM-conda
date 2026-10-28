@@ -268,3 +268,39 @@ def test_gitlink_verification_rejects_wrong_missing_and_undeclared_revisions(tmp
     plan['additional'][0]['path'] = 'vendor/missing'
     with pytest.raises(ScaffoldError, match='gitlink'):
         verify_gitlinks(repo, plan)
+
+
+def test_experimental_openmvs_visibility_patch_is_in_packaging_sources():
+    from common import ROOT, repository_files, sha256
+
+    patch = ROOT / 'research' / 'patches' / 'openmvs-visibility-check.patch'
+    assert patch in repository_files()
+    assert sha256(patch) == '74f36291ca9254b2fe32c600c7e939827859aa1d07f73a976217961d39624c90'
+
+
+def test_experimental_openmvs_reduced_target_patch_is_in_packaging_sources():
+    from common import ROOT, repository_files, sha256
+
+    patch = ROOT / 'research' / 'patches' / 'openmvs-reconstruct-only.patch'
+    assert patch in repository_files()
+    assert sha256(patch) == '2dc920d550119443bb8d079911b0cdfc4cc747eb916a48a01e09ebdaf6a2c96a'
+
+
+def test_early_license_evidence_tracks_restricted_code_and_data_provenance():
+    import json
+    from common import ROOT, repository_files
+
+    inventories = {
+        'openmvs-notices.json': {'LICENSE', 'COPYRIGHT.md', 'libs/Math/IBFS/license.txt',
+                                 'libs/Math/TRWS/LICENSE.TXT', '_external/eigen/COPYING.README'},
+        'opensfm-notices.json': {'LICENSE', 'README.md', 'opensfm/data/sensor_data.readme.txt',
+                                 'opensfm/data/bow/bow_hahog_root_uchar_10000.npz',
+                                 'opensfm/src/third_party/pybind11/LICENSE'},
+    }
+    for filename, required in inventories.items():
+        path = ROOT / 'research' / filename
+        assert path in repository_files()
+        inventory = json.loads(path.read_text(encoding='utf-8'))
+        assert inventory['schema_version'] == 1
+        assert required.issubset({entry['path'] for entry in inventory['entries']})
+        assert 'not complete' in inventory['status']

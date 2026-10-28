@@ -38,7 +38,7 @@ def main() -> None:
     parser.add_argument("--inventory", type=Path, default=ROOT / "research/mvs-texturing-notices.json")
     args = parser.parse_args()
     count = verify_inventory(args.tree, json.loads(args.inventory.read_text()))
-    print(f"Verified {count} listed notice-bearing files; completeness and licensing remain unreviewed.")
+    print(f"Verified {count} listed files; notice completeness, asset rights and licensing remain unreviewed.")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,61 @@
+--- a/libs/MVS/SceneReconstruct.cpp
++++ b/libs/MVS/SceneReconstruct.cpp
+@@ -57,7 +57,7 @@
+ 
+ // uncomment to use IBFS algorithm for max-flow
+ // (faster, but not clear license policy)
+-#define DELAUNAY_MAXFLOW_IBFS
++// #define DELAUNAY_MAXFLOW_IBFS
+ 
+ 
+ // S T R U C T S ///////////////////////////////////////////////////
+--- a/libs/Math/CMakeLists.txt
++++ b/libs/Math/CMakeLists.txt
+@@ -4,23 +4,13 @@
+ FILE(GLOB LIBRARY_FILES_C "*.cpp")
+ FILE(GLOB LIBRARY_FILES_H "*.h" "*.inl")
+ 
+-FILE(GLOB IBFS_LIBRARY_FILES_C "IBFS/*.cpp")
+-FILE(GLOB IBFS_LIBRARY_FILES_H "IBFS/*.h" "IBFS/*.inl")
+-SOURCE_GROUP("IBFS" FILES ${IBFS_LIBRARY_FILES_C} ${IBFS_LIBRARY_FILES_H})
+-
+ FILE(GLOB LMFit_LIBRARY_FILES_C "LMFit/*.cpp")
+ FILE(GLOB LMFit_LIBRARY_FILES_H "LMFit/*.h" "LMFit/*.inl")
+ SOURCE_GROUP("LMFit" FILES ${LMFit_LIBRARY_FILES_C} ${LMFit_LIBRARY_FILES_H})
+ 
+-FILE(GLOB TRWS_LIBRARY_FILES_C "TRWS/*.cpp")
+-FILE(GLOB TRWS_LIBRARY_FILES_H "TRWS/*.h" "TRWS/*.inl")
+-SOURCE_GROUP("TRWS" FILES ${TRWS_LIBRARY_FILES_C} ${TRWS_LIBRARY_FILES_H})
+-
+ cxx_library_with_type(Math "Libs" "" "${cxx_default}"
+ 	${LIBRARY_FILES_C} ${LIBRARY_FILES_H}
+-	${IBFS_LIBRARY_FILES_C} ${IBFS_LIBRARY_FILES_H}
+ 	${LMFit_LIBRARY_FILES_C} ${LMFit_LIBRARY_FILES_H}
+-	${TRWS_LIBRARY_FILES_C} ${TRWS_LIBRARY_FILES_H}
+ )
+ 
+ # Manually set Common.h as the precompiled header
+@@ -35,9 +25,7 @@
+ 
+ # Install
+ INSTALL(FILES ${LIBRARY_FILES_H} DESTINATION "${INSTALL_INCLUDE_DIR}/Math")
+-INSTALL(FILES ${IBFS_LIBRARY_FILES_H} DESTINATION "${INSTALL_INCLUDE_DIR}/Math/IBFS")
+ INSTALL(FILES ${LMFit_LIBRARY_FILES_H} DESTINATION "${INSTALL_INCLUDE_DIR}/Math/LMFit")
+-INSTALL(FILES ${TRWS_LIBRARY_FILES_H} DESTINATION "${INSTALL_INCLUDE_DIR}/Math/TRWS")
+ INSTALL(TARGETS Math
+ 	EXPORT OpenMVSTargets
+ 	LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+--- a/libs/MVS/CMakeLists.txt
++++ b/libs/MVS/CMakeLists.txt
+@@ -33,7 +33,10 @@
+ endif()
+ 
+ GET_FILENAME_COMPONENT(PATH_PythonWrapper_cpp ${CMAKE_CURRENT_SOURCE_DIR}/PythonWrapper.cpp ABSOLUTE)
+-LIST(REMOVE_ITEM LIBRARY_FILES_C "${PATH_PythonWrapper_cpp}")
++LIST(REMOVE_ITEM LIBRARY_FILES_C "${PATH_PythonWrapper_cpp}"
++ "${CMAKE_CURRENT_SOURCE_DIR}/SceneDensify.cpp"
++ "${CMAKE_CURRENT_SOURCE_DIR}/SceneTexture.cpp"
++ "${CMAKE_CURRENT_SOURCE_DIR}/SceneRefine.cpp")
+ 
+ cxx_library_with_type(MVS "Libs" "" "${cxx_default}"
+ 	${LIBRARY_FILES_C} ${LIBRARY_FILES_H}
