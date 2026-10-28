@@ -4,7 +4,7 @@ title: Resolve OpenMVS restricted third-party source and reduced target licensin
 status: In Progress
 assignee: []
 created_date: '2026-10-28 15:48'
-updated_date: '2026-10-28 20:17'
+updated_date: '2026-10-28 20:28'
 labels:
   - openmvs-odm
   - license
@@ -32,4 +32,6 @@ Pinned OpenMVS libs/Math/IBFS/license.txt (SHA256 9e2ccaeb2fd1b11a6615b136b0d3e4
 2026-10-28: research/open-components-license-review.md records preliminary review of the restricted original archive, reduced target, VCG/Eigen/CGAL and incomplete notices. Native local-only run 40759635611 passed limited payload/RPATH audit but did not produce a retained linker map or authorize source redistribution. Corresponding-source scope, rights and qualified approval remain open; no package or archive may be published on this basis.
 
 2026-10-28: local-only research builder now requests and fail-closed checks the actual ReconstructMesh GNU link map for named IBFS/TRWS/MRFEnergy and excluded dense/refine/texture inputs, while requiring expected reconstruction and library markers; the SHA256 is printed and the temporary map is not uploaded. Synthetic negative and real GNU toy-link tests pass. This guard requires an owner native research rerun and cannot prove code or source archive redistribution rights; all acceptance criteria remain open.
+
+2026-10-28: owner-dispatched local-only run https://github.com/Archont561/ODM-conda/actions/runs/40762858939 at 4dba9fe141c22c4791f44a2ce330ef00bb6b5811 passed the actual reduced OpenMVS build and link-map guard, installed/fresh tests and limited leak/RPATH audit; temporary outputs were removed. Named-input matching is not a complete code or redistribution proof. No legal approval, production package, archive release or acceptance-criterion closure is implied.
 <!-- SECTION:NOTES:END -->

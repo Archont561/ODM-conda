@@ -293,6 +293,7 @@ preseeds the exact fingerprinted VCG directory and checks the resulting CMake
 cache. Owner-dispatched native rerun 40759635611 passed.
 
 The local-only OpenMVS builder now checks the actual GNU link map for named
-IBFS/TRWS and excluded dense inputs before packaging; this guard is pending a
-new native run and does not establish source redistribution rights. See
+IBFS/TRWS and excluded dense inputs before packaging. Owner-dispatched native
+run 40762858939 passed this guard; it does not establish source redistribution
+rights. See
 `open-components-license-review.md`.

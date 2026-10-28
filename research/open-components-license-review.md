@@ -124,15 +124,16 @@ reviewer should trace both files and retain all applicable original notices;
 the research package currently carries only the vmem GPL text, not this psutil
 license. No redistribution approval is inferred.
 
-### Additional reduced-link evidence (pending native rerun)
+### Additional reduced-link evidence
 
 The local-only OpenMVS builder now requests a GNU linker map for the actual
 `ReconstructMesh` executable and fails if the map is missing or unrecognizable,
 if expected MVS/Math and reconstruction inputs are absent, or if it names IBFS,
 TRWS, MRFEnergy, or excluded dense/refine/texture objects. The map stays in the
 temporary build tree; a SHA256 is printed after a successful check. Tests cover
-negative cases and a real small GNU C++ link map. This is **not yet evidence
-from the native OpenMVS build**: an owner-dispatched research rerun must pass.
-Even then, matching named link inputs cannot rule out equivalent code, prove a
+negative cases and a real small GNU C++ link map. Owner-dispatched [run 40762858939](https://github.com/Archont561/ODM-conda/actions/runs/40762858939)
+at commit `4dba9fe141c22c4791f44a2ce330ef00bb6b5811` passed the native
+build with this guard, installed tests, fresh retest and limited audit; its
+temporary outputs were removed. Matching named link inputs cannot rule out equivalent code, prove a
 complete dependency inventory, or authorize distribution of the original source
 archive. TASK-54 and the release restrictions remain open.
