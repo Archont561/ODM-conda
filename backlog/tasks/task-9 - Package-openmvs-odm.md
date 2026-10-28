@@ -4,7 +4,7 @@ title: Package openmvs-odm (ReconstructMesh target for the fast-orthophoto MVP)
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 13:46'
+updated_date: '2026-10-28 13:49'
 labels:
   - component
   - openmvs-odm
@@ -49,4 +49,6 @@ Source-target inspection (2026-10-28): apps/ReconstructMesh/CMakeLists.txt links
 2026-10-28: pixi-sandbox relock bot resolved cgal-cpp 6.1.1, libboost-devel 1.88.0 and tbb-devel 2023.1.0 into the odm-dev development environment; published sandbox snapshot was refreshed and restored locally. With the staged OpenMVS and VCG archives, system GCC 12, restored odm-dev Boost/Eigen 3.4/OpenCV/CGAL and CMake 4, configured with CUDA, Breakpad and tests disabled and built the ReconstructMesh target with -j1. The executable printed --help (exit 1). It compiled the full MVS library including SceneDensify and SceneRefine; this does not prove a reduced dense dependency closure. This is a mixed local research build, not a Conda package, installed-prefix functional test, isolated build or license/ABI/CPU-baseline audit. The pinned external Eigen tree was staged but this configuration selected the environment Eigen; CPU feature flags require review. All release gates remain open.
 
 2026-10-28: the locally built mixed-environment ReconstructMesh processed a generated eight-vertex, twelve-triangle PLY cube with decimation 0.9; the resulting binary PLY contained seven vertices and ten valid faces. scripts/openmvs_fixture.py reproduces the mesh import/cleaning test and validates mesh structure and indices; negative tests reject missing/truncated/invalid output. This is not point-cloud reconstruction, an installed-prefix test, an isolated Conda build, or CPU/ABI/license validation. The current experimental executable uses system GCC 12 and the restored odm-dev dependencies and may enable nonbaseline CPU flags.
+
+2026-10-28: research ReconstructMesh successfully reconstructed the pinned upstream apps/Tests/data/scene.mvs sparse point cloud (2,663 points and four calibrated images) into a validated binary PLY with 1,696 vertices and 3,354 faces, using --archive-type 1 --min-point-distance 0 and disabled mesh cleanup in a temporary directory. scripts/openmvs_pointcloud_fixture.py verifies the exact five upstream input hashes, checks reconstruction output structure and indices, and includes negative tests. Test data remains in upstream source and its licensing/redistribution has not been reviewed. This is a system-GCC/restored-Pixi mixed research build, not an installed-prefix Conda package test, a dense point-cloud pipeline test, a separate PLY point-cloud input test, or an ABI/CPU/source/license audit. An initial default-archive invocation attempted to load a nonexistent same-name PLY; --archive-type 1 correctly used the point cloud in the scene.
 <!-- SECTION:NOTES:END -->

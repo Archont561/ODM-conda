@@ -120,3 +120,19 @@ python scripts/openmvs_fixture.py --executable /absolute/path/to/ReconstructMesh
 The fixture exercises mesh import and cleaning, not point-cloud reconstruction,
 relocation or an installed package. It inherits the caller's library paths and
 does not establish a baseline CPU, ABI, source-completeness or license review.
+
+To test **point-cloud reconstruction** with a local research OpenMVS build,
+use the exact upstream test data from the pinned OpenMVS source tree:
+
+```sh
+python scripts/openmvs_pointcloud_fixture.py --executable /path/to/ReconstructMesh \
+  --dataset /path/to/openmvs/apps/Tests/data
+```
+
+The fixture verifies the scene and four image hashes, copies them into a
+fresh temporary directory, reconstructs the scene's sparse point cloud and
+checks the resulting binary PLY geometry. It uses `--archive-type 1` to avoid
+OpenMVS's automatic attempt to load a separate same-name PLY. The upstream test
+data is not included in this repository; its licensing and redistribution
+status remain unreviewed. This is not an installed-prefix test, a test of a
+separate dense PLY input, or an isolated Conda build.
