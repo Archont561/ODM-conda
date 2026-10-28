@@ -268,8 +268,10 @@ RESEARCH_COMPONENT=opensfm pixi run python scripts/run_open_research.py
 
 Each run uses a temporary directory and removes its research packages and
 source archive copies afterwards; rattler or Conda may keep their own local
-caches. The owner can instead dispatch **Local-only Open component research
-build**, which uploads neither packages nor source archives. The research audit
+caches. The owner can dispatch **Local-only Open component research build**
+once the workflow file is present on the default branch; GitHub does not expose
+new dispatch workflows from an unmerged branch. That workflow uploads neither
+packages nor source archives. The research audit
 is separate from, and does not replace, the production release audit. Passing
 builds will not resolve licensing, asset provenance, offline/network isolation,
 relocation beyond checked ELF RPATHs, or a full OpenSfM dataset run. No native
