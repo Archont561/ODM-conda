@@ -34,7 +34,7 @@ requirements:
   host:
     - libboost-devel
     - cgal-cpp
-    - libopencv ==4.12.*
+    - libopencv >=4.12,<4.13
     - tbb-devel >=2023.1,<2024
     - mpfr
     - gmp
@@ -42,7 +42,7 @@ requirements:
     - libgomp >=14
   run:
     - libboost
-    - libopencv ==4.12.*
+    - libopencv >=4.12,<4.13
     - tbb >=2023.1,<2024
     - mpfr
     - gmp

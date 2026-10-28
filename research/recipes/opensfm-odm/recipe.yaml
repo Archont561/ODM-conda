@@ -31,7 +31,7 @@ requirements:
   host:
     - python >=3.12,<3.13
     - numpy
-    - libopencv ==4.12.*
+    - libopencv >=4.12,<4.13
     - eigen
     - ceres-solver
     - suitesparse
@@ -41,7 +41,7 @@ requirements:
   run:
     - python >=3.12,<3.13
     - numpy
-    - py-opencv ==4.12.*
+    - py-opencv >=4.12,<4.13
     - ceres-solver
     - suitesparse
     - gflags
