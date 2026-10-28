@@ -109,3 +109,14 @@ CMake package and propagates its target requirements to native-module consumers.
 It applies to the pinned OpenSfM source and was tested in a mixed local
 GCC/Pixi environment against Ceres 2.2 and Python 3.12; it is not part of a
 production recipe and has not been validated with an isolated package build.
+
+For a locally built OpenMVS `ReconstructMesh`, the following **research-only**
+fixture generates and decimates a cube, then checks the resulting PLY geometry:
+
+```sh
+python scripts/openmvs_fixture.py --executable /absolute/path/to/ReconstructMesh
+```
+
+The fixture exercises mesh import and cleaning, not point-cloud reconstruction,
+relocation or an installed package. It inherits the caller's library paths and
+does not establish a baseline CPU, ABI, source-completeness or license review.
