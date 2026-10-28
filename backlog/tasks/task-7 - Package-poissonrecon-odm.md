@@ -29,3 +29,9 @@ Read the exact ODM reference recorded in components.json before choosing source 
 - [ ] #2 A real recipe declares build/host/run dependencies, carries the applicable notices/source, and passes installed-prefix functional tests.
 - [ ] #3 components.json, source staging, artifact audits and human release gates are extended intentionally; no placeholder package is published.
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Preliminary source research (2026-10-28): ODM 3.6.2 SuperBuild uses mutable branch `290`, resolved to `97caa6d34d1b05b59888bed019dea89ced74445e`; codeload archive SHA256 `88743428a97cbeed7d55e713fcfa42caebbfb7dcb2467d68899bd8feab95364b`. The inline SuperBuild definition runs `make poissonrecon` and copies `Bin/Linux/PoissonRecon`; it specifies no patch command for this component. Root LICENSE is MIT, but bundled sources and the actual build inputs still need a complete notice audit. No recipe or native validation exists.
+<!-- SECTION:NOTES:END -->
