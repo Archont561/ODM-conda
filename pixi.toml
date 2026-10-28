@@ -73,14 +73,12 @@ agent-unit = { depends-on = [
   "bun-install",
 ], cmd = "bun test tests/agent_skills.test.mjs" }
 
-# Local ODM development shell. Only OpenCV 4.12 and OpenSSL 3 are pinned to ODM/Ubuntu 24.04
-# versions. Ceres, PROJ, Boost and Eigen track conda-forge latest: pdal 2.10 needs new
-# Ceres, PROJ and Eigen 5, and Boost 1.83 needs ICU 73, which conflicts with the Python 3.12
-# pin's ICU 78. CGAL is left out: conda-forge 6.x needs Python 3.13+ and 5.6
-# needs Boost 1.82.
-# ODM references it only in packaging files. Not packed into recipes; solved separately.
+# Local ODM development shell. OpenCV 4.12 and OpenSSL 3 are pinned to ODM/Ubuntu 24.04.
+# Use the C++ CGAL package, not the Python bindings, for OpenMVS research.
+# These tools and libraries are not recipe dependencies or package validation.
 [feature.odm-dev.dependencies]
 ceres-solver = "*"
+cgal-cpp = "*"
 cmake = "*"
 eigen = "*"
 exiftool = "*"
@@ -91,6 +89,7 @@ geos = "*"
 geotiff = "*"
 glog = "*"
 hdf5 = "*"
+libboost-devel = "*"
 libjpeg-turbo = "*"
 libjxl = "*"
 libpng = "*"
@@ -105,6 +104,7 @@ pkg-config = "*"
 proj = "*"
 suitesparse = "*"
 tbb = "*"
+tbb-devel = "*"
 
 [environments]
 default = []

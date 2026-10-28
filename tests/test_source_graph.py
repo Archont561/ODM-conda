@@ -148,6 +148,15 @@ def test_experimental_texturing_patch_is_in_packaging_sources():
     assert '-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native' in text
 
 
+def test_experimental_mve_cpu_patch_is_in_packaging_sources():
+    from common import ROOT, repository_files, sha256
+
+    patch = ROOT / "research" / "patches" / "mve-baseline-cpu.patch"
+    assert patch in repository_files()
+    assert sha256(patch) == "7427f3332ba65a1ebf677940fbf9ec957c7343a311844953d829d30e0944646c"
+    assert '-        add_compile_options(-mpopcnt)' in patch.read_text()
+
+
 def test_experimental_bundle_contains_every_archive_and_patch(tmp_path, monkeypatch):
     import json
     import bundle_staged_sources
@@ -229,3 +238,33 @@ def test_notice_inventory_rejects_empty_duplicate_and_invalid_hash(tmp_path):
                       {"schema_version": 1, "entries": [{**item, "sha256": "bad"}]}):
         with pytest.raises(ScaffoldError):
             verify_inventory(tmp_path, inventory)
+
+
+def test_gitlink_verification_rejects_wrong_missing_and_undeclared_revisions(tmp_path):
+    import subprocess
+    from verify_gitlinks import verify_gitlinks
+
+    repo = tmp_path / 'repo'
+    repo.mkdir()
+    subprocess.run(['git', 'init', '-q', str(repo)], check=True)
+    subprocess.run(['git', '-C', str(repo), 'update-index', '--add', '--cacheinfo',
+                    '160000,' + 'a' * 40 + ',vendor/dep'], check=True)
+    tree = subprocess.check_output(['git', '-C', str(repo), 'write-tree'], text=True).strip()
+    env = dict(__import__('os').environ, GIT_AUTHOR_NAME='test', GIT_AUTHOR_EMAIL='test@example.com',
+               GIT_COMMITTER_NAME='test', GIT_COMMITTER_EMAIL='test@example.com')
+    commit = subprocess.check_output(['git', '-C', str(repo), 'commit-tree', tree, '-m', 'fixture'], text=True, env=env).strip()
+    plan = {'primary': {'commit': commit}, 'additional': [
+        {'name': 'dep', 'path': 'vendor/dep', 'commit': 'a' * 40, 'gitlink': True},
+        {'name': 'external', 'path': 'external/lib', 'commit': 'b' * 40},
+    ]}
+    assert verify_gitlinks(repo, plan) == {'vendor/dep': 'a' * 40}
+    plan['additional'][0]['commit'] = 'c' * 40
+    with pytest.raises(ScaffoldError, match='gitlink'):
+        verify_gitlinks(repo, plan)
+    plan['additional'][0]['gitlink'] = False
+    with pytest.raises(ScaffoldError, match='gitlink'):
+        verify_gitlinks(repo, plan)
+    plan['additional'][0]['gitlink'] = True
+    plan['additional'][0]['path'] = 'vendor/missing'
+    with pytest.raises(ScaffoldError, match='gitlink'):
+        verify_gitlinks(repo, plan)

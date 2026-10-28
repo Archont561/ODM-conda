@@ -18,7 +18,17 @@ Supported experimental plan names are `dem2mesh`, `poissonrecon`, `renderdem`,
 Each source archive is rehashed, and extraction rejects links, unsafe paths and
 nonempty staging destinations. Declared `.gitmodules` paths must be explicitly
 staged; gitlink commits must still be verified separately against the Git tree,
-because a source archive cannot establish them. The plans contain only sources
+because a source archive cannot establish them. With a local Git repository
+containing the pinned primary commit, run:
+
+```sh
+python scripts/verify_gitlinks.py --component opensfm --repository /path/to/opensfm-git
+```
+
+The verifier compares all primary-tree gitlink paths and revisions with entries
+marked `gitlink: true` in the plan, rejecting missing, unexpected or changed
+links. It does not verify nested repository gitlinks or equivalence of the
+archive with the Git tree, nor does it prove source or license completeness. The plans contain only sources
 identified so far. The plan and this file are included in packaging source bundles
 alongside the staging scripts; their presence does not authorize release. In particular, the staged mvs-texturing tree still contains upstream
 ExternalProject download commands, and its MVE source is in a non-default path.
@@ -62,6 +72,16 @@ a network-isolated or installed-package validation. A real TBB development
 package, complete source and license review, native CI build and installed-prefix
 functional test remain required.
 
+`patches/mve-baseline-cpu.patch` is a research patch against the pinned MVE
+archive that removes its unconditional GNU `-mpopcnt` option. Together with
+the texturing offline patch, a local GCC 12 build using `-march=x86-64
+-mno-popcnt` produced `texrecon` and passed the generated-scene fixture. The
+70 MVE object files and the resulting executable contained no POPCNT
+instructions in an `objdump` inspection; 25 texturing compile commands also
+used the requested baseline flags. This covers only the inspected build output,
+not its dynamically linked libraries, other compiler instructions, an isolated
+Conda build or a package audit. Both patches remain research-only.
+
 A generated-scene **research-only** texrecon fixture is available after building
 an executable from the pinned sources:
 
@@ -89,3 +109,30 @@ CMake package and propagates its target requirements to native-module consumers.
 It applies to the pinned OpenSfM source and was tested in a mixed local
 GCC/Pixi environment against Ceres 2.2 and Python 3.12; it is not part of a
 production recipe and has not been validated with an isolated package build.
+
+For a locally built OpenMVS `ReconstructMesh`, the following **research-only**
+fixture generates and decimates a cube, then checks the resulting PLY geometry:
+
+```sh
+python scripts/openmvs_fixture.py --executable /absolute/path/to/ReconstructMesh
+```
+
+The fixture exercises mesh import and cleaning, not point-cloud reconstruction,
+relocation or an installed package. It inherits the caller's library paths and
+does not establish a baseline CPU, ABI, source-completeness or license review.
+
+To test **point-cloud reconstruction** with a local research OpenMVS build,
+use the exact upstream test data from the pinned OpenMVS source tree:
+
+```sh
+python scripts/openmvs_pointcloud_fixture.py --executable /path/to/ReconstructMesh \
+  --dataset /path/to/openmvs/apps/Tests/data
+```
+
+The fixture verifies the scene and four image hashes, copies them into a
+fresh temporary directory, reconstructs the scene's sparse point cloud and
+checks the resulting binary PLY geometry. It uses `--archive-type 1` to avoid
+OpenMVS's automatic attempt to load a separate same-name PLY. The upstream test
+data is not included in this repository; its licensing and redistribution
+status remain unreviewed. This is not an installed-prefix test, a test of a
+separate dense PLY input, or an isolated Conda build.

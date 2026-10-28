@@ -47,7 +47,8 @@
           "commit": "a2e59f0e7065404b44dfe92a28aca47ba1378dc4",
           "sha256": "1da0a5c38950e4f49329e9de10c59b2527840a1b963113f1c53b455971cd6aef",
           "url": "https://codeload.github.com/pybind/pybind11/tar.gz/a2e59f0e7065404b44dfe92a28aca47ba1378dc4",
-          "path": "opensfm/src/third_party/pybind11"
+          "path": "opensfm/src/third_party/pybind11",
+          "gitlink": true
         }
       ]
     },
