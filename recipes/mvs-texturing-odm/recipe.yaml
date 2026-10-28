@@ -53,6 +53,8 @@ requirements:
     - libjpeg-turbo
     - libpng
     - libtiff
+    # CMake FindPNG also needs zlib headers and the unversioned library.
+    - zlib
     - libgomp >=14
   run:
     - tbb >=2023.1,<2024

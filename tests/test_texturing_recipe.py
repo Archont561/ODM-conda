@@ -39,3 +39,12 @@ def test_texturing_recipe_lint_rejects_changed_target_and_patch(tmp_path):
     patch.write_bytes(patch.read_bytes() + b'\n')
     with pytest.raises(ScaffoldError, match='patch checksum'):
         check_repository(tmp_path)
+
+
+def test_texturing_recipe_has_zlib_development_headers_for_cmake():
+    import yaml
+
+    recipe = yaml.safe_load((ROOT / 'recipes/mvs-texturing-odm/recipe.yaml').read_text(encoding='utf-8'))
+    # FindPNG also invokes FindZLIB: libzlib is runtime-only and lacks the
+    # unversioned library and headers needed in the isolated host environment.
+    assert 'zlib' in recipe['requirements']['host']
