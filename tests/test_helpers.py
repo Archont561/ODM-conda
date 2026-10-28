@@ -4,7 +4,7 @@ import copy
 
 import pytest
 
-from common import ROOT, ScaffoldError, config, first_comment, relative_path, release_tag, select_components, source_archive, source_url
+from common import ROOT, ScaffoldError, config, fetch_pinned_archive, first_comment, relative_path, release_tag, select_components, source_archive, source_url
 from lint import check_repository
 from release_guard import reviewed_component
 
@@ -97,3 +97,68 @@ def test_external_graph_is_not_silently_omitted(tmp_path):
     component["source"]["additional_sources"] = [{"repository": "nested"}]
     with pytest.raises(ScaffoldError, match="not implemented"):
         source_archive("dem2points", component, tmp_path)
+
+
+def test_individual_pinned_archive_cache_is_checked(tmp_path):
+    import hashlib
+
+    content = b"nested source archive bytes"
+    source = {"commit": "a" * 40, "sha256": hashlib.sha256(content).hexdigest(),
+              "url": "https://example.invalid/archive"}
+    target = tmp_path / ("pybind11-" + source["commit"] + ".tar.gz")
+    target.write_bytes(content)
+    assert fetch_pinned_archive("pybind11", source, tmp_path) == target
+    target.write_bytes(b"tampered")
+    with pytest.raises(ScaffoldError, match="checksum mismatch"):
+        fetch_pinned_archive("pybind11", source, tmp_path)
+
+
+@pytest.mark.parametrize("name,commit", [
+    ("../nested", "a" * 40), ("nested/source", "a" * 40),
+    ("nested", "../outside"), ("nested", "HEAD"),
+])
+def test_pinned_archive_rejects_unsafe_cache_keys(tmp_path, name, commit):
+    source = {"commit": commit, "sha256": "0" * 64, "url": "https://example.invalid/archive"}
+    with pytest.raises(ScaffoldError):
+        fetch_pinned_archive(name, source, tmp_path)
+
+
+def test_pinned_archive_download_rejects_wrong_bytes_and_cleans_temporary_file(tmp_path, monkeypatch):
+    import io
+    import urllib.request
+
+    class Response(io.BytesIO):
+        url = "https://example.invalid/archive"
+
+    monkeypatch.setattr(urllib.request, "urlopen", lambda *args, **kwargs: Response(b"wrong bytes"))
+    source = {"commit": "a" * 40, "sha256": "0" * 64, "url": "https://example.invalid/archive"}
+    with pytest.raises(ScaffoldError, match="checksum mismatch"):
+        fetch_pinned_archive("nested", source, tmp_path)
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_pinned_archive_rejects_insecure_redirect(tmp_path, monkeypatch):
+    import io
+    import urllib.request
+
+    class Response(io.BytesIO):
+        url = "http://example.invalid/archive"
+
+    monkeypatch.setattr(urllib.request, "urlopen", lambda *args, **kwargs: Response(b"bytes"))
+    source = {"commit": "a" * 40, "sha256": "0" * 64, "url": "https://example.invalid/archive"}
+    with pytest.raises(ScaffoldError, match="redirected away from HTTPS"):
+        fetch_pinned_archive("nested", source, tmp_path)
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_source_fetch_refuses_symlink_cache_entry(tmp_path):
+    import hashlib
+
+    content = b"valid bytes"
+    source = {"commit": "a" * 40, "sha256": hashlib.sha256(content).hexdigest(),
+              "url": "https://example.invalid/archive"}
+    outside = tmp_path / "outside"
+    outside.write_bytes(content)
+    (tmp_path / ("nested-" + source["commit"] + ".tar.gz")).symlink_to(outside)
+    with pytest.raises(ScaffoldError, match="symlinked"):
+        fetch_pinned_archive("nested", source, tmp_path)

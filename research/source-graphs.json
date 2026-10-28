@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "status": "experimental; not a source-completeness assertion or a build recipe",
+  "notes": [
+    "The _external paths require explicit build configuration and are not the original ODM source layout.",
+    "Eigen 3.3.2 GitHub mirror archive is not byte-identical to the upstream GitLab release archive; its equivalence requires review.",
+    "Staging these archives does not disable CMake downloads, include dependency package sources, audit licenses or make these packages publishable."
+  ],
+  "plans": {
+    "dem2mesh": {
+      "primary": {
+        "name": "dem2mesh",
+        "commit": "623c8536941175c630fabe4f1352ddc314d98120",
+        "sha256": "29e2729c890118def3d727cfca81070e1cb99fa8a51212a6deef7614089ecf8b",
+        "url": "https://codeload.github.com/OpenDroneMap/dem2mesh/tar.gz/623c8536941175c630fabe4f1352ddc314d98120"
+      },
+      "additional": []
+    },
+    "poissonrecon": {
+      "primary": {
+        "name": "poissonrecon",
+        "commit": "97caa6d34d1b05b59888bed019dea89ced74445e",
+        "sha256": "88743428a97cbeed7d55e713fcfa42caebbfb7dcb2467d68899bd8feab95364b",
+        "url": "https://codeload.github.com/OpenDroneMap/PoissonRecon/tar.gz/97caa6d34d1b05b59888bed019dea89ced74445e"
+      },
+      "additional": []
+    },
+    "renderdem": {
+      "primary": {
+        "name": "renderdem",
+        "commit": "93502f2e225be0cebcb8663db3bc5058baa3eb1e",
+        "sha256": "748cb2839db7d24ee3fdce034e8637829630a9d68ec6561fb76523e25d24af8d",
+        "url": "https://codeload.github.com/OpenDroneMap/RenderDEM/tar.gz/93502f2e225be0cebcb8663db3bc5058baa3eb1e"
+      },
+      "additional": []
+    },
+    "opensfm": {
+      "primary": {
+        "name": "opensfm",
+        "commit": "c5328439465e6ace011f39077d1077d7b1cdd65d",
+        "sha256": "2bd9ec9ed20c5b426ff2808734e0a8849e2375038e378105f97128e48d704f8e",
+        "url": "https://codeload.github.com/OpenDroneMap/OpenSfM/tar.gz/c5328439465e6ace011f39077d1077d7b1cdd65d"
+      },
+      "additional": [
+        {
+          "name": "pybind11",
+          "commit": "a2e59f0e7065404b44dfe92a28aca47ba1378dc4",
+          "sha256": "1da0a5c38950e4f49329e9de10c59b2527840a1b963113f1c53b455971cd6aef",
+          "url": "https://codeload.github.com/pybind/pybind11/tar.gz/a2e59f0e7065404b44dfe92a28aca47ba1378dc4",
+          "path": "opensfm/src/third_party/pybind11"
+        }
+      ]
+    },
+    "openmvs": {
+      "primary": {
+        "name": "openmvs",
+        "commit": "8e4c5f31a16e0e329132c8f26e20a8c5d7b47f53",
+        "sha256": "949d420d4506ccd0189574252c8214acce666de837e400e44682e8ddc13e666b",
+        "url": "https://codeload.github.com/OpenDroneMap/openMVS/tar.gz/8e4c5f31a16e0e329132c8f26e20a8c5d7b47f53"
+      },
+      "additional": [
+        {
+          "name": "vcg",
+          "commit": "3fe55c6fa48ca111dab31eaa594ecab33913a8f1",
+          "sha256": "8f75239f9dd4ee5ba55b0cad25df1b7f9caa8a7e583f8174b40d38421b485f45",
+          "url": "https://codeload.github.com/OpenDroneMap/VCG/tar.gz/3fe55c6fa48ca111dab31eaa594ecab33913a8f1",
+          "path": "_external/vcg"
+        },
+        {
+          "name": "eigen34",
+          "commit": "7176ae16238ded7fb5ed30a7f5215825b3abd134",
+          "sha256": "a14492af4d1451a686caadbfd5047ca1216b8c66e71f0e8385afc4bb3ecdc7a3",
+          "url": "https://codeload.github.com/eigenteam/eigen-git-mirror/tar.gz/7176ae16238ded7fb5ed30a7f5215825b3abd134",
+          "path": "_external/eigen"
+        }
+      ]
+    },
+    "mvs-texturing": {
+      "primary": {
+        "name": "texturing",
+        "commit": "c5a4d0c9a434553533c6e39d426e349fcfa5f48d",
+        "sha256": "295b11cb35c85f44908294bc89cd7d4f1057dee0016cc4cd35a5ed01570766f8",
+        "url": "https://codeload.github.com/OpenDroneMap/mvs-texturing/tar.gz/c5a4d0c9a434553533c6e39d426e349fcfa5f48d"
+      },
+      "additional": [
+        {
+          "name": "mve",
+          "commit": "90f13c18f92db6089c06c8c2451e283911f5f634",
+          "sha256": "f4d0d76a925d7482d14c2050b4488718c824947a3895eac196eac70ef19fc699",
+          "url": "https://codeload.github.com/OpenDroneMap/mve/tar.gz/90f13c18f92db6089c06c8c2451e283911f5f634",
+          "path": "_external/mve"
+        },
+        {
+          "name": "mapmap",
+          "commit": "fa526e0963ca3e431a02aa7b9e87b85ba8a8e304",
+          "sha256": "01ab05c7f7e6e14f5a54bc2111f6af382b148a504670a30b42b70b1851767e39",
+          "url": "https://codeload.github.com/dthuerck/mapmap_cpu/tar.gz/fa526e0963ca3e431a02aa7b9e87b85ba8a8e304",
+          "path": "elibs/mapmap"
+        },
+        {
+          "name": "rayint",
+          "commit": "ad9f826a8b134090511709e5813a8ba56dc2e837",
+          "sha256": "7ed6d0af9ba58cb359eaed25bd87fa818507abe41fe56cf7ff9929dd953212a7",
+          "url": "https://codeload.github.com/pierotofy/rayint/tar.gz/ad9f826a8b134090511709e5813a8ba56dc2e837",
+          "path": "elibs/rayint"
+        },
+        {
+          "name": "eigen332",
+          "commit": "ae9889a130bd0a9d3007f41d015563c2e8ac605f",
+          "sha256": "f82dcfb9b297caf1ed43648c389cc5118839b3b4ced018d12cd11d5362b2811e",
+          "url": "https://codeload.github.com/eigenteam/eigen-git-mirror/tar.gz/ae9889a130bd0a9d3007f41d015563c2e8ac605f",
+          "path": "elibs/eigen"
+        }
+      ]
+    }
+  }
+}

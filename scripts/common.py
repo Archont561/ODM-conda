@@ -58,10 +58,23 @@ def sha256(path: Path) -> str:
 
 
 def source_archive(name: str, component: dict[str, Any], cache: Path) -> Path:
-    """Download an immutable, hash-checked archive; never trust an unchecked cache."""
+    """Download the primary archive; refuse graphs the bundler cannot yet represent."""
     source = component["source"]
     if source.get("additional_sources"):
         raise ScaffoldError("Source bundling for external/submodule sources is not implemented; do not publish this component yet")
+    return fetch_pinned_archive(name, source, cache)
+
+
+def fetch_pinned_archive(name: str, source: dict[str, Any], cache: Path) -> Path:
+    """Fetch one pinned source, verifying both downloaded and cached bytes.
+
+    This primitive does not stage a source graph or make it publishable. The
+    caller must still validate and bundle every dependency and its notices.
+    """
+    if not NAME_RE.fullmatch(name):
+        raise ScaffoldError(f"Unsafe source cache name: {name!r}")
+    if not re.fullmatch(r"[0-9a-f]{40}", source.get("commit", "")):
+        raise ScaffoldError("Missing or malformed source commit")
     expected = source["sha256"]
     if not re.fullmatch(r"[0-9a-f]{64}", expected):
         raise ScaffoldError("Missing or malformed source checksum")
@@ -70,6 +83,8 @@ def source_archive(name: str, component: dict[str, Any], cache: Path) -> Path:
         raise ScaffoldError("Source archives must use credential-free HTTPS")
     cache.mkdir(parents=True, exist_ok=True)
     target = cache / f"{name}-{source['commit']}.tar.gz"
+    if target.is_symlink():
+        raise ScaffoldError(f"Refusing a symlinked source cache entry: {target}")
     if target.exists():
         if sha256(target) != expected:
             raise ScaffoldError(f"Cached source checksum mismatch: {target}; remove it and investigate")
@@ -145,7 +160,7 @@ def repository_files(root: Path = ROOT) -> list[Path]:
         if not path.is_file() or path.is_symlink():
             raise ScaffoldError(f"Required packaging source is missing or a symlink: {path}")
         files.append(path)
-    for folder in ("scripts", "tests", "recipes", ".github", ".agents", "backlog"):
+    for folder in ("scripts", "tests", "recipes", ".github", ".agents", "backlog", "research"):
         for path in (root / folder).rglob("*"):
             parts = set(path.relative_to(root).parts)
             excluded = {".git", "node_modules", ".cache", ".pixi", "__pycache__"}
