@@ -64,5 +64,9 @@ synthetic-raster median-filter fixture on 2026-10-27 (TASK-5), passed native
 CI validation the same evening on the first attempt (run 40603931789:
 packaged and fresh-env tests, audit PASS, source bundle) and was
 owner-approved on 2026-10-28 including the AGPL-3.0-only license call as its
-own decision; its four release gates are true (TASK-5/30/31). It is not
-published yet.
+own decision; its four release gates are true (TASK-5/30/31). It was published
+to archont561/archont561 on 2026-10-28 via OIDC with a Sigstore attestation
+(tag fastrasterfilter-v1.0-b0, release run 40653848189, green on attempt 1 -
+the first first-attempt-green publication, with the name already inside the
+original prefix.dev upload grant and the rerun-safe asset attachment of PR #18
+never exercised).

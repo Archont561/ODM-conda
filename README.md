@@ -4,15 +4,11 @@
 
 Target: the existing **`archont561/archont561`** Prefix channel, shared with CloudCompare.
 
-> **Starter scaffold, not a full ODM/NodeODM distribution.** The three
-> published Linux CPU components (OIDC + attestation, 2026-10-27) are
-> `fpcfilter 0.2` build 1 (TASK-15), `dem2points 0.0.0.dev20220721` build 0
-> and `odm-orthophoto 0.0.0.dev20250225` build 0; their twelve release gates
-> are owner-approved `true`. The fourth component, `fastrasterfilter 1.0`
-> build 0 (TASK-5, ODM reference `main`), is natively validated (CI run
-> 40603931789), reviewed (TASK-30) and owner-approved on 2026-10-28; its four
-> release gates are `true`, and only the tag + manual Release remain to
-> publish it.
+> **Starter scaffold, not a full ODM/NodeODM distribution.** The four
+> published Linux CPU components (OIDC + attestation, 2026-10-27/28) are
+> `fpcfilter 0.2` build 1 (TASK-15), `dem2points 0.0.0.dev20220721` build 0,
+> `odm-orthophoto 0.0.0.dev20250225` build 0 and `fastrasterfilter 1.0`
+> build 0; their sixteen release gates are owner-approved `true`.
 
 ## Implemented components
 
@@ -67,9 +63,10 @@ validation run 40603931789: packaged + fresh-env functional tests, dependency
 audit PASS, source bundle `4729bdd5…`); all four fastrasterfilter release
 gates are `true`. Upstream is AGPL-3.0 (network copyleft) with vendored MIT
 mf2d/cxxopts; the owner confirmed the `AGPL-3.0-only AND MIT` expression and
-accepted §13 as policy for this ODM-ecosystem component. Nothing is published
-for this component yet: publication requires the tag `fastrasterfilter-v1.0-b0`
-on the approved HEAD and the manual Release firing the OIDC publisher.
+accepted §13 as policy for this ODM-ecosystem component. Build 0 was published
+to `archont561/archont561` via the OIDC release workflow on 2026-10-28 (tag
+`fastrasterfilter-v1.0-b0`, release run 40653848189, green on the first
+attempt; `pixi add fastrasterfilter --channel archont561/archont561`).
 
 ## Quick start
 
