@@ -3,7 +3,7 @@
   "status": "experimental; not a source-completeness assertion or a build recipe",
   "notes": [
     "The _external paths require explicit build configuration and are not the original ODM source layout.",
-    "Eigen 3.3.2 GitHub mirror archive is not byte-identical to the upstream GitLab release archive; its equivalence requires review.",
+    "Eigen 3.3.2 is pinned to the exact GitLab tag commit on a GitHub mirror; original GitLab tarball bytes and MD5 remain unverified.",
     "Staging these archives does not disable CMake downloads, include dependency package sources, audit licenses or make these packages publishable."
   ],
   "plans": {
@@ -106,9 +106,9 @@
         },
         {
           "name": "eigen332",
-          "commit": "ae9889a130bd0a9d3007f41d015563c2e8ac605f",
-          "sha256": "f82dcfb9b297caf1ed43648c389cc5118839b3b4ced018d12cd11d5362b2811e",
-          "url": "https://codeload.github.com/eigenteam/eigen-git-mirror/tar.gz/ae9889a130bd0a9d3007f41d015563c2e8ac605f",
+          "commit": "477d1e81928a8514d2cca6a6e1e7e478eecd8634",
+          "sha256": "8e473e564dcbee29154cdcf6a1ddba32863751a68f17cdb0ec49193488178960",
+          "url": "https://codeload.github.com/eigenteam/eigen-git-mirror/tar.gz/477d1e81928a8514d2cca6a6e1e7e478eecd8634",
           "path": "elibs/eigen"
         }
       ]

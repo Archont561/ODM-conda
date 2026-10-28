@@ -23,11 +23,12 @@ identified so far. The plan and this file are included in packaging source bundl
 alongside the staging scripts; their presence does not authorize release. In particular, the staged mvs-texturing tree still contains upstream
 ExternalProject download commands, and its MVE source is in a non-default path.
 The Eigen archives use a GitHub mirror and are not the original GitLab
-archive bytes. For Eigen 3.3.2, the GitLab and GitHub tags have different
-commits; all GitLab root tree entries match, but GitHub additionally contains
-`.hgtags`. For the openMVS Eigen pin, both hosts identify the same Git commit.
-The original tarball bytes, target closure, notices and build-time network
-suppression remain unverified. The production recipes, builder, corresponding-
+archive bytes. The texturing plan pins the exact GitLab 3.3.2 tag commit
+`477d1e81928a8514d2cca6a6e1e7e478eecd8634`, which is also available on the
+GitHub mirror. Its earlier GitHub tag resolves to a different commit with an
+extra `.hgtags` file; the earlier local texrecon build used that older plan.
+For the openMVS Eigen pin, both hosts identify the same Git commit. Original
+GitLab tarball bytes, full notices and network-isolated builds remain unverified. The production recipes, builder, corresponding-
 source bundler and release machinery continue to reject unsupported graphs.
 
 For a **research-only** archive containing the plan, all planned upstream
@@ -40,6 +41,16 @@ python scripts/bundle_staged_sources.py --component mvs-texturing --output /tmp/
 The helper verifies hashes and stages the graph before writing a deterministic
 archive and manifest. It refuses to overwrite a destination. This archive is
 not a release source bundle or a source-completeness certification.
+
+`mvs-texturing-notices.json` records hashes of 19 preliminary notice-bearing
+files. To verify them against the matching staged tree, run:
+
+```sh
+python scripts/verify_staged_notices.py --tree /tmp/texturing-source
+```
+
+This checks the listed bytes only; it does not establish a complete inventory
+or decide license obligations.
 
 `patches/mvs-texturing-offline.patch` is a configure-only experiment against
 the pinned mvs-texturing archive. It replaces active ExternalProject targets

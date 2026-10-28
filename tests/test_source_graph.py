@@ -189,3 +189,43 @@ def test_staging_rejects_git_metadata(tmp_path):
     with pytest.raises(ScaffoldError, match="Unsafe source"):
         stage_graph("main", primary, [], tmp_path / "cache", tmp_path / "staged")
     assert not (tmp_path / "staged").exists()
+
+
+def test_texturing_eigen_plan_pins_exact_gitlab_tag_commit():
+    from common import ROOT
+    from stage_sources import load_plan
+
+    plan = load_plan(ROOT / "research" / "source-graphs.json", "mvs-texturing")
+    eigen = next(source for source in plan["additional"] if source["name"] == "eigen332")
+    assert eigen["commit"] == "477d1e81928a8514d2cca6a6e1e7e478eecd8634"
+    assert eigen["sha256"] == "8e473e564dcbee29154cdcf6a1ddba32863751a68f17cdb0ec49193488178960"
+
+
+def test_notice_inventory_verification_detects_changes(tmp_path):
+    from verify_staged_notices import verify_inventory
+
+    source = tmp_path / "source"
+    source.mkdir()
+    (source / "LICENSE").write_bytes(b"original notice\n")
+    inventory = {"schema_version": 1, "entries": [
+        {"path": "LICENSE", "sha256": hashlib.sha256(b"original notice\n").hexdigest()}
+    ]}
+    assert verify_inventory(source, inventory) == 1
+    (source / "LICENSE").write_bytes(b"changed notice\n")
+    with pytest.raises(ScaffoldError, match="checksum"):
+        verify_inventory(source, inventory)
+    inventory["entries"][0]["path"] = "../outside"
+    with pytest.raises(ScaffoldError, match="Unsafe"):
+        verify_inventory(source, inventory)
+
+
+def test_notice_inventory_rejects_empty_duplicate_and_invalid_hash(tmp_path):
+    from verify_staged_notices import verify_inventory
+
+    (tmp_path / "LICENSE").write_bytes(b"notice")
+    item = {"path": "LICENSE", "sha256": hashlib.sha256(b"notice").hexdigest()}
+    for inventory in ({"schema_version": 1, "entries": []},
+                      {"schema_version": 1, "entries": [item, item]},
+                      {"schema_version": 1, "entries": [{**item, "sha256": "bad"}]}):
+        with pytest.raises(ScaffoldError):
+            verify_inventory(tmp_path, inventory)
