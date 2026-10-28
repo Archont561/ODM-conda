@@ -1,0 +1,52 @@
+# Experimental source staging
+
+`source-graphs.json` is preliminary research for the six selected components,
+not a recipe, completeness attestation, or release authorization. The plans
+record immutable archives observed during research; mutable ODM references were
+resolved at the time recorded in their Backlog tasks. They must be reviewed
+again when selecting final release sources.
+
+To reproduce an isolated staging smoke test (requires network access to GitHub
+or a pre-populated hash-checked cache):
+
+```sh
+python scripts/stage_sources.py --component opensfm --output /tmp/opensfm-source
+```
+
+Supported experimental plan names are `dem2mesh`, `poissonrecon`, `renderdem`,
+`opensfm`, `openmvs`, and `mvs-texturing`. The output directory must not exist.
+Each source archive is rehashed, and extraction rejects links, unsafe paths and
+nonempty staging destinations. Declared `.gitmodules` paths must be explicitly
+staged; gitlink commits must still be verified separately against the Git tree,
+because a source archive cannot establish them. The plans contain only sources
+identified so far. The plan and this file are included in packaging source bundles
+alongside the staging scripts; their presence does not authorize release. In particular, the staged mvs-texturing tree still contains upstream
+ExternalProject download commands, and its MVE source is in a non-default path.
+The Eigen archives use a GitHub mirror and are not the original GitLab
+archive bytes. For Eigen 3.3.2, the GitLab and GitHub tags have different
+commits; all GitLab root tree entries match, but GitHub additionally contains
+`.hgtags`. For the openMVS Eigen pin, both hosts identify the same Git commit.
+The original tarball bytes, target closure, notices and build-time network
+suppression remain unverified. The production recipes, builder, corresponding-
+source bundler and release machinery continue to reject unsupported graphs.
+
+For a **research-only** archive containing the plan, all planned upstream
+archives and packaging sources including the experimental patch:
+
+```sh
+python scripts/bundle_staged_sources.py --component mvs-texturing --output /tmp/texturing-research.tar.gz
+```
+
+The helper verifies hashes and stages the graph before writing a deterministic
+archive and manifest. It refuses to overwrite a destination. This archive is
+not a release source bundle or a source-completeness certification.
+
+`patches/mvs-texturing-offline.patch` is a configure-only experiment against
+the pinned mvs-texturing archive. It replaces active ExternalProject targets
+with checks for staged sources and removes `-march=native`. Configuration was
+initially smoke-tested with temporary dependency stubs. A subsequent local
+research build linked `texrecon` against locally built MVE libraries and the
+restored TBB runtime, using matching-version upstream TBB headers. This was not
+a network-isolated or installed-package validation. A real TBB development
+package, complete source and license review, native CI build and functional test
+remain required.

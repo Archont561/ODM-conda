@@ -1,2 +1,5 @@
 # Avoid noisy text diffs and impossible three-way merges for generated lockfiles.
 pixi.lock merge=binary linguist-language=YAML linguist-generated=true -diff
+
+# Unified patches contain single-space blank context lines by design.
+research/patches/*.patch whitespace=-blank-at-eol
