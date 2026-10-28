@@ -4,7 +4,7 @@ title: Package openmvs-odm (ReconstructMesh target for the fast-orthophoto MVP)
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 13:09'
+updated_date: '2026-10-28 13:39'
 labels:
   - component
   - openmvs-odm
@@ -45,4 +45,6 @@ Eigen review (2026-10-28): the GitLab API confirms that ODM's GitLab commit `717
 Source-target inspection (2026-10-28): apps/ReconstructMesh/CMakeLists.txt links the MVS target; libs/MVS/CMakeLists.txt requires CGAL and VCG and links Common, Math and IO. That library globs all its C++ sources, so a ReconstructMesh-only executable target does not itself eliminate dense-source compilation. CUDA, OpenGL and Breakpad can be disabled; default build/Utils.cmake enables SSE3, SSSE3, SSE4.1 and SSE4.2 on x86_64, requiring baseline review. A local configuration attempt with those optional integrations disabled stopped at missing Boost components; CGAL is also absent from the restored odm-dev environment. The closure has not been compile-validated, and no recipe or installed test exists.
 
 2026-10-28: The pinned openMVS Git commit was fetched into a temporary local bare Git repository and scripts/verify_gitlinks.py verified the primary tree contains no Git submodule links. The separately staged VCG/Eigen dependencies are still necessary and this does not prove source completeness or isolated package support.
+
+2026-10-28: pixi-sandbox relock bot resolved cgal-cpp 6.1.1, libboost-devel 1.88.0 and tbb-devel 2023.1.0 into the odm-dev development environment; published sandbox snapshot was refreshed and restored locally. With the staged OpenMVS and VCG archives, system GCC 12, restored odm-dev Boost/Eigen 3.4/OpenCV/CGAL and CMake 4, configured with CUDA, Breakpad and tests disabled and built the ReconstructMesh target with -j1. The executable printed --help (exit 1). It compiled the full MVS library including SceneDensify and SceneRefine; this does not prove a reduced dense dependency closure. This is a mixed local research build, not a Conda package, installed-prefix functional test, isolated build or license/ABI/CPU-baseline audit. The pinned external Eigen tree was staged but this configuration selected the environment Eigen; CPU feature flags require review. All release gates remain open.
 <!-- SECTION:NOTES:END -->
