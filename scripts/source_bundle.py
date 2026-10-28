@@ -28,7 +28,8 @@ OPENMVS_FETCH_EXCEPTIONS = {
 
 
 def validate_upstream_archive(path: Path, disabled_build_trees: tuple[str, ...] = (), *,
-                              fetch_exceptions: dict[str, str] | None = None) -> None:
+                              fetch_exceptions: dict[str, str] | None = None,
+                              gitmodules_sha256: str | None = None) -> None:
     """Reject undisclosed fetches; exceptions identify exact, hashed disabled files.
 
     A static scan cannot prove which CMake files are executed or prevent other
@@ -36,6 +37,7 @@ def validate_upstream_archive(path: Path, disabled_build_trees: tuple[str, ...] 
     """
     exceptions = dict(fetch_exceptions or {})
     seen: set[str] = set()
+    seen_gitmodules = False
     with tarfile.open(path, "r:gz") as archive:
         for member in archive:
             parts = PurePosixPath(member.name).parts
@@ -44,7 +46,14 @@ def validate_upstream_archive(path: Path, disabled_build_trees: tuple[str, ...] 
             if member.issym() or member.islnk():
                 raise ScaffoldError("Starter source archives must not contain links; review handling before extending")
             if member.isfile() and parts[-1] == ".gitmodules":
-                raise ScaffoldError("Source contains submodules; a single GitHub archive is insufficient")
+                if gitmodules_sha256 is None:
+                    raise ScaffoldError("Source contains submodules; a single GitHub archive is insufficient")
+                if len(parts) != 2 or seen_gitmodules or member.size > 1024 * 1024:
+                    raise ScaffoldError("Unexpected or duplicate submodule declaration")
+                handle = archive.extractfile(member)
+                if handle is None or hashlib.sha256(handle.read()).hexdigest() != gitmodules_sha256:
+                    raise ScaffoldError("Unreviewed submodule declaration")
+                seen_gitmodules = True
             if member.isfile() and (parts[-1] == "CMakeLists.txt" or parts[-1].endswith(".cmake")):
                 relative_parts = parts[1:]  # GitHub archives have one top-level source directory.
                 if relative_parts and relative_parts[0] in disabled_build_trees:
@@ -63,6 +72,8 @@ def validate_upstream_archive(path: Path, disabled_build_trees: tuple[str, ...] 
                     raise ScaffoldError(f"Unstaged external CMake source in {member.name}")
     if seen != set(exceptions):
         raise ScaffoldError(f"Missing CMake fetch exception files: {sorted(set(exceptions) - seen)}")
+    if gitmodules_sha256 is not None and not seen_gitmodules:
+        raise ScaffoldError("Missing reviewed submodule declaration")
 
 
 def add_bytes(archive: tarfile.TarFile, name: str, data: bytes, mode: int = 0o644) -> None:

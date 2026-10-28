@@ -140,3 +140,29 @@ def test_exact_hashed_disabled_fetch_file_does_not_exempt_neighbors(tmp_path):
         add_bytes(archive, 'project/disabled/neighbor.cmake', b'file(DOWNLOAD https://bad.invalid x)')
     with pytest.raises(ScaffoldError, match='Unstaged external'):
         validate_upstream_archive(path, fetch_exceptions=expected)
+
+
+def test_explicit_gitmodules_exception_requires_exact_root_file_and_hash(tmp_path):
+    modules = b'[submodule "dep"]\npath = third_party/dep\n'
+    digest = hashlib.sha256(modules).hexdigest()
+    path = tmp_path / 'archive.tar.gz'
+    def archive(entries):
+        with tarfile.open(path, 'w:gz') as tar:
+            for name, data in entries:
+                add_bytes(tar, name, data)
+    archive([('project/.gitmodules', modules)])
+    with pytest.raises(ScaffoldError, match='submodules'):
+        validate_upstream_archive(path)
+    validate_upstream_archive(path, gitmodules_sha256=digest)
+    archive([('project/.gitmodules', b'tampered')])
+    with pytest.raises(ScaffoldError, match='submodule'):
+        validate_upstream_archive(path, gitmodules_sha256=digest)
+    archive([('project/nested/.gitmodules', modules)])
+    with pytest.raises(ScaffoldError, match='submodule'):
+        validate_upstream_archive(path, gitmodules_sha256=digest)
+    archive([('project/CMakeLists.txt', b'project(example)')])
+    with pytest.raises(ScaffoldError, match='submodule'):
+        validate_upstream_archive(path, gitmodules_sha256=digest)
+    archive([('project/.gitmodules', modules), ('project/.gitmodules', modules)])
+    with pytest.raises(ScaffoldError, match='submodule'):
+        validate_upstream_archive(path, gitmodules_sha256=digest)

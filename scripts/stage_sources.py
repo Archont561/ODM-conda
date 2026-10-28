@@ -21,6 +21,13 @@ def load_plan(path: Path, name: str) -> dict:
         url, commit = source["url"], source["commit"]
         if not url.startswith("https://codeload.github.com/") or not url.endswith("/tar.gz/" + commit):
             raise ScaffoldError("Experimental archives must use commit-pinned GitHub URLs")
+    if name == "opensfm":
+        # Keep the research staging path bound to the exact separately verified
+        # gitlink and archives. This is not a license or recipe approval.
+        from opensfm_graph_policy import validate_opensfm_graph
+        validate_opensfm_graph('opensfm-odm', {**plan['primary'],
+                                                'additional_sources': plan['additional'],
+                                                'disabled_build_trees': []})
     return plan
 
 

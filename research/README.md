@@ -197,3 +197,26 @@ lacked the excluded dense/texture/refine objects (the CUDA-disabled
 analysis. The original upstream archive **still contains** IBFS and TRWS files;
 its redistribution and corresponding-source obligations require separate review
 (TASK-54), even if the binary excludes their code. No package is approved.
+
+### Research source-graph checks (not recipes)
+
+`opensfm_graph_policy.py` checks the pinned primary and pybind11 source graph,
+research Ceres patch, and exact patched tree. It can also scan both downloaded
+archives when `--primary-archive` and `--pybind-archive` are supplied together:
+
+```sh
+python scripts/opensfm_graph_policy.py --tree /path/to/patched/opensfm \
+  --primary-archive /path/to/opensfm.tar.gz --pybind-archive /path/to/pybind11.tar.gz
+```
+
+The scan permits the exact root `.gitmodules` file and two exact pybind11 files
+containing fetch operations (`tests/CMakeLists.txt` and `tools/FindCatch.cmake`)
+only after the complete archives match their pinned hashes. This is an inventory
+exception, not evidence that tests or downloads are disabled. The production
+source bundler does not enable the `.gitmodules` exception for OpenSfM. Gitlink
+revision verification is separate; an archive fingerprint cannot prove it.
+
+The OpenMVS graph checker also recognizes rattler-build 0.68's generated
+work-root files only with exact expected source metadata. Its expected recipe
+patch filenames are provisional: no OpenMVS recipe has been registered or
+validated. Neither check grants source redistribution or license approval.
