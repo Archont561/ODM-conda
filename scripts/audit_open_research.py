@@ -12,6 +12,7 @@ from pathlib import Path, PurePosixPath
 from common import ScaffoldError, fail_cli
 from opensfm_assets_fixture import ASSETS
 from package_archive import read_package
+from research_license_notices import OPENMVS_NOTICES, OPENSFM_NOTICES, PSUTIL_NOTICE_SHA256, verify_notices
 
 VMEM_FILES = {
     '__init__.py': '03181bcbae4df55504c014db73e81fa7e93a960afa4554f8a5427eb335cc8251',
@@ -55,6 +56,7 @@ def verify_payload(name: str, payload: dict[str, bytes]) -> list[str]:
         if raw.startswith(b'\x7fELF'):
             binaries.append(path)
     if name == 'openmvs-odm':
+        verify_notices(payload, {licenses + dest: digest for dest, (_, digest) in OPENMVS_NOTICES.items()})
         if 'bin/ReconstructMesh' not in binaries:
             raise ScaffoldError('ReconstructMesh is not ELF')
     else:
@@ -63,6 +65,8 @@ def verify_payload(name: str, payload: dict[str, bytes]) -> list[str]:
             raw = payload.get(f'lib/python3.12/site-packages/vmem/{filename}')
             if raw is None or hashlib.sha256(raw).hexdigest() != expected:
                 raise ScaffoldError(f'Missing or modified vmem file: {filename}')
+        verify_notices(payload, {licenses + dest: digest for dest, (_, digest) in OPENSFM_NOTICES.items()})
+        verify_notices(payload, {licenses + 'psutil-BSD-3-Clause.txt': PSUTIL_NOTICE_SHA256})
         license_bytes = payload.get(licenses + 'vmem-LICENSE.txt')
         if license_bytes is None or hashlib.sha256(license_bytes).hexdigest() != VMEM_LICENSE_SHA256:
             raise ScaffoldError('Missing or modified vmem license')

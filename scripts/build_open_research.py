@@ -17,6 +17,7 @@ from common import ROOT, ScaffoldError, fail_cli, run
 from openmvs_graph_policy import verify_openmvs_tree
 from openmvs_link_map import verify_openmvs_link_map
 from opensfm_graph_policy import verify_opensfm_research_tree
+from research_license_notices import OPENMVS_NOTICES, OPENSFM_NOTICES, PSUTIL_NOTICE_SHA256, copy_notices
 
 
 def main() -> None:
@@ -97,6 +98,7 @@ def main() -> None:
     shutil.copy2(source / 'LICENSE', license_dir / 'upstream-LICENSE.txt')
     (share / 'SOURCE.txt').write_text('LOCAL RESEARCH ONLY: upstream sources and assets have not been cleared for redistribution.\n', encoding='utf-8')
     if name == 'openmvs-odm':
+        copy_notices({dest: (source / rel, digest) for dest, (rel, digest) in OPENMVS_NOTICES.items()}, license_dir)
         shutil.copy2(build / 'bin/ReconstructMesh', bindir / 'ReconstructMesh')
         for filename in ('functional_test.py', 'openmvs_synthetic_fixture.py', 'openmvs_pointcloud_fixture.py', 'texrecon_fixture.py'):
             shutil.copy2(ROOT / 'scripts' / filename, share / filename)
@@ -117,6 +119,9 @@ def main() -> None:
         shutil.copytree(source / '_external/vmem/vmem', lib / 'vmem',
                         ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
         shutil.copy2(source / '_external/vmem/LICENSE', license_dir / 'vmem-LICENSE.txt')
+        # Conservative upstream psutil notice: provenance is still under review.
+        copy_notices({'psutil-BSD-3-Clause.txt': (ROOT / 'research/notices/psutil-2021-BSD-3-Clause.txt',
+                                                   PSUTIL_NOTICE_SHA256)}, license_dir)
         for filename in ('opensfm_fixture.py', 'opensfm_assets_fixture.py'):
             shutil.copy2(ROOT / 'scripts' / filename, share / filename)
         shutil.copy2(source / 'bin/opensfm_main.py', share / 'opensfm_main.py')
@@ -124,11 +129,7 @@ def main() -> None:
         launcher.write_text('#!/usr/bin/env bash\nset -e\nDIR="$(cd "$(dirname "$0")" && pwd)"\nexec "$DIR/python" "$DIR/../share/odm-conda/opensfm-odm/opensfm_main.py" "$@"\n', encoding='utf-8')
         launcher.chmod(0o755)
         shutil.copy2(source / 'bin/opensfm_run_all', bindir / 'opensfm_run_all')
-        for rel, dest in [('opensfm/src/third_party/pybind11/LICENSE', 'pybind11-LICENSE.txt'),
-                          ('opensfm/src/third_party/akaze/LICENSE', 'akaze-LICENSE.txt'),
-                          ('opensfm/src/third_party/vlfeat/COPYING', 'vlfeat-COPYING.txt'),
-                          ('opensfm/data/sensor_data.readme.txt', 'sensor-data-notice.txt')]:
-            shutil.copy2(source / rel, license_dir / dest)
+        copy_notices({dest: (source / rel, digest) for dest, (rel, digest) in OPENSFM_NOTICES.items()}, license_dir)
 
 
 if __name__ == '__main__':

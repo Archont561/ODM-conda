@@ -4,7 +4,7 @@ title: Package opensfm-odm
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 20:12'
+updated_date: '2026-10-28 22:29'
 labels:
   - component
   - opensfm-odm
@@ -58,4 +58,8 @@ Further research (2026-10-28): adding a temporary -DGLOG_USE_GLOG_EXPORT flag an
 2026-10-28: owner-dispatched local-only OpenSfM run https://github.com/Archont561/ODM-conda/actions/runs/40757042542 at 6f92c55295e719a14fb7423ee4a5a8bedc6bddb7 passed native build, installed tests, fresh-environment retest and limited research leak/RPATH audit. Temporary sources and package removed, no artifact uploaded. PR #35 merged at c1e191133b1cbe552b3b413ad4419e2309690382. See research/open-components-license-review.md: AGPL/BSD source wording, vocabulary and sensor-data rights, vmem BSD-header/GPL-text discrepancy, actual dependency notices and corresponding source remain unresolved; full dataset run and production registration also remain open. This is not release or license approval.
 
 2026-10-28: vmem 1.0.2 utils.py usage_percent has an identical Python AST to psutil _common.py at commit 93e1c468ab4ac7922472114b3aeeacda2c8676a1; that psutil LICENSE is BSD-3-Clause text. Both vmem posix.py and utils.py carry BSD-style Rodola headers, while the sdist LICENSE is GPLv3 text. See research/open-components-license-review.md for exact evidence, hashes and limits; ascertain provenance and applicable original notices before distribution.
+
+2026-10-28: local-only research build 1 now includes the SHA256-pinned historical psutil BSD-3-Clause notice alongside vmem GPL text, and research audit fails on missing or altered notice. This is conservative notice inclusion, not proof of exact provenance or license compatibility. Full attribution, vocabulary and sensor rights, corresponding source, qualified review and a new native OpenSfM build/retest/audit remain open; no release gate changed.
+
+2026-10-28: owner-dispatched local-only OpenSfM build 1 run https://github.com/Archont561/ODM-conda/actions/runs/40779183804 at 147b0584b42977b1f52e6cc65aeeb56ce1a99fc7 passed native build, fresh retest and limited research audit, including the new notice checks. Temporary outputs removed and no artifact uploaded; provenance, licensing and release approval remain open.
 <!-- SECTION:NOTES:END -->

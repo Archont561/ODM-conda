@@ -5,7 +5,9 @@ from common import ScaffoldError
 from audit_open_research import verify_payload
 
 
-def test_research_audit_rejects_unexpected_checkout_and_sources():
+def test_research_audit_rejects_unexpected_checkout_and_sources(monkeypatch):
+    import audit_open_research as audit
+    monkeypatch.setattr(audit, "OPENMVS_NOTICES", {})
     payload = {
         'bin/ReconstructMesh': b'\x7fELFbinary',
         'share/odm-conda/openmvs-odm/functional_test.py': b'test',
