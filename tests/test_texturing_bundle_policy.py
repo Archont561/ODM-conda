@@ -145,3 +145,44 @@ def test_rattler_source_metadata_must_match_pinned_graph(tmp_path, monkeypatch):
     info.symlink_to('/etc/passwd')
     with pytest.raises(ScaffoldError, match='symlink'):
         policy.verify_texturing_tree(tree)
+
+
+def test_rattler_generated_files_are_excluded_only_with_valid_metadata(tmp_path, monkeypatch):
+    import json
+    import texturing_graph_policy as policy
+    from openmvs_graph_policy import fingerprint_tree
+
+    tree = tmp_path / 'source'
+    tree.mkdir()
+    (tree / 'CMakeLists.txt').write_text('pinned source', encoding='utf-8')
+    monkeypatch.setattr(policy, 'EXPECTED_TREE', fingerprint_tree(tree))
+    sources = [{'url': policy.PRIMARY['url'], 'sha256': policy.PRIMARY['sha256'],
+                'patches': ['patches/0001-offline.patch']}]
+    for entry in policy.ADDITIONAL:
+        item = {'url': entry['url'], 'sha256': entry['sha256'], 'target_directory': entry['path']}
+        if entry['name'] == 'mve':
+            item['patches'] = ['patches/0002-mve-baseline.patch']
+        sources.append(item)
+    for filename in ('build_env.sh', 'conda_build.sh', 'conda_build.log'):
+        (tree / filename).write_text('rattler generated content', encoding='utf-8')
+    with pytest.raises(ScaffoldError, match='fingerprint'):
+        policy.verify_texturing_tree(tree)
+    (tree / '.source_info.json').write_text(json.dumps({'sources': sources}), encoding='utf-8')
+    policy.verify_texturing_tree(tree)
+    (tree / 'extra').write_text('unexpected', encoding='utf-8')
+    with pytest.raises(ScaffoldError, match='fingerprint'):
+        policy.verify_texturing_tree(tree)
+    (tree / 'extra').unlink()
+    (tree / 'CMakeLists.txt').write_text('tampered', encoding='utf-8')
+    with pytest.raises(ScaffoldError, match='fingerprint'):
+        policy.verify_texturing_tree(tree)
+    (tree / 'CMakeLists.txt').write_text('pinned source', encoding='utf-8')
+    generated = tree / 'conda_build.sh'
+    generated.unlink()
+    generated.symlink_to('/etc/passwd')
+    with pytest.raises(ScaffoldError, match='symlink'):
+        policy.verify_texturing_tree(tree)
+    generated.unlink()
+    generated.mkdir()
+    with pytest.raises(ScaffoldError, match='generated'):
+        policy.verify_texturing_tree(tree)
