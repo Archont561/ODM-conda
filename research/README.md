@@ -59,5 +59,16 @@ initially smoke-tested with temporary dependency stubs. A subsequent local
 research build linked `texrecon` against locally built MVE libraries and the
 restored TBB runtime, using matching-version upstream TBB headers. This was not
 a network-isolated or installed-package validation. A real TBB development
-package, complete source and license review, native CI build and functional test
-remain required.
+package, complete source and license review, native CI build and installed-prefix
+functional test remain required.
+
+A generated-scene **research-only** texrecon fixture is available after building
+an executable from the pinned sources:
+
+```sh
+python scripts/texrecon_fixture.py --executable /absolute/path/to/texrecon
+```
+
+It checks the output geometry, texture references and PNG structure. The fixture
+skips both seam-leveling stages and inherits the caller's runtime library path.
+A successful run against a research binary is not package validation.
