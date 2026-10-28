@@ -37,7 +37,9 @@ requirements:
     # and primary declarations come from the bundled PNG directory.
     - libpng
     - libjpeg-turbo
-    - libzlib
+    # The zlib development package supplies the unversioned libz.so for -lz;
+    # libzlib alone only supplies the versioned runtime library.
+    - zlib
     - libgomp >=14
   run:
     - libjpeg-turbo
