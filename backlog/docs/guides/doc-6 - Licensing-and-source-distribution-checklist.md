@@ -95,10 +95,11 @@ Current recipe expression: `AGPL-3.0-only AND MIT`.
   2024-01-12; verified 2026-10-28).
 - Upstream root `LICENSE`: GNU Affero GPL version 3 text; the README states
   "AGPLv3"; source files carry no separate headers and there is no or-later
-  grant. Metadata conservatively proposes `AGPL-3.0-only` pending explicit
-  project-owner review; the owner-approved odm-orthophoto precedent (AGPL §13
-  network clause accepted as policy) does not transfer automatically and §13
-  remains an explicit review point for any service use of built binaries.
+  grant. The project owner confirmed `AGPL-3.0-only` on 2026-10-28 (release
+  gates include `license_reviewed: true`), as its own decision explicitly not
+  inherited from the odm-orthophoto precedent. AGPL §13's network clause was
+  accepted as policy and remains an explicit review point for any service use
+  of built binaries.
 - `vendor/mf2d/LICENSE`: MIT (Jukka Suomela, 2014). The mf2d median-filter
   sources are compiled into the executable; the license file ships verbatim.
 - `vendor/cxxopts.hpp`: MIT notice in the leading comment (same vendored
@@ -108,8 +109,8 @@ Current recipe expression: `AGPL-3.0-only AND MIT`.
   this package.
 - Installed original packaging/test code adds an MIT notice.
 
-Proposed recipe expression: `AGPL-3.0-only AND MIT` (pending owner review;
-all four release gates are `false`).
+Proposed recipe expression: `AGPL-3.0-only AND MIT` — owner-confirmed on
+2026-10-28; all four release gates are `true` in the approval commit.
 
 ## Notice preservation
 

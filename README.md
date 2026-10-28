@@ -8,7 +8,11 @@ Target: the existing **`archont561/archont561`** Prefix channel, shared with Clo
 > published Linux CPU components (OIDC + attestation, 2026-10-27) are
 > `fpcfilter 0.2` build 1 (TASK-15), `dem2points 0.0.0.dev20220721` build 0
 > and `odm-orthophoto 0.0.0.dev20250225` build 0; their twelve release gates
-> are owner-approved `true`.
+> are owner-approved `true`. The fourth component, `fastrasterfilter 1.0`
+> build 0 (TASK-5, ODM reference `main`), is natively validated (CI run
+> 40603931789), reviewed (TASK-30) and owner-approved on 2026-10-28; its four
+> release gates are `true`, and only the tag + manual Release remain to
+> publish it.
 
 ## Implemented components
 
@@ -17,13 +21,16 @@ Target: the existing **`archont561/archont561`** Prefix channel, shared with Clo
 | `dem2points` | `4527122615f41044bde0e79850464ed33549ceeb` | Synthetic DEM → PLY, coordinates, normals, linkage |
 | `fpcfilter` | ODM tag `331`, commit `6e0c1c0113939823b2ff3c2eef4d5907e7f5db6b`, plus local patch 0001 (build 1) | ASCII pass-through; no-normals sampling (regression for TASK-2); normals-bearing binary PLY sampling; linkage |
 | `odm-orthophoto` | ODM reference `355` (numbered branch head), commit `55b66d87cc168b8ab287bf10e81d4da0890f84f1` | Synthetic textured OBJ quad → GeoTIFF structure, corner bounds, exact pixel data, linkage |
+| `fastrasterfilter` | ODM reference `main` (branch head), commit `c5d6c074619e573f641c808f9bdd9d431a0b7e4b` | Synthetic GeoTIFF DEM → exact median-filter output at two window sizes (padding regression), geotransform preservation, help path, linkage |
 
 The reference is **ODM 3.6.2** (`47f41f1f2d09f7c15dff33dd3c15ab29c8a97d45`),
 not moving ODM master. `dem2points` uses snapshot version `0.0.0.dev20220721`;
 FPCFilter's `0.2` is its CMake version, not the ODM tag number.
 `odm-orthophoto` uses snapshot version `0.0.0.dev20250225` (pinned commit
 date); its ODM reference `355` is a numbered branch in the upstream repository,
-whose head is the pinned commit.
+whose head is the pinned commit. `fastrasterfilter`'s `1.0` is its CMake
+project version; its ODM reference `main` is a branch in the upstream
+repository (upstream publishes no tags), whose head is the pinned commit.
 
 **FPCFilter's no-normals sampling path had an upstream bug** (the pinned commit
 erased rejected points from a local copy). Build 1 carries a local fix,
@@ -53,6 +60,16 @@ to `archont561/archont561` via the OIDC release workflow on 2026-10-27 (tag
 `odm-orthophoto-v0.0.0.dev20250225-b0`, release run 40592230904, green on
 attempt 5 after the owner extended the package-scoped prefix.dev upload grant;
 `pixi add odm-orthophoto --channel archont561/archont561`).
+
+The project owner approved `fastrasterfilter 1.0` build 0 on 2026-10-28
+(Backlog **TASK-5**, readiness review **TASK-30**, sprint **TASK-31**, CI
+validation run 40603931789: packaged + fresh-env functional tests, dependency
+audit PASS, source bundle `4729bdd5…`); all four fastrasterfilter release
+gates are `true`. Upstream is AGPL-3.0 (network copyleft) with vendored MIT
+mf2d/cxxopts; the owner confirmed the `AGPL-3.0-only AND MIT` expression and
+accepted §13 as policy for this ODM-ecosystem component. Nothing is published
+for this component yet: publication requires the tag `fastrasterfilter-v1.0-b0`
+on the approved HEAD and the manual Release firing the OIDC publisher.
 
 ## Quick start
 

@@ -57,3 +57,12 @@ Sigstore attestation (tag odm-orthophoto-v0.0.0.dev20250225-b0, release run
 upload grant was scoped to a package list that did not yet include
 odm-orthophoto - owner-fixed; attempts 3-4 tripped the no-clobber
 gh release upload step on already-attached assets - cleared before attempt 5).
+fastrasterfilter 1.0 build 0 (ODM reference `main`, resolved to the branch
+head c5d6c074619e573f641c808f9bdd9d431a0b7e4b; upstream publishes no tags)
+landed its recipe, AGPL-3.0-only + vendored-MIT (mf2d, cxxopts) notices and
+synthetic-raster median-filter fixture on 2026-10-27 (TASK-5), passed native
+CI validation the same evening on the first attempt (run 40603931789:
+packaged and fresh-env tests, audit PASS, source bundle) and was
+owner-approved on 2026-10-28 including the AGPL-3.0-only license call as its
+own decision; its four release gates are true (TASK-5/30/31). It is not
+published yet.
