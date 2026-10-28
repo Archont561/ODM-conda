@@ -68,7 +68,7 @@
         "disabled_build_trees": []
       },
       "license": "AGPL-3.0-only AND MIT",
-      "license_note": "Proposed expression pending explicit project-owner review; all release gates stay false until then. Upstream root LICENSE is AGPL-3.0 text with no or-later grant and source files carry no separate headers (README states AGPLv3), so metadata conservatively uses AGPL-3.0-only; the owner-approved odm-orthophoto precedent (including AGPL §13 acceptance) does not transfer automatically. Vendored mf2d (compiled into the executable) and vendored cxxopts.hpp are MIT and their notices ship verbatim/first-comment. MIT also covers original installed packaging/test code only.",
+      "license_note": "AGPL-3.0-only confirmed by project-owner review on 2026-10-28 (upstream LICENSE is AGPL-3.0 text with no or-later grant; source files carry no separate headers; README states AGPLv3), as its own decision not inherited from the odm-orthophoto precedent. Vendored mf2d (compiled into the executable) and vendored cxxopts.hpp are MIT; their notices ship verbatim/first-comment in every package and the corresponding-source bundle accompanies every artifact. The owner accepted AGPL §13's network-copyleft implications as policy for this ODM-ecosystem component. MIT covers original installed packaging/test code only.",
       "notices": [
         {
           "source": "LICENSE",
@@ -87,10 +87,10 @@
         }
       ],
       "release_checks": {
-        "publishable": false,
-        "license_reviewed": false,
-        "source_completeness_reviewed": false,
-        "native_validation_passed": false
+        "publishable": true,
+        "license_reviewed": true,
+        "source_completeness_reviewed": true,
+        "native_validation_passed": true
       }
     },
     "fpcfilter": {
