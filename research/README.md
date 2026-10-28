@@ -72,3 +72,20 @@ python scripts/texrecon_fixture.py --executable /absolute/path/to/texrecon
 It checks the output geometry, texture references and PNG structure. The fixture
 skips both seam-leveling stages and inherits the caller's runtime library path.
 A successful run against a research binary is not package validation.
+
+For an OpenSfM tree with its eight native bindings already built, a preliminary
+import and geometry smoke test can be run with:
+
+```sh
+python scripts/opensfm_fixture.py /absolute/path/to/opensfm-source-root
+```
+
+It imports the bindings from that exact tree, checks an equatorial ECEF
+conversion and an identity pose. This is not an installed package, dataset,
+source-completeness or release test.
+
+`patches/opensfm-ceres-config.patch` is a research patch that selects the Ceres
+CMake package and propagates its target requirements to native-module consumers.
+It applies to the pinned OpenSfM source and was tested in a mixed local
+GCC/Pixi environment against Ceres 2.2 and Python 3.12; it is not part of a
+production recipe and has not been validated with an isolated package build.

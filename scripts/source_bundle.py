@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Create a deterministic, hash-checked source + packaging archive.
 
-Only the two starter projects are supported. A source-completeness review is
+Single-archive components are supported. A source-completeness review is
 still required before distribution: this script is not a legal certification.
 """
 from __future__ import annotations

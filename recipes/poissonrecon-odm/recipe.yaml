@@ -1,0 +1,83 @@
+schema_version: 1
+
+context:
+  name: poissonrecon-odm
+  version: "13.8"
+  upstream_commit: "97caa6d34d1b05b59888bed019dea89ced74445e"
+  source_sha256: "88743428a97cbeed7d55e713fcfa42caebbfb7dcb2467d68899bd8feab95364b"
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  # ODM 3.6.2 references branch 290; this pins its researched head.
+  url: https://codeload.github.com/OpenDroneMap/PoissonRecon/tar.gz/97caa6d34d1b05b59888bed019dea89ced74445e
+  sha256: ${{ source_sha256 }}
+
+build:
+  number: 0
+  skip: target_platform != "linux-64"
+  python:
+    skip_pyc_compilation:
+      - share/odm-conda/**/*.py
+  script:
+    file: ../../scripts/build_component.py
+    interpreter: python
+
+requirements:
+  build:
+    - python >=3.12,<3.13
+    - make
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+  host:
+    # PNG.inl also includes <png.h> even though the compiled implementation
+    # and primary declarations come from the bundled PNG directory.
+    - libpng
+    - libjpeg-turbo
+    - libzlib
+    - libgomp >=14
+  run:
+    - libjpeg-turbo
+    - libzlib
+    - libgomp >=14
+
+tests:
+  - package_contents:
+      files:
+        - bin/PoissonRecon
+        - share/licenses/poissonrecon-odm/*
+        - share/odm-conda/poissonrecon-odm/SOURCE.txt
+        - share/odm-conda/poissonrecon-odm/functional_test.py
+  - script:
+      interpreter: python
+      content: |
+        import runpy
+        import sys
+        from pathlib import Path
+        installed = Path(sys.prefix) / "share" / "odm-conda" / "poissonrecon-odm" / "functional_test.py"
+        runpy.run_path(str(installed), run_name="__main__")
+    requirements:
+      run:
+        - python >=3.12,<3.13
+
+about:
+  homepage: https://github.com/OpenDroneMap/PoissonRecon
+  repository: https://github.com/OpenDroneMap/PoissonRecon
+  summary: Screened Poisson surface reconstruction for OpenDroneMap
+  description: >-
+    Unofficial native packaging of a component used by OpenDroneMap.
+    Native build, source and license review are required before distribution.
+  license: MIT AND BSD-3-Clause AND Libpng AND Zlib
+  license_file:
+    - .conda-notices/PoissonRecon-MIT.txt
+    - .conda-notices/PoissonRecon-BSD-3-Clause.txt
+    - .conda-notices/libpng-header-and-license.txt
+    - .conda-notices/zlib-header-and-license.txt
+    - .conda-notices/packaging-MIT.txt
+
+extra:
+  recipe-maintainers:
+    - archont561

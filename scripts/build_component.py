@@ -12,7 +12,7 @@ import shlex
 import shutil
 from pathlib import Path
 
-from common import ROOT, ScaffoldError, config, fail_cli, first_comment, relative_path, run, source_url
+from common import ROOT, ScaffoldError, config, fail_cli, first_comment, relative_path, run, sha256, source_url
 
 
 def main() -> None:
@@ -33,13 +33,15 @@ def main() -> None:
         raise ScaffoldError("Refusing an unsafe or non-isolated installation prefix")
     if os.environ.get("PKG_VERSION") != component["version"]:
         raise ScaffoldError("Recipe version and recipes/components.json disagree")
-    if not (source / "CMakeLists.txt").is_file():
+    build_file = "Makefile" if name == "poissonrecon-odm" else "CMakeLists.txt"
+    if not (source / build_file).is_file():
         raise ScaffoldError("SRC_DIR is not the expected source tree")
     if (source / ".gitmodules").exists() or component["source"]["additional_sources"]:
         raise ScaffoldError("External/submodule sources need explicit staging before this builder can support them")
-    cmake_text = (source / "CMakeLists.txt").read_text(encoding="utf-8")
-    if any(token in cmake_text.lower() for token in ("externalproject", "fetchcontent", "file(download")):
-        raise ScaffoldError("The starter builder does not permit unstaged CMake downloads")
+    if build_file == "CMakeLists.txt":
+        cmake_text = (source / build_file).read_text(encoding="utf-8")
+        if any(token in cmake_text.lower() for token in ("externalproject", "fetchcontent", "file(download")):
+            raise ScaffoldError("The starter builder does not permit unstaged CMake downloads")
 
     # Generate notices before packaging. Preserve verbatim upstream bytes.
     generated = source / ".conda-notices"
@@ -70,9 +72,28 @@ def main() -> None:
         "-DCMAKE_BUILD_TYPE=Release", f"-DCMAKE_INSTALL_PREFIX={prefix}",
         f"-DCMAKE_PREFIX_PATH={prefix}", "-DCMAKE_INSTALL_LIBDIR=lib", "-DBUILD_TESTING=OFF",
     ]
-    run(command, cwd=source, env=env)
-    run(["cmake", "--build", str(build_dir), "--parallel", env["CMAKE_BUILD_PARALLEL_LEVEL"]], cwd=source, env=env)
-    run(["cmake", "--install", str(build_dir), "--config", "Release"], cwd=source, env=env)
+    if name == "poissonrecon-odm":
+        # Restrict make execution to the two specifically reviewed files from
+        # the pinned archive; source changes require another fetch-command review.
+        makefiles = {"Makefile": "133c7df53d2d4c0dc3126c73b7b5f997a4930f355de8385649391e6813e1d5a5",
+                     "PNG/Makefile": "7adc41995370ce48374fdf79be2143af94311f0bf0abe4fd6462b111d19d4d06"}
+        for filename, expected in makefiles.items():
+            if sha256(relative_path(source, filename)) != expected:
+                raise ScaffoldError(f"Unreviewed makefile: {filename}")
+        # Upstream's makefiles assign CC/CXX directly, so pass the isolated
+        # compiler wrappers as command-line variables (also inherited by PNG).
+        cc, cxx = env.get("CC"), env.get("CXX")
+        if not cc or not cxx:
+            raise ScaffoldError("PoissonRecon requires rattler's C and C++ compiler wrappers")
+        flags = env.get("CXXFLAGS", "") + " -fopenmp -Wno-deprecated -std=c++14 -pthread -Wno-invalid-offsetof -O3 -DRELEASE -ffast-math -g0"
+        links = env.get("LDFLAGS", "") + " -lgomp -lstdc++ -lpthread -O3 -g0"
+        run(["make", "-j1", "poissonrecon", f"CC={cc}", f"CXX={cxx}", f"CFLAGS={flags}", f"LFLAGS={links}"], cwd=source, env=env)
+        (prefix / "bin").mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source / "Bin" / "Linux" / "PoissonRecon", prefix / "bin" / "PoissonRecon")
+    else:
+        run(command, cwd=source, env=env)
+        run(["cmake", "--build", str(build_dir), "--parallel", env["CMAKE_BUILD_PARALLEL_LEVEL"]], cwd=source, env=env)
+        run(["cmake", "--install", str(build_dir), "--config", "Release"], cwd=source, env=env)
     executable = prefix / "bin" / component["executable"]
     if not executable.is_file():
         raise ScaffoldError(f"Expected installed executable is missing: {executable}")

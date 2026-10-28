@@ -68,6 +68,37 @@ to `archont561/archont561` via the OIDC release workflow on 2026-10-28 (tag
 `fastrasterfilter-v1.0-b0`, release run 40653848189, green on the first
 attempt; `pixi add fastrasterfilter --channel archont561/archont561`).
 
+### Recipes under validation
+
+`dem2mesh` has a linux-64 recipe pinned to the researched head of ODM reference
+`334` and a generated-raster functional test. The test passed against a local
+research build, **not yet against the packaged executable**. Native build,
+installed-prefix and artifact validation and the full license review remain
+open; all publication gates are false. On a machine with conda-forge access,
+run the following commands. See TASK-6 for the current evidence.
+
+```sh
+pixi run build --component dem2mesh
+pixi run test --component dem2mesh
+pixi run audit --component dem2mesh
+pixi run sources --component dem2mesh
+```
+
+`renderdem` also has a linux-64 recipe, pinned to the researched head of ODM's
+`main` reference. Its generated point-cloud-to-raster fixture passed against a
+local PDAL 2.10 research build, but its package, installed-prefix test, source
+and notice review, and release gates remain unvalidated. The fixture exercises PLY and LAS
+input, but not LAZ input. On a machine with conda-forge access,
+run the same commands with `--component renderdem`.
+
+`poissonrecon-odm` has a recipe for ODM's `PoissonRecon` make target. Its
+sphere reconstruction fixture passed against a modified research-only
+FAST_COMPILE build; the recipe builds the unmodified, full upstream variant.
+The full native package, installed-prefix test and artifact audit have not
+been validated here, and license/source review and all publication gates remain
+open. On a sufficiently provisioned machine with conda-forge access, run the
+same commands with `--component poissonrecon-odm`.
+
 ## Quick start
 
 Requirements: Linux x86-64, Git, **Pixi 0.82.0**, and network access for initial
@@ -91,6 +122,21 @@ pixi run sources --component fpcfilter
 Actionlint **with ShellCheck**, and recipe rendering. It does not compile engines.
 `build` includes packaged tests; `test` reinstalls artifacts into fresh environments.
 Tests generate small fixtures, not proprietary drone datasets.
+
+The manual **Build and test native components** workflow accepts `all`, one
+component name, or a comma-separated list such as `dem2mesh,renderdem`. The
+same selection is built, retested, audited, and source-bundled in the listed
+order; invalid, empty, duplicate, or mixed `all` selections fail. The local
+commands accept the same syntax, for example:
+
+```bash
+pixi run build --component 'dem2mesh,renderdem'
+pixi run test --component 'dem2mesh,renderdem'
+pixi run audit --component 'dem2mesh,renderdem'
+pixi run sources --component 'dem2mesh,renderdem'
+```
+
+The workflow does not publish packages or approve release gates.
 
 The toolchain baseline is GCC 14 / glibc 2.28 sysroot; the selected dependencies
 and older Linux runtimes still need target testing. Only Linux x86-64 CPU is enabled.
