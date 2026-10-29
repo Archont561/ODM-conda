@@ -1,0 +1,37 @@
+name: Temporary batch artifact inspection
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'arena/8899a1d4-odm-conda'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - name: Set up locked tooling
+        uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default agent-tools
+      - name: Shared local and CI gate
+        run: pixi run check
+      - name: Download exact non-published artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: pixi run python scripts/inspect_batch_artifact.py fetch
+      - name: Inspect packages and corresponding source manifests
+        run: pixi run python scripts/inspect_batch_artifact.py inspect
+      - name: Fresh isolated package retests
+        run: pixi run test --component dem2mesh,renderdem,poissonrecon-odm --output-dir output/batch-artifact-inspection
