@@ -48,4 +48,20 @@ jobs:
       - name: Build, retest and audit from reduced copy; discard outputs
         env:
           RESEARCH_COMPONENT: openmvs
-        run: pixi run python scripts/run_open_research.py
+        run: |
+          set +e
+          pixi run python scripts/run_open_research.py > "$RUNNER_TEMP/reduced-run.log" 2>&1
+          rc=$?
+          if [ "$rc" -ne 0 ]; then
+            LOG_FILE="$RUNNER_TEMP/reduced-run.log" pixi run python - <<'PYCODE'
+          import os, re
+          from pathlib import Path
+          lines = Path(os.environ['LOG_FILE']).read_text(errors='replace').splitlines()
+          text = ' | '.join(lines[-45:])[-12000:]
+          text = re.sub(r'https?://[^\s|]+', '[url]', text)
+          print('::error::REDUCED_BUILD_FAILURE ' + text)
+          PYCODE
+          else
+            grep -F '::notice::' "$RUNNER_TEMP/reduced-run.log" || true
+          fi
+          exit "$rc"
