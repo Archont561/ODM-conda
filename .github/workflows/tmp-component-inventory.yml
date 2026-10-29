@@ -1,0 +1,24 @@
+name: Temporary component inventory
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inventory:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default
+      - name: Inspect artifacts and independent dependency solves
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: pixi run python scripts/tmp_component_inventory.py
