@@ -152,3 +152,45 @@ solver conflict for this fresh environment**, not full integration: fixtures
 were retested individually, not in the combined prefix, and the nine-component
 solve, relocation, ODM launcher and dataset have not been run. Legal and release
 gates remain unchanged.
+
+### Nine-package local-only trials (2026-10-29)
+
+A dependency-only [matrix](https://github.com/Archont561/ODM-conda/actions/runs/40913563570)
+identified PDAL 2.10.0's trajectory plugin requirement for gflags 2.2.x;
+OpenSfM was genuinely rebuilt against that ABI rather than relabeled. A further
+[solve](https://github.com/Archont561/ODM-conda/actions/runs/40915095265)
+selected Eigen 3.4.0, gflags 2.2.2, GDAL 3.12.2 and PDAL 2.10.0.
+The [actual nine-package trial](https://github.com/Archont561/ODM-conda/actions/runs/40915195339)
+verified the seven retained package identities above, rebuilt and audited local
+research OpenSfM build 3 and OpenMVS build 3, installed all nine together and
+passed executable and selected-import preflight. Its ODM launcher failed for
+missing `pyodm`; the disposable environment did not yet include the full app
+requirements. Research builds and dataset outputs were not uploaded.
+
+A subsequent [trial](https://github.com/Archont561/ODM-conda/actions/runs/40916199152)
+added application dependencies and passed launcher help. Seneca (pinned at
+`9220acfdca75cc5e2dd6d27fe48550c5ae0877f2`, candidate CC0, separate
+provenance review still required) reached reconstruction, which failed because
+OpenSfM's `numpy.array(..., copy=False)` is incompatible with NumPy 2. OpenSfM
+build 4 constrains host and runtime NumPy to 1.26.x and adds an installed
+regression smoke test. [Trial 40919353247](https://github.com/Archont561/ODM-conda/actions/runs/40919353247)
+reconstructed 166 images and 198,644 points, then failed in statistics because
+`matplotlib.cm.get_cmap` was removed. Research build 5 adds a Matplotlib
+compatibility bound and installed API smoke test. These observations do not
+establish successful end-to-end orthophoto generation, relocation, legal
+clearance or reproducibility. Research artifacts and outputs remain disposable;
+all release gates remain closed.
+
+[Trial 40922527022](https://github.com/Archont561/ODM-conda/actions/runs/40922527022)
+passed reconstruction and generated an intermediate orthophoto, but its crop
+warned and report generation failed: PDAL/GDAL could not open the PROJ database.
+The output was discarded and was not independently validated. A separate
+[minimal probe](https://github.com/Archont561/ODM-conda/actions/runs/40927345299)
+reproduced PDAL's EPSG:4326 failure without a PROJ environment path; setting
+`PROJ_DATA` or `PROJ_LIB` to the installed prefix's `share/proj` fixed that
+minimal operation. The local launcher now supplies both paths for the explicit
+prefix. This is not yet proof of full dataset success: corrected dataset trials
+[40927462919](https://github.com/Archont561/ODM-conda/actions/runs/40927462919)
+and [40927535532](https://github.com/Archont561/ODM-conda/actions/runs/40927535532)
+were canceled while running. Neither final raster metadata validation nor
+relocation of the full installed environment has been demonstrated.
