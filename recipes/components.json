@@ -46,10 +46,10 @@
         }
       ],
       "release_checks": {
-        "publishable": false,
-        "license_reviewed": false,
-        "source_completeness_reviewed": false,
-        "native_validation_passed": false
+        "publishable": true,
+        "license_reviewed": true,
+        "source_completeness_reviewed": true,
+        "native_validation_passed": true
       }
     },
     "fastrasterfilter": {

@@ -443,3 +443,22 @@ Release must rebuild and retest on the trusted default-branch HEAD, preserve
 source-before-binary ordering, and refuse collisions. The earlier package and
 bundle hashes describe validation inputs and do not assert identical bytes
 from a fresh build. Approval is not legal certification.
+
+### Owner gate decision: dem2points build 2 (2026-10-29)
+
+The owner explicitly approved all four gates for dem2points
+`0.0.0.dev20220721` build 2 and authorized publication after the approval PR
+passes and merges. Scope is the standalone Linux x86-64 component, not a bundled
+GDAL dependency environment or full ODM. The previously approved license
+expression is `GPL-3.0-only AND BSD-3-Clause AND MIT`. Native build
+[40909632056](https://github.com/Archont561/ODM-conda/actions/runs/40909632056),
+independent artifact/source/notice inspection and fresh retest
+[40910163219](https://github.com/Archont561/ODM-conda/actions/runs/40910163219),
+and dependency inventory
+[40935677599](https://github.com/Archont561/ODM-conda/actions/runs/40935677599)
+provide the evidence summarized above. The tests ran on Ubuntu 24.04, not a
+minimum-glibc 2.28 runtime; generated fixture coverage is not full ODM or
+real-world validation. These prior artifacts do not imply byte-identical release
+rebuilds. The protected workflow must use the trusted main HEAD, rebuild,
+retest, audit and attach corresponding source before binary upload, refusing
+collisions. This approval is not legal certification.
