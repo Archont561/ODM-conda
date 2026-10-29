@@ -371,3 +371,76 @@ they are not byte-identical, and the differences were not inspected. Review
 the exact installed header contents and package source rather than assuming the
 upstream tag alone represents them. The legal and corresponding-source
 questions above remain unresolved.
+
+### Sensor database composition investigation
+
+The pinned `sensor_data.sqlite` SHA256 is
+`45e7b0ed2d9978ae236ae522497514ded59ffd83f76bc0180555a36b2562fa31`.
+ODM fork commit [cca015d](https://github.com/OpenDroneMap/OpenSfM/commit/cca015d1b11c276d1ff61526b0d460f6544c7c7b)
+added it on 2022-12-13 and made `opensfm/sensors.py` prefer SQLite over JSON,
+falling back to JSON on absence or query failure. It has 7,523 `id,focal`
+rows. The pinned `sensor_data.json` has 3,708 entries; after lowercasing JSON
+keys, every one appears in SQLite with an exactly equal numeric value and there
+are 3,815 additional SQLite keys (no lowercase collisions). The 3,610-entry
+`sensor_data_detailed.json` is separate; this comparison is not a complete
+row-by-row provenance assessment.
+
+A historical [AliceVision cameraSensors.db](https://github.com/alicevision/AliceVision/blob/b36931179c2299801ace912ac98561daa3f18456/src/aliceVision/sensorDB/cameraSensors.db)
+was last changed before the SQLite import in commit
+[b369311](https://github.com/alicevision/AliceVision/commit/b36931179c2299801ace912ac98561daa3f18456);
+its SHA256 is `86969c1eed031294065f65d94a49d83560f78c7524f18a04eee24dbce3fc316e`.
+Parsing its semicolon-separated make/model/focal entries, lowercasing, using
+model alone when it starts with make and otherwise joining make and model, and
+retaining the first valid occurrence yields 7,445 distinct keys. Of the 3,815
+SQLite-only keys, **3,814 match** this historical database exactly in both key
+and numeric value; the sole unmatched key is `hasselblad l2d-20c`. The
+AliceVision file itself includes source fields naming multiple websites and
+user contributions. The observed match is strong evidence of shared data,
+not proof of direct copying or authority to sublicense those sources.
+
+The later 2025 [DroneDB merge script](https://github.com/DroneDB/DroneDB/blob/8871193e0042b1821c964a1110c6561e950f1cdc/data/create_sensor_data.py)
+combines OpenSfM JSON, AliceVision database and a DroneDB additions file using
+the same broad normalization and first-source precedence, but its public commit
+postdates the 2022 SQLite import and cannot establish the historical generation
+procedure. The source rights and exact originating version must be reviewed
+independently; the old OpenSfM sensor README's simplified-BSD statement cannot
+by itself clear the additional SQLite content. Earlier source history traces the
+initial JSON/detailed data and README to [62815d3](https://github.com/mapillary/OpenSfM/commit/62815d39e796ddc04389d9b59c76bada86dc1404)
+and their relocation to [9011fd3](https://github.com/mapillary/OpenSfM/commit/9011fd352c650418dfb8cd327f6b8a7dc3a7915a);
+subsequent contributions also need review.
+
+For the vocabularies, PR 429 and PR 466 explain the use of the assets but do
+not identify a training corpus or provide a model-specific grant. A focused
+inspection of the pinned OpenSfM `bow.py`, configuration, executable scripts
+and documentation did not reveal a vocabulary training-data manifest. This is
+a bounded search, not proof that no provenance record exists. The two trained
+assets' rights and possible replacement with independently sourced and trained
+vocabularies remain open.
+
+### Installed CGAL/tag comparison and file-level leads
+
+[Disposable run 40972161000](https://github.com/Archont561/ODM-conda/actions/runs/40972161000)
+at `461c88b` repeated the build and compared the 806 traced installed CGAL
+headers against the public v6.2.1 tag archive (SHA256
+`4a0713351882989dda8b6bbfa942d5013b994f297fbebe1096ce664a92aff1a0`).
+One was byte-identical and 805 differed. For the two sampled AABB headers,
+the complete unified diff consists of expansion of `$URL$` and `$Id$` to
+v6.2.1-specific metadata; the `GPL-3.0-or-later OR LicenseRef-Commercial`
+SPDX line is unchanged. This explains those two sample mismatches, **not** all
+805 differences; the other files have not been individually compared.
+
+The exact 93 traced installed paths whose first 10,000 bytes contained the
+GPL-or-commercial SPDX marker are listed in
+`research/openmvs-cgal-gpl-header-trace.json`, linked to the exact host package
+and run. This is a bounded reviewer lead: header dependency recording and
+markers do not by themselves establish linked code, commercial licensing,
+applicability of a particular grant, source obligations or notice sufficiency.
+The other CGAL marker groups and Boost headers still require review.
+
+The prior simple Boost string search has false negatives: for example, the
+upstream 1.90.0 [`archive_exception.hpp`](https://github.com/boostorg/serialization/blob/boost-1.90.0/include/boost/archive/archive_exception.hpp)
+wraps “Boost Software” and “License” across two lines, so the exact phrase is
+absent despite its explicit license reference. Exact correspondence between
+that upstream file and installed bytes has not been checked. The 272 unmarked
+by the simple scanner must not be described as unlicensed or automatically
+cleared. No source archives or binaries from the experiment were uploaded.

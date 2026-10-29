@@ -4,7 +4,7 @@ title: Resolve missing IJG terms in PoissonRecon source distribution
 status: In Progress
 assignee: []
 created_date: '2026-10-29 10:00'
-updated_date: '2026-10-29 23:14'
+updated_date: '2026-10-29 23:18'
 labels:
   - poissonrecon-odm
 dependencies: []
@@ -52,4 +52,6 @@ Temporary read-only inspection https://github.com/Archont561/ODM-conda/actions/r
 Traced eight differing JPEG files and jconfig.h unchanged back to the 2018 initial visible import 514b259; Makefile first appears in b97aaf4 and was later changed in 99e3d90. Generated jconfig refers to ckconfig.c and jconfig.doc. See research/poissonrecon-readiness-review.md. Earlier author/provenance and authoritative grant remain unresolved.
 
 The 2018 initial JPEG import 514b259 is also present in author-owned mkazhdan/PoissonRecon; this corroborates upstream history but does not establish earlier origin, exact terms or source/binary redistribution rights. See readiness review; criteria remain open.
+
+Compared first 2018 Poisson JPEG import to libjpeg-turbo historical jpeg-6b tag 5ead57a: 49 identical, 8 changed, jconfig.h unmatched, and exact README SHA matches candidate. The tag is unsigned and later-maintained history; provenance and notice sufficiency still need qualified review. See readiness review.
 <!-- SECTION:NOTES:END -->

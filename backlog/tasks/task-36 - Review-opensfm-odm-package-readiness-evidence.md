@@ -4,7 +4,7 @@ title: Review opensfm-odm package-readiness evidence
 status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-29 23:14'
+updated_date: '2026-10-29 23:18'
 labels:
   - packaging
   - review
@@ -49,4 +49,6 @@ Trace OpenSfM vocabulary and sensor database introductions and contributor recor
 Doc-12 consolidates exact OpenSfM local-only source/asset/grant and vmem blockers and build evidence. Rights and actual dependency graph remain unresolved; no distribution approval.
 
 Traced 10,000/64-word vocabulary introduction and rename commits and investigated vmem history, exact sdist file matches and psutil similarity; recorded evidence and unresolved training-data and license questions in research/open-components-license-review.md. Criteria and gates remain open.
+
+Pinned SQLite has 7523 rows: all 3708 lowercased OpenSfM JSON entries match exactly, and 3814 of 3815 added keys and values match historical AliceVision cameraSensors.db b369311; latter contains source fields naming multiple websites and user contributions. Later DroneDB merge script is consistent with this composition but postdates SQLite. Vocabulary training corpus remains unidentified. Record and caveats in research/open-components-license-review.md; rights remain open.
 <!-- SECTION:NOTES:END -->

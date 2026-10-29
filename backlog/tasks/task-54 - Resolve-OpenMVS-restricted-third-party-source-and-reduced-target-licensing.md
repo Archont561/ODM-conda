@@ -4,7 +4,7 @@ title: Resolve OpenMVS restricted third-party source and reduced target licensin
 status: In Progress
 assignee: []
 created_date: '2026-10-28 15:48'
-updated_date: '2026-10-29 23:14'
+updated_date: '2026-10-29 23:21'
 labels:
   - openmvs-odm
   - license
@@ -52,4 +52,6 @@ Reverified pinned source and examined reduced-build patch: Boost Graph fallback 
 2026-10-29: Added local-only exact-graph reducer and path/hash/mode manifest. Disposable run 40967069992 made two reduced copies with identical manifests (3274 files, tree fingerprint e64c1718c05d58ac74051a8a0a216febbcac7144898cea022d378af427549489; canonical JSON manifest SHA256 560cc78034924dd9fd83b02c4fba448a66612fc493b86ae8c09da6f0b338ce3b) and compiled/retested/audited ReconstructMesh from one reduced copy with link-map guard. Originals, reduced trees and research packages were discarded and not uploaded. Unit tests cover reduction, bad source/destination, symlinks, and fingerprint mismatch. This is no distributable archive, legal permission, complete notice audit or proof of rights; TASK-54 criteria stay open.
 
 Run 40969462242 built and inspected the reduced host prefix: CGAL 6.2.1 and Boost 1.90.0 identities and header traces are recorded with the 499-entry retained-tree comparison in research/open-components-license-review.md. Follow-up 40970246461 counted markers in traced CGAL and Boost host headers and found vendored rather than host Eigen paths in Ninja dependencies. 93 CGAL headers identify GPL-3.0-or-later OR commercial; marker counts are not file-by-file review. Two installed sample header hashes differ from upstream 6.2.1 tag; exact differences, full retained-file/dependency review, corresponding source and qualified legal review remain open.
+
+Run 40972161000 compared 806 traced installed CGAL headers to the v6.2.1 tag: 805 differ and one matches; the two inspected AABB differences are solely expanded URL/Id metadata, not evidence about the remaining files. Exact 93 GPL-or-commercial marker paths recorded in research/openmvs-cgal-gpl-header-trace.json. Simple Boost scan has line-wrap false negatives. Full file/dependency and legal review remain open.
 <!-- SECTION:NOTES:END -->

@@ -242,3 +242,35 @@ not identify the source of the JPEG files before that commit or prove that the
 compared mirror is authoritative. The missing original README, eight
 non-matching files, and generated configuration still require provenance and
 terms review; source and binary distribution remain unapproved.
+
+### Comparison with libjpeg-turbo's historical IJG tag
+
+The libjpeg-turbo project's annotated [`jpeg-6b` tag](https://github.com/libjpeg-turbo/libjpeg-turbo/tree/5ead57a34a398aa798f35bd7a6abad19b2e453e2)
+points to commit `5ead57a34a398aa798f35bd7a6abad19b2e453e2`; its commit and
+annotated tag describe it as the Independent JPEG Group's 6b release. The commit
+lists Thomas G. Lane as author and a libjpeg-turbo maintainer as 2015 committer;
+the tag is unsigned, and this is a maintained historical reference, not a
+cryptographically authenticated original IJG archive. Its codeload tarball
+SHA256 is `90834a52eec5929caeaf076bfddf9778759b6ce763678014e46756d263b65f45`.
+Its `README` has the same SHA256
+`4cf9c190f184019b61c36bcc49d4a24ffeb2a838c6f1690d6c4db14cfb2d0478` as the
+candidate already retained in packaging.
+
+Comparing this reference to the 58 files of the first observable Poisson import
+(commit 514b259), mapping `.cpp` to same-stem `.c`, yields 49 byte-identical,
+eight different and one without a same-named counterpart (`jconfig.h`), the
+same eight previously identified against the independent mirror. The later
+Poisson-specific Makefile is a 59th file. Selected actual differences include
+commented-out `INLINE` in `jcphuff.cpp`; `jdapistd.cpp` changes a return type
+from `boolean` to `unsigned char`; and `jmorecfg.h` changes `INT32` and
+`boolean` typedefs. Some modified source comments say “Misha changed here”;
+those comments identify claimed modifications but do not independently prove
+author identity, permission or completeness of attribution. Other edits include
+formatting and input/output buffer macro changes. The full retained comparison
+remains against the earlier mirror, whose README matches this reference.
+
+This stronger independent reference supports version identification and the
+candidate README but does not establish the exact pre-2018 source, authority
+for all modifications, or whether source/binary notices and accompanying change
+documentation are sufficient. TASK-56 remains open; no release or license gate
+is approved by this comparison.
