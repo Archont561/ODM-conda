@@ -4,7 +4,7 @@ title: Resolve OpenMVS restricted third-party source and reduced target licensin
 status: In Progress
 assignee: []
 created_date: '2026-10-28 15:48'
-updated_date: '2026-10-29 22:21'
+updated_date: '2026-10-29 22:24'
 labels:
   - openmvs-odm
   - license
@@ -44,4 +44,6 @@ Pinned OpenMVS libs/Math/IBFS/license.txt (SHA256 9e2ccaeb2fd1b11a6615b136b0d3e4
 2026-10-28: OpenMVS local-only research build 1 now carries and audits exact pinned COPYRIGHT.md, VCG LICENSE and Eigen COPYING.MPL2/COPYING.README notice texts. This is a limited subset, not complete license clearance or permission to distribute restricted archives. Full actual dependency inventory, notices and corresponding source remain open; an owner-dispatched build/retest/audit of changed research payload is required.
 
 Reverified pinned source and examined reduced-build patch: Boost Graph fallback replaces enabled IBFS, excludes densify/texture/refine and removes IBFS/TRWS build globs, but original archive still contains restricted files. Rights-holder permission or separately reviewed reduced source tree are possible routes, neither implemented nor approved. Later upstream removes TRWS but changes IBFS and is not the pinned fork. See research/open-components-license-review.md.
+
+2026-10-29: Disposable run 40965276525 verified the exact patched staged graph then removed all 20 files from libs/Math/IBFS and libs/Math/TRWS plus SceneDensify.cpp, SceneRefine.cpp and SceneTexture.cpp before CMake. Retained 3274-file staged tree fingerprint e64c1718c05d58ac74051a8a0a216febbcac7144898cea022d378af427549489 (path/content only, includes VCG/Eigen, ignores rattler-generated root files). Reduced ReconstructMesh built, named-input link-map guard passed, installed and fresh tests passed, and limited package audit passed. Originals were fetched before removal; no source/archive/binary was uploaded. No independently reproducible distribution archive, full source/notice assessment or legal clearance exists; removing named paths does not prove no restricted code elsewhere. All acceptance criteria remain open. See research/open-components-license-review.md.
 <!-- SECTION:NOTES:END -->
