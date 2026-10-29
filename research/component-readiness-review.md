@@ -462,3 +462,56 @@ real-world validation. These prior artifacts do not imply byte-identical release
 rebuilds. The protected workflow must use the trusted main HEAD, rebuild,
 retest, audit and attach corresponding source before binary upload, refusing
 collisions. This approval is not legal certification.
+
+### OpenVINO dependency investigation (2026-10-29)
+
+**Why it appeared.** `odm-orthophoto` requires `libopencv` at both host and
+runtime. The previously inspected standalone solve selected OpenCV 4.12.0 and
+13 OpenVINO 2025.4.1 split outputs (the exact builds and hashes are in the
+[dependency inventory](component-build2-dependency-inventory.md)). A
+[versioned OpenCV 4.12 feedstock recipe](https://github.com/conda-forge/opencv-feedstock/blob/43c21d0144cd7341492397f54a96c86203ba628f/recipe/meta.yaml)
+uses `libopenvino-dev` as a host dependency, and its
+[build script](https://github.com/conda-forge/opencv-feedstock/blob/43c21d0144cd7341492397f54a96c86203ba628f/recipe/build.sh)
+enables OpenVINO outside the ppc64le exclusion. The
+[OpenVINO 2025.4.1 build-1 feedstock recipe](https://github.com/conda-forge/openvino-feedstock/blob/4f61681cf2fc18af6b9ae6b92cc05a1550939243/recipe/meta.yaml)
+exports the core, frontends and platform plugins from `libopenvino-dev`. This
+explains the packaging mechanism consistent with the 13 records, including GPU
+and NPU plugins in a CPU-oriented application. It does **not** prove that this
+OpenCV source revision produced the exact solved binary, that all 13 are loaded
+or used, or that a later solve will have the same dependencies.
+
+**Why the labels were missing.** The versioned 2025.4.1 build-1 recipe sets
+`Apache-2.0` at the top level but lists `license_file` without a `license` field
+in each split output. Conda-forge subsequently documented this exact class of
+problem in [openvino-feedstock PR #147](https://github.com/conda-forge/openvino-feedstock/pull/147):
+missing output-level `license` fields prevented tools from identifying the
+licenses. Its [merged patch](https://github.com/conda-forge/openvino-feedstock/commit/f50a776eaea61e82618c85de11c63842d78214c5)
+added `Apache-2.0` to each output's `about` section for a **later** 2026.0.0
+build. This is strong evidence of a historical metadata omission, not evidence
+that the 2025.4.1 packages were rebuilt, relabeled, or individually audited.
+The two exact hash-verified older packages inspected in run 40935909195 really
+did lack those metadata fields. The other 11 were observed in the solver lock,
+not individually inspected.
+
+The older recipe specifies the root `LICENSE` and three `licensing/` notice
+files for its outputs. Upstream 2025.4.1 has
+[third-party-programs.txt](https://github.com/openvinotoolkit/openvino/blob/2025.4.1/licensing/third-party-programs.txt),
+[onednn_third-party-programs.txt](https://github.com/openvinotoolkit/openvino/blob/2025.4.1/licensing/onednn_third-party-programs.txt)
+and [runtime-third-party-programs.txt](https://github.com/openvinotoolkit/openvino/blob/2025.4.1/licensing/runtime-third-party-programs.txt).
+Recipe intent and upstream notice lists do **not** establish their presence or
+completeness in the exact binary payloads. The previous inspection found no
+regular `info/licenses/` files in two metadata archives; it did not inspect
+payloads, alternate notice paths or the remaining packages.
+
+**Decision boundary.** Publishing the standalone ODM component is distinct
+from redistributing an assembled environment containing these packages; neither
+a missing label nor an Apache-2.0 label proves a license incompatibility or
+fully accounts for third-party obligations. For any assembled distribution,
+freeze the actual solve and hashes, inspect every shipped package's metadata,
+payload and notices (including dynamically loaded plugins and other OpenCV/GDAL
+dependencies), compare with the exact build sources and patches, and obtain the
+owner's distribution-specific review. Upgrading/rebuilding OpenCV to select
+newer OpenVINO would require a fresh solve, rebuild, tests, audit and review; no
+such change or safe drop-in replacement is established here. The separate
+odm-orthophoto release gates remain closed; this investigation is not legal
+certification or a release approval.
