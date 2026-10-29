@@ -24,6 +24,30 @@ VMEM_FILES = {
 VMEM_LICENSE_SHA256 = '3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986'
 
 
+
+def verify_index(name: str, index: object) -> None:
+    """Check the exact local research package identity and critical runtime declarations."""
+    expected = {
+        'openmvs-odm': ('0.0.0.dev20260516', 3,
+                        {'python', 'libboost', 'libopencv', 'tbb', 'mpfr', 'gmp', 'libgomp'}),
+        'opensfm-odm': ('0.5.2', 1,
+                        {'python', 'numpy', 'py-opencv', 'ceres-solver', 'suitesparse',
+                         'gflags', 'glog', 'libgomp', 'rasterio', 'rawpy'}),
+    }
+    if name not in expected or not isinstance(index, dict):
+        raise ScaffoldError('Unknown or invalid research package index')
+    version, build, required = expected[name]
+    if (index.get('name') != name or index.get('version') != version
+            or type(index.get('build_number')) is not int or index['build_number'] != build
+            or index.get('subdir') != 'linux-64'):
+        raise ScaffoldError('Research package identity mismatch')
+    dependencies = index.get('depends')
+    if not isinstance(dependencies, list) or not all(isinstance(item, str) and item.split() for item in dependencies):
+        raise ScaffoldError('Invalid research runtime dependency declarations')
+    names = {item.split()[0] for item in dependencies}
+    if not required <= names:
+        raise ScaffoldError(f'Missing research runtime dependencies: {sorted(required - names)}')
+
 def verify_payload(name: str, payload: dict[str, bytes]) -> list[str]:
     if name not in ('openmvs-odm', 'opensfm-odm'):
         raise ScaffoldError('Unknown research component')
@@ -88,8 +112,7 @@ def main() -> None:
     args = parser.parse_args()
     info, payload = read_package(args.package)
     index = json.loads(info['info/index.json'])
-    if index.get('name') != args.component or index.get('subdir') != 'linux-64':
-        raise ScaffoldError('Research package identity mismatch')
+    verify_index(args.component, index)
     binaries = verify_payload(args.component, payload)
     patchelf = shutil.which('patchelf')
     if not patchelf:

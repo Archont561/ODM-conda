@@ -177,7 +177,7 @@ def main() -> None:
         (share / "link-evidence.json").write_text(json.dumps(link_evidence, indent=2) + "\n", encoding="utf-8")
     shutil.copy2(ROOT / "scripts" / "functional_test.py", share / "functional_test.py")
     if name == "openmvs-odm":
-        for fixture in ("openmvs_synthetic_fixture.py", "openmvs_pointcloud_fixture.py", "texrecon_fixture.py"):
+        for fixture in ("openmvs_synthetic_fixture.py", "openmvs_pointcloud_fixture.py", "openmvs_fixture.py", "texrecon_fixture.py"):
             shutil.copy2(ROOT / "scripts" / fixture, share / fixture)
     elif name == "mvs-texturing-odm":
         shutil.copy2(ROOT / "scripts" / "texrecon_fixture.py", share / "texrecon_fixture.py")

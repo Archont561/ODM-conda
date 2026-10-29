@@ -82,3 +82,14 @@ def test_research_component_annotation_rejects_injection(tmp_path, capsys):
         record_component('openmvs\n::error::injected', summary)
     assert not summary.exists()
     assert not capsys.readouterr().out
+
+
+@pytest.mark.parametrize('name', ['openmvs-odm', 'opensfm-odm'])
+def test_research_audit_tracks_recipe_identity_and_critical_dependencies(name):
+    from audit_open_research import verify_index
+
+    recipe = yaml.safe_load((ROOT / 'research/recipes' / name / 'recipe.yaml').read_text())
+    index = {'name': name, 'version': recipe['package']['version'],
+             'build_number': recipe['build']['number'], 'subdir': 'linux-64',
+             'depends': recipe['requirements']['run']}
+    verify_index(name, index)
