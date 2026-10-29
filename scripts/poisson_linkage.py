@@ -50,6 +50,7 @@ def verify_poisson_package_evidence(evidence: object, needed: list[str]) -> None
     if (not isinstance(digest, str) or not re.fullmatch(r'[0-9a-f]{64}', digest)
             or not isinstance(inputs, list) or not all(isinstance(item, str) for item in inputs)
             or 'libpng.so' not in inputs or 'PoissonRecon.o' not in inputs
-            or any('libmypng' in item.lower() or '/' in item or '\\' in item for item in inputs)
+            or any('libmypng' in item.lower() or re.fullmatch(r'libpng[^/\\]*\.a', item, re.IGNORECASE)
+                   or '/' in item or '\\' in item for item in inputs)
             or 'libpng16.so.16' not in needed):
         raise ScaffoldError('Invalid PoissonRecon shared-libpng link evidence')

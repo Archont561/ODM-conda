@@ -114,6 +114,18 @@ def graph_archives(name: str, source: dict, cache: Path) -> dict[str, bytes]:
         return entries
 
 
+
+def packaging_git_state(root: Path) -> tuple[str | None, bool | None]:
+    """Record the base revision and ordinary Git dirtiness, not byte equivalence."""
+    try:
+        revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root,
+                                           stderr=subprocess.DEVNULL, text=True).strip()
+        status = subprocess.check_output(['git', 'status', '--porcelain=v1', '--untracked-files=all'],
+                                         cwd=root, stderr=subprocess.DEVNULL, text=True)
+    except (subprocess.CalledProcessError, FileNotFoundError, OSError):
+        return None, None
+    return revision, bool(status)
+
 def make_bundle(name: str, component: dict, destination: Path, cache: Path, root: Path = ROOT) -> Path:
     if component['source'].get('additional_sources'):
         upstream_entries = graph_archives(name, component['source'], cache)
@@ -126,10 +138,7 @@ def make_bundle(name: str, component: dict, destination: Path, cache: Path, root
         upstream_entries = {f"upstream/{name}-{component['source']['commit']}.tar.gz": raw}
     destination.mkdir(parents=True, exist_ok=True)
     target = destination / source_bundle_name(name, component)
-    try:
-        revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, stderr=subprocess.DEVNULL, text=True).strip()
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        revision = None
+    revision, dirty = packaging_git_state(root)
     # Exclude generated validation reports: each bundle includes the maintained
     # scripts, tests, recipes and lockfile, plus the exact upstream archive.
     files = repository_files(root)
@@ -137,6 +146,7 @@ def make_bundle(name: str, component: dict, destination: Path, cache: Path, root
     entries.update(upstream_entries)
     manifest = {"schema_version": 1, "component": name, "version": component["version"],
                 "build_number": component["build_number"], "packaging_commit": revision,
+                "packaging_dirty": dirty,
                 "upstream": component["source"],
                 "files": {key: hashlib.sha256(value).hexdigest() for key, value in sorted(entries.items())}}
     entries["SOURCE-MANIFEST.json"] = (json.dumps(manifest, indent=2, sort_keys=True) + "\n").encode()
@@ -164,7 +174,8 @@ def make_bundle(name: str, component: dict, destination: Path, cache: Path, root
         f"Source bundle for {name} {component['version']}, build {component['build_number']}\n\n"
         "upstream/ contains the exact hash-verified upstream archives, including vendored code.\n"
         "packaging/ contains recipes, original build/test scripts, license handling, and the Pixi tool lock.\n"
-        "SOURCE-MANIFEST.json lists file checksums and the packaging revision when available.\n\n"
+        "SOURCE-MANIFEST.json lists file checksums, the base revision and Git dirty status when available.\n"
+        "Git status excludes ignored files; compare the manifest hashes to establish exact contents.\n\n"
         "Rebuild: extract this bundle; enter packaging/; run `pixi install --locked`;\n"
         f"then `pixi run build --component {name}`. Network access is used for Conda dependencies\n"
         "and the recipe's hash-checked source URLs. To use the included source offline, unpack\n"

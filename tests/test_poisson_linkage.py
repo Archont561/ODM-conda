@@ -69,3 +69,10 @@ def test_packaged_evidence_requires_dynamic_png_and_safe_inventory():
                         ({**evidence, 'map_sha256': 'bad'}, ['libpng16.so.16'])):
         with pytest.raises(ScaffoldError):
             verify_poisson_package_evidence(bad, needed)
+
+
+@pytest.mark.parametrize('extra', ['libpng.a', 'libpng16.a', 'LIBPNG16.A', 'libmypng.a'])
+def test_packaged_evidence_rejects_static_png_even_with_shared_png(extra):
+    evidence = {'map_sha256': 'a' * 64, 'link_inputs': ['PoissonRecon.o', 'libpng.so', extra]}
+    with pytest.raises(ScaffoldError, match='shared-libpng'):
+        verify_poisson_package_evidence(evidence, ['libpng16.so.16'])

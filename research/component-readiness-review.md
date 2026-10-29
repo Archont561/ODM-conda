@@ -49,3 +49,49 @@ legal/security gaps. No component review or sprint is complete merely because
 a historical native run passed. Owner/qualified review and a separately
 authorized publication remain necessary. OpenMVS/OpenSfM local-only evidence
 and blockers are recorded in `open-components-license-review.md`.
+
+## Local batch review (2026-10-29)
+
+At base `ce8776f674dfbd534804f7ba5adb0492be36222f`, independently fetched the
+three pinned upstream archives and verified the SHA256 values in
+`recipes/components.json`. The current dem2mesh CMake target finds GDAL and
+OpenMP and links the vendored JMeshLib; RenderDEM finds PDAL and OpenMP. This
+is source-level evidence, not an inventory of the libraries loaded by an
+installed package. The current installed RenderDEM fixture exercises both a
+synthetic PLY and uncompressed classification-2 LAS grid; the previous table's
+PLY-only statement describes the earlier review and should not be read as the
+current fixture's coverage. LAZ and an end-to-end ODM dataset remain untested.
+
+The Poisson system-libpng patch applied cleanly to its pinned archive and the
+four patched file hashes matched the builder's enforced values. The current
+link-map guard excludes named static PNG inputs; an audit gap was found and
+fixed so packaged path-free inventories also reject static `libpng*.a` even if
+`libpng.so` appears. This does not authenticate a map or prove absence of code
+under another name. The previously inspected build 2 package and map inventory
+are described in `poissonrecon-readiness-review.md`.
+
+Each declared notice input existed and could be extracted using the current
+builder's extraction method (6 dem2mesh, 2 RenderDEM and 14 Poisson inputs).
+That is not a file-level or transitive legal review, nor evidence of the exact
+notices inside the historical dem2mesh/RenderDEM packages.
+
+Three preliminary source bundles were generated twice from a **dirty** working
+tree; hashes matched between repeats and all 232 manifest entry hashes per
+bundle were checked. They were temporary local files and are not published or
+release artifacts. This uncovered an ambiguity: manifests gave only HEAD even
+when included packaging files were modified. The bundler now records ordinary
+Git dirty status alongside the base revision; ignored files are not reflected
+in Git status, so manifest entry hashes remain the source of truth for bytes.
+No legal completeness or correspondence to a previously built binary follows
+from these local bundle checks.
+
+A new isolated rattler native build was attempted but stopped at dem2mesh's
+compiler solve: conda-forge repodata returned unexpected EOF. The remaining two
+recipes did not run in that attempt; no new packages, fresh retests or audits
+were produced. The earlier owner-dispatched runs remain evidence for their
+specific commits only. For current-commit package evidence, dispatch the existing
+multi-component workflow with dem2mesh, RenderDEM and PoissonRecon selected.
+The package/source artifact identities, dependency versions and any retained
+link evidence should then be inspected; use temporary read-only inspection only
+if necessary. Independent review, source obligations, notices, ABI, owner and
+security/legal decisions remain open. No release gates were changed.
