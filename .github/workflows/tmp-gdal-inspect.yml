@@ -1,0 +1,27 @@
+name: Temporary GDAL artifact inspection
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default
+      - name: Independently inspect and test artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api repos/Archont561/ODM-conda/actions/artifacts/12911564893/zip > /tmp/gdal-build.zip
+          gh api repos/Archont561/ODM-conda/actions/artifacts/12910914634/zip > /tmp/prior-gdal-build.zip
+          pixi run python scripts/tmp_gdal_inspect.py
