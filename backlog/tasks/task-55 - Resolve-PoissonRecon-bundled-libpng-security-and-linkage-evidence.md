@@ -4,7 +4,7 @@ title: Resolve PoissonRecon bundled libpng security and linkage evidence
 status: In Progress
 assignee: []
 created_date: '2026-10-28 22:40'
-updated_date: '2026-10-29 10:10'
+updated_date: '2026-10-29 11:24'
 labels: []
 dependencies: []
 references:
@@ -36,6 +36,8 @@ Trace pinned PoissonRecon build and linker inputs; add a fail-closed, tested lin
 Independently fetch the exact run 40835639537 artifact in a temporary read-only CI workflow, verify immutable ZIP and source-bundle digests, audit packaged link evidence and ELF, and run a fresh isolated retest; print bounded evidence to the job log without changing release gates.
 
 Review the exact pinned Poisson source and existing link/source evidence for release readiness; keep security, native and rights gates open until proved.
+
+Capture bounded actual fresh-test dependency evidence for the verified native artifacts; inspect available matching dependency notices and record limitations, preserving all owner gates.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -54,4 +56,6 @@ Review the exact pinned Poisson source and existing link/source evidence for rel
 Separate source licensing gap: pinned Poisson source archive includes IJG-derived JPEG files but omits their referenced README. Tracked as TASK-56; see poissonrecon-readiness-review.md. This is distinct from the linux native libpng-link mitigation.
 
 Poisson build 3 changes notice payload and applies a second pinned patch; previous build 2 native evidence cannot validate this new build. Local build 3 fails at conda-forge compiler solve EOF before compilation. See TASK-56; all release and security gates remain open.
+
+Read-only run https://github.com/Archont561/ODM-conda/actions/runs/40865060880 reverified ZIPs, passed fresh dem2mesh and Poisson retests, and logged conda-forge test-solve rows plus separately downloaded exact-name selected dependency metadata and regular notice hashes. Details and limitations: research/component-readiness-review.md. Solver bytes not hash-correlated; build/host, release closure, security, legal and source delivery remain open.
 <!-- SECTION:NOTES:END -->

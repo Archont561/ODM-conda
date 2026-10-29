@@ -4,7 +4,7 @@ title: Resolve OpenMVS restricted third-party source and reduced target licensin
 status: In Progress
 assignee: []
 created_date: '2026-10-28 15:48'
-updated_date: '2026-10-28 22:15'
+updated_date: '2026-10-29 11:24'
 labels:
   - openmvs-odm
   - license
@@ -22,6 +22,12 @@ ordinal: 54000
 - [ ] #3 Record the actual package and source-bundle contents and required notices before release
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Investigate pinned upstream history, build graph and practical replacement or source-distribution routes; document concrete evidence and blockers without distributing restricted archives or claiming legal approval.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -36,4 +42,6 @@ Pinned OpenMVS libs/Math/IBFS/license.txt (SHA256 9e2ccaeb2fd1b11a6615b136b0d3e4
 2026-10-28: owner-dispatched local-only run https://github.com/Archont561/ODM-conda/actions/runs/40762858939 at 4dba9fe141c22c4791f44a2ce330ef00bb6b5811 passed the actual reduced OpenMVS build and link-map guard, installed/fresh tests and limited leak/RPATH audit; temporary outputs were removed. Named-input matching is not a complete code or redistribution proof. No legal approval, production package, archive release or acceptance-criterion closure is implied.
 
 2026-10-28: OpenMVS local-only research build 1 now carries and audits exact pinned COPYRIGHT.md, VCG LICENSE and Eigen COPYING.MPL2/COPYING.README notice texts. This is a limited subset, not complete license clearance or permission to distribute restricted archives. Full actual dependency inventory, notices and corresponding source remain open; an owner-dispatched build/retest/audit of changed research payload is required.
+
+Reverified pinned source and examined reduced-build patch: Boost Graph fallback replaces enabled IBFS, excludes densify/texture/refine and removes IBFS/TRWS build globs, but original archive still contains restricted files. Rights-holder permission or separately reviewed reduced source tree are possible routes, neither implemented nor approved. Later upstream removes TRWS but changes IBFS and is not the pinned fork. See research/open-components-license-review.md.
 <!-- SECTION:NOTES:END -->
