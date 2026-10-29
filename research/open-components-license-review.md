@@ -157,3 +157,24 @@ all notices are complete nor replace rights/provenance review. Owner-dispatched 
 commit `147b0584b42977b1f52e6cc65aeeb56ce1a99fc7`. Temporary packages and
 sources were removed; no artifacts were uploaded. These tests do not resolve
 the remaining licensing and redistribution questions.
+
+
+### Local photogrammetry batch follow-up (2026-10-29)
+
+OpenSfM, pybind11, vmem, OpenMVS, VCG and Eigen pinned archives were fetched
+and hash-verified locally. Exact staged research trees passed their respective
+fingerprints after the recipe patches, and OpenSfM's four runtime asset hashes
+matched. This is byte identity only; it establishes neither rights nor complete
+corresponding source. OpenSfM remains `LicenseRef-Unreviewed` with asset and
+vmem rights unresolved; OpenMVS archives still include restricted IBFS/TRWS.
+
+The unregistered production OpenMVS builder omitted `openmvs_fixture.py`,
+which the installed synthetic fixture imports. It now copies the helper, with a
+regression test; this is not production recipe integration or native production
+validation. Research audit now checks exact name, version, build, linux-64 and
+a small critical set of declared runtime dependencies for both research
+packages. Dependency names are not version/ABI or full dependency verification.
+The existing research workflow offers `all`, running both local-only builds and
+retests sequentially with separate temporary directories and no artifacts.
+Owner dispatch is needed to verify the strengthened audit against real packages.
+No release gates were changed.

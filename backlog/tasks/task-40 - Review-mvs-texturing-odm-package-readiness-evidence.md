@@ -33,4 +33,6 @@ Independently review the deliverables produced by TASK-10 for the mvs-texturing-
 
 <!-- SECTION:NOTES:BEGIN -->
 2026-10-28 interim evidence triage: research/component-readiness-review.md records run IDs, artifact identities, source evidence and limitations. Per-recipe files match the historical native run but shared scripts changed; actual retained artifact/source inspection, current-commit native evidence as appropriate, dependency notices and qualified release review remain open. This is not approval and prerequisites and acceptance criteria remain unchecked.
+
+2026-10-29: Temporary read-only inspection run 40847899604 re-audited the pinned build 2 artifact, verified 196 listed source hashes and passed a fresh retest. See research/mvs-texturing-license-review.md for identities and limitations.
 <!-- SECTION:NOTES:END -->

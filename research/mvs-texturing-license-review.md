@@ -5,8 +5,8 @@ permission to publish. All release checks remain false. This review concerns
 version `0.0.0.dev20250818`; build 1 adds a previously omitted notice.
 Native CI [40742094824](https://github.com/Archont561/ODM-conda/actions/runs/40742094824)
 validated build 1's package tests, fresh-environment retest, audit and source
-bundling. Build 2 adds a fail-closed GNU link-map check, but has not yet been
-validated by native CI. Neither result approves licenses or proves source
+bundling. Build 2 adds a fail-closed GNU link-map check and passed native CI
+[40746814931](https://github.com/Archont561/ODM-conda/actions/runs/40746814931). Neither result approves licenses or proves source
 completeness.
 
 ## Reviewed evidence and provisional obligations
@@ -100,3 +100,23 @@ artifact ID is `12840460918`, artifact ZIP SHA-256
 CI-created source bundle SHA-256 is
 `900578aae61f9baa2129e28afb24c9fb1729eef07edd68937970ec3f07746c5c`.
 These hashes identify evidence, not approval or a guarantee of future availability.
+
+
+## Independent build 2 artifact inspection (2026-10-29)
+
+Temporary read-only [inspection run 40847899604](https://github.com/Archont561/ODM-conda/actions/runs/40847899604)
+independently downloaded artifact `12841144045`, verified ZIP SHA256
+`5a92c91c65b56433766eddb739f5db488d4c0cf8403647274aee262c26bdd899`,
+re-audited the package and passed an additional fresh isolated retest. Package
+`mvs-texturing-odm-0.0.0.dev20250818-h873e7db_2.conda` SHA256
+`af287aa4cb94f5b34e1e55d202e428123a1cc6d8ddc505ee74717e23ed92c4bc`; source
+bundle SHA256 `20f2c19760b9576c0163795adf82bef36d8460e1eadcae92f78d94efd9888154`,
+with 196 manifest-listed file hashes verified and packaging commit
+`902550d4f7438d382a2288e064b185a6834e53cf`. The older manifest has no dirty
+worktree marker. Package RPATH is `$ORIGIN/../lib`; ELF NEEDED includes libjpeg,
+libpng16, libtiff, TBB and standard runtimes. It has 21 license metadata entries;
+counting them does not prove notice completeness. The original build guard passed
+for named SIFT/SURF inputs, but the raw link map was not retained and is not
+independently inspected. Source rights, patent questions, complete transitive
+notices and ABI/legal review remain open. The temporary workflow and helper were
+removed; this inspection does not authorize redistribution.
