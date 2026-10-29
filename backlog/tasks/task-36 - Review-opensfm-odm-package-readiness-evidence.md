@@ -4,7 +4,7 @@ title: Review opensfm-odm package-readiness evidence
 status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-29 23:10'
+updated_date: '2026-10-29 23:14'
 labels:
   - packaging
   - review
@@ -33,6 +33,8 @@ Independently review the deliverables produced by TASK-8 for the opensfm-odm mil
 
 <!-- SECTION:PLAN:BEGIN -->
 Reconcile pinned OpenSfM source, runtime assets, third-party rights and local-only restrictions against actual evidence; do not infer owner or legal approval.
+
+Trace OpenSfM vocabulary and sensor database introductions and contributor records; distinguish evidence of authorship from rights in underlying data.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes

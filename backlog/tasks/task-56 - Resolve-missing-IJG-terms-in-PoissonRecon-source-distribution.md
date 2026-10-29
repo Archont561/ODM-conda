@@ -4,7 +4,7 @@ title: Resolve missing IJG terms in PoissonRecon source distribution
 status: In Progress
 assignee: []
 created_date: '2026-10-29 10:00'
-updated_date: '2026-10-29 23:10'
+updated_date: '2026-10-29 23:14'
 labels:
   - poissonrecon-odm
 dependencies: []
@@ -34,6 +34,8 @@ Verify pinned Poisson archive and compare its IJG subset against an identifiable
 Compare pinned vendored JPEG files with an immutable IJG 6b reference; retain its unaltered README and full comparison as source materials; include a conservative verified notice in a bumped, non-published package, and revalidate without asserting legal clearance.
 
 Trace modified JPEG files and unmatched configuration/build files to the first observable upstream commits and compare identified sources; document evidence and unresolved authoritative provenance and rights.
+
+Investigate original PoissonRecon JPEG import and compare modified files against authoritative or closer upstream references without assuming redistribution permission.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes

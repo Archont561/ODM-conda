@@ -4,7 +4,7 @@ title: Resolve OpenMVS restricted third-party source and reduced target licensin
 status: In Progress
 assignee: []
 created_date: '2026-10-28 15:48'
-updated_date: '2026-10-29 23:10'
+updated_date: '2026-10-29 23:14'
 labels:
   - openmvs-odm
   - license
@@ -26,6 +26,8 @@ ordinal: 54000
 
 <!-- SECTION:PLAN:BEGIN -->
 Implement a deterministic local-only reduction for the exact patched source graph with a manifest and fail-closed checks; test negative cases and fresh native ReconstructMesh build from the reduced copy; record unresolved notice and rights review without distributing any source or binaries.
+
+Compare exact installed CGAL headers against the tagged source and examine file-level license markers in the traced host dependency set using a disposable build.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
