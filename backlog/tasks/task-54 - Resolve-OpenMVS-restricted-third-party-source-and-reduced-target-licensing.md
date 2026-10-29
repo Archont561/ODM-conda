@@ -4,7 +4,7 @@ title: Resolve OpenMVS restricted third-party source and reduced target licensin
 status: In Progress
 assignee: []
 created_date: '2026-10-28 15:48'
-updated_date: '2026-10-29 22:32'
+updated_date: '2026-10-29 22:39'
 labels:
   - openmvs-odm
   - license
@@ -46,4 +46,6 @@ Pinned OpenMVS libs/Math/IBFS/license.txt (SHA256 9e2ccaeb2fd1b11a6615b136b0d3e4
 Reverified pinned source and examined reduced-build patch: Boost Graph fallback replaces enabled IBFS, excludes densify/texture/refine and removes IBFS/TRWS build globs, but original archive still contains restricted files. Rights-holder permission or separately reviewed reduced source tree are possible routes, neither implemented nor approved. Later upstream removes TRWS but changes IBFS and is not the pinned fork. See research/open-components-license-review.md.
 
 2026-10-29: Disposable run 40965276525 verified the exact patched staged graph then removed all 20 files from libs/Math/IBFS and libs/Math/TRWS plus SceneDensify.cpp, SceneRefine.cpp and SceneTexture.cpp before CMake. Retained 3274-file staged tree fingerprint e64c1718c05d58ac74051a8a0a216febbcac7144898cea022d378af427549489 (path/content only, includes VCG/Eigen, ignores rattler-generated root files). Reduced ReconstructMesh built, named-input link-map guard passed, installed and fresh tests passed, and limited package audit passed. Originals were fetched before removal; no source/archive/binary was uploaded. No independently reproducible distribution archive, full source/notice assessment or legal clearance exists; removing named paths does not prove no restricted code elsewhere. All acceptance criteria remain open. See research/open-components-license-review.md.
+
+2026-10-29: Added local-only exact-graph reducer and path/hash/mode manifest. Disposable run 40967069992 made two reduced copies with identical manifests (3274 files, tree fingerprint e64c1718c05d58ac74051a8a0a216febbcac7144898cea022d378af427549489; canonical JSON manifest SHA256 560cc78034924dd9fd83b02c4fba448a66612fc493b86ae8c09da6f0b338ce3b) and compiled/retested/audited ReconstructMesh from one reduced copy with link-map guard. Originals, reduced trees and research packages were discarded and not uploaded. Unit tests cover reduction, bad source/destination, symlinks, and fingerprint mismatch. This is no distributable archive, legal permission, complete notice audit or proof of rights; TASK-54 criteria stay open.
 <!-- SECTION:NOTES:END -->

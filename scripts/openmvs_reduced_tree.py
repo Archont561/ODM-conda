@@ -5,11 +5,13 @@ is not a corresponding-source offer, license clearance, or an archive builder.
 """
 from __future__ import annotations
 
+import argparse
+import json
 import os
 import shutil
 from pathlib import Path
 
-from common import ScaffoldError, sha256
+from common import ScaffoldError, fail_cli, sha256
 from openmvs_graph_policy import fingerprint_tree, verify_openmvs_tree
 
 EXPECTED_REDUCED_TREE = (3274, 'e64c1718c05d58ac74051a8a0a216febbcac7144898cea022d378af427549489')
@@ -76,3 +78,15 @@ def make_reduced_tree(source: Path, destination: Path) -> dict:
     except Exception:
         shutil.rmtree(destination)
         raise
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--source', type=Path, required=True, help='Exact patched and staged local research tree')
+    parser.add_argument('--destination', type=Path, required=True, help='New local-only output directory')
+    args = parser.parse_args()
+    print(json.dumps(make_reduced_tree(args.source, args.destination), sort_keys=True, indent=2))
+
+
+if __name__ == '__main__':
+    fail_cli(main)
