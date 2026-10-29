@@ -18,6 +18,9 @@ with tempfile.TemporaryDirectory() as temp:
    notice(name+' artifact members '+str(z.namelist()))
    packages=[n for n in z.namelist() if Path(n).name.startswith(name+'-') and n.endswith('.conda')]
    bundles=[n for n in z.namelist() if Path(n).name.startswith('source-'+name+'-') and n.endswith('.tar.gz')]
+   if not packages and not bundles and name=='dem2mesh':
+    notice('WARNING: owner run contains dem2points, NOT dem2mesh; no dem2mesh build 1 artifact was produced')
+    continue
    assert len(packages)==len(bundles)==1, (packages,bundles)
    if name=='dem2mesh':
     assert len([n for n in z.namelist() if n.endswith('.conda')])==1

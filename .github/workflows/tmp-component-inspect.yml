@@ -24,3 +24,11 @@ jobs:
           gh api repos/Archont561/ODM-conda/actions/artifacts/12892015321/zip > /tmp/artifact-dem.zip
           gh api repos/Archont561/ODM-conda/actions/artifacts/12884831960/zip > /tmp/artifact-batch.zip
           pixi run python scripts/tmp_component_inspect.py
+          gh run view 40844694283 --log > /tmp/historical.log
+          python - <<'PY'
+          import re
+          text = open('/tmp/historical.log').read().splitlines()
+          matches = [line for line in text if re.search(r'libpdal-core\s+2\.10\.', line)]
+          for line in list(dict.fromkeys(matches))[:8]:
+              print('::notice::Historical PDAL solve line: ' + line[-350:])
+          PY
