@@ -2,7 +2,7 @@
 """Generate a synthetic OpenMVS scene for research-only reconstruction testing.
 
 The binary scene encodes version 3 of the upstream OpenMVS interface format.
-This fixture has not been run against an installed or isolated Conda package.
+This fixture is also run against installed local-only research packages.
 """
 from __future__ import annotations
 
@@ -99,24 +99,40 @@ def test_reconstruction(executable: Path, directory: Path) -> tuple[int, int]:
 
 
 
-def generate_visible_cloud(path: Path, *, views: tuple[int, ...] = (0, 1)) -> Path:
-    """Write a separate ASCII PLY using an explicit uchar-count uint-index list."""
-    with path.open('w', encoding='ascii') as out:
-        out.write('ply\nformat ascii 1.0\nelement vertex 400\n'
-                  'property float x\nproperty float y\nproperty float z\n'
-                  'property uchar views\nproperty list uchar uint view_indices\nend_header\n')
+def generate_visible_cloud(path: Path, *, views: tuple[int, ...] = (0, 1),
+                           encoding: str = 'ascii', scalar_views: bool = True) -> Path:
+    """Write a separate PLY using an explicit uchar-count uint-index list."""
+    if encoding not in ('ascii', 'binary_little_endian', 'binary_big_endian'):
+        raise ValueError(f'Unsupported PLY encoding: {encoding}')
+    header = (f'ply\nformat {encoding} 1.0\nelement vertex 400\n'
+              'property float x\nproperty float y\nproperty float z\n'
+              + ('property uchar views\n' if scalar_views else '')
+              + 'property list uchar uint view_indices\nend_header\n')
+    with path.open('wb') as out:
+        out.write(header.encode('ascii'))
         for y in range(20):
             for x in range(20):
                 px, py = (x - 9.5) * 0.07, (y - 9.5) * 0.07
                 z = 4 + 0.18 * math.cos(px * 3) * math.cos(py * 3)
-                indices = ' '.join(str(index) for index in views)
-                out.write(f'{px} {py} {z} {len(views)} {len(views)} {indices}\n')
+                if encoding == 'ascii':
+                    values = [str(px), str(py), str(z)]
+                    if scalar_views:
+                        values.append(str(len(views)))
+                    values.extend([str(len(views)), *(str(index) for index in views)])
+                    out.write((' '.join(values) + '\n').encode('ascii'))
+                else:
+                    order = '<' if encoding == 'binary_little_endian' else '>'
+                    out.write(struct.pack(order + 'fff', px, py, z))
+                    if scalar_views:
+                        out.write(struct.pack('B', len(views)))
+                    out.write(struct.pack(order + 'B' + 'I' * len(views), len(views), *views))
     return path
 
 
-def test_separate_reconstruction(executable: Path, directory: Path) -> tuple[int, int]:
+def test_separate_reconstruction(executable: Path, directory: Path, *, encoding: str = 'ascii',
+                                 scalar_views: bool = True) -> tuple[int, int]:
     scene = generate_scene(directory)
-    cloud = generate_visible_cloud(directory / 'visible.ply')
+    cloud = generate_visible_cloud(directory / 'visible.ply', encoding=encoding, scalar_views=scalar_views)
     output = directory / 'separate-result.mvs'
     command = [str(executable), '-i', str(scene), '-p', str(cloud), '-o', str(output), '--archive-type', '1',
                '--min-point-distance', '0', '--remove-spurious', '0', '--remove-spikes', '0',
@@ -157,6 +173,17 @@ def check_invalid_schema(executable: Path, directory: Path, property_line: str) 
     assert not output.exists() and not output.with_suffix('.ply').exists(), 'Unexpected output'
 
 
+def check_big_endian_rejected(executable: Path, directory: Path) -> None:
+    scene = generate_scene(directory)
+    cloud = generate_visible_cloud(directory / 'big-endian.ply', encoding='binary_big_endian', views=(0,))
+    output = directory / 'big-endian-result.mvs'
+    result = subprocess.run([str(executable), '-i', str(scene), '-p', str(cloud), '-o', str(output),
+                             '--max-threads', '1'], cwd=directory, text=True, capture_output=True, timeout=120)
+    assert result.returncode > 0, f'Expected clean endian rejection, got exit {result.returncode}'
+    assert 'cannot load point-cloud file' in (result.stdout + result.stderr).lower(), 'Missing load diagnostic'
+    assert not output.exists() and not output.with_suffix('.ply').exists(), 'Unexpected output'
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--executable', required=True, type=Path)
@@ -173,6 +200,14 @@ def main() -> None:
     with tempfile.TemporaryDirectory(prefix='openmvs-synthetic-separate-') as directory:
         vertices, faces = test_separate_reconstruction(args.executable.resolve(), Path(directory))
     print(f'PASS: separate PLY with camera indices reconstructed to {vertices} vertices and {faces} faces')
+    for encoding, scalar_views in (('ascii', False), ('binary_little_endian', False)):
+        with tempfile.TemporaryDirectory(prefix='openmvs-visible-variants-') as directory:
+            test_separate_reconstruction(args.executable.resolve(), Path(directory),
+                                         encoding=encoding, scalar_views=scalar_views)
+    print('PASS: ASCII and little-endian binary PLY variants with camera indices reconstructed')
+    with tempfile.TemporaryDirectory(prefix='openmvs-big-endian-') as directory:
+        check_big_endian_rejected(args.executable.resolve(), Path(directory))
+    print('PASS: unsupported big-endian PLY is rejected without crashing')
     for views in ((), (0, 2), (0, 0), (1, 0)):
         with tempfile.TemporaryDirectory(prefix='openmvs-invalid-views-') as directory:
             check_invalid_view_list(args.executable.resolve(), Path(directory), views)

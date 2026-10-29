@@ -317,6 +317,19 @@ and cube cleaning. Owner-confirmed OpenMVS research run
 [40840595990](https://github.com/Archont561/ODM-conda/actions/runs/40840595990)
 passed the package build, installed-prefix recipe tests, fresh retest and limited
 audit at commit d63550f. No package or source archive was uploaded; this is not
-production-package evidence. Binary PLY coverage, general malformed/truncated-input safety, ABI, complete corresponding
+production-package evidence. General malformed/truncated-input safety, ABI, complete corresponding
 source and notices, restricted-code review, owner approval and production integration
 remain open. Do not distribute this local-only research package.
+
+### OpenMVS visibility research build 3 (TASK-53)
+
+The old PLY reader reads binary scalars in native byte order despite accepting
+big-endian headers. On linux-64 a generated big-endian cloud with camera ID 0
+was previously accepted with misinterpreted coordinates. Build 3 rejects
+non-native byte order before reading point-cloud bodies rather than silently
+misreading them; it does not add endian conversion. Locally, the rebuilt source
+passed ASCII with and without scalar `views`, little-endian binary list input,
+and clean rejection of the big-endian sample, as well as the existing cases.
+Installed-prefix and fresh package tests for build 3 await owner dispatch. The
+build 2 run is not evidence for the revised patch or these additional cases.
+General malformed/truncated-input safety remains unverified.

@@ -375,6 +375,8 @@ def test_openmvs(executable: Path, directory: Path, fixture: Path | None = None)
     assert ('PASS: synthetic OpenMVS scene reconstructed' in result.stdout
             and 'PASS: separate PLYs without camera indices are rejected without crashing' in result.stdout
             and 'PASS: separate PLY with camera indices reconstructed' in result.stdout
+            and 'PASS: ASCII and little-endian binary PLY variants with camera indices reconstructed' in result.stdout
+            and 'PASS: unsupported big-endian PLY is rejected without crashing' in result.stdout
             and 'PASS: empty, out-of-range, duplicate and unsorted camera index lists are rejected without crashing' in result.stdout
             and 'PASS: invalid view index schemas are rejected without crashing' in result.stdout
             and 'PASS: generated cube mesh cleaned and decimated' in result.stdout), 'Missing OpenMVS fixture evidence'

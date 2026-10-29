@@ -35,3 +35,32 @@ def test_visible_pointcloud_contains_camera_index_lists(tmp_path):
     records = body.splitlines()
     assert len(records) == 400
     assert all(line.split()[-3:] == ['2', '0', '1'] for line in records)
+
+
+@pytest.mark.parametrize('encoding,scalar_views', [('ascii', False), ('binary_little_endian', False),
+                                                    ('binary_big_endian', True)])
+def test_visible_cloud_variants_encode_explicit_ids(tmp_path, encoding, scalar_views):
+    import struct
+    from openmvs_synthetic_fixture import generate_visible_cloud
+
+    cloud = generate_visible_cloud(tmp_path / 'views.ply', encoding=encoding, scalar_views=scalar_views)
+    header, body = cloud.read_bytes().split(b'end_header\n', 1)
+    assert f'format {encoding} 1.0'.encode() in header
+    assert (b'property uchar views\n' in header) == scalar_views
+    assert b'property list uchar uint view_indices\n' in header
+    if encoding == 'ascii':
+        assert len(body.splitlines()) == 400
+        assert body.splitlines()[0].split()[-3:] == [b'2', b'0', b'1']
+    else:
+        order = '<' if encoding == 'binary_little_endian' else '>'
+        layout = order + ('fffBBII' if scalar_views else 'fffBII')
+        size = struct.calcsize(layout)
+        assert len(body) == 400 * size
+        assert struct.unpack_from(layout, body)[-3:] == (2, 0, 1)
+
+
+def test_big_endian_guard_rejects_false_success(tmp_path):
+    from openmvs_synthetic_fixture import check_big_endian_rejected
+
+    with pytest.raises(AssertionError, match='Expected clean endian rejection'):
+        check_big_endian_rejected(Path('/bin/true'), tmp_path)

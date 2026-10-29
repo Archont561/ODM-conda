@@ -29,7 +29,7 @@ def test_open_research_recipes_have_sources_builds_and_installed_tests():
         'openmvs-odm/patches/0001-reconstruct-only.patch': '2dc920d550119443bb8d079911b0cdfc4cc747eb916a48a01e09ebdaf6a2c96a',
         'openmvs-odm/patches/0002-visibility-check.patch': '74f36291ca9254b2fe32c600c7e939827859aa1d07f73a976217961d39624c90',
         'openmvs-odm/patches/0003-boost-header-only-system.patch': '17b72610b3b803cd2a5002eb2a68c48fdcf55597d41b7fcb113634e833b18830',
-        'openmvs-odm/patches/0004-ply-view-indices.patch': 'c3b350097791445ff222de26d4791e13d2737af9133271a22aac945cce0d5560',
+        'openmvs-odm/patches/0004-ply-view-indices.patch': '4dbaa9e4fa186ce80f6c3f220c67a89bf80fea347bf798bd64a80fc096f03d6d',
         'opensfm-odm/patches/0001-ceres-config.patch': '1cbf2c8044e0281368c8802205f14816fc3b635fb419a7d8fa3570603fdfd773',
     }
     for path, digest in patches.items():

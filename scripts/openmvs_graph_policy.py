@@ -36,10 +36,10 @@ EIGEN = {
 }
 
 
-# Hashes file names and bytes after applying the four recipe research patches.
+# Hashes file names and bytes after the respective production or research patches.
 # Directory entries and executable modes are not part of this fingerprint.
 EXPECTED_TREE = (3297, '4d37a931d8ac36a757007ef68661f8e362a2b9372e6916c1ad628b92ea2f558a')
-RESEARCH_EXPECTED_TREE = (3297, '847c18300e7a6909a4ca4bc18fa6ea43efb1801097369a768e75536de19fdcfd')
+RESEARCH_EXPECTED_TREE = (3297, '25a71e02cecf70460d78543c104d8d14e9c5b65456183e96c1674d696f60d217')
 
 
 def fingerprint_tree(tree: Path, *, ignore_root_files: frozenset[str] = frozenset()) -> tuple[int, str]:
