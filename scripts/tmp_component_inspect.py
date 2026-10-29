@@ -48,5 +48,11 @@ with tempfile.TemporaryDirectory() as temp:
       assert raw==actual and len(matches)==1 and matches[0]==raw,target
     notice(name+' source entries verified '+str(len(manifest['files']))+'; all '+str(len(component['notices']))+' declared notice bytes match payload and metadata')
    notice(name+' audit '+json.dumps(result,sort_keys=True))
-   subprocess.run(['rattler-build','test','--package-file',str(package),'--channel','conda-forge','--channel-priority','strict','--output-dir',str(Path(temp)/('test-'+name)),'--log-style','plain'],check=True)
+   result = subprocess.run(['rattler-build','test','--package-file',str(package),'--channel','conda-forge','--channel-priority','strict','--output-dir',str(Path(temp)/('test-'+name)),'--log-style','plain'],text=True,capture_output=True)
+   if result.returncode:
+    notice(name+' test failed: '+(result.stderr or result.stdout)[-1000:]); result.check_returncode()
+   import re
+   for line in (result.stdout+'\n'+result.stderr).splitlines():
+    if re.search(r'(?i)(libpdal|libgdal|libgomp|libgcc|libstdcxx)', line):
+     notice('test-solve '+line[:300])
    notice(name+' independent fresh retest PASS')
