@@ -27,7 +27,7 @@ jobs:
           needle = '        verify_openmvs_tree(source, research=True)\n'
           addition = '''        from openmvs_reduced_tree import make_reduced_tree
                   import tempfile, hashlib, json
-                  scratch = Path(tempfile.mkdtemp(prefix='reduced-openmvs-', dir=os.environ['RUNNER_TEMP']))
+                  scratch = Path(tempfile.mkdtemp(prefix='reduced-openmvs-', dir=source.parent))
                   first = scratch / 'first'
                   second = scratch / 'second'
                   manifest = make_reduced_tree(source, first)
