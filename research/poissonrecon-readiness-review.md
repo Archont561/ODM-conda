@@ -130,3 +130,19 @@ rule out equivalent code or establish general security. Neither passing CI nor
 this evidence is legal, complete-source, security or publication approval.
 All release gates remain false and TASK-55 remains open for the remaining
 review and evidence.
+
+### Independent retained-artifact inspection
+
+A temporary read-only workflow [run 40838038046](https://github.com/Archont561/ODM-conda/actions/runs/40838038046)
+downloaded the original artifact, confirmed the reported ZIP SHA256 and
+independently re-audited the contained package. Package SHA256:
+`0bfffd4b42c1f844ea536d3f17bd81e446f5f5600c47d06340e25a8648cb2f9c`.
+It verified the source bundle SHA256 reported above and all 229 manifest file
+hashes, including the patch and inspection inputs; a further fresh isolated
+package retest passed. The packaged link-input list names `PoissonRecon.o`,
+`libpng.so`, `libjpeg.so` and `libz.so` and no `libmypng.a`; its reported raw
+map SHA256 is `277e99846f11a1831f4289ec44d68dfbf5087127192119e922c53b34e67a89cf`.
+The raw map itself was not retained or independently inspected. The package ELF
+NEEDED list includes `libpng16.so.16` and `libjpeg.so.8`; its RPATH is
+`$ORIGIN/../lib`. These checks do not establish complete security, source or
+license compliance. All release gates remain false.
