@@ -1,10 +1,10 @@
 ---
 id: TASK-13
 title: Package the ODM application and validate fast-orthophoto integration (MVP)
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-28 20:12'
+updated_date: '2026-10-29 09:35'
 labels:
   - component
   - opendronemap
@@ -42,10 +42,18 @@ Read the exact ODM reference recorded in components.json before choosing source 
 - [ ] #5 A suitably licensed end-to-end drone dataset succeeds in a fresh environment; unsupported features are explicit.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Develop a local-only fast-orthophoto integration prototype against the hash-pinned ODM source: map context paths to an explicitly supplied Conda prefix, test relocatable paths and launcher preflight, investigate dataset rights, and keep component/legal/end-to-end release prerequisites open.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 MVP scope (approved, see doc-11): fast-orthophoto path only. Removed gates TASK-33 (dem2mesh, not used by fast mode) and TASK-45 (OpenPointClass, opt-in via --pc-classify). Kept TASK-39, rescoped to the OpenMVS ReconstructMesh target because the 2.5D poisson cleanup calls it. Acceptance #5 is now a fast-orthophoto dataset run. Full-pipeline features (dense OpenMVS, gridded DEM mesh, pc-classify) are explicitly unsupported in this MVP.
 
 2026-10-28 planning checkpoint: native component research evidence and outstanding licensing/readiness gates are summarized in research/component-readiness-review.md and research/open-components-license-review.md. TASK-35, 37, 39, 41 and 43 remain open; no complete ODM integration validation or authorization to bypass prerequisites is implied.
+
+Local-only prototype: inspected pinned ODM source and staged archive SHA256 5bdf8fe81b9ca47714e8a474139fd206b8090ac4315c2f530a58fcaef29cde5e. Adapter maps ODM paths to an explicit component prefix; verified patched context after moving the source tree. Prefix preflight on odm-dev fails for all nine ODM-specific tools; no combined prefix, genuine binary relocation, launcher execution, dataset run or ABI validation. Candidate Seneca CC0 dataset is 167 images/376 MB, not a verified small fixture; Garfield RGB 28 images/59 MB reportedly fails ODM matching. See research/odm-fast-orthophoto-prototype.md. Production and legal prerequisites remain open.
 <!-- SECTION:NOTES:END -->

@@ -1,0 +1,55 @@
+diff -urN a/opendm/context.py b/opendm/context.py
+--- a/opendm/context.py	2026-10-29 09:33:20.032809259 +0000
++++ b/opendm/context.py	2026-10-29 09:33:20.180809930 +0000
+@@ -6,19 +6,14 @@
+ current_path = os.path.abspath(os.path.dirname(__file__))
+ root_path, _ = os.path.split(current_path)
+ 
+-superbuild_path = os.path.join(root_path, 'SuperBuild')
+-superbuild_bin_path = os.path.join(superbuild_path, 'install', 'bin')
+-
+-# add opencv,opensfm to python path
+-python_packages_paths = [os.path.join(superbuild_path, p) for p in [
+-    'install/lib/python3.12/dist-packages',
+-    'install/lib/python3.12/dist-packages',
+-    'install/lib/python3/dist-packages',
+-    'install/bin/opensfm',
+-]]
+-for p in python_packages_paths:
+-    sys.path.append(p)
+-
++# Research-only integration: native tools and Python dependencies come from
++# the explicit Conda prefix, not from an ODM SuperBuild checkout.
++conda_prefix = os.environ.get('ODM_CONDA_LOCAL_PREFIX')
++if not conda_prefix or not os.path.isabs(conda_prefix):
++    raise RuntimeError('ODM_CONDA_LOCAL_PREFIX must name an absolute local prefix')
++superbuild_path = conda_prefix
++superbuild_bin_path = os.path.join(conda_prefix, 'bin')
++python_packages_paths = []
+ 
+ # define opensfm path
+ opensfm_path = os.path.join(superbuild_bin_path, "opensfm")
+diff -urN a/opendm/osfm.py b/opendm/osfm.py
+--- a/opendm/osfm.py	2026-10-29 09:33:20.036809277 +0000
++++ b/opendm/osfm.py	2026-10-29 09:33:20.184809948 +0000
+@@ -30,7 +30,7 @@
+         self.opensfm_project_path = opensfm_project_path
+     
+     def run(self, command):
+-        osfm_bin = os.path.join(context.opensfm_path, 'bin', 'opensfm')
++        osfm_bin = os.path.join(context.superbuild_bin_path, 'opensfm')
+         system.run('"%s" %s "%s"' %
+                     (osfm_bin, command, self.opensfm_project_path))
+ 
+diff -urN a/run.py b/run.py
+--- a/run.py	2026-10-29 09:33:20.036809277 +0000
++++ b/run.py	2026-10-29 09:33:20.184809948 +0000
+@@ -17,7 +17,7 @@
+ 
+ def odm_version():
+     try:
+-        with open("VERSION") as f:
++        with open(os.path.join(os.path.dirname(__file__), "VERSION")) as f:
+             return f.read().split("\n")[0].strip()
+     except:
+         return "?"
