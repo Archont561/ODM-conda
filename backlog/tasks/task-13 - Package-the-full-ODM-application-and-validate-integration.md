@@ -4,7 +4,7 @@ title: Package the ODM application and validate fast-orthophoto integration (MVP
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-29 18:28'
+updated_date: '2026-10-29 22:10'
 labels:
   - component
   - opendronemap
@@ -77,4 +77,6 @@ The four GDAL/PDAL-dependent candidate artifacts installed together in a disposa
 Run 40916199152 passed launcher help after adding application dependencies and exposed NumPy 2 incompatibility. After a genuine NumPy 1-compatible OpenSfM rebuild, run 40919353247 reconstructed 166 Seneca images and 198644 points but failed in statistics due to removed matplotlib.cm.get_cmap. Research build 5 constrains Matplotlib and adds installed smoke checks. Full dataset/orthophoto and relocation remain unverified; candidate dataset provenance and all research licensing require review.
 
 Run 40922527022 generated an intermediate orthophoto but crop warned and report failed because PDAL/GDAL could not locate PROJ database. Minimal run 40927345299 reproduced and fixed EPSG:4326 lookup by setting prefix PROJ_DATA or PROJ_LIB; launcher now sets both. Follow-up dataset runs 40927462919 and 40927535532 were canceled; full success, final raster inspection, and full-prefix relocation remain unverified.
+
+2026-10-29: Disposable corrected Seneca fast-orthophoto --skip-3dmodel trial 40960012356 completed using four published and five local-only components. Final GeoTIFF (9574 x 10488, RGBA, EPSG:32617) passed gdalinfo metadata/statistics inspection; nonempty report existed. See research/odm-fast-orthophoto-prototype.md and TASK-60. No dataset outputs or restricted research packages were uploaded. This is a single Ubuntu 24.04 run, not visual/geospatial accuracy validation, rights clearance, installed ODM recipe, relocation or reproducibility; all original TASK-13 criteria remain open.
 <!-- SECTION:NOTES:END -->

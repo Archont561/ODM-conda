@@ -220,3 +220,45 @@ uploaded. Previous nine-component dataset trials still require rebuilding the
 local-only research packages and rerunning the corrected PROJ launcher; this
 four-component check neither runs nor validates that dataset. TASK-13 remains
 open.
+
+### Corrected Seneca end-to-end trial (2026-10-29)
+
+[Disposable run 40960012356](https://github.com/Archont561/ODM-conda/actions/runs/40960012356)
+completed the `--fast-orthophoto --skip-3dmodel` command on pinned Seneca
+`9220acfdca75cc5e2dd6d27fe48550c5ae0877f2`, followed by a separate
+`gdalinfo -json -stats` inspection of the final orthophoto and an existence/size
+check of the report. The final GeoTIFF was 9,574 × 10,488 pixels, with four
+Byte bands (red, green, blue, alpha), WGS 84 / UTM zone 17N (EPSG:32617),
+and geotransform `[305965.44516317715, 0.0499987673227535, 0,
+4545650.771905862, 0, -0.049998859538978]`. The reported band ranges were
+0–255 for each band; means were 146.074, 127.342, 151.931 and 144.614,
+respectively. The TIFF was 112,786,798 bytes and the PDF report 7,233,853
+bytes. Metadata, finite band statistics and a successful command do **not**
+validate geospatial accuracy, visual quality, crop completeness or the report's
+contents; these outputs were discarded and were not independently viewed.
+
+The run hash-verified the four published component binaries listed in the
+four-package check above and the retained local-only inputs renderdem build 1
+SHA256 `451a291036f9bf11c140464d088884ec8980051c5383a667b75d1be7637fea77`,
+poissonrecon-odm build 3 SHA256
+`1e61c71dd24d73802d90b2db89057db1a612548949c9952767b2f765df4e93ab`,
+and mvs-texturing-odm build 2 SHA256
+`af287aa4cb94f5b34e1e55d202e428123a1cc6d8ddc505ee74717e23ed92c4bc`.
+It rebuilt, fresh-retested and audited OpenSfM build 5 (SHA256
+`363dc4650de7a08fbeffa640de28bf377ed4dec7cbefd6801be2127e4be21309`)
+and OpenMVS build 3 (SHA256
+`eee9c2110d3a83cf9b0fc768d0a643d42e88fd7f3c399efc84c635d07a9d28cf`)
+locally. The nine-component prefix preflight and launcher help passed; the
+prefix contained `share/proj/proj.db` and the corrected launcher supplied
+`PROJ_DATA` and `PROJ_LIB`. It selected libgdal-core 3.12.2 `hc2c0581_0`,
+libopencv 4.12.0 `qt6_py312h52d6ec5_612`, libpdal-core 2.10.0 `h9d23c72_0`
+and python-pdal 3.5.3 `np2py312hadcd02a_4`.
+
+This was one disposable Ubuntu 24.04 run using a candidate CC0 dataset;
+independent dataset provenance remains unverified. It does not demonstrate
+reproducibility, full-prefix relocation, older glibc support, production ODM
+packaging, or complete third-party source and notice rights. In particular,
+OpenMVS includes restricted source despite build exclusions; no research
+packages, restricted source, dataset images or outputs were uploaded. No
+release gates were changed. TASK-13 and the research-component legal reviews
+remain open.
