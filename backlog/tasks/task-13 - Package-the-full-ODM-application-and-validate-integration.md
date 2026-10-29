@@ -4,7 +4,7 @@ title: Package the ODM application and validate fast-orthophoto integration (MVP
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-29 16:18'
+updated_date: '2026-10-29 18:28'
 labels:
   - component
   - opendronemap
@@ -51,6 +51,8 @@ Develop a local-only fast-orthophoto integration prototype against the hash-pinn
 Attempt local-only assembly and launch prerequisites using existing locked tools and component builds; record exact blockers and possible next steps without packaging or publishing unreviewed research sources.
 
 Use a temporary CI job to build and audit the two research components, assemble a disposable environment with hash-verified existing non-published artifacts and required tools, run preflight and launcher, and only if those pass attempt the pinned CC0-licensed Seneca candidate without uploading outputs. Record first blocker; keep production and legal gates unchanged.
+
+Re-run disposable integration with independently verified coordinated artifacts and locally built research components. Capture the actual nine-component solve and run preflight, selected imports, launcher and candidate dataset only when prerequisites pass; record relocation and all blockers, retain no research or dataset artifacts.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -71,4 +73,8 @@ TASK-57 has a dependency-only candidate solve (GDAL 3.12/PDAL 2.10/OpenCV 4.12);
 TASK-57 independent artifact inspection found that three GDAL build-1 candidates passed individually but still do not solve with historical RenderDEM because actual generated GDAL and PDAL runtime minimums conflict. Four newly coordinated builds are needed before combined-prefix work can continue.
 
 The four GDAL/PDAL-dependent candidate artifacts installed together in a disposable Python 3.12 environment in https://github.com/Archont561/ODM-conda/actions/runs/40910163219; binaries present. This is not the nine-component environment or a launcher/dataset/relocation test. TASK-57 remains open.
+
+Run 40916199152 passed launcher help after adding application dependencies and exposed NumPy 2 incompatibility. After a genuine NumPy 1-compatible OpenSfM rebuild, run 40919353247 reconstructed 166 Seneca images and 198644 points but failed in statistics due to removed matplotlib.cm.get_cmap. Research build 5 constrains Matplotlib and adds installed smoke checks. Full dataset/orthophoto and relocation remain unverified; candidate dataset provenance and all research licensing require review.
+
+Run 40922527022 generated an intermediate orthophoto but crop warned and report failed because PDAL/GDAL could not locate PROJ database. Minimal run 40927345299 reproduced and fixed EPSG:4326 lookup by setting prefix PROJ_DATA or PROJ_LIB; launcher now sets both. Follow-up dataset runs 40927462919 and 40927535532 were canceled; full success, final raster inspection, and full-prefix relocation remain unverified.
 <!-- SECTION:NOTES:END -->

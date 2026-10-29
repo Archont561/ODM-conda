@@ -33,6 +33,10 @@ def main() -> None:
     pose = modules["pygeometry"].Pose()
     assert pose.is_identity(1e-12)
     assert all(math.isclose(float(a), b, abs_tol=1e-6) for a, b in zip(pose.transform([1.0, 2.0, 3.0]), (1.0, 2.0, 3.0)))
+    from opensfm.transformations import angle_between_vectors
+    assert math.isclose(angle_between_vectors([1, 0, 0], [0, 1, 0]), math.pi / 2)
+    from matplotlib import cm
+    assert cm.get_cmap("viridis_r") is not None
     print("PASS: research OpenSfM native imports and geometry smoke test")
 
 
