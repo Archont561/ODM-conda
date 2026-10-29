@@ -4,7 +4,7 @@ title: Resolve PoissonRecon bundled libpng security and linkage evidence
 status: In Progress
 assignee: []
 created_date: '2026-10-28 22:40'
-updated_date: '2026-10-29 10:00'
+updated_date: '2026-10-29 10:10'
 labels: []
 dependencies: []
 references:
@@ -52,4 +52,6 @@ Review the exact pinned Poisson source and existing link/source evidence for rel
 2026-10-29: native batch run 40844694283 at 2cc2861 and read-only artifact inspection 40846497463 passed build, installed and fresh retests, audit and source-manifest verification. Exact package/source hashes, ELF needs and bounded limitations are recorded in research/component-readiness-review.md. Legal/source completeness, ABI and owner decisions remain open; no release gates changed.
 
 Separate source licensing gap: pinned Poisson source archive includes IJG-derived JPEG files but omits their referenced README. Tracked as TASK-56; see poissonrecon-readiness-review.md. This is distinct from the linux native libpng-link mitigation.
+
+Poisson build 3 changes notice payload and applies a second pinned patch; previous build 2 native evidence cannot validate this new build. Local build 3 fails at conda-forge compiler solve EOF before compilation. See TASK-56; all release and security gates remain open.
 <!-- SECTION:NOTES:END -->

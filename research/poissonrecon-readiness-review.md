@@ -183,3 +183,48 @@ package. TASK-56 tracks confirming authoritative terms and provenance,
 documenting changes, fixing the actual source-distribution material, and
 reviewing binary notices. Do not distribute an existing source bundle or
 publish this package based on the mirror comparison alone.
+
+### Candidate IJG notice remediation for build 3
+
+The [second third-party 6b mirror](https://github.com/Andrewich/jpeg-6b/blob/00bb651cd60996a92f1cacaf70e097219052fb1b/README.md)
+has the same README bytes as the first (SHA256
+`4cf9c190f184019b61c36bcc49d4a24ffeb2a838c6f1690d6c4db14cfb2d0478`).
+This corroborates the text but neither mirror is independently established as
+an authoritative record or proof of provenance for all modified vendored files.
+Build 3 adds the unaltered text as `JPEG/README` via a pinned source patch and
+conservatively includes it in both installed and conda-metadata notices. The
+package audit now checks the exact bytes in both locations. The original
+upstream archive in the source bundle remains unchanged: the bundle includes
+the patch and a standalone readable copy at
+`packaging/research/notices/ijg-6b-README.txt`. Upstream source must be patched
+to reconstruct the build tree; no claim is made that the original archive
+itself contained a README.
+
+The comparison reference is the first mirror's codeload archive at commit
+`3d8e50d2fb0d5555d5236570a75f575317b2dc8e`, SHA256
+`6b70354c88f27f087661989a0f7a6eeefb4c29d7706d7e2689bf02254fbbc41e`.
+`research/notices/ijg-6b-poisson-differences.json` contains JSON arrays of complete textual
+unified-diff lines (concatenate the array for each file) for the eight differently-contented matching-name files
+(`.cpp` compared to `.c`): jcapistd, jchuff, jcphuff, jdapimin, jdapistd,
+jdatadst, jdatasrc, and jmorecfg.h. Its SHA256 is
+`7d3f6aec7926b81f01f1aa3f0bb4d3d7ca3e0a60beac0684b541be0ab6d66241`.
+The 49 exact matches include C sources renamed to `.cpp`; the two unmatched
+names are the Poisson-specific `Makefile` and `jconfig.h`. The diff is a
+comparison with a mirror, not evidence of the author's original changes or a
+complete proof of every applicable license. It preserves substantial original
+IJG text; the unmodified README is kept alongside it. The comparison and README
+are packaging source files and thus included in generated source bundles. A
+qualified reviewer must determine whether this is sufficient accompanying
+change documentation and whether the original archive's distribution plus
+supplemental README satisfies the terms.
+
+The linux target selects host headers in `Src/JPEG.h` and previous build 2
+needed libjpeg.so.8. For binary distributions, the README calls for the
+acknowledgement “this software is based in part on the work of the Independent
+JPEG Group” where applicable. The conservative full README includes it; review
+whether an explicit acknowledgement in accompanying documentation and/or the
+separately distributed libjpeg-turbo environment is required. Adding a notice
+does not establish static/dynamic link provenance, a final SPDX expression,
+complete dependency obligations or owner approval. The build number bump means
+build 2's successful native results cannot validate build 3; no release gate is
+changed.

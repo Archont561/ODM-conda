@@ -277,7 +277,7 @@
     "poissonrecon-odm": {
       "version": "13.8",
       "version_note": "Upstream Src/PreProcessor.h defines version 13.8; ODM reference 290 is a branch.",
-      "build_number": 2,
+      "build_number": 3,
       "recipe": "recipes/poissonrecon-odm/recipe.yaml",
       "executable": "PoissonRecon",
       "source": {
@@ -293,6 +293,11 @@
             "file": "recipes/poissonrecon-odm/patches/0001-system-libpng.patch",
             "sha256": "0fab8f37995a0fe39b55a8f624f4e1b55fdab7a469dc0e5a82e915290189d0b2",
             "summary": "Use host libpng for PoissonRecon and public PNG width/channel APIs; retain bundled source for other targets."
+          },
+          {
+            "file": "recipes/poissonrecon-odm/patches/0002-ijg-readme.patch",
+            "sha256": "a846d4f0ff90a2cd3bc0c615b6e32bea945371b1b0639aac6a910501ec893f5e",
+            "summary": "Restore an unaltered IJG 6b README as a conservative notice; provenance and applicability remain under review."
           }
         ]
       },
@@ -368,6 +373,11 @@
           "source": "Src/RegularGrid.h",
           "target": "BSD-Kazhdan-2019.txt",
           "kind": "first-comment"
+        },
+        {
+          "source": "JPEG/README",
+          "target": "IJG-6b-README.txt",
+          "kind": "verbatim"
         }
       ],
       "release_checks": {

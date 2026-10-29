@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import shutil
 import subprocess
@@ -61,6 +62,13 @@ def audit(name: str, component: dict, package: Path, root: Path = ROOT) -> dict:
     metadata_notices = [path for path in info if path.startswith("info/licenses/")]
     if len(metadata_notices) < len(component["notices"]) + 1:
         raise ScaffoldError("License texts are missing from Conda's info/licenses metadata")
+    if name == "poissonrecon-odm":
+        ijg_digest = "4cf9c190f184019b61c36bcc49d4a24ffeb2a838c6f1690d6c4db14cfb2d0478"
+        target = "IJG-6b-README.txt"
+        data = payload[f"share/licenses/{name}/{target}"]
+        metadata = [info[path] for path in metadata_notices if PurePosixPath(path).name == target]
+        if hashlib.sha256(data).hexdigest() != ijg_digest or len(metadata) != 1 or hashlib.sha256(metadata[0]).hexdigest() != ijg_digest:
+            raise ScaffoldError("Missing or modified IJG README in package payload or metadata")
     native = payload[f"bin/{component['executable']}"]
     if not native.startswith(b"\x7fELF"):
         raise ScaffoldError("Expected a native ELF executable")

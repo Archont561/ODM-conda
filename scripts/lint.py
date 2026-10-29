@@ -66,8 +66,11 @@ def check_repository(root: Path = ROOT) -> int:
             require(recipe["source"]["sha256"] == "${{ source_sha256 }}", "Recipe must check its archive checksum")
             if name == "poissonrecon-odm":
                 patches = source.get("patches", [])
-                require(len(patches) == 1 and recipe["source"].get("patches") == ["patches/0001-system-libpng.patch"], "PoissonRecon must apply the reviewed libpng patch")
-                require(patches[0]["file"] == "recipes/poissonrecon-odm/patches/0001-system-libpng.patch" and sha256(relative_path(root, patches[0]["file"])) == patches[0]["sha256"], "PoissonRecon patch checksum mismatch")
+                expected_patches = ["patches/0001-system-libpng.patch", "patches/0002-ijg-readme.patch"]
+                require(len(patches) == len(expected_patches) and recipe["source"].get("patches") == expected_patches, "PoissonRecon must apply the exact reviewed patches")
+                for patch, filename in zip(patches, expected_patches):
+                    expected_path = "recipes/poissonrecon-odm/" + filename
+                    require(patch["file"] == expected_path and sha256(relative_path(root, expected_path)) == patch["sha256"], "PoissonRecon patch checksum mismatch")
         require(recipe["build"]["number"] == component["build_number"], f"Build-number mismatch for {name}")
         require(recipe["build"]["skip"] == 'target_platform != "linux-64"', "A recipe must skip unsupported platforms")
         script = recipe["build"]["script"]

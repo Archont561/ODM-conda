@@ -4,7 +4,7 @@ title: Resolve missing IJG terms in PoissonRecon source distribution
 status: In Progress
 assignee: []
 created_date: '2026-10-29 10:00'
-updated_date: '2026-10-29 10:00'
+updated_date: '2026-10-29 10:10'
 labels:
   - poissonrecon-odm
 dependencies: []
@@ -30,10 +30,14 @@ The exact pinned PoissonRecon archive includes JPEG files referring to an accomp
 
 <!-- SECTION:PLAN:BEGIN -->
 Verify pinned Poisson archive and compare its IJG subset against an identifiable 6b source, document missing terms and modifications, then establish authoritative provenance and compliant source/binary notices before release.
+
+Compare pinned vendored JPEG files with an immutable IJG 6b reference; retain its unaltered README and full comparison as source materials; include a conservative verified notice in a bumped, non-published package, and revalidate without asserting legal clearance.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Hash-verified Poisson archive contains 59 JPEG files and no JPEG README. A third-party IJG 6b mirror at 3d8e50d2fb0d5555d5236570a75f575317b2dc8e has README SHA256 4cf9c190f184019b61c36bcc49d4a24ffeb2a838c6f1690d6c4db14cfb2d0478; 49 files match the mirror, 8 differ, 2 lack same-named counterparts. The source bundle embeds the entire original archive. Applicability, complete change documentation and source/binary notice handling remain unconfirmed; no release gate changed. See research/poissonrecon-readiness-review.md.
+
+Prepared Poisson build 3: restored the byte-identified IJG 6b README with a hash-pinned patch; package notice list includes it; artifact audit requires matching payload and conda metadata bytes. Both mirrors have the same README SHA256 4cf9c190f184019b61c36bcc49d4a24ffeb2a838c6f1690d6c4db14cfb2d0478. Full textual comparison to the first pinned mirror and standalone README are included in packaging sources. Both patches applied cleanly to the pinned source; research-only dirty-tree source bundle verified 240 manifest hashes including both documents and the patch. Local rattler build 3 applied both patches but failed at compiler dependency solve: conda-forge repodata EOF; no package, installed test or artifact audit ran. Need owner-dispatched native build, fresh retest and artifact/source audit; provenance, distribution sufficiency, exact dependency notices and owner/qualified approval remain open. No release gate changed.
 <!-- SECTION:NOTES:END -->
