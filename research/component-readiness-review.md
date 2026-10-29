@@ -428,3 +428,18 @@ current `license_reviewed`, `source_completeness_reviewed`,
 `native_validation_passed` and `publishable` gate if warranted. Obtain separate
 publication authorization and use the source-before-binary protected workflow.
 All four gates remain false for each candidate; no release or upload is performed by this review.
+
+### Owner gate decision: fastrasterfilter 1.0 build 2 (2026-10-29)
+
+After reviewing the above evidence and limitations, the owner explicitly
+approved all four fastrasterfilter build-2 release gates and authorized its
+release. Scope is the standalone Linux x86-64 component, not publication of an
+assembled dependency environment or the complete ODM application. Accordingly
+only fastrasterfilter's flags are changed; the other candidates remain blocked.
+The owner-approved AGPL-3.0-only AND MIT expression and network-use policy
+remain applicable. The prior fixture does not cover nodata or establish
+real-world DEM quality, and the glibc 2.28 floor is not a tested runtime.
+Release must rebuild and retest on the trusted default-branch HEAD, preserve
+source-before-binary ordering, and refuse collisions. The earlier package and
+bundle hashes describe validation inputs and do not assert identical bytes
+from a fresh build. Approval is not legal certification.
