@@ -95,3 +95,34 @@ The package/source artifact identities, dependency versions and any retained
 link evidence should then be inspected; use temporary read-only inspection only
 if necessary. Independent review, source obligations, notices, ABI, owner and
 security/legal decisions remain open. No release gates were changed.
+
+### Current batch native and artifact evidence
+
+Owner-dispatched [run 40844694283](https://github.com/Archont561/ODM-conda/actions/runs/40844694283)
+at `2cc2861a8746589fda4bef57fcf29b1cd60b7f50` passed native build, packaged
+tests, fresh retests, audit and source-bundle steps. Its ZIP artifact 12884831960
+SHA256 `21526568d7fb39f0070ef929c01c50367881eb81eee1cdf6382cad496b6d2265`
+was independently downloaded and checked by temporary read-only inspection
+[run 40846497463](https://github.com/Archont561/ODM-conda/actions/runs/40846497463).
+The inspection required exactly the three expected packages, audit reports and
+source bundles, reran current artifact audits and fresh package retests, and
+verified all 232 manifest-listed files in each source bundle. Manifests identify
+the build commit above and recorded a clean ordinary Git status.
+
+| Component | Package SHA256 | Source bundle SHA256 | Notable ELF NEEDED |
+| --- | --- | --- | --- |
+| dem2mesh | `9b16ad6af730ec9e9b9764c572544bddfd217e5900c8c66afb6fa259044a0521` | `fa88d68e3e531983bdd10399e79c4348adcfe0de53cbde9a22a0289d8803e5c6` | `libgdal.so.37` |
+| renderdem | `dc33a1fb2de90eabc0ee241f573bd14f09d4d3481f0fb813bd90f792b4f8b895` | `e1f0e18a36c70c9633fcf42b199b3ecbf2bc0aefe2846ea8cc213f8c17182172` | `libpdalcpp.so.20` |
+| poissonrecon-odm | `0c9573bf61ab920ee54a2391268adc75dba687ae5a8e2a89bf827a0593b2b6cf` | `92e4663aa1ae4f2e7c41fe9da5f0ca36cd853a16402e751205f53057869ea10d` | `libpng16.so.16`, `libjpeg.so.8` |
+
+All three report RPATH `$ORIGIN/../lib`; the package metadata declares GDAL
+>=3.11.5,<3.12, PDAL >=2.10.2,<2.11, and Poisson libpng >=1.6.59,<1.7
+respectively. These are dependency constraints, not a complete actual dependency
+SBOM or ABI proof. Poisson's packaged link inventory contains `libpng.so` and
+no named static PNG archive; the raw map was not retained (reported SHA256
+`723c766b3194095604fb8333158ff51c7a64a217883d4c2d5616dccd050124f7`).
+The source manifest does not hash itself or README-SOURCE.txt; all entries
+listed by the manifest were checked, not certified as complete corresponding
+source. Package identities and hashes do not resolve license, security, relocation
+beyond the tested environments, LAZ coverage or owner approval. The temporary
+inspection workflow and its helper were removed; release gates remain false.
