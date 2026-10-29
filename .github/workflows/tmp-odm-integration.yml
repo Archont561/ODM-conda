@@ -1,4 +1,4 @@
-name: Temporary local-only ODM integration experiment
+name: Temporary ODM dataset failure diagnostics
 on:
   pull_request:
     branches: [main]
@@ -6,19 +6,24 @@ permissions:
   contents: read
   actions: read
 jobs:
-  experiment:
+  diagnose:
     runs-on: ubuntu-24.04
-    timeout-minutes: 180
     steps:
-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
-        with:
-          persist-credentials: false
-      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
-        with:
-          pixi-version: v0.82.0
-          locked: true
-          environments: default
-      - name: Build and test a disposable local environment
+      - name: Read completed run diagnostics without saving artifacts
         env:
           GH_TOKEN: ${{ github.token }}
-        run: pixi run python scripts/tmp_odm_experiment.py
+        run: |
+          gh run view 40922527022 --repo Archont561/ODM-conda --log > "$RUNNER_TEMP/log.txt"
+          python3 - "$RUNNER_TEMP/log.txt" <<'PY'
+          import re,sys
+          s=open(sys.argv[1],errors='replace').read().splitlines()
+          matches=[i for i,l in enumerate(s) if 'Orthophoto generation done.' in l]
+          assert matches
+          a=matches[0]
+          for i in range(a,min(a+140,len(s)),30):
+              block=[]
+              for line in s[i:i+30]:
+                  line=re.sub(r'^.*?\d{4}-\d\d-\d\dT\S+\s+','',line)
+                  block.append(line)
+              print('::notice::RECONSTRUCTION '+str(i-a)+': '+' | '.join(block),flush=True)
+          PY
