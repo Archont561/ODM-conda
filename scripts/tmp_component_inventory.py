@@ -42,10 +42,10 @@ def main():
       command('pixi','add','--manifest-path',project/'pixi.toml','--no-install',p)
       lock=yaml.safe_load((project/'pixi.lock').read_text())
       records=lock['packages']
+      items=[]
       for row in records:
         url=row.get('conda','')
         if url.startswith('https://conda.anaconda.org/conda-forge/'):
-          item={'component':name,'url':url,'sha256':row.get('sha256'),'license':row.get('license'),'depends':row.get('depends',[])}
-          print('::notice::DEP '+json.dumps(item,separators=(',',':')),flush=True)
-      print(f'::notice::SOLVE {name} {len(records)} records; license labels are upstream metadata, not verified legal conclusions',flush=True)
+          items.append([url.rsplit('/',1)[-1],row.get('sha256'),row.get('license')])
+      print('::notice::SOLVE '+json.dumps({'component':name,'records':items},separators=(',',':')),flush=True)
 if __name__=='__main__':main()
