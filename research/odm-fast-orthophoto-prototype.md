@@ -41,3 +41,30 @@ Temporary GitHub-hosted [run 40866808464](https://github.com/Archont561/ODM-cond
 A fresh [minimal reproduction](https://github.com/Archont561/ODM-conda/actions/runs/40868856018) using only the same verified `dem2points-0.0.0.dev20220721-h873e7db_0.conda` (SHA256 `73634decaba27cd3b7a6980a9156b656ca505f97a021b261c72a095ba064f9e8`) and `renderdem-1.0-h873e7db_0.conda` (SHA256 `dc33a1fb2de90eabc0ee241f573bd14f09d4d3481f0fb813bd90f792b4f8b895`) also failed. The solver reported dem2points needs `libgdal-core >=3.11.5,<3.12.0a0`, while renderdem needs `libpdal-core >=2.10,<2.11`; available PDAL candidates did not yield a compatible GDAL 3.11 solve at the time. This is a real packaging-integration blocker, not merely a missing tool or proof that no other future combination could exist. TASK-57 tracks a consistent, rebuilt ABI selection. Do not bypass metadata or weaken ABI checks.
 
 No combined prefix was installed: imports, prototype launcher, relocation and the candidate Seneca dataset run were **not reached**. A combined solve may uncover further constraints even after the two-package conflict is addressed. The experiment uploaded no research sources, binaries or data; rights and all release gates remain unchanged.
+
+### Candidate common GDAL/PDAL baseline (2026-10-29)
+
+A temporary dependency-only Pixi solver experiment on GitHub Actions tested
+Python 3.12, GDAL and Python bindings, PDAL and Python-PDAL, OpenCV 4.12,
+Boost 1.90, TBB 2023.1, libpng, Ceres, rasterio and exiftool. GDAL 3.13
+[did not solve](https://github.com/Archont561/ODM-conda/actions/runs/40904066709)
+with the selected Python binding constraints. GDAL 3.12
+[did solve](https://github.com/Archont561/ODM-conda/actions/runs/40904165751):
+libgdal-core 3.12.2 `hc2c0581_0`, libpdal-core 2.10.0 `h9d23c72_0`,
+libopencv 4.12.0 `qt6_py312h52d6ec5_612`, py-opencv 4.12.0
+`qt6_py312h598be00_612`, python-pdal 3.5.3 `np2py312hadcd02a_4`, and
+TBB 2023.1.0 `haa8c3ee_2`. It was a fresh dependency-only solve, not an
+installation, an exact nine-package solve or an assurance that these particular
+builds remain available or suffice for a complete ODM run.
+
+The dem2points, fastrasterfilter and odm-orthophoto recipes now request
+GDAL `>=3.12,<3.13` for both host and run, with new build number 1; all four
+release checks were reset for each candidate. Existing published build 0
+artifacts and their historical approvals are unchanged. Rebuilding is essential:
+the old binaries and their GDAL 3.11 runtime requirements were not modified.
+Local shared checks passed, but a native dem2points build stopped before
+compilation because conda-forge noarch repodata returned EOF. Owner native
+builds, installed tests, fresh retests, audits and source bundles are required
+for all three candidates, followed by a real nine-component solve, relocation,
+launcher and dataset tests. Other incompatibilities may emerge. TASK-57 remains
+open and no publication is authorized.

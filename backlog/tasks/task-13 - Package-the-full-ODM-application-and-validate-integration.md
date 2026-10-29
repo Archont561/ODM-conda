@@ -4,7 +4,7 @@ title: Package the ODM application and validate fast-orthophoto integration (MVP
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-29 11:54'
+updated_date: '2026-10-29 15:43'
 labels:
   - component
   - opendronemap
@@ -65,4 +65,6 @@ Local-only prototype: inspected pinned ODM source and staged archive SHA256 5bdf
 Restored environment; odm-dev preflight still lacks nine component tools. Local OpenSfM research build verified sources with system CA and applied patch, then failed conda-forge noarch repodata unexpected EOF; no package/prefix/launcher/dataset test. See research/odm-fast-orthophoto-prototype.md.
 
 Disposable runner https://github.com/Archont561/ODM-conda/actions/runs/40866808464 verified seven artifact ZIPs, built research OpenSfM and OpenMVS, passed their packaged and isolated tests and limited audits, but the nine-component install could not solve. https://github.com/Archont561/ODM-conda/actions/runs/40867845237 repeated and exposed GDAL/PDAL conflicts. Minimal two-package reproduction https://github.com/Archont561/ODM-conda/actions/runs/40868856018 shows dem2points requires libgdal-core >=3.11.5,<3.12 while renderdem requires libpdal-core >=2.10,<2.11, with no viable common current conda-forge solve. No combined prefix, preflight, launcher, dataset or relocation test was reached. Research and dataset outputs not uploaded. TASK-57 tracks shared ABI remediation; release gates unchanged.
+
+TASK-57 has a dependency-only candidate solve (GDAL 3.12/PDAL 2.10/OpenCV 4.12); three fast-path GDAL consumers have build-1 candidates and reset release flags. No new artifacts or combined environment exist yet; owner native builds and full integration validation are still required.
 <!-- SECTION:NOTES:END -->

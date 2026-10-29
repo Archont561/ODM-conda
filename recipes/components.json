@@ -19,7 +19,7 @@
     "dem2points": {
       "version": "0.0.0.dev20220721",
       "version_note": "Snapshot version; upstream does not declare a release version. Date is the pinned commit date, not the packaging date.",
-      "build_number": 0,
+      "build_number": 1,
       "recipe": "recipes/dem2points/recipe.yaml",
       "executable": "dem2points",
       "source": {
@@ -46,16 +46,16 @@
         }
       ],
       "release_checks": {
-        "publishable": true,
-        "license_reviewed": true,
-        "source_completeness_reviewed": true,
-        "native_validation_passed": true
+        "publishable": false,
+        "license_reviewed": false,
+        "source_completeness_reviewed": false,
+        "native_validation_passed": false
       }
     },
     "fastrasterfilter": {
       "version": "1.0",
       "version_note": "Matches upstream CMake project version at the pinned main commit (project(fastrasterfilter VERSION 1.0)).",
-      "build_number": 0,
+      "build_number": 1,
       "recipe": "recipes/fastrasterfilter/recipe.yaml",
       "executable": "fastrasterfilter",
       "source": {
@@ -87,10 +87,10 @@
         }
       ],
       "release_checks": {
-        "publishable": true,
-        "license_reviewed": true,
-        "source_completeness_reviewed": true,
-        "native_validation_passed": true
+        "publishable": false,
+        "license_reviewed": false,
+        "source_completeness_reviewed": false,
+        "native_validation_passed": false
       }
     },
     "fpcfilter": {
@@ -154,7 +154,7 @@
     "odm-orthophoto": {
       "version": "0.0.0.dev20250225",
       "version_note": "Snapshot version; upstream does not declare a release version. Date is the pinned commit date, not the packaging date.",
-      "build_number": 0,
+      "build_number": 1,
       "recipe": "recipes/odm-orthophoto/recipe.yaml",
       "executable": "odm_orthophoto",
       "source": {
@@ -176,10 +176,10 @@
         }
       ],
       "release_checks": {
-        "publishable": true,
-        "license_reviewed": true,
-        "source_completeness_reviewed": true,
-        "native_validation_passed": true
+        "publishable": false,
+        "license_reviewed": false,
+        "source_completeness_reviewed": false,
+        "native_validation_passed": false
       }
     },
     "dem2mesh": {
