@@ -1,4 +1,5 @@
-import hashlib, io, json, subprocess, tarfile, tempfile, zipfile
+import hashlib, io, json, subprocess, tarfile, tempfile, zipfile, sys, traceback
+sys.excepthook=lambda typ, value, tb: print("::error::" + " | ".join(traceback.format_exception(typ, value, tb)).replace("\n", " "))
 from pathlib import Path, PurePosixPath
 from common import config, first_comment
 from audit_package import audit
@@ -14,6 +15,7 @@ with tempfile.TemporaryDirectory() as temp:
  for name, filename, expected_zip, revision in cases:
   assert sha(Path(filename).read_bytes()) == expected_zip
   with zipfile.ZipFile(filename) as z:
+   notice(name+' artifact members '+str(z.namelist()))
    packages=[n for n in z.namelist() if Path(n).name.startswith(name+'-') and n.endswith('.conda')]
    bundles=[n for n in z.namelist() if Path(n).name.startswith('source-'+name+'-') and n.endswith('.tar.gz')]
    assert len(packages)==len(bundles)==1, (packages,bundles)
