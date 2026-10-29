@@ -64,6 +64,11 @@ def check_repository(root: Path = ROOT) -> int:
         else:
             require(recipe["source"]["url"] == source["url"], f"Source URL mismatch: {name}")
             require(recipe["source"]["sha256"] == "${{ source_sha256 }}", "Recipe must check its archive checksum")
+            if name == "dem2mesh":
+                patches = source.get("patches", [])
+                filename = "recipes/dem2mesh/patches/0001-simplify-mit-notice.patch"
+                require(len(patches) == 1 and recipe["source"].get("patches") == ["patches/0001-simplify-mit-notice.patch"], "dem2mesh must apply the reviewed notice patch")
+                require(patches[0]["file"] == filename and sha256(relative_path(root, filename)) == patches[0]["sha256"], "dem2mesh patch checksum mismatch")
             if name == "poissonrecon-odm":
                 patches = source.get("patches", [])
                 expected_patches = ["patches/0001-system-libpng.patch", "patches/0002-ijg-readme.patch"]

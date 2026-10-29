@@ -185,7 +185,7 @@
     "dem2mesh": {
       "version": "0.0.0.dev20231207",
       "version_note": "Snapshot version based on the pinned commit date; upstream does not declare a release version. ODM reference 334 is a branch.",
-      "build_number": 0,
+      "build_number": 1,
       "recipe": "recipes/dem2mesh/recipe.yaml",
       "executable": "dem2mesh",
       "source": {
@@ -195,7 +195,14 @@
         "url": "https://codeload.github.com/OpenDroneMap/dem2mesh/tar.gz/623c8536941175c630fabe4f1352ddc314d98120",
         "sha256": "29e2729c890118def3d727cfca81070e1cb99fa8a51212a6deef7614089ecf8b",
         "additional_sources": [],
-        "disabled_build_trees": []
+        "disabled_build_trees": [],
+        "patches": [
+          {
+            "file": "recipes/dem2mesh/patches/0001-simplify-mit-notice.patch",
+            "sha256": "af6d59a6d32f293499996d6b534888a16a06eb9f6d8560c53760826368fb2cac",
+            "summary": "Conservatively provide an unaltered MIT license text from the upstream simplifier project; exact historical provenance remains under review."
+          }
+        ]
       },
       "license": "GPL-3.0-or-later AND GPL-2.0-or-later AND BSD-3-Clause AND MIT",
       "license_note": "Preliminary metadata: main.cpp states GPL-3.0-or-later; JMeshLib source states GPL-2.0-or-later; CmdLineParser is BSD-3-Clause; Simplify.h identifies MIT. Verify all notices and compatibility with owner before distribution.",
@@ -228,6 +235,11 @@
         {
           "source": "src/Simplify.h",
           "target": "Simplify-source-and-MIT-notice.txt",
+          "kind": "verbatim"
+        },
+        {
+          "source": "Simplify-MIT.txt",
+          "target": "Simplify-upstream-MIT.txt",
           "kind": "verbatim"
         }
       ],

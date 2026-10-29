@@ -4,7 +4,7 @@ title: Review renderdem package-readiness evidence
 status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-29 10:00'
+updated_date: '2026-10-29 10:36'
 labels:
   - packaging
   - review
@@ -45,4 +45,6 @@ Review pinned RenderDEM sources and corresponding-source staging against the act
 2026-10-29: native batch run 40844694283 at 2cc2861 and read-only artifact inspection 40846497463 passed build, installed and fresh retests, audit and source-manifest verification. Exact package/source hashes, ELF needs and bounded limitations are recorded in research/component-readiness-review.md. Legal/source completeness, ABI and owner decisions remain open; no release gates changed.
 
 Re-fetched and SHA256-verified RenderDEM commit 93502f2. Inventoried all 11 direct-source files, root AGPLv3 statement, vendored cxxopts MIT notice and CMake link inputs. The package carries these notices, but direct source findings do not establish provenance, exact dependency closure, grant/version decision or complete corresponding-source offer. Owner/qualified review and release gates remain open; see research/component-readiness-review.md.
+
+Cross-package decision record doc-12 consolidates RenderDEM direct-source findings, candidate grant, actual runtime/source obligations and historical validation; owner/qualified decisions remain open.
 <!-- SECTION:NOTES:END -->

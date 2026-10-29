@@ -1,10 +1,10 @@
 ---
 id: TASK-38
 title: Review openmvs-odm package-readiness evidence
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-28 20:12'
+updated_date: '2026-10-29 10:36'
 labels:
   - packaging
   - review
@@ -31,6 +31,12 @@ Independently review the deliverables produced by TASK-9 for the openmvs-odm mil
 - [ ] #3 Record a maintainer-facing readiness decision and remaining owner/platform conditions. Completing this task does not itself flip executable release flags, publish a binary or certify untested platforms.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Reconcile pinned OpenMVS reduced source graph, restricted files, notices and actual build evidence; retain local-only restrictions and review unresolved grants.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -39,4 +45,6 @@ Independently review the deliverables produced by TASK-9 for the openmvs-odm mil
 2026-10-29: OpenMVS archives and four-patch research tree fingerprint locally re-verified. Fixed unregistered production builder omission of the installed mesh-cleaning helper; this is not production recipe integration. New research identity/dependency audit requires owner dispatch; restricted-source, notices and ABI gates remain open.
 
 2026-10-29: owner-dispatched research run 40848319389 selected all at 7f0e5c5 and passed both local-only builds, installed tests, fresh retests and strengthened audits; outputs were discarded. Production, complete source/notices, rights and ABI review remain open.
+
+Doc-12 consolidates restricted IBFS/TRWS source terms, local reduced build guard and unresolved source-distribution/CGAL/VCG/Eigen notice review. TASK-54 remains open and research packages are not distributable.
 <!-- SECTION:NOTES:END -->

@@ -1,10 +1,10 @@
 ---
 id: TASK-32
 title: Review dem2mesh package-readiness evidence
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-28 20:12'
+updated_date: '2026-10-29 10:36'
 labels:
   - packaging
   - review
@@ -29,6 +29,12 @@ Independently review the deliverables produced by TASK-6 for the dem2mesh milest
 - [ ] #3 Record a maintainer-facing readiness decision and remaining owner/platform conditions. Completing this task does not itself flip executable release flags, publish a binary or certify untested platforms.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Review immutable dem2mesh source, compiled JMeshLib and vendored Simplify grants; preserve an exact upstream MIT text conservatively if missing, retest package and identify any remaining provenance or source-offer decisions.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -37,4 +43,6 @@ Independently review the deliverables produced by TASK-6 for the dem2mesh milest
 2026-10-29: local batch review verified pinned archive bytes, extracted declared notice inputs and checked deterministic temporary source bundles and every manifest entry. Current-commit local native build was blocked by conda-forge repodata EOF; owner-dispatched batch validation and artifact review remain necessary. See research/component-readiness-review.md for component-specific evidence and limitations. Release gates remain false.
 
 2026-10-29: native batch run 40844694283 at 2cc2861 and read-only artifact inspection 40846497463 passed build, installed and fresh retests, audit and source-manifest verification. Exact package/source hashes, ELF needs and bounded limitations are recorded in research/component-readiness-review.md. Legal/source completeness, ABI and owner decisions remain open; no release gates changed.
+
+Hash-verified 53-file dem2mesh archive and reviewed CMake static JMeshLib inputs and source grants. Simplify.h names Sven Forstmann and MIT but does not contain the MIT permission text; project added full MIT text at 04ffc389 in 2019, after the vendored file existed. Candidate build 1 adds that exact text conservatively, keeps the original Simplify source attribution, and audits package payload and metadata bytes. Exact historical provenance and adequacy require review. Local build applied patch but failed at conda-forge compiler solve EOF; no candidate native artifact exists. Dirty-tree source bundle verified 244 manifest hashes. Detailed matrix: doc-12. No release gates changed.
 <!-- SECTION:NOTES:END -->

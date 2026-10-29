@@ -4,7 +4,7 @@ title: Review mvs-texturing-odm package-readiness evidence
 status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-29 10:00'
+updated_date: '2026-10-29 10:36'
 labels:
   - packaging
   - review
@@ -43,4 +43,6 @@ Review exact pinned texturing source graph, distribution restrictions and existi
 2026-10-29: Temporary read-only inspection run 40847899604 re-audited the pinned build 2 artifact, verified 196 listed source hashes and passed a fresh retest. See research/mvs-texturing-license-review.md for identities and limitations.
 
 Re-fetched all five pinned mvs-texturing source archives and verified every SHA256. MVE sfm SIFT/SURF disclaimer, source-distribution rights/patent questions, full Eigen and actual dependency notice inventory remain unresolved. No approval or gate change; see research/mvs-texturing-license-review.md and component-readiness-review.md.
+
+Cross-package decision record doc-12 consolidates MVE SIFT/SURF source/patent caveat, dependency and notice review and bounded historical native evidence; approval remains open.
 <!-- SECTION:NOTES:END -->

@@ -1,10 +1,10 @@
 ---
 id: TASK-34
 title: Review poissonrecon-odm package-readiness evidence
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-28 20:12'
+updated_date: '2026-10-29 10:36'
 labels:
   - packaging
   - review
@@ -29,6 +29,12 @@ Independently review the deliverables produced by TASK-7 for the poissonrecon-od
 - [ ] #3 Record a maintainer-facing readiness decision and remaining owner/platform conditions. Completing this task does not itself flip executable release flags, publish a binary or certify untested platforms.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Inventory pinned Poisson source, notice remediation and native artifact evidence; distinguish source and binary obligations and keep pending decisions open.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -37,4 +43,6 @@ Independently review the deliverables produced by TASK-7 for the poissonrecon-od
 2026-10-29: local batch review verified pinned archive bytes, extracted declared notice inputs and checked deterministic temporary source bundles and every manifest entry. Current-commit local native build was blocked by conda-forge repodata EOF; owner-dispatched batch validation and artifact review remain necessary. See research/component-readiness-review.md for component-specific evidence and limitations. Release gates remain false.
 
 2026-10-29: native batch run 40844694283 at 2cc2861 and read-only artifact inspection 40846497463 passed build, installed and fresh retests, audit and source-manifest verification. Exact package/source hashes, ELF needs and bounded limitations are recorded in research/component-readiness-review.md. Legal/source completeness, ABI and owner decisions remain open; no release gates changed.
+
+Decision matrix in doc-12 cross-references IJG source notice remediation, successful owner native run 40855859214 and unresolved archive/notice/dependency rights and security review; no gate changed.
 <!-- SECTION:NOTES:END -->
