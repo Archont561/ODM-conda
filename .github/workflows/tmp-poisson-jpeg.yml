@@ -1,0 +1,42 @@
+name: Temporary Poisson shared JPEG native validation
+on:
+  push:
+    branches: [arena/17e50690-odm-conda]
+    paths: [.github/workflows/tmp-poisson-jpeg.yml, scripts/poisson_linkage.py, tests/test_poisson_linkage.py]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default
+      - name: Build, fresh test, audit without uploading
+        run: |
+          set +e
+          {
+            pixi run build --component poissonrecon-odm --output-dir "$RUNNER_TEMP/poisson-output" &&
+            pixi run test --component poissonrecon-odm --output-dir "$RUNNER_TEMP/poisson-output" &&
+            pixi run audit --component poissonrecon-odm --output-dir "$RUNNER_TEMP/poisson-output" --reports-dir "$RUNNER_TEMP/reports" &&
+            sha256sum "$RUNNER_TEMP"/poisson-output/linux-64/poissonrecon-odm-*.conda
+          } > "$RUNNER_TEMP/poisson-log" 2>&1
+          rc=$?
+          if [ "$rc" -eq 0 ]; then
+            echo "::notice::PoissonRecon built with host-prefix JPEG guard; installed and fresh tests and artifact audit passed. Temporary files were not uploaded."
+            grep -E 'PASS:|poissonrecon-odm-.*conda$' "$RUNNER_TEMP/poisson-log" | tail -15
+          else
+            LOG_FILE="$RUNNER_TEMP/poisson-log" pixi run python - <<'PY'
+          import os, re
+          from pathlib import Path
+          lines = Path(os.environ['LOG_FILE']).read_text(errors='replace').splitlines()
+          print('::error::POISSON_FAILURE ' + re.sub(r'https?://[^\s|]+', '[url]', ' | '.join(lines[-50:])[-10000:]))
+          PY
+          fi
+          exit "$rc"
