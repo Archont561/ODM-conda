@@ -16,6 +16,7 @@ from common import ROOT, ScaffoldError, config, fail_cli, first_comment, relativ
 from openmvs_graph_policy import validate_openmvs_graph, validate_openmvs_patches, verify_openmvs_tree
 from texturing_graph_policy import validate_texturing_graph, validate_texturing_patches, verify_texturing_tree
 from texturing_link_map import verify_texturing_link_map
+from poisson_linkage import verify_poisson_link_map
 
 
 def main() -> None:
@@ -133,10 +134,11 @@ def main() -> None:
         (prefix / "bin").mkdir(parents=True, exist_ok=True)
         shutil.copy2(build_dir / "apps" / "texrecon" / "texrecon", prefix / "bin" / "texrecon")
     elif name == "poissonrecon-odm":
-        # Restrict make execution to the two specifically reviewed files from
-        # the pinned archive; source changes require another fetch-command review.
-        makefiles = {"Makefile": "133c7df53d2d4c0dc3126c73b7b5f997a4930f355de8385649391e6813e1d5a5",
-                     "PNG/Makefile": "7adc41995370ce48374fdf79be2143af94311f0bf0abe4fd6462b111d19d4d06"}
+        # Restrict execution to the reviewed patched target and headers.
+        makefiles = {"Makefile": "6bb62b4c45baaa2d7ab3ece62c6a43c216a8e70300f67a30f984c7587b103770",
+                     "PNG/Makefile": "7adc41995370ce48374fdf79be2143af94311f0bf0abe4fd6462b111d19d4d06",
+                     "Src/PNG.h": "281b430e943475f1d0f8d639d15808fcc9c343fc3af7f7111910f8f4e84d0862",
+                     "Src/PNG.inl": "2aec01150f5aa658a40ce02ce0196f57eedd4c77230f5d53be67e2b46864d149"}
         for filename, expected in makefiles.items():
             if sha256(relative_path(source, filename)) != expected:
                 raise ScaffoldError(f"Unreviewed makefile: {filename}")
@@ -146,8 +148,19 @@ def main() -> None:
         if not cc or not cxx:
             raise ScaffoldError("PoissonRecon requires rattler's C and C++ compiler wrappers")
         flags = env.get("CXXFLAGS", "") + " -fopenmp -Wno-deprecated -std=c++14 -pthread -Wno-invalid-offsetof -O3 -DRELEASE -ffast-math -g0"
-        links = env.get("LDFLAGS", "") + " -lgomp -lstdc++ -lpthread -O3 -g0"
+        link_map = source / "poissonrecon-link.map"
+        links = f"-L{prefix / 'lib'} " + env.get("LDFLAGS", "") + f" -lgomp -lstdc++ -lpthread -O3 -g0 -Wl,-Map={link_map}"
         run(["make", "-j1", "poissonrecon", f"CC={cc}", f"CXX={cxx}", f"CFLAGS={flags}", f"LFLAGS={links}"], cwd=source, env=env)
+        link_evidence = verify_poisson_link_map(link_map, prefix)
+        # Exercise the patched adapter with real gray/RGB/RGBA rows. This is a
+        # separate source-level smoke test, not proof the CLI accepts PNG input.
+        smoke = source / "poisson-png-smoke"
+        run([cxx, *shlex.split(env.get("CXXFLAGS", "")), "-std=c++14", "-fopenmp", "-I.",
+             str(ROOT / "scripts" / "poisson_png_smoke.cpp"), f"-L{prefix / 'lib'}",
+             *shlex.split(env.get("LDFLAGS", "")), "-lpng", "-ljpeg", "-lz", "-o", str(smoke)], cwd=source, env=env)
+        smoke_env = env.copy()
+        smoke_env["LD_LIBRARY_PATH"] = str(prefix / "lib")
+        run([str(smoke), str(source / "poisson-png-smoke.png")], cwd=source, env=smoke_env)
         (prefix / "bin").mkdir(parents=True, exist_ok=True)
         shutil.copy2(source / "Bin" / "Linux" / "PoissonRecon", prefix / "bin" / "PoissonRecon")
     else:
@@ -160,6 +173,8 @@ def main() -> None:
 
     share = prefix / "share" / "odm-conda" / name
     share.mkdir(parents=True, exist_ok=True)
+    if name == "poissonrecon-odm":
+        (share / "link-evidence.json").write_text(json.dumps(link_evidence, indent=2) + "\n", encoding="utf-8")
     shutil.copy2(ROOT / "scripts" / "functional_test.py", share / "functional_test.py")
     if name == "openmvs-odm":
         for fixture in ("openmvs_synthetic_fixture.py", "openmvs_pointcloud_fixture.py", "texrecon_fixture.py"):

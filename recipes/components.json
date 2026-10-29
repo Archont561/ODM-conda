@@ -277,7 +277,7 @@
     "poissonrecon-odm": {
       "version": "13.8",
       "version_note": "Upstream Src/PreProcessor.h defines version 13.8; ODM reference 290 is a branch.",
-      "build_number": 1,
+      "build_number": 2,
       "recipe": "recipes/poissonrecon-odm/recipe.yaml",
       "executable": "PoissonRecon",
       "source": {
@@ -287,10 +287,17 @@
         "url": "https://codeload.github.com/OpenDroneMap/PoissonRecon/tar.gz/97caa6d34d1b05b59888bed019dea89ced74445e",
         "sha256": "88743428a97cbeed7d55e713fcfa42caebbfb7dcb2467d68899bd8feab95364b",
         "additional_sources": [],
-        "disabled_build_trees": []
+        "disabled_build_trees": [],
+        "patches": [
+          {
+            "file": "recipes/poissonrecon-odm/patches/0001-system-libpng.patch",
+            "sha256": "0fab8f37995a0fe39b55a8f624f4e1b55fdab7a469dc0e5a82e915290189d0b2",
+            "summary": "Use host libpng for PoissonRecon and public PNG width/channel APIs; retain bundled source for other targets."
+          }
+        ]
       },
       "license": "MIT AND BSD-3-Clause AND Libpng AND Zlib",
-      "license_note": "Preliminary only: root MIT, multiple source headers carry BSD-3-Clause notices, and the bundled libpng and zlib headers carry notices. Upstream make builds a static libpng archive; its presence in the final binary and actual zlib/JPEG linkage require inspection. Full source, security and license review and owner decision remain required.",
+      "license_note": "Preliminary only: root MIT and multiple BSD notices, bundled PNG and zlib headers retained for source review. Build 2 requests host libpng with a fail-closed linker-input guard. Actual package linkage, full source/security/license review and owner decision remain required.",
       "notices": [
         {
           "source": "LICENSE",
