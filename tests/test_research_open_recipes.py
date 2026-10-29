@@ -53,3 +53,32 @@ def test_research_workflow_never_uploads_artifacts():
     assert 'upload-artifact' not in workflow
     assert 'source_bundle.py' not in workflow
     assert 'pixi run python scripts/run_open_research.py' in workflow
+
+
+
+def test_research_workflow_records_selected_component_safely():
+    workflow = (ROOT / '.github/workflows/build-open-research.yml').read_text()
+    assert 'run-name: "Local-only research: ${{ inputs.component }}"' in workflow
+    assert 'RESEARCH_COMPONENT: ${{ inputs.component }}' in workflow
+    assert 'pixi run python scripts/record_open_research_component.py' in workflow
+
+
+@pytest.mark.parametrize('component', ['openmvs', 'opensfm'])
+def test_research_component_annotation(component, tmp_path, capsys):
+    from record_open_research_component import record_component
+
+    summary = tmp_path / 'summary.md'
+    record_component(component, summary)
+    assert f'::notice title=Selected research component::{component}' in capsys.readouterr().out
+    assert summary.read_text() == f'### Selected research component\n\n`{component}`\n'
+
+
+def test_research_component_annotation_rejects_injection(tmp_path, capsys):
+    from common import ScaffoldError
+    from record_open_research_component import record_component
+
+    summary = tmp_path / 'summary.md'
+    with pytest.raises(ScaffoldError, match='Invalid research component'):
+        record_component('openmvs\n::error::injected', summary)
+    assert not summary.exists()
+    assert not capsys.readouterr().out

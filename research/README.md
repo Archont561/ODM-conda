@@ -330,6 +330,8 @@ non-native byte order before reading point-cloud bodies rather than silently
 misreading them; it does not add endian conversion. Locally, the rebuilt source
 passed ASCII with and without scalar `views`, little-endian binary list input,
 and clean rejection of the big-endian sample, as well as the existing cases.
-Installed-prefix and fresh package tests for build 3 await owner dispatch. The
-build 2 run is not evidence for the revised patch or these additional cases.
+Owner-confirmed OpenMVS [run 40842013970](https://github.com/Archont561/ODM-conda/actions/runs/40842013970)
+passed build 3 package build, installed-prefix tests, fresh retest and limited
+audit at c7fd5a1. No artifacts were uploaded. The earlier build 2 run is not
+evidence for the revised patch or these additional cases.
 General malformed/truncated-input safety remains unverified.
