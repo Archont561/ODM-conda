@@ -4,7 +4,7 @@ title: Review opensfm-odm package-readiness evidence
 status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-29 10:36'
+updated_date: '2026-10-29 23:10'
 labels:
   - packaging
   - review
@@ -45,4 +45,6 @@ Reconcile pinned OpenSfM source, runtime assets, third-party rights and local-on
 2026-10-29: owner-dispatched research run 40848319389 selected all at 7f0e5c5 and passed both local-only builds, installed tests, fresh retests and strengthened audits; outputs were discarded. Production, complete source/notices, rights and ABI review remain open.
 
 Doc-12 consolidates exact OpenSfM local-only source/asset/grant and vmem blockers and build evidence. Rights and actual dependency graph remain unresolved; no distribution approval.
+
+Traced 10,000/64-word vocabulary introduction and rename commits and investigated vmem history, exact sdist file matches and psutil similarity; recorded evidence and unresolved training-data and license questions in research/open-components-license-review.md. Criteria and gates remain open.
 <!-- SECTION:NOTES:END -->

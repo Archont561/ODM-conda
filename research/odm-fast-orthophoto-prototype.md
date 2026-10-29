@@ -262,3 +262,41 @@ OpenMVS includes restricted source despite build exclusions; no research
 packages, restricted source, dataset images or outputs were uploaded. No
 release gates were changed. TASK-13 and the research-component legal reviews
 remain open.
+
+### Reduced-copy OpenMVS Seneca trial (2026-10-29)
+
+[Disposable run 40968370151](https://github.com/Archont561/ODM-conda/actions/runs/40968370151)
+at `940470bd87eef3923e7ea786c64e84d61d8542e3` completed the nine-component
+pipeline on Ubuntu 24.04 using OpenMVS **built from the verified physically
+reduced copy**, rather than the original-tree build in run 40960012356. Two
+copies matched the 3,274-file path/content fingerprint
+`e64c1718c05d58ac74051a8a0a216febbcac7144898cea022d378af427549489` and
+manifest SHA256 `560cc78034924dd9fd83b02c4fba448a66612fc493b86ae8c09da6f0b338ce3b`.
+The run rebuilt and fresh-retested both research components and passed their
+limited audits. Local OpenMVS build 3 SHA256 was
+`8a16adfb63dab049e9e15a0879abc99dd2b7164348c7defc862bca93ba1004f9`;
+OpenSfM build 5 was
+`31b416c0f69ef2e76afde033b4b1a6d734bf5cb714d55d43bf8cfc75f0994237`.
+The other seven package hashes and selected GDAL/PDAL/OpenCV dependencies
+matched the preceding successful trial listed above. They are not all released
+components: renderdem, PoissonRecon, mvs-texturing, OpenSfM and OpenMVS remain
+research-only in this experiment. The temporary script at the run commit records
+its exact inputs and commands. It verified ODM 3.6.2 archive SHA256
+`5bdf8fe81b9ca47714e8a474139fd206b8090ac4315c2f530a58fcaef29cde5e`,
+checked out Seneca commit `9220acfdca75cc5e2dd6d27fe48550c5ae0877f2`,
+and invoked the prototype with `--skip-3dmodel`.
+
+Preflight, launcher help, pipeline execution and `gdalinfo -stats` passed. The
+final raster had 9,667 × 10,305 pixels, four RGBA Byte bands, EPSG:32617 and
+geotransform `[305959.77768083906, 0.0499969077372014, 0,
+4545641.752753492, 0, -0.0499959349708179]`. All bands reported 0–255;
+means were 146.064, 127.328, 151.934 and 146.098. The TIFF was 113,227,130
+bytes and the PDF report 7,262,535 bytes. Dimensions and extent differ from
+the prior run; these runs do not isolate the cause or establish numerical or
+visual equivalence. Metadata checks do not validate visual quality, geographic
+accuracy, crop completeness or report contents. Dataset provenance remains
+independently unverified. Research packages, original restricted source,
+dataset imagery and generated outputs were discarded, not uploaded. The
+original OpenMVS archive was still fetched before reduction, and this success
+does not establish corresponding-source completeness, redistribution rights,
+reproducibility or a production release decision. No gates changed.
