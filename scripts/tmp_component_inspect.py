@@ -70,6 +70,7 @@ with tempfile.TemporaryDirectory() as temp:
 # Inspect the exact package filenames in this run's fresh-solve log; this is
 # not proof that a later release solve is identical.
 import urllib.request, zstandard
+dep_metadata=[]
 for filename in ('libpdal-core-2.10.2-he6b862a_5.conda','libgdal-core-3.13.3-h7fa801c_4.conda', 'libgomp-16.2.0-he0feb66_7.conda'):
  url='https://conda.anaconda.org/conda-forge/linux-64/'+filename
  with urllib.request.urlopen(url,timeout=90) as response: data=response.read(60*1024*1024)
@@ -83,4 +84,5 @@ for filename in ('libpdal-core-2.10.2-he6b862a_5.conda','libgdal-core-3.13.3-h7f
      contents[item.name]=tar.extractfile(item).read()
   about=json.loads(contents['info/about.json']); index=json.loads(contents['info/index.json'])
   licenses={k:sha(v) for k,v in contents.items() if k.startswith('info/licenses/')}
-  notice('exact-name dependency metadata '+json.dumps({'file':filename,'sha256':sha(data),'name':index['name'],'version':index['version'],'build':index['build'],'license':about.get('license'),'licenses':licenses},sort_keys=True))
+  dep_metadata.append({'file':filename,'sha256':sha(data),'name':index['name'],'version':index['version'],'build':index['build'],'license':about.get('license'),'licenses':licenses})
+notice('exact-name dependency metadata '+json.dumps(dep_metadata,sort_keys=True))
