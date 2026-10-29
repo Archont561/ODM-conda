@@ -15,11 +15,11 @@ Published to the existing [`archont561/archont561` channel](https://prefix.dev/a
 | :-- | :-- | --: |
 | `fastrasterfilter` | `1.0` | 2 |
 | `fpcfilter` | `0.2` | 1 |
-| `dem2points` | `0.0.0.dev20220721` | 0 |
+| `dem2points` | `0.0.0.dev20220721` | 2 |
 | `odm-orthophoto` | `0.0.0.dev20250225` | 0 |
 
-The current recipes for dem2points and odm-orthophoto are **build 2 candidates**,
-not the published build 0. The other registered recipes are `dem2mesh`,
+The current odm-orthophoto recipe is a **build 2 candidate**, not the published
+build 0. The other registered recipes are `dem2mesh`,
 `renderdem`, `poissonrecon-odm` and `mvs-texturing-odm`; they are not approved
 for publication. [Component identities and release gates](recipes/components.json)
 are authoritative. Research-only OpenSfM and OpenMVS recipes are not for
