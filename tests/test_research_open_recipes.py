@@ -63,7 +63,7 @@ def test_research_workflow_records_selected_component_safely():
     assert 'pixi run python scripts/record_open_research_component.py' in workflow
 
 
-@pytest.mark.parametrize('component', ['openmvs', 'opensfm'])
+@pytest.mark.parametrize('component', ['openmvs', 'opensfm', 'all'])
 def test_research_component_annotation(component, tmp_path, capsys):
     from record_open_research_component import record_component
 
@@ -82,3 +82,28 @@ def test_research_component_annotation_rejects_injection(tmp_path, capsys):
         record_component('openmvs\n::error::injected', summary)
     assert not summary.exists()
     assert not capsys.readouterr().out
+
+
+@pytest.mark.parametrize('name', ['openmvs-odm', 'opensfm-odm'])
+def test_research_audit_tracks_recipe_identity_and_critical_dependencies(name):
+    from audit_open_research import verify_index
+
+    recipe = yaml.safe_load((ROOT / 'research/recipes' / name / 'recipe.yaml').read_text())
+    index = {'name': name, 'version': recipe['package']['version'],
+             'build_number': recipe['build']['number'], 'subdir': 'linux-64',
+             'depends': recipe['requirements']['run']}
+    verify_index(name, index)
+
+
+def test_research_all_runs_both_and_rejects_unknown(monkeypatch):
+    import run_open_research as research
+    from common import ScaffoldError
+
+    seen = []
+    monkeypatch.setattr(research, 'run_component', seen.append)
+    monkeypatch.setenv('RESEARCH_COMPONENT', 'all')
+    research.main()
+    assert seen == ['openmvs', 'opensfm']
+    monkeypatch.setenv('RESEARCH_COMPONENT', 'all\nopensfm')
+    with pytest.raises(ScaffoldError):
+        research.main()

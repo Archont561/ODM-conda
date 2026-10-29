@@ -7,10 +7,7 @@ from pathlib import Path
 from common import ROOT, ScaffoldError, fail_cli, rattler, run
 
 
-def main() -> None:
-    component = os.environ.get('RESEARCH_COMPONENT', '')
-    if component not in ('openmvs', 'opensfm'):
-        raise ScaffoldError('Set RESEARCH_COMPONENT to openmvs or opensfm')
+def run_component(component: str) -> None:
     parent = os.environ.get('RUNNER_TEMP')
     with tempfile.TemporaryDirectory(prefix='odm-open-research-', dir=parent) as temp:
         root = Path(temp)
@@ -25,7 +22,15 @@ def main() -> None:
         run([rattler(), 'test', '--package-file', str(packages[0]), '--channel', 'conda-forge',
              '--channel-priority', 'strict', '--output-dir', str(root / 'retest'), '--log-style', 'plain'])
         run(['python', str(ROOT / 'scripts/audit_open_research.py'), component + '-odm', str(packages[0])])
-    print('PASS: research build, retest and audit; temporary package and sources removed')
+    print(f'PASS: {component} research build, retest and audit; temporary package and sources removed', flush=True)
+
+
+def main() -> None:
+    selected = os.environ.get('RESEARCH_COMPONENT', '')
+    if selected not in ('openmvs', 'opensfm', 'all'):
+        raise ScaffoldError('Set RESEARCH_COMPONENT to openmvs, opensfm or all')
+    for component in (('openmvs', 'opensfm') if selected == 'all' else (selected,)):
+        run_component(component)
 
 
 if __name__ == '__main__':

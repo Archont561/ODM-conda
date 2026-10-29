@@ -86,4 +86,6 @@ Local testing: recipe renders; rattler-build downloaded and patched all five inp
 2026-10-28: owner-dispatched build 2 run https://github.com/Archont561/ODM-conda/actions/runs/40746814931 at 902550d4f7438d382a2288e064b185a6834e53cf passed build with fail-closed named SIFT/SURF link-map check, packaged/fresh tests, artifact audit and source bundle; non-published artifact 12841144045 has GitHub-reported ZIP SHA256 5a92c91c65b56433766eddb739f5db488d4c0cf8403647274aee262c26bdd899. The map was not available for independent inspection in this review. Original MVE source and patent questions, actual dependency and notice review, source completeness and release decisions remain open. See research/mvs-texturing-license-review.md and research/component-readiness-review.md.
 
 Independent download of the build 2 artifact failed with EOF in this environment; link-map contents and the archive have not been independently inspected. GitHub job status and the build-time guard are the available evidence.
+
+2026-10-29: Historical build 2 artifact ZIP, package and source-manifest hashes and fresh retest independently verified in temporary run 40847899604. See research/mvs-texturing-license-review.md; raw link map was not retained, and rights/notices/ABI review remains open.
 <!-- SECTION:NOTES:END -->

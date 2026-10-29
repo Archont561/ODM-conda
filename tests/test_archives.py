@@ -118,6 +118,7 @@ def test_source_bundle_is_deterministic_and_contains_manifest(tmp_path, monkeypa
     with tarfile.open(first, "r:gz") as archive:
         manifest = json.load(archive.extractfile("SOURCE-MANIFEST.json"))
         assert manifest["files"]["packaging/README.md"] == hashlib.sha256(readme.read_bytes()).hexdigest()
+        assert manifest["packaging_commit"] is None and manifest["packaging_dirty"] is None
         assert "README-SOURCE.txt" in archive.getnames()
         assert all(member.mtime == 0 for member in archive)
 
@@ -166,3 +167,23 @@ def test_explicit_gitmodules_exception_requires_exact_root_file_and_hash(tmp_pat
     archive([('project/.gitmodules', modules), ('project/.gitmodules', modules)])
     with pytest.raises(ScaffoldError, match='submodule'):
         validate_upstream_archive(path, gitmodules_sha256=digest)
+
+
+def test_source_bundle_git_revision_reports_dirty_and_missing_git(tmp_path):
+    import subprocess
+    from source_bundle import packaging_git_state
+
+    subprocess.run(['git', 'init', '-q', str(tmp_path)], check=True)
+    subprocess.run(['git', '-C', str(tmp_path), 'config', 'user.email', 'test@example.invalid'], check=True)
+    subprocess.run(['git', '-C', str(tmp_path), 'config', 'user.name', 'test'], check=True)
+    (tmp_path / 'file').write_text('original')
+    subprocess.run(['git', '-C', str(tmp_path), 'add', 'file'], check=True)
+    subprocess.run(['git', '-C', str(tmp_path), 'commit', '-qm', 'initial'], check=True)
+    revision, dirty = packaging_git_state(tmp_path)
+    assert revision and not dirty
+    (tmp_path / 'file').write_text('changed')
+    assert packaging_git_state(tmp_path) == (revision, True)
+    (tmp_path / 'file').write_text('original')
+    (tmp_path / 'new-file').write_text('untracked')
+    assert packaging_git_state(tmp_path) == (revision, True)
+    assert packaging_git_state(tmp_path / 'missing') == (None, None)
