@@ -338,3 +338,93 @@ Then, only with separate authorization, recheck channel/asset collisions and
 current OIDC permissions, use the exact component tag on clean trusted
 main HEAD, and let the protected workflow rebuild, retest, audit and provide
 source before the binary. No new release has been authorized here.
+
+### Risk-based dependency review of the three build-2 candidates (2026-10-29)
+
+This review is scoped to **distributing the three component packages**, not
+republishing their conda-forge dependency packages or a full ODM image. If the
+distribution later bundles dependencies, assess that actual distribution and
+its corresponding obligations separately. This is not legal advice and does
+not grant publication approval.
+
+[Read-only run 40935677599](https://github.com/Archont561/ODM-conda/actions/runs/40935677599)
+downloaded and SHA256-verified the two owner-dispatched artifact ZIPs and all
+three component packages, re-ran the current audit against each exact build-2
+artifact, and independently solved each package with conda-forge. All three
+passed audit and solve. The audit checks payload boundaries, identity, metadata,
+source reference, notice presence, ELF dependencies and RPATH; it does not
+prove the complete legal provenance of everything in a binary. The earlier
+independent inspections cited above additionally compared declared upstream
+notice bytes in metadata and payload and verified source-bundle hashes and
+fresh retests. No binary, source bundle or third-party dependency was uploaded.
+
+The complete fresh-solve package filenames, solver-record SHA256s and declared
+license labels are recorded in
+[component-build2-dependency-inventory.md](component-build2-dependency-inventory.md).
+Each standalone solve selected 63 external packages for dem2points and
+fastrasterfilter, and 218 for odm-orthophoto. These are **new no-install
+solves**, not the previously tested combined environment, original build
+inputs, or a future release solve. Package metadata is an inventory signal,
+not proof of applicable rights, actual byte installation, or source-offer
+sufficiency. Resolve and review the actual distribution again if it changes.
+
+| Component | Exact audited payload / linkage | Evidence and owner-facing decision |
+|---|---|---|
+| fastrasterfilter | One executable, four notices (AGPL, mf2d MIT, cxxopts MIT, packaging MIT), `SOURCE.txt`, manifest and fixture. ELF needs GDAL, OpenMP and C/C++ runtime shared libraries; mf2d is compiled in. | Earlier owner accepted the component's AGPL-3.0-only + MIT expression and §13 policy; build-2 notice/source evidence and fresh retest are recorded above. Review changed GDAL/runtime dependency risks below and explicitly decide the four current gates. |
+| dem2points | One executable, three notices (GPL, BSD-3-Clause parser, packaging MIT), `SOURCE.txt`, manifest and fixture. ELF needs GDAL and C/C++ runtime shared libraries; parser is compiled in. | Earlier owner confirmed GPL-3.0-only + BSD-3-Clause + MIT for the initial release; verify build-2 source/notice evidence and GDAL/runtime considerations below before deciding each current gate. |
+| odm-orthophoto | One executable, two notices (AGPL and packaging MIT), `SOURCE.txt`, manifest and fixture. ELF needs GDAL, OpenCV, OpenMP and C/C++ runtime shared libraries. | Earlier owner accepted the AGPL-3.0-only + MIT expression and §13 policy. In addition to the shared GDAL/runtime considerations, resolve or explicitly assess the OpenCV/OpenVINO signals below before a gate decision. |
+
+These payload boundaries show that separate GDAL/OpenCV shared-library files
+are not in the component packages; ELF dynamic dependencies do **not** prove
+that no other code was statically linked or compiled in. Header-only Eigen and
+other compiled inputs require build-source/notice review. `SOURCE.txt` points
+to a release-specific source URL that is not a durable offer until the exact
+source asset is actually attached. Earlier CI source bundles are temporary and
+expire. None of the above proves minimum-glibc or end-to-end ODM coverage.
+
+**Dependency signals requiring a distribution-specific decision:**
+
+- The standalone solves selected `libgdal-core 3.12.2 h4f65170_3` (lock SHA256
+  `7ea31130adc61b2cda72c02f51086deec699bb30ec6f51b37b6c67d02c93d061`),
+  declared `MIT`. The separate earlier Python-3.12 combined test selected a
+  different build `hc2c0581_0`; do not treat these as identical. GDAL's
+  [v3.12.2 license inventory](https://github.com/OSGeo/gdal/blob/v3.12.2/LICENSE.TXT)
+  describes additional source-tree notices, so its `MIT` metadata is not a
+  complete accounting of bundled code. The fresh solves also include GPL-2.0-
+  or-later `librttopo` and `lzo`, GPL-3.0-only `readline`, LGPL packages, and
+  GCC runtime packages labeled `GPL-3.0-only WITH GCC-exception-3.1`. These
+  are separately resolved packages, not automatically evidence of a license
+  conflict or of code copied into the ODM component. Review their applicability
+  and obligations if shipping them as part of an assembled distribution.
+- The orthophoto standalone solve selected `libopencv 4.12.0
+  qt6_py313hbb662ea_612` (lock SHA256
+  `4f28a2b341b24804cc60480e46b28986bd29dfe744856fa52d005c16d03dde76`),
+  declared `Apache-2.0`; the [upstream 4.12.0 license](https://github.com/opencv/opencv/blob/4.12.0/LICENSE)
+  is Apache 2.0. The solve also includes GPL-labeled FFmpeg/x264/x265 and
+  LGPL-3.0-only Qt. These are flags for assessing the actual assembled
+  distribution, not an assertion of an incompatibility.
+- Thirteen `libopenvino` records in that orthophoto solve had **no license
+  field in the solver lock**. [Run 40935909195](https://github.com/Archont561/ODM-conda/actions/runs/40935909195)
+  fetched and SHA256-verified the exact selected `libopenvino 2025.4.1
+  hb56ce9e_1` and `libopenvino-pytorch-frontend 2025.4.1 hecca717_1`
+  packages; their `info/index.json` and `info/about.json` also lacked license
+  fields and contained no regular `info/licenses/` files. Only the metadata
+  archives were inspected, not their payloads or the other 11 packages. The
+  upstream [OpenVINO 2025.4.1 root license](https://github.com/openvinotoolkit/openvino/blob/2025.4.1/LICENSE)
+  is Apache 2.0, but this does not establish the full package license or its
+  third-party contents. Treat the missing metadata and remaining packages as
+  unresolved if redistributing that solve; do not infer a restriction merely
+  from the absent label.
+- The same hash-verified metadata inspection found `MIT` for the selected
+  libgdal-core and `Apache-2.0` for libopencv, but no regular `info/licenses/`
+  files in their metadata archives. Payload notice locations and complete
+  third-party obligations were not inspected. Lack of a metadata file is not
+  proof the whole package lacks notices.
+
+**Next decisions:** Owner review of the exact build-2 package and source evidence,
+its declared direct-component licenses and distribution scope; evaluate the
+flagged dependency obligations for that scope; independently approve each
+current `license_reviewed`, `source_completeness_reviewed`,
+`native_validation_passed` and `publishable` gate if warranted. Obtain separate
+publication authorization and use the source-before-binary protected workflow.
+All four gates remain false for each candidate; no release or upload is performed by this review.
