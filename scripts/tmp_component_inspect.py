@@ -66,3 +66,21 @@ with tempfile.TemporaryDirectory() as temp:
       d=json.loads(about.read_text()); found.append({'cache':entry.name,'license':d.get('license'),'license_family':d.get('license_family'),'license_file':d.get('license_file')})
    notice('fresh solve cached package metadata '+json.dumps(found))
    notice(name+' independent fresh retest PASS')
+
+# Inspect the exact package filenames in this run's fresh-solve log; this is
+# not proof that a later release solve is identical.
+import urllib.request, zstandard
+for filename in ('libpdal-core-2.10.2-he6b862a_5.conda','libgdal-core-3.13.3-h7fa801c_4.conda', 'libgomp-16.2.0-he0feb66_7.conda'):
+ url='https://conda.anaconda.org/conda-forge/linux-64/'+filename
+ with urllib.request.urlopen(url,timeout=90) as response: data=response.read(60*1024*1024)
+ with zipfile.ZipFile(io.BytesIO(data)) as package:
+  member=next(n for n in package.namelist() if n.startswith('info-') and n.endswith('.tar.zst'))
+  with package.open(member) as raw, zstandard.ZstdDecompressor().stream_reader(raw) as reader, tarfile.open(fileobj=reader,mode='r|') as tar:
+   contents={}
+   for item in tar:
+    if item.isfile() and (item.name in ('info/index.json','info/about.json') or item.name.startswith('info/licenses/')):
+     assert item.size < 4*1024*1024
+     contents[item.name]=tar.extractfile(item).read()
+  about=json.loads(contents['info/about.json']); index=json.loads(contents['info/index.json'])
+  licenses={k:sha(v) for k,v in contents.items() if k.startswith('info/licenses/')}
+  notice('exact-name dependency metadata '+json.dumps({'file':filename,'sha256':sha(data),'name':index['name'],'version':index['version'],'build':index['build'],'license':about.get('license'),'licenses':licenses},sort_keys=True))
