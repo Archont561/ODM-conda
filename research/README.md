@@ -1,12 +1,16 @@
 # Experimental source staging
 
-`source-graphs.json` is preliminary research for the six selected components,
-not a completeness attestation or release authorization. Experimental local-only
-OpenMVS and OpenSfM recipes are separately located under `research/recipes/`;
-they are not registered production components and have not passed native builds. The plans
-record immutable archives observed during research; mutable ODM references were
-resolved at the time recorded in their Backlog tasks. They must be reviewed
-again when selecting final release sources.
+`source-graphs.json` records research source plans, not a completeness
+attestation or release authorization. Experimental OpenMVS and OpenSfM recipes
+under `research/recipes/` have passed local-only native builds and tests, but
+are not registered production components and must not be distributed. See
+[the current readiness review](component-readiness-review.md),
+[Open component license review](open-components-license-review.md) and
+[ODM integration prototype](odm-fast-orthophoto-prototype.md) for current status.
+
+The sections below are a historical research record: build numbers, old failures
+and remaining-work statements describe the time they were recorded, not the
+current release gates. Source and license decisions still require review.
 
 To reproduce an isolated staging smoke test (requires network access to GitHub
 or a pre-populated hash-checked cache):
