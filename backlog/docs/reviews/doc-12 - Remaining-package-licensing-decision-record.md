@@ -3,7 +3,7 @@ id: doc-12
 title: Remaining package licensing decision record
 type: other
 created_date: '2026-10-29 10:35'
-updated_date: '2026-10-29 11:10'
+updated_date: '2026-10-29 11:24'
 ---
 # Remaining package licensing decision record
 
@@ -36,3 +36,7 @@ For this review the exact codeload source archives for dem2mesh, RenderDEM, Pois
 The contents and historical CI results above are bounded findings. Complete attribution of unmarked snippets, transitive dependencies, definitive patent status, rights-holder authority, full corresponding source and legal interpretation are not proven. See the linked detailed research documents and TASK-32/34/36/38/40/42/54/55/56 for evidence and unresolved conditions.
 
 **Dem2mesh run correction:** [run 40860898752](https://github.com/Archont561/ODM-conda/actions/runs/40860898752) selected dem2points, not dem2mesh; the artifact was independently inspected. It does not validate dem2mesh build 1.
+
+## Follow-up investigation (2026-10-29)
+
+[Fresh dem2mesh and Poisson retests](https://github.com/Archont561/ODM-conda/actions/runs/40865060880) passed and captured conda-forge test-solve selections. Selected separately downloaded exact-name dependency metadata/regular notice hashes and limitations are in `research/component-readiness-review.md`; solver bytes, build/host and release closure remain unverified. Poisson JPEG comparison traces eight changed files and generated `jconfig.h` to the 2018 visible import, not to an authoritative source or grant. OpenMVS research uses a Boost fallback but the original source still includes restricted material; possible source routes require a separate rights and completeness decision. The local ODM prototype remains blocked on prefix assembly after conda-forge repodata EOF. See TASK-13/32/34/54/55/56. None of this changes owner approval or release gates.

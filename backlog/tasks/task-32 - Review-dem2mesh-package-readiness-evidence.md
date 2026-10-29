@@ -4,7 +4,7 @@ title: Review dem2mesh package-readiness evidence
 status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-29 11:22'
+updated_date: '2026-10-29 11:24'
 labels:
   - packaging
   - review
@@ -55,4 +55,6 @@ Owner-dispatched native workflow https://github.com/Archont561/ODM-conda/actions
 CORRECTION: independent artifact inspection https://github.com/Archont561/ODM-conda/actions/runs/40861743072 verified artifact 12892015321 contains only dem2points build 0, not dem2mesh. The previously recorded run 40860898752 successfully validated dem2points, not dem2mesh build 1. No dem2mesh build 1 native artifact or tests exist from that run. Need an owner dispatch with dem2mesh selected; gates remain false.
 
 Owner-dispatched native run https://github.com/Archont561/ODM-conda/actions/runs/40862757220 at 87a6098968fb25be4ca7e972b86c3dcf73ffbe70 passed build, installed tests, fresh retest, audit and source bundling. Temporary read-only inspection https://github.com/Archont561/ODM-conda/actions/runs/40863260951 verified ZIP SHA256 432b5b58d45d0cc3844a9980afc1ba84b0fb8f92da75af3b93d1863d33236d5f, dem2mesh-only artifact identity, package SHA256 6b1a2e6d64019a6de50e917cc454cf848da3e73049a570acaba2cda5f9d80f7d and source bundle SHA256 a4201af5e73b6752b42c53564282a6b48d2481bafdfb9c7ac7dc1ef110d8ef90. All 244 manifest entries and all seven declared notice bytes matched both payload and metadata; independent fresh retest and current audit passed. ELF RPATH $ORIGIN/../lib; libgdal.so.37. Source completeness, provenance, license/security/ABI and owner approval remain open; gates unchanged.
+
+Read-only run https://github.com/Archont561/ODM-conda/actions/runs/40865060880 reverified ZIPs, passed fresh dem2mesh and Poisson retests, and logged conda-forge test-solve rows plus separately downloaded exact-name selected dependency metadata and regular notice hashes. Details and limitations: research/component-readiness-review.md. Solver bytes not hash-correlated; build/host, release closure, security, legal and source delivery remain open.
 <!-- SECTION:NOTES:END -->

@@ -4,7 +4,7 @@ title: Review poissonrecon-odm package-readiness evidence
 status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-29 11:22'
+updated_date: '2026-10-29 11:24'
 labels:
   - packaging
   - review
@@ -47,4 +47,6 @@ Capture bounded actual fresh-test dependency evidence for the verified native ar
 2026-10-29: native batch run 40844694283 at 2cc2861 and read-only artifact inspection 40846497463 passed build, installed and fresh retests, audit and source-manifest verification. Exact package/source hashes, ELF needs and bounded limitations are recorded in research/component-readiness-review.md. Legal/source completeness, ABI and owner decisions remain open; no release gates changed.
 
 Decision matrix in doc-12 cross-references IJG source notice remediation, successful owner native run 40855859214 and unresolved archive/notice/dependency rights and security review; no gate changed.
+
+Read-only run https://github.com/Archont561/ODM-conda/actions/runs/40865060880 reverified ZIPs, passed fresh dem2mesh and Poisson retests, and logged conda-forge test-solve rows plus separately downloaded exact-name selected dependency metadata and regular notice hashes. Details and limitations: research/component-readiness-review.md. Solver bytes not hash-correlated; build/host, release closure, security, legal and source delivery remain open.
 <!-- SECTION:NOTES:END -->

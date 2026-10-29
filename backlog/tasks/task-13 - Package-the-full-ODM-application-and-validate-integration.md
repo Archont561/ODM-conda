@@ -4,7 +4,7 @@ title: Package the ODM application and validate fast-orthophoto integration (MVP
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-29 11:22'
+updated_date: '2026-10-29 11:24'
 labels:
   - component
   - opendronemap
@@ -58,4 +58,6 @@ MVP scope (approved, see doc-11): fast-orthophoto path only. Removed gates TASK-
 2026-10-28 planning checkpoint: native component research evidence and outstanding licensing/readiness gates are summarized in research/component-readiness-review.md and research/open-components-license-review.md. TASK-35, 37, 39, 41 and 43 remain open; no complete ODM integration validation or authorization to bypass prerequisites is implied.
 
 Local-only prototype: inspected pinned ODM source and staged archive SHA256 5bdf8fe81b9ca47714e8a474139fd206b8090ac4315c2f530a58fcaef29cde5e. Adapter maps ODM paths to an explicit component prefix; verified patched context after moving the source tree. Prefix preflight on odm-dev fails for all nine ODM-specific tools; no combined prefix, genuine binary relocation, launcher execution, dataset run or ABI validation. Candidate Seneca CC0 dataset is 167 images/376 MB, not a verified small fixture; Garfield RGB 28 images/59 MB reportedly fails ODM matching. See research/odm-fast-orthophoto-prototype.md. Production and legal prerequisites remain open.
+
+Restored environment; odm-dev preflight still lacks nine component tools. Local OpenSfM research build verified sources with system CA and applied patch, then failed conda-forge noarch repodata unexpected EOF; no package/prefix/launcher/dataset test. See research/odm-fast-orthophoto-prototype.md.
 <!-- SECTION:NOTES:END -->
