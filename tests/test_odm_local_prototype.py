@@ -85,6 +85,8 @@ def test_run_invokes_prefix_python_without_ambient_pythonpath(tmp_path, monkeypa
     (tmp_path / 'LOCAL-ONLY.txt').touch()
     (tmp_path / 'run.py').touch()
     monkeypatch.setenv('PYTHONPATH', '/wrong/place')
+    monkeypatch.setenv('PROJ_DATA', '/wrong/proj')
+    monkeypatch.setenv('PROJ_LIB', '/wrong/proj')
     monkeypatch.setattr(prototype, 'check_prefix', lambda _: None)
     monkeypatch.setattr(prototype, 'check_imports', lambda _: None)
 
@@ -93,6 +95,8 @@ def test_run_invokes_prefix_python_without_ambient_pythonpath(tmp_path, monkeypa
                            '--fast-orthophoto', 'dataset']
         assert 'PYTHONPATH' not in env
         assert env['ODM_CONDA_LOCAL_PREFIX'] == str(tmp_path)
+        assert env['PROJ_DATA'] == str(tmp_path / 'share/proj')
+        assert env['PROJ_LIB'] == str(tmp_path / 'share/proj')
         return subprocess.CompletedProcess(command, 17)
 
     monkeypatch.setattr(prototype.subprocess, 'run', run)

@@ -1,12 +1,14 @@
-name: Temporary local-only PROJ diagnostics
+name: Temporary local-only ODM integration experiment
 on:
   pull_request:
     branches: [main]
 permissions:
   contents: read
+  actions: read
 jobs:
-  diagnose:
+  experiment:
     runs-on: ubuntu-24.04
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
@@ -16,27 +18,7 @@ jobs:
           pixi-version: v0.82.0
           locked: true
           environments: default
-      - name: Probe coordinate database
-        run: |
-          set -eux
-          pixi init --format pixi --scm github --channel conda-forge --platform linux-64 "$RUNNER_TEMP/probe"
-          pixi add --manifest-path "$RUNNER_TEMP/probe/pixi.toml" 'python>=3.12,<3.13' 'numpy>=1.26,<2' 'pdal==2.10.0' 'libgdal-core==3.12.2' python-pdal gdal pyproj fiona rasterio
-          PREFIX="$RUNNER_TEMP/probe/.pixi/envs/default"
-          env | grep -E '^(PROJ|GDAL|CONDA)' || true
-          ls -ld "$PREFIX/share/proj" "$PREFIX/share/proj/proj.db"
-          "$PREFIX/bin/projinfo" EPSG:4326 | head -10
-          printf 'X,Y,Z\n1,2,3\n' > "$RUNNER_TEMP/point.csv"
-          for mode in default data lib both db; do
-            case "$mode" in
-              default) args=();;
-              data) args=("PROJ_DATA=$PREFIX/share/proj");;
-              lib) args=("PROJ_LIB=$PREFIX/share/proj");;
-              both) args=("PROJ_LIB=$PREFIX/share/proj" "PROJ_DATA=$PREFIX/share/proj");;
-              db) args=("PROJ_DATA=$PREFIX/share/proj/proj.db");;
-            esac
-            set +e
-            out=$(env "${args[@]}" "$PREFIX/bin/pdal" translate "$RUNNER_TEMP/point.csv" "$RUNNER_TEMP/point-$mode.las" --writers.las.a_srs=EPSG:4326 2>&1)
-            code=$?
-            set -e
-            echo "::notice::PROJ $mode exit=$code: ${out//$'\n'/ | }"
-          done
+      - name: Build and test a disposable local environment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: pixi run python scripts/tmp_odm_experiment.py

@@ -111,6 +111,9 @@ def run_local(app: Path, prefix: Path, args: list[str]) -> int:
     env.pop('PYTHONHOME', None)
     env['PYTHONNOUSERSITE'] = '1'
     env['ODM_CONDA_LOCAL_PREFIX'] = str(prefix)
+    # PDAL/GDAL must use the selected prefix's coordinate database, not an
+    # ambient activation or their build-time default. PROJ_LIB is for older PROJ.
+    env['PROJ_DATA'] = env['PROJ_LIB'] = str(prefix / 'share/proj')
     env['PATH'] = str(prefix / 'bin') + os.pathsep + os.defpath
     return subprocess.run([str(prefix / 'bin/python'), '-s', '-E', str(app / 'run.py'), *args], env=env).returncode
 
