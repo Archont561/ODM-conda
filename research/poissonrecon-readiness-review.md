@@ -110,3 +110,23 @@ resulting package, link evidence and runtime dependencies, and review the
 complete source and license/security obligations. All four release gates remain
 false; TASK-55 remains open until its native evidence and mitigation criteria are
 actually met.
+
+### Native run update
+
+Owner-dispatched [run 40835639537](https://github.com/Archont561/ODM-conda/actions/runs/40835639537)
+at `3ffabd94f2b1858b662e8ec66541fe5ac05fe3d5` succeeded after the earlier
+local solve failure. Build 2 passed the map guard, PNG adapter smoke, packaged
+sphere test, fresh retest, artifact audit and source-bundle steps. The run's
+logs report `poissonrecon-odm-13.8-h873e7db_2.conda`, with libpng 1.6.59,
+libjpeg-turbo 3.2.1 and libzlib 1.3.2 in both host and fresh test environments;
+GCC/G++ 14.4.0 and sysroot 2.28 were used to build it. The log reports source
+bundle SHA256 `943f6b5e3e76b1c2a28ec80b8f1213738901aab3f2bd74dafb10029d05237eeb`.
+GitHub reports artifact ID `12880822311` and ZIP SHA256
+`cd3f7ab8b1fe3ebd3b77bd246b02af5b78035095c8c67b64336915a53ccca7d1`.
+The artifact download failed with EOF: its bytes, link inventory, report and
+source bundle were not independently inspected or rehashed here and are
+retention-limited. The guard only checks named link-map inputs and does not
+rule out equivalent code or establish general security. Neither passing CI nor
+this evidence is legal, complete-source, security or publication approval.
+All release gates remain false and TASK-55 remains open for the remaining
+review and evidence.
