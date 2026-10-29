@@ -1,7 +1,9 @@
-import hashlib, re, subprocess, sys, tempfile, zipfile
+import hashlib, json, subprocess, sys, tempfile, urllib.request, zipfile
 from pathlib import Path
+from package_archive import read_package
 
 cases = [('dem2mesh','/tmp/dem.zip','432b5b58d45d0cc3844a9980afc1ba84b0fb8f92da75af3b93d1863d33236d5f'), ('poissonrecon-odm','/tmp/poisson.zip','44c7723e16c9d1bc40e9b1634578836657c02ff4eebf6d13d363146f850903bf')]
+wanted = {'libgdal-core', 'libgomp', 'libjpeg-turbo', 'libpng', 'libzlib'}
 for name, path, digest in cases:
     assert hashlib.sha256(Path(path).read_bytes()).hexdigest() == digest
     with tempfile.TemporaryDirectory() as temp, zipfile.ZipFile(path) as z:
@@ -9,14 +11,24 @@ for name, path, digest in cases:
         assert len(pkgs) == 1, (name, pkgs)
         pkg = Path(temp)/Path(pkgs[0]).name
         pkg.write_bytes(z.read(pkgs[0]))
-        print(f'::notice::{name} verified package {pkg.name}, SHA256 {hashlib.sha256(pkg.read_bytes()).hexdigest()}', flush=True)
         proc = subprocess.run(['rattler-build','test','--package-file',str(pkg),'--channel','conda-forge','--channel-priority','strict','--output-dir',str(Path(temp)/'test'),'--log-style','plain','--color','never'],text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-        output = proc.stdout
-        Path('/tmp/'+name+'-test.log').write_text(output)
-        for line in output.splitlines():
-            if re.search(r'\b(libgdal-core|libgomp|libgcc|libstdcxx|libjpeg-turbo|libpng|zlib|libzlib|_openmp_mutex)\b',line,re.I):
-                print('::notice::'+name+' fresh test '+line.strip(),flush=True)
         if proc.returncode:
-            print('::error::'+name+' retest failed: '+output[-3000:].replace('\n',' | '),flush=True)
-            sys.exit(proc.returncode)
-        print('::notice::'+name+' isolated retest passed; selected solve lines above are not complete closure',flush=True)
+            print('::error::'+name+' retest failed: '+proc.stdout[-3000:].replace('\n',' | '),flush=True); sys.exit(proc.returncode)
+        selected = {}
+        for line in proc.stdout.splitlines():
+            cols = [s.strip(' │') for s in line.split('┆')]
+            if len(cols) >= 4 and cols[0] in wanted:
+                selected[cols[0]] = cols[1:3]
+        assert 'libgomp' in selected and 'libpng' in selected, selected
+        results = {}
+        for dep, (version, build) in selected.items():
+            filename=f'{dep}-{version}-{build}.conda'
+            url='https://conda.anaconda.org/conda-forge/linux-64/'+filename
+            data=urllib.request.urlopen(url,timeout=90).read()
+            p=Path(temp)/filename; p.write_bytes(data)
+            info, payload=read_package(p)
+            idx=json.loads(info['info/index.json'])
+            assert (idx['name'],idx['version'],idx['build'])==(dep,version,build)
+            notices={key:hashlib.sha256(value).hexdigest() for key,value in info.items() if key.startswith('info/licenses/')}
+            results[dep]={'version':version,'build':build,'sha256':hashlib.sha256(data).hexdigest(),'license':idx.get('license'),'info_license_files':notices}
+        print('::notice::'+name+' fresh retest PASS; independently downloaded exact-name dependency packages (solver bytes not hash-correlated): '+json.dumps(results,sort_keys=True),flush=True)
