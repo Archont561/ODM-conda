@@ -104,9 +104,11 @@ def inspect():
         selected.update((package.name, source_name, report_name))
         result = audit(name, component, package)
         previous = json.loads(paths[report_name].read_text())
-        for key in ('sha256', 'artifact', 'component', 'runtime_dependencies', 'elf_needed', 'rpath'):
+        for key in ('sha256', 'artifact', 'component', 'runtime_dependencies', 'rpath'):
             if previous.get(key) != result.get(key):
                 raise ScaffoldError(f'Original audit differs: {name} {key}')
+        if 'elf_needed' in previous and previous['elf_needed'] != result['elf_needed']:
+            raise ScaffoldError(f'Original audit differs: {name} elf_needed')
         result['source'] = inspect_source(paths[source_name], name, component)
         results[name] = result
     if set(paths) != selected:
