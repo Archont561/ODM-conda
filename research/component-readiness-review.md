@@ -126,3 +126,38 @@ listed by the manifest were checked, not certified as complete corresponding
 source. Package identities and hashes do not resolve license, security, relocation
 beyond the tested environments, LAZ coverage or owner approval. The temporary
 inspection workflow and its helper were removed; release gates remain false.
+
+### RenderDEM direct-source license inventory (2026-10-29)
+
+Independently re-fetched the archive at commit
+[93502f2e225be0cebcb8663db3bc5058baa3eb1e](https://github.com/OpenDroneMap/RenderDEM/tree/93502f2e225be0cebcb8663db3bc5058baa3eb1e)
+and verified SHA256 `748cb2839db7d24ee3fdce034e8637829630a9d68ec6561fb76523e25d24af8d`.
+The archive contains exactly 11 regular files: `.gitignore`, `CMakeLists.txt`,
+`LICENSE`, `README.md`, `main.cpp`, `point_io.cpp`, `point_io.hpp`,
+`render.cpp`, `render.hpp`, `utils.hpp`, and `vendor/cxxopts.hpp`. The
+README says AGPLv3, the root LICENSE contains AGPL v3 text, and cxxopts has a
+Jarryd Beck 2014–2022 MIT permission/copyright notice. The six non-vendor
+C++ files have no explicit license headers; reading the small tree and searching
+for copyright/license references found no additional explicit notice there.
+This is a direct-tree inventory, **not** proof of copyright ownership,
+provenance of unmarked snippets, or that the AGPL-only version choice is
+legally settled. The provisional expression remains `AGPL-3.0-only AND MIT`.
+
+CMake compiles `main.cpp`, `point_io.cpp`, and `render.cpp`, includes the
+three local headers and cxxopts, and links PDAL, OpenMP and C++ filesystem.
+The recipe carries the root AGPL text, the extracted cxxopts first comment,
+and MIT packaging notice; the historical source bundle contains the pinned
+upstream archive and packaging files. Determine the exact separately solved
+runtime package licenses/notices and applicable compiler-runtime exceptions;
+inspect the exact proposed artifact and its source offer rather than inferring
+compliance from declared package names. Owner and qualified review must decide
+AGPL grant/version, network-service implications, notices, and source delivery.
+No release check has been changed.
+
+For PoissonRecon, a newly identified missing IJG README in the full upstream
+source archive is tracked by TASK-56 and documented in
+`poissonrecon-readiness-review.md`. For texturing, the source graph was
+re-fetched and all five archive hashes matched; the MVE disclaimer still
+requires source/patent review, and the large Eigen tree and exact dependency
+closure have not been completely reviewed. Earlier artifact and native results
+remain limited to their recorded commits and environments.

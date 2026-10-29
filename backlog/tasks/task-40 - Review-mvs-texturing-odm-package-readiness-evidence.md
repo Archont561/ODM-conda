@@ -1,10 +1,10 @@
 ---
 id: TASK-40
 title: Review mvs-texturing-odm package-readiness evidence
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-28 20:12'
+updated_date: '2026-10-29 10:00'
 labels:
   - packaging
   - review
@@ -29,10 +29,18 @@ Independently review the deliverables produced by TASK-10 for the mvs-texturing-
 - [ ] #3 Record a maintainer-facing readiness decision and remaining owner/platform conditions. Completing this task does not itself flip executable release flags, publish a binary or certify untested platforms.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Review exact pinned texturing source graph, distribution restrictions and existing native/source evidence; document blockers without asserting legal approval.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 2026-10-28 interim evidence triage: research/component-readiness-review.md records run IDs, artifact identities, source evidence and limitations. Per-recipe files match the historical native run but shared scripts changed; actual retained artifact/source inspection, current-commit native evidence as appropriate, dependency notices and qualified release review remain open. This is not approval and prerequisites and acceptance criteria remain unchecked.
 
 2026-10-29: Temporary read-only inspection run 40847899604 re-audited the pinned build 2 artifact, verified 196 listed source hashes and passed a fresh retest. See research/mvs-texturing-license-review.md for identities and limitations.
+
+Re-fetched all five pinned mvs-texturing source archives and verified every SHA256. MVE sfm SIFT/SURF disclaimer, source-distribution rights/patent questions, full Eigen and actual dependency notice inventory remain unresolved. No approval or gate change; see research/mvs-texturing-license-review.md and component-readiness-review.md.
 <!-- SECTION:NOTES:END -->

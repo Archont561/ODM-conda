@@ -146,3 +146,40 @@ The raw map itself was not retained or independently inspected. The package ELF
 NEEDED list includes `libpng16.so.16` and `libjpeg.so.8`; its RPATH is
 `$ORIGIN/../lib`. These checks do not establish complete security, source or
 license compliance. All release gates remain false.
+
+### IJG source-archive notice gap (2026-10-29)
+
+Re-fetched the exact pinned PoissonRecon archive from GitHub codeload and
+verified its SHA256 against `recipes/components.json`. Its 193 regular files
+include 59 under `JPEG/`. `JPEG/jpeglib.h` says it is Independent JPEG Group
+(IJG) software and refers to an accompanying README for distribution terms;
+`JPEG/jversion.h` identifies 6b, 27 March 1998. No README or license file is
+present in `JPEG/`. The recipe's current source bundle embeds the entire
+original archive, so the bundled JPEG source is a source-distribution issue
+regardless of whether its object code enters the linux executable. The current
+notice inventory has no IJG 6b README. This is a concrete unresolved gap, not
+just a hypothetical need for more review.
+
+A [third-party IJG 6b mirror at immutable commit
+`3d8e50d`](https://github.com/jrmwng/jpeg-6b/blob/3d8e50d2fb0d5555d5236570a75f575317b2dc8e/README)
+contains a 6b README, SHA256
+`4cf9c190f184019b61c36bcc49d4a24ffeb2a838c6f1690d6c4db14cfb2d0478`.
+It asks that source distributions include the unaltered README and identify
+changes, and specifies an acknowledgement for executable-only distributions.
+The mirror is evidence, not established authority for these exact vendored
+files. Compared each of the 59 Poisson `JPEG/` files byte-for-byte against the
+mirror, comparing `.cpp` to the corresponding `.c`: 49 match, eight differ,
+and two (`Makefile`, `jconfig.h`) have no same-named counterpart. Some source
+changes are marked inline; a complete change documentation has not been
+verified. The matching `jpeglib.h` SHA256 is
+`b34b3d9897820302cc23ba60217157f75e03db8c537a7d4703ff0bc8c9fc048b`.
+These comparisons support, but do not prove, provenance and applicability of
+that README to every modified file.
+
+On linux, `Src/JPEG.h` includes system JPEG headers, and the inspected CI
+package needs shared libjpeg.so.8; that does not establish all applicable
+binary notice duties or decide terms of the separately resolved libjpeg-turbo
+package. TASK-56 tracks confirming authoritative terms and provenance,
+documenting changes, fixing the actual source-distribution material, and
+reviewing binary notices. Do not distribute an existing source bundle or
+publish this package based on the mirror comparison alone.
