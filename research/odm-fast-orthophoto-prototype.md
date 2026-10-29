@@ -41,3 +41,114 @@ Temporary GitHub-hosted [run 40866808464](https://github.com/Archont561/ODM-cond
 A fresh [minimal reproduction](https://github.com/Archont561/ODM-conda/actions/runs/40868856018) using only the same verified `dem2points-0.0.0.dev20220721-h873e7db_0.conda` (SHA256 `73634decaba27cd3b7a6980a9156b656ca505f97a021b261c72a095ba064f9e8`) and `renderdem-1.0-h873e7db_0.conda` (SHA256 `dc33a1fb2de90eabc0ee241f573bd14f09d4d3481f0fb813bd90f792b4f8b895`) also failed. The solver reported dem2points needs `libgdal-core >=3.11.5,<3.12.0a0`, while renderdem needs `libpdal-core >=2.10,<2.11`; available PDAL candidates did not yield a compatible GDAL 3.11 solve at the time. This is a real packaging-integration blocker, not merely a missing tool or proof that no other future combination could exist. TASK-57 tracks a consistent, rebuilt ABI selection. Do not bypass metadata or weaken ABI checks.
 
 No combined prefix was installed: imports, prototype launcher, relocation and the candidate Seneca dataset run were **not reached**. A combined solve may uncover further constraints even after the two-package conflict is addressed. The experiment uploaded no research sources, binaries or data; rights and all release gates remain unchanged.
+
+### Candidate common GDAL/PDAL baseline (2026-10-29)
+
+A temporary dependency-only Pixi solver experiment on GitHub Actions tested
+Python 3.12, GDAL and Python bindings, PDAL and Python-PDAL, OpenCV 4.12,
+Boost 1.90, TBB 2023.1, libpng, Ceres, rasterio and exiftool. GDAL 3.13
+[did not solve](https://github.com/Archont561/ODM-conda/actions/runs/40904066709)
+with the selected Python binding constraints. GDAL 3.12
+[did solve](https://github.com/Archont561/ODM-conda/actions/runs/40904165751):
+libgdal-core 3.12.2 `hc2c0581_0`, libpdal-core 2.10.0 `h9d23c72_0`,
+libopencv 4.12.0 `qt6_py312h52d6ec5_612`, py-opencv 4.12.0
+`qt6_py312h598be00_612`, python-pdal 3.5.3 `np2py312hadcd02a_4`, and
+TBB 2023.1.0 `haa8c3ee_2`. It was a fresh dependency-only solve, not an
+installation, an exact nine-package solve or an assurance that these particular
+builds remain available or suffice for a complete ODM run.
+
+The dem2points, fastrasterfilter and odm-orthophoto recipes now request
+GDAL `>=3.12,<3.13` for both host and run, with new build number 1; all four
+release checks were reset for each candidate. Existing published build 0
+artifacts and their historical approvals are unchanged. Rebuilding is essential:
+the old binaries and their GDAL 3.11 runtime requirements were not modified.
+Local shared checks passed, but a native dem2points build stopped before
+compilation because conda-forge noarch repodata returned EOF. Owner native
+builds, installed tests, fresh retests, audits and source bundles are required
+for all three candidates, followed by a real nine-component solve, relocation,
+launcher and dataset tests. Other incompatibilities may emerge. TASK-57 remains
+open and no publication is authorized.
+
+### Native candidate artifact review and remaining ABI conflict (2026-10-29)
+
+Owner [run 40906236704](https://github.com/Archont561/ODM-conda/actions/runs/40906236704)
+built the three requested build-1 candidates. Independent temporary
+[inspection 40907763520](https://github.com/Archont561/ODM-conda/actions/runs/40907763520)
+verified artifact `12912041865` ZIP SHA256
+`c217093dfc903c34b47e67620f012385f03ecbb777c82bbe990109eb5ac12623`,
+exactly the three expected packages, their upstream source hashes, all 246
+source-manifest hashes per bundle and exact declared upstream notice bytes in
+payload and metadata. Each passed the current package audit and an independent
+fresh retest. The three package SHA256 values were dem2points
+`f7beed995be059343796b2d4727706a6fbf89a4bcd448a4a85ff0ca7c2c6da8d`,
+fastrasterfilter `916027e4fcbd28da4cb39f164fa19b89b60714d43712866f023b0a7efed1e8af`,
+and odm-orthophoto `1ef443343ce49b8890d1a1915b54cb4c09efb3b17ad7998d4f23d091078bcaf6`.
+The corresponding source-bundle hashes were
+`a12acaf203ad72110a10a40f41af7b398da9db4c364ef07cc8f40c9dcee8c43a`,
+`8b491eeea4afdfa6a517c692718c1c58d5f6c9c115235e4045377f686183b121`, and
+`3d4fe0dd6db8bb4dbbaf80e28a4323e3659de1e5a17c26b7c2b36b353960f1db`.
+
+**The combined solve still failed**, even for only the actual dem2points
+build 1 and historical RenderDEM build 0. Rattler's generated dependency from
+the build-1 host solve requires `libgdal-core >=3.12.4,<3.13.0a0`; RenderDEM
+build 0 requires `libpdal-core >=2.10.2,<2.11.0a0`. The successful earlier
+*dependency-only* solve instead selected GDAL 3.12.2 and PDAL 2.10.0. The
+three candidates have therefore been advanced to build 2 with GDAL
+`>=3.12.2,<3.12.3`, and RenderDEM to build 1 with that GDAL range and PDAL
+`>=2.10.0,<2.10.1` in host and run. This coordinates actual build inputs rather
+than overriding generated ABI metadata. The four new candidates remain
+unbuilt; availability, a shared binary solve, all nine components and actual
+ODM execution remain unverified. Owner native builds and reinspection are
+required; gates remain false.
+
+### Coordinated artifact inspection (2026-10-29)
+
+Owner [run 40908393516](https://github.com/Archont561/ODM-conda/actions/runs/40908393516)
+passed but independent [inspection 40908795526](https://github.com/Archont561/ODM-conda/actions/runs/40908795526)
+confirmed artifact `12910914634`, ZIP SHA256
+`fff273a42ac145811f36447824fc86e03820d13b6a6efd2f04111992100970a2`,
+contains only **fastrasterfilter build 2, odm-orthophoto build 2, and
+renderdem build 1**. It does not contain dem2points.
+
+[Follow-up inspection 40908908691](https://github.com/Archont561/ODM-conda/actions/runs/40908908691)
+verified each source archive and all 246 manifest entries, exact declared
+upstream notice bytes in payload and metadata, current audit and a fresh
+retest. Package SHA256: fastrasterfilter
+`52d42537b1ed1ba80a473e4540392d90f49f95e7e6dbb930445c9a3307f859dd`,
+odm-orthophoto `093c55b75981239cb31dccaf66e44e9a4d2addcfe37e31950870451d2f0bb58f`,
+renderdem `451a291036f9bf11c140464d088884ec8980051c5383a667b75d1be7637fea77`.
+Corresponding source-bundle SHA256 respectively:
+`90c3330cf2afeafd6b49cc46779cffaf6682e97918f747cbacd0c36094a95db2`,
+`651ef9bee5651c94684e0f67fd89e1f29e326c0b06414ce021fbe8dbe206dc20`, and
+`411bfab9e9c99af6848e365ed20afb889d1966115f17923c17fca06517b25dce`.
+All three actual packages installed together with PDAL, Python-PDAL, GDAL and
+exiftool; selected libgdal-core was 3.12.2 `hc2c0581_0`, libpdal-core 2.10.0
+`h9d23c72_0`. Their executable files were present. This test used Python 3.13
+OpenCV dependencies, not the ODM Python 3.12 research environment. It did not
+include dem2points, the other five components, relocation, a launcher or
+dataset run. The owner must dispatch the dem2points build-2 candidate separately;
+all release gates remain closed.
+
+### Four-package compatibility check (2026-10-29)
+
+Owner [run 40909632056](https://github.com/Archont561/ODM-conda/actions/runs/40909632056)
+passed on `d4e40293ff9627e21f806cf7f9a31226e969576d`. Independent
+[inspection 40910163219](https://github.com/Archont561/ODM-conda/actions/runs/40910163219)
+confirmed artifact `12911564893`, ZIP SHA256
+`2e6af14e3eaffa0631c59e875fa114b95376f17a1c7c7de4815e9fc3e7eefb87`,
+contains dem2points build 2, its audit report and source bundle only. Package
+SHA256 `f7077c2eb01f380503d2aa5203e20d78e824a1c4adceaa486f4cbaf22bee8cb0`;
+source bundle SHA256 `9029351b2cccf4eeca82c580f7fab8c68f0f05410cae36ca003380c9d16a8ce8`.
+All 246 manifest entries, declared upstream notices in payload and metadata,
+package audit and isolated fresh retest passed.
+
+The same inspection verified the earlier three package hashes and installed
+all four actual packages together with Python 3.12, py-opencv 4.12, PDAL,
+Python-PDAL, GDAL and exiftool. It selected libgdal-core 3.12.2 `hc2c0581_0`,
+libpdal-core 2.10.0 `h9d23c72_0`, libopencv 4.12.0
+`qt6_py312h52d6ec5_612` and python-pdal 3.5.3 `np2py312hadcd02a_4`;
+all four executable files were present. This resolves the observed **four-package
+solver conflict for this fresh environment**, not full integration: fixtures
+were retested individually, not in the combined prefix, and the nine-component
+solve, relocation, ODM launcher and dataset have not been run. Legal and release
+gates remain unchanged.

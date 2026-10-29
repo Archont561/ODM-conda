@@ -19,7 +19,7 @@ source:
   sha256: ${{ source_sha256 }}
 
 build:
-  number: 0
+  number: 2
   skip: target_platform != "linux-64"
   python:
     # Guard: rattler-build compiles packaged .py files with the HOST prefix's
@@ -40,10 +40,10 @@ requirements:
     - ${{ compiler('cxx') }}
     - ${{ stdlib('c') }}
   host:
-    - libgdal-core >=3.11,<3.12
+    - libgdal-core >=3.12.2,<3.12.3
     - libgomp >=14
   run:
-    - libgdal-core >=3.11,<3.12
+    - libgdal-core >=3.12.2,<3.12.3
     - libgomp >=14
 
 tests:
