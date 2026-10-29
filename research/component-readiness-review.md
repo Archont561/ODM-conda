@@ -515,3 +515,23 @@ newer OpenVINO would require a fresh solve, rebuild, tests, audit and review; no
 such change or safe drop-in replacement is established here. The separate
 odm-orthophoto release gates remain closed; this investigation is not legal
 certification or a release approval.
+
+### Owner gate decision: odm-orthophoto build 2 (2026-10-29)
+
+The owner explicitly approved all four gates for the standalone linux-64
+`odm-orthophoto 0.0.0.dev20250225` build 2 and authorized publication after the
+approval PR passes and merges. The previously accepted component expression is
+`AGPL-3.0-only AND MIT`, including the AGPL section 13 network-use policy.
+The scope excludes redistributing an assembled GDAL/OpenCV/OpenVINO dependency
+environment and does not certify the full ODM application. Native build
+[40908393516](https://github.com/Archont561/ODM-conda/actions/runs/40908393516)
+and independent source/notice inspection and fresh retest
+[40908908691](https://github.com/Archont561/ODM-conda/actions/runs/40908908691)
+are evidence for the earlier candidate, not proof of byte identity of a release
+rebuild. Tests ran on Ubuntu 24.04; the glibc 2.28 floor is untested, and the
+synthetic fixture and incomplete ODM trial are not end-to-end or real-world
+quality validation. Dependency notice and source obligations, including OpenVINO
+and compiled inputs, remain subject to distribution-specific review. The
+protected release must use trusted main HEAD and rebuild, retest and audit,
+attach durable corresponding source before binary upload, and refuse collisions.
+This owner decision is not legal certification.
