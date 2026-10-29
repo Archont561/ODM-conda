@@ -313,7 +313,10 @@ loading; camera IDs must be nonempty, in range, and strictly increasing. A scala
 `views` property remains a count, not camera IDs. A locally compiled patched
 source tree passed generated-scene reconstruction, separate ASCII PLY reconstruction
 (53 vertices / 46 faces), missing/invalid visibility and malformed-schema rejection,
-and cube cleaning. This is not installed-prefix or CI package evidence. Binary PLY
-coverage, general malformed/truncated-input safety, ABI, complete corresponding
+and cube cleaning. Owner-confirmed OpenMVS research run
+[40840595990](https://github.com/Archont561/ODM-conda/actions/runs/40840595990)
+passed the package build, installed-prefix recipe tests, fresh retest and limited
+audit at commit d63550f. No package or source archive was uploaded; this is not
+production-package evidence. Binary PLY coverage, general malformed/truncated-input safety, ABI, complete corresponding
 source and notices, restricted-code review, owner approval and production integration
 remain open. Do not distribute this local-only research package.
