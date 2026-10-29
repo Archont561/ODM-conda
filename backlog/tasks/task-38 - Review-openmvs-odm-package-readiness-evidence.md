@@ -37,4 +37,6 @@ Independently review the deliverables produced by TASK-9 for the openmvs-odm mil
 2026-10-28 interim research-only evidence and unresolved source/license blockers are recorded in research/open-components-license-review.md; the relevant owner-dispatched native build/fresh retest/limited audit passed, but temporary outputs were removed. No production artifact, comprehensive dependency or source audit, license approval or release decision follows. Prerequisites and acceptance criteria remain unchecked.
 
 2026-10-29: OpenMVS archives and four-patch research tree fingerprint locally re-verified. Fixed unregistered production builder omission of the installed mesh-cleaning helper; this is not production recipe integration. New research identity/dependency audit requires owner dispatch; restricted-source, notices and ABI gates remain open.
+
+2026-10-29: owner-dispatched research run 40848319389 selected all at 7f0e5c5 and passed both local-only builds, installed tests, fresh retests and strengthened audits; outputs were discarded. Production, complete source/notices, rights and ABI review remain open.
 <!-- SECTION:NOTES:END -->

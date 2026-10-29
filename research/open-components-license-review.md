@@ -178,3 +178,10 @@ The existing research workflow offers `all`, running both local-only builds and
 retests sequentially with separate temporary directories and no artifacts.
 Owner dispatch is needed to verify the strengthened audit against real packages.
 No release gates were changed.
+
+Owner-dispatched [run 40848319389](https://github.com/Archont561/ODM-conda/actions/runs/40848319389)
+selected `all` at commit `7f0e5c575c620916596b5c08e16f5ee530527b4d` and
+passed both sequential local-only package builds, installed tests, fresh retests
+and strengthened research audits. Temporary outputs were discarded. This does
+not establish production readiness, full dependency or ABI review, rights,
+complete notices, corresponding-source compliance or release approval.

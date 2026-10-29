@@ -35,4 +35,6 @@ Independently review the deliverables produced by TASK-8 for the opensfm-odm mil
 2026-10-28 interim research-only evidence and unresolved source/license blockers are recorded in research/open-components-license-review.md; the relevant owner-dispatched native build/fresh retest/limited audit passed, but temporary outputs were removed. No production artifact, comprehensive dependency or source audit, license approval or release decision follows. Prerequisites and acceptance criteria remain unchecked.
 
 2026-10-29: Local research source archives and exact patched tree/asset hashes verified; research audit now checks package identity and critical runtime declarations. Real-package validation of the new audit requires owner dispatch; rights, dependency and ABI review remain open.
+
+2026-10-29: owner-dispatched research run 40848319389 selected all at 7f0e5c5 and passed both local-only builds, installed tests, fresh retests and strengthened audits; outputs were discarded. Production, complete source/notices, rights and ABI review remain open.
 <!-- SECTION:NOTES:END -->
