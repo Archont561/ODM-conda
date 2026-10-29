@@ -53,5 +53,10 @@ def main():
       selected=[x for x in items if x[0].startswith(direct)]
       flags=[x for x in items if x[2] is None or any(t in x[2].lower() for t in ('gpl','licenseRef'.lower(),'non-commercial','unknown'))]
       summary={'component':name,'count':len(items),'direct':selected,'flags':[[x[0],x[2]] for x in flags],'licenses':dict(Counter(x[2] or 'MISSING' for x in items))}
-      print('::notice::SUMMARY '+json.dumps(summary,separators=(',',':')),flush=True)
+      if name=='odm-orthophoto':
+        print('::notice::SUMMARY '+json.dumps({k:v for k,v in summary.items() if k!='flags'},separators=(',',':')),flush=True)
+        for i in range(0,len(flags),20):
+          print('::notice::FLAGS '+json.dumps({'component':name,'items':[[x[0],x[2]] for x in flags[i:i+20]]},separators=(',',':')),flush=True)
+      else:
+        print('::notice::SUMMARY '+json.dumps(summary,separators=(',',':')),flush=True)
 if __name__=='__main__':main()
