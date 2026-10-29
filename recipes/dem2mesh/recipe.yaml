@@ -14,9 +14,11 @@ source:
   # ODM 3.6.2 references branch 334; this pins its researched head.
   url: https://codeload.github.com/OpenDroneMap/dem2mesh/tar.gz/623c8536941175c630fabe4f1352ddc314d98120
   sha256: ${{ source_sha256 }}
+  patches:
+    - patches/0001-simplify-mit-notice.patch
 
 build:
-  number: 0
+  number: 1
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:
@@ -75,6 +77,7 @@ about:
     - .conda-notices/jmeshlib-grant.txt
     - .conda-notices/CmdLineParser-BSD-3-Clause.txt
     - .conda-notices/Simplify-source-and-MIT-notice.txt
+    - .conda-notices/Simplify-upstream-MIT.txt
     - .conda-notices/packaging-MIT.txt
 
 extra:

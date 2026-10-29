@@ -1,10 +1,10 @@
 ---
 id: TASK-36
 title: Review opensfm-odm package-readiness evidence
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-28 20:12'
+updated_date: '2026-10-29 10:36'
 labels:
   - packaging
   - review
@@ -29,6 +29,12 @@ Independently review the deliverables produced by TASK-8 for the opensfm-odm mil
 - [ ] #3 Record a maintainer-facing readiness decision and remaining owner/platform conditions. Completing this task does not itself flip executable release flags, publish a binary or certify untested platforms.
 <!-- AC:END -->
 
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Reconcile pinned OpenSfM source, runtime assets, third-party rights and local-only restrictions against actual evidence; do not infer owner or legal approval.
+<!-- SECTION:PLAN:END -->
+
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
@@ -37,4 +43,6 @@ Independently review the deliverables produced by TASK-8 for the opensfm-odm mil
 2026-10-29: Local research source archives and exact patched tree/asset hashes verified; research audit now checks package identity and critical runtime declarations. Real-package validation of the new audit requires owner dispatch; rights, dependency and ABI review remain open.
 
 2026-10-29: owner-dispatched research run 40848319389 selected all at 7f0e5c5 and passed both local-only builds, installed tests, fresh retests and strengthened audits; outputs were discarded. Production, complete source/notices, rights and ABI review remain open.
+
+Doc-12 consolidates exact OpenSfM local-only source/asset/grant and vmem blockers and build evidence. Rights and actual dependency graph remain unresolved; no distribution approval.
 <!-- SECTION:NOTES:END -->

@@ -16,9 +16,10 @@ source:
   sha256: ${{ source_sha256 }}
   patches:
     - patches/0001-system-libpng.patch
+    - patches/0002-ijg-readme.patch
 
 build:
-  number: 2
+  number: 3
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:
@@ -77,6 +78,7 @@ about:
     Native build, source and license review are required before distribution.
   license: MIT AND BSD-3-Clause AND Libpng AND Zlib
   license_file:
+    - .conda-notices/IJG-6b-README.txt
     - .conda-notices/PoissonRecon-MIT.txt
     - .conda-notices/PoissonRecon-BSD-3-Clause.txt
     - .conda-notices/libpng-header-and-license.txt
