@@ -53,7 +53,12 @@ def main():
             print(f'::notice::Built {p.name} SHA256 {hashlib.sha256(p.read_bytes()).hexdigest()}', flush=True)
         project = root/'environment'
         run(['pixi', 'init', '--format', 'pixi', '--scm', 'github', '--channel', 'conda-forge', '--platform', 'linux-64', project])
-        run(['pixi', 'add', '--manifest-path', project/'pixi.toml', *packages, 'pdal', 'python-pdal', 'gdal', 'exiftool'])
+        cmd = ['pixi', 'add', '--manifest-path', project/'pixi.toml', *packages, 'pdal', 'python-pdal', 'gdal', 'exiftool']
+        result = subprocess.run(list(map(str, cmd)), text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        print(result.stdout, flush=True)
+        if result.returncode:
+            print('::error::Environment solve failed: '+result.stdout[-8000:].replace('\n', ' | '), flush=True)
+            raise RuntimeError('Environment solve failed')
         prefix = project/'.pixi/envs/default'
         run(['python', ROOT/'scripts/odm_local_prototype.py', 'check', '--prefix', prefix, '--imports'])
         print('::notice::Combined prefix preflight and selected imports PASS', flush=True)
