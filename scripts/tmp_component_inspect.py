@@ -52,7 +52,9 @@ with tempfile.TemporaryDirectory() as temp:
    if result.returncode:
     notice(name+' test failed: '+(result.stderr or result.stdout)[-1000:]); result.check_returncode()
    import re
+   matches = []
    for line in (result.stdout+'\n'+result.stderr).splitlines():
     if re.search(r'(?i)(libpdal|libgdal|libgomp|libgcc|libstdcxx)', line):
-     notice('test-solve '+line[:300])
+     matches.append(line.strip())
+   notice('fresh solve selected dependencies '+json.dumps(matches[:30]))
    notice(name+' independent fresh retest PASS')
