@@ -47,5 +47,11 @@ def main():
         url=row.get('conda','')
         if url.startswith('https://conda.anaconda.org/conda-forge/'):
           items.append([url.rsplit('/',1)[-1],row.get('sha256'),row.get('license')])
-      print('::notice::SOLVE '+json.dumps({'component':name,'records':items},separators=(',',':')),flush=True)
+      from collections import Counter
+      print('FULL-SOLVE '+json.dumps({'component':name,'records':items},separators=(',',':')),flush=True)
+      direct=('libgdal-core-', 'libopencv-', 'libgcc-', 'libstdcxx-', 'libgomp-')
+      selected=[x for x in items if x[0].startswith(direct)]
+      flags=[x for x in items if x[2] is None or any(t in x[2].lower() for t in ('gpl','licenseRef'.lower(),'non-commercial','unknown'))]
+      summary={'component':name,'count':len(items),'direct':selected,'flags':[[x[0],x[2]] for x in flags],'licenses':dict(Counter(x[2] or 'MISSING' for x in items))}
+      print('::notice::SUMMARY '+json.dumps(summary,separators=(',',':')),flush=True)
 if __name__=='__main__':main()
