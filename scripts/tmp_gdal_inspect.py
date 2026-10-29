@@ -6,7 +6,7 @@ from common import config, first_comment
 from package_archive import read_package
 
 sys.excepthook = lambda typ, val, tb: print('::error::' + ' '.join(traceback.format_exception(typ, val, tb)).replace('\n', ' | '), flush=True)
-NAMES = ('dem2points', 'fastrasterfilter', 'odm-orthophoto', 'renderdem')
+NAMES = ('fastrasterfilter', 'odm-orthophoto', 'renderdem')
 REV = '75564b4c0f2869da40151783f54abd378be36a1d'
 def digest(b): return hashlib.sha256(b).hexdigest()
 def notice(s): print('::notice::' + s, flush=True)
@@ -22,7 +22,7 @@ with tempfile.TemporaryDirectory(prefix='gdal-review-', dir=os.environ.get('RUNN
     with zipfile.ZipFile(source) as z:
         members=z.namelist(); notice('Verified artifact ZIP; members '+json.dumps(members))
         condas=[n for n in members if n.endswith('.conda')]
-        assert len(condas)==4 and all(sum(Path(n).name.startswith(name+'-') for n in condas)==1 for name in NAMES), condas
+        assert len(condas)==3 and all(sum(Path(n).name.startswith(name+'-') for n in condas)==1 for name in NAMES), condas
         for name in NAMES:
             pth=next(n for n in condas if Path(n).name.startswith(name+'-'))
             bundle=[n for n in members if Path(n).name.startswith('source-'+name+'-') and n.endswith('.tar.gz')]
@@ -51,12 +51,10 @@ with tempfile.TemporaryDirectory(prefix='gdal-review-', dir=os.environ.get('RUNN
             run(['rattler-build','test','--package-file',pkg,'--channel','conda-forge','--channel-priority','strict','--output-dir',root/('test-'+name),'--log-style','plain'])
             notice(name+' PASS source bundle sha256 '+digest(data)+' entries '+str(count)+' upstream notice bytes verified, current audit and fresh retest passed; '+json.dumps(result,sort_keys=True))
     project=root/'project'; run(['pixi','init','--format','pixi','--scm','github','-c','conda-forge','-p','linux-64',project])
-    run(['pixi','add','--manifest-path',project/'pixi.toml','--no-install',packages[0],packages[-1]])
-    notice('dem2points and RenderDEM actual artifact solve PASS')
     run(['pixi','add','--manifest-path',project/'pixi.toml',*packages,'pdal','python-pdal','gdal','exiftool'])
     output=run(['pixi','list','--manifest-path',project/'pixi.toml','--locked'])
     selected=[x.strip() for x in output.splitlines() if any(n in x for n in ('libgdal-core','libpdal-core','py-opencv','libopencv','python-pdal'))]
-    notice('Four actual artifact packages installed together with selected dependencies: '+' | '.join(selected))
+    notice('Three actual artifact packages installed together with selected dependencies: '+' | '.join(selected))
     for name in NAMES:
         exe=config()['components'][name]['executable']; assert (project/'.pixi/envs/default/bin'/exe).is_file()
-    notice('Four-component install and binary presence PASS; full ODM integration not tested')
+    notice('Three-component install and binary presence PASS; full ODM integration not tested')
