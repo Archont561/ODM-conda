@@ -13,7 +13,7 @@ def notice(s): print('::notice::' + s, flush=True)
 def run(cmd):
     p = subprocess.run([str(x) for x in cmd], text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     if p.returncode:
-        notice('Command failed: '+str(cmd[0])+' '+p.stdout[-5000:].replace('\n', ' | ')); p.check_returncode()
+        notice('Command failed: '+str(cmd[0])+' '+p.stdout[:9000].replace('\n', ' | ')); p.check_returncode()
     return p.stdout
 
 with tempfile.TemporaryDirectory(prefix='gdal-review-', dir=os.environ.get('RUNNER_TEMP')) as temp:
@@ -55,6 +55,8 @@ with tempfile.TemporaryDirectory(prefix='gdal-review-', dir=os.environ.get('RUNN
         matches=[n for n in z.namelist() if Path(n).name.startswith('renderdem-') and n.endswith('.conda')]; assert len(matches)==1
         p=root/Path(matches[0]).name; p.write_bytes(z.read(matches[0])); assert digest(p.read_bytes())=='dc33a1fb2de90eabc0ee241f573bd14f09d4d3481f0fb813bd90f792b4f8b895'; packages.append(p)
     project=root/'project'; run(['pixi','init','--format','pixi','--scm','github','-c','conda-forge','-p','linux-64',project])
+    run(['pixi','add','--manifest-path',project/'pixi.toml','--no-install',packages[0],packages[-1]])
+    notice('dem2points and RenderDEM actual artifact solve PASS')
     run(['pixi','add','--manifest-path',project/'pixi.toml',*packages,'pdal','python-pdal','gdal','exiftool'])
     output=run(['pixi','list','--manifest-path',project/'pixi.toml','--locked'])
     selected=[x.strip() for x in output.splitlines() if any(n in x for n in ('libgdal-core','libpdal-core','py-opencv','libopencv','python-pdal'))]
