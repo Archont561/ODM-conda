@@ -47,8 +47,7 @@ odm-orthophoto = { version = "==0.0.0.dev20250225", build = "h873e7db_2" }
             assert item['sha256'] == digest, (name, item['sha256'], digest)
             print(f"Verified {item['file_name']} SHA256 {digest}", flush=True)
         print(f'::notice::Combined solve has {len(records)} packages; all component hashes match published records', flush=True)
-        line = '; '.join(f"{x['file_name']} SHA256={x.get('sha256') or 'missing'}" for x in records)
-        print(f'::notice::SOLVE {line}', flush=True)
+        (Path(os.environ["RUNNER_TEMP"]) / "four-solve.json").write_text(output)
         prefix = project / '.pixi/envs/default'
         for component in ('fpcfilter', 'dem2points', 'fastrasterfilter', 'odm-orthophoto'):
             fixture = prefix / 'share' / 'odm-conda' / component / 'functional_test.py'

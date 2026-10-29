@@ -2,7 +2,7 @@ name: Temporary four-published-package integration
 on:
   push:
     branches: [arena/3dc0b480-odm-conda]
-    paths: [.github/workflows/tmp-four-published.yml, scripts/tmp_four_published.py]
+    paths: [.github/workflows/tmp-four-published.yml, scripts/tmp_four_published.py, scripts/tmp_four_inventory.py]
 permissions:
   contents: read
 jobs:
@@ -20,3 +20,7 @@ jobs:
           environments: default
       - name: Install published packages and run all four fixtures in the same prefix
         run: pixi run python scripts/tmp_four_published.py
+      - name: Capture dependency inventory 1
+        run: pixi run python scripts/tmp_four_inventory.py 0 160
+      - name: Capture dependency inventory 2
+        run: pixi run python scripts/tmp_four_inventory.py 160 322
