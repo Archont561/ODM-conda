@@ -57,4 +57,12 @@ with tempfile.TemporaryDirectory() as temp:
     if re.search(r'(?i)(libpdal|libgdal|libgomp|libgcc|libstdcxx)', line):
      matches.append(line.strip())
    notice('fresh solve selected dependencies '+json.dumps(matches[:30]))
+   cache=Path.home()/'.cache/rattler/cache/pkgs'
+   found=[]
+   for pat in ('libpdal-core-2.10.2*','libgdal-core-3.13.3*','libgomp-16.2.0*'):
+    for entry in cache.glob(pat):
+     about=entry/'info/about.json'
+     if about.is_file():
+      d=json.loads(about.read_text()); found.append({'cache':entry.name,'license':d.get('license'),'license_family':d.get('license_family'),'license_file':d.get('license_file')})
+   notice('fresh solve cached package metadata '+json.dumps(found))
    notice(name+' independent fresh retest PASS')
