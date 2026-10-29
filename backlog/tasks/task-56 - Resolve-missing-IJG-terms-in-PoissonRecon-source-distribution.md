@@ -4,7 +4,7 @@ title: Resolve missing IJG terms in PoissonRecon source distribution
 status: In Progress
 assignee: []
 created_date: '2026-10-29 10:00'
-updated_date: '2026-10-29 10:21'
+updated_date: '2026-10-29 10:38'
 labels:
   - poissonrecon-odm
 dependencies: []
@@ -42,4 +42,6 @@ Hash-verified Poisson archive contains 59 JPEG files and no JPEG README. A third
 Prepared Poisson build 3: restored the byte-identified IJG 6b README with a hash-pinned patch; package notice list includes it; artifact audit requires matching payload and conda metadata bytes. Both mirrors have the same README SHA256 4cf9c190f184019b61c36bcc49d4a24ffeb2a838c6f1690d6c4db14cfb2d0478. Full textual comparison to the first pinned mirror and standalone README are included in packaging sources. Both patches applied cleanly to the pinned source; research-only dirty-tree source bundle verified 240 manifest hashes including both documents and the patch. Local rattler build 3 applied both patches but failed at compiler dependency solve: conda-forge repodata EOF; no package, installed test or artifact audit ran. Need owner-dispatched native build, fresh retest and artifact/source audit; provenance, distribution sufficiency, exact dependency notices and owner/qualified approval remain open. No release gate changed.
 
 Owner-dispatched native workflow https://github.com/Archont561/ODM-conda/actions/runs/40855859214 at ec83f085461b30c99e3b2f5d6f362c92da8c103d passed build and packaged tests, fresh retests, artifact audit and source bundling; non-published artifact ID 12889646994, GitHub-reported ZIP SHA256 44c7723e16c9d1bc40e9b1634578836657c02ff4eebf6d13d363146f850903bf. GitHub step statuses are reported, but artifact contents and exact component selection have not been independently inspected. Provenance, source rights/completeness, dependency notice review and owner/qualified approval remain open; no release gates changed.
+
+Temporary read-only inspection https://github.com/Archont561/ODM-conda/actions/runs/40859056365 verified ZIP SHA256 44c7723e16c9d1bc40e9b1634578836657c02ff4eebf6d13d363146f850903bf and exact Poisson-only membership. Package SHA256 1e61c71dd24d73802d90b2db89057db1a612548949c9952767b2f765df4e93ab; source bundle SHA256 817e8a5cac0e08a8f5050970dd2b34478b4475391db57daa17207488bc8d0c84; 240 manifest entries verified including README and comparison, with clean build commit ec83f085. Reaudit passed with exact IJG notice bytes in payload and metadata; RPATH $ORIGIN/../lib and ELF needs libpng16.so.16 and libjpeg.so.8. Raw linker map unavailable; metadata constraints are not resolved dependency inventory. Legal/source/provenance decisions remain open; no release gates changed.
 <!-- SECTION:NOTES:END -->
