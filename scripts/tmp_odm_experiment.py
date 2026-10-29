@@ -62,7 +62,7 @@ def main():
             print(f'::notice::Built {p.name} SHA256 {hashlib.sha256(p.read_bytes()).hexdigest()}', flush=True)
         project = root/'environment'
         run(['pixi', 'init', '--format', 'pixi', '--scm', 'github', '--channel', 'conda-forge', '--platform', 'linux-64', project])
-        cmd=['pixi', 'add', '--manifest-path', project/'pixi.toml', *packages, 'pdal', 'python-pdal', 'gdal', 'exiftool']
+        cmd=['pixi', 'add', '--manifest-path', project/'pixi.toml', *packages, 'pdal', 'python-pdal', 'gdal', 'exiftool', 'scikit-image', 'scikit-learn', 'shapely', 'fiona', 'edt', 'piexif', 'trimesh', 'onnxruntime', 'packaging']
         result=subprocess.run(list(map(str,cmd)), text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         print(result.stdout, flush=True)
         if result.returncode:
@@ -70,6 +70,7 @@ def main():
             raise RuntimeError('Combined environment solve/install failed')
         selected=subprocess.run(['pixi','list','--manifest-path',str(project/'pixi.toml'),'--locked'],text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,check=True).stdout
         print('::notice::Nine-package environment installed; selected dependencies: '+' | '.join(x.strip() for x in selected.splitlines() if any(y in x for y in ('libgdal-core','libpdal-core','libopencv','py-opencv','python-pdal'))),flush=True)
+        captured(['pixi','add','--manifest-path',project/'pixi.toml','--pypi','pyodm==1.5.12','pysolar==0.13','pillow-jxl-plugin==1.3.4','pygltflib==1.16.5','codem==0.26.1'])
         prefix = project/'.pixi/envs/default'
         cmd=['python',ROOT/'scripts/odm_local_prototype.py','check','--prefix',prefix,'--imports']
         result=subprocess.run(list(map(str,cmd)),text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
