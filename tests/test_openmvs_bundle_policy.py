@@ -184,3 +184,28 @@ def test_openmvs_rattler_metadata_and_generated_files_are_guarded(tmp_path, monk
     (tree / 'conda_build.sh').symlink_to('/etc/passwd')
     with pytest.raises(ScaffoldError, match='symlink'):
         policy.verify_openmvs_tree(tree)
+
+
+def test_research_tree_uses_separate_patch_and_fingerprint_policy(tmp_path, monkeypatch):
+    import json
+    import openmvs_graph_policy as policy
+
+    tree = tmp_path / 'src'
+    tree.mkdir()
+    (tree / 'CMakeLists.txt').write_text('research')
+    monkeypatch.setattr(policy, 'RESEARCH_EXPECTED_TREE', policy.fingerprint_tree(tree))
+    sources = [
+        {'url': policy.OPENMVS['url'], 'sha256': policy.OPENMVS['sha256'],
+         'patches': ['patches/0001-reconstruct-only.patch', 'patches/0002-visibility-check.patch',
+                     'patches/0003-boost-header-only-system.patch', 'patches/0004-ply-view-indices.patch']},
+        *[{'url': item['url'], 'sha256': item['sha256'], 'target_directory': item['path']}
+          for item in (policy.VCG, policy.EIGEN)],
+    ]
+    (tree / '.source_info.json').write_text(json.dumps({'sources': sources}))
+    policy.verify_openmvs_tree(tree, research=True)
+    with pytest.raises(ScaffoldError, match='metadata'):
+        policy.verify_openmvs_tree(tree)
+    sources[0]['patches'].pop()
+    (tree / '.source_info.json').write_text(json.dumps({'sources': sources}))
+    with pytest.raises(ScaffoldError, match='metadata'):
+        policy.verify_openmvs_tree(tree, research=True)

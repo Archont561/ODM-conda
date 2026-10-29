@@ -36,9 +36,10 @@ EIGEN = {
 }
 
 
-# Hashes file names and bytes after applying the three recipe research patches.
+# Hashes file names and bytes after the respective production or research patches.
 # Directory entries and executable modes are not part of this fingerprint.
 EXPECTED_TREE = (3297, '4d37a931d8ac36a757007ef68661f8e362a2b9372e6916c1ad628b92ea2f558a')
+RESEARCH_EXPECTED_TREE = (3297, '25a71e02cecf70460d78543c104d8d14e9c5b65456183e96c1674d696f60d217')
 
 
 def fingerprint_tree(tree: Path, *, ignore_root_files: frozenset[str] = frozenset()) -> tuple[int, str]:
@@ -92,16 +93,17 @@ def rattler_generated_files(tree: Path, expected: list[dict[str, Any]], componen
     return ignored
 
 
-def verify_openmvs_tree(tree: Path) -> None:
+def verify_openmvs_tree(tree: Path, *, research: bool = False) -> None:
     expected = [
         {'url': OPENMVS['url'], 'sha256': OPENMVS['sha256'],
          'patches': ['patches/0001-reconstruct-only.patch', 'patches/0002-visibility-check.patch',
-                     'patches/0003-boost-header-only-system.patch']},
+                     'patches/0003-boost-header-only-system.patch'] +
+                    (['patches/0004-ply-view-indices.patch'] if research else [])},
         *[{'url': item['url'], 'sha256': item['sha256'], 'target_directory': item['path']}
           for item in (VCG, EIGEN)],
     ]
     ignored = rattler_generated_files(tree, expected, 'OpenMVS')
-    if fingerprint_tree(tree, ignore_root_files=ignored) != EXPECTED_TREE:
+    if fingerprint_tree(tree, ignore_root_files=ignored) != (RESEARCH_EXPECTED_TREE if research else EXPECTED_TREE):
         raise ScaffoldError('Unrecognized OpenMVS source tree fingerprint')
 
 

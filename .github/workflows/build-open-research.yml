@@ -1,4 +1,5 @@
 name: Local-only Open component research build
+run-name: "Local-only research: ${{ inputs.component }}"
 
 on:
   workflow_dispatch:
@@ -31,6 +32,8 @@ jobs:
           pixi-version: v0.82.0
           locked: true
           environments: default agent-tools
+      - name: Record selected research component
+        run: pixi run python scripts/record_open_research_component.py
       - name: Shared local and CI gate
         run: pixi run check
       - name: Build and retest without saving packages or sources

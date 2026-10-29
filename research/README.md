@@ -305,3 +305,33 @@ psutil BSD notice for the vmem provenance investigation. This is not a complete
 notice or legal reconciliation. Owner-dispatched local-only build 1 runs
 40779149681 (OpenMVS) and 40779183804 (OpenSfM) passed native build, fresh
 retest and limited research audit. See `open-components-license-review.md`.
+
+### OpenMVS visibility research build 2 (TASK-53)
+
+The fourth recipe-only patch adds explicit `property list uchar uint view_indices`
+loading; camera IDs must be nonempty, in range, and strictly increasing. A scalar
+`views` property remains a count, not camera IDs. A locally compiled patched
+source tree passed generated-scene reconstruction, separate ASCII PLY reconstruction
+(53 vertices / 46 faces), missing/invalid visibility and malformed-schema rejection,
+and cube cleaning. Owner-confirmed OpenMVS research run
+[40840595990](https://github.com/Archont561/ODM-conda/actions/runs/40840595990)
+passed the package build, installed-prefix recipe tests, fresh retest and limited
+audit at commit d63550f. No package or source archive was uploaded; this is not
+production-package evidence. General malformed/truncated-input safety, ABI, complete corresponding
+source and notices, restricted-code review, owner approval and production integration
+remain open. Do not distribute this local-only research package.
+
+### OpenMVS visibility research build 3 (TASK-53)
+
+The old PLY reader reads binary scalars in native byte order despite accepting
+big-endian headers. On linux-64 a generated big-endian cloud with camera ID 0
+was previously accepted with misinterpreted coordinates. Build 3 rejects
+non-native byte order before reading point-cloud bodies rather than silently
+misreading them; it does not add endian conversion. Locally, the rebuilt source
+passed ASCII with and without scalar `views`, little-endian binary list input,
+and clean rejection of the big-endian sample, as well as the existing cases.
+Owner-confirmed OpenMVS [run 40842013970](https://github.com/Archont561/ODM-conda/actions/runs/40842013970)
+passed build 3 package build, installed-prefix tests, fresh retest and limited
+audit at c7fd5a1. No artifacts were uploaded. The earlier build 2 run is not
+evidence for the revised patch or these additional cases.
+General malformed/truncated-input safety remains unverified.

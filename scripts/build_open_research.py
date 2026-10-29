@@ -33,7 +33,7 @@ def main() -> None:
     if prefix in (build_prefix, source, ROOT, Path('/')) or source in (ROOT, Path('/')):
         raise ScaffoldError('Refusing an unsafe build or installation prefix')
     if name == 'openmvs-odm':
-        verify_openmvs_tree(source)
+        verify_openmvs_tree(source, research=True)
     else:
         verify_opensfm_research_tree(source)
 
@@ -100,7 +100,7 @@ def main() -> None:
     if name == 'openmvs-odm':
         copy_notices({dest: (source / rel, digest) for dest, (rel, digest) in OPENMVS_NOTICES.items()}, license_dir)
         shutil.copy2(build / 'bin/ReconstructMesh', bindir / 'ReconstructMesh')
-        for filename in ('functional_test.py', 'openmvs_synthetic_fixture.py', 'openmvs_pointcloud_fixture.py', 'texrecon_fixture.py'):
+        for filename in ('functional_test.py', 'openmvs_synthetic_fixture.py', 'openmvs_pointcloud_fixture.py', 'openmvs_fixture.py', 'texrecon_fixture.py'):
             shutil.copy2(ROOT / 'scripts' / filename, share / filename)
     else:
         python = prefix / 'bin/python'

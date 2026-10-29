@@ -32,7 +32,7 @@ def verify_payload(name: str, payload: dict[str, bytes]) -> list[str]:
     required = {share + 'SOURCE.txt', licenses + 'packaging-MIT.txt', licenses + 'upstream-LICENSE.txt'}
     if name == 'openmvs-odm':
         required.update({'bin/ReconstructMesh', share + 'functional_test.py', share + 'openmvs_synthetic_fixture.py',
-                         share + 'openmvs_pointcloud_fixture.py', share + 'texrecon_fixture.py'})
+                         share + 'openmvs_pointcloud_fixture.py', share + 'openmvs_fixture.py', share + 'texrecon_fixture.py'})
     else:
         required.update({'bin/opensfm', 'bin/opensfm_run_all', share + 'opensfm_main.py',
                          share + 'opensfm_fixture.py', share + 'opensfm_assets_fixture.py'})

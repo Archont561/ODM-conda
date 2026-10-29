@@ -4,7 +4,7 @@ title: Reject OpenMVS point clouds lacking visibility without crashing
 status: In Progress
 assignee: []
 created_date: '2026-10-28 15:11'
-updated_date: '2026-10-28 20:11'
+updated_date: '2026-10-29 08:05'
 labels:
   - openmvs-odm
   - packaging
@@ -33,6 +33,8 @@ The pinned ODM OpenMVS ReconstructMesh crashes on a separate PLY point cloud wit
 
 <!-- SECTION:PLAN:BEGIN -->
 Keep a research patch and regression fixture; review and integrate the patch into the pinned production source graph when the OpenMVS recipe is ready; validate good and bad inputs in a fresh installed package.
+
+Trace the exact OpenMVS PLY camera-visibility format, build a generated valid separate-PLY fixture and test both valid and missing visibility through the existing research installed-prefix workflow; record native and production/legal limitations.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -43,4 +45,13 @@ Keep a research patch and regression fixture; review and integrate the patch int
 The synthetic MVSI fixture also exercises the patched research executable against separate PLY without camera IDs and scalar-count-only PLY; both fail cleanly. Valid separate PLY support remains unproven and the patch is not integrated into a package.
 
 2026-10-28: local-only native research run 40759635611 at a656bdb passed installed and fresh-environment functional fixtures including generated valid scene and missing-visibility rejection. This does not establish separate PLY input with valid camera indices, production-package coverage, source bundle and notices, or release approval; acceptance criteria remain open.
+
+
+Research build 2: added strict explicit uint32 camera-index list loading and regression fixtures. The four-patch SHA-verified staged tree compiled locally; generated-scene and separate ASCII PLY reconstruction (53 vertices / 46 faces), rejection of missing, invalid and unordered IDs and invalid schemas, and generated cube cleaning passed. Fourth patch SHA256 `c3b350097791445ff222de26d4791e13d2737af9133271a22aac945cce0d5560`; staged tree fingerprint `847c18300e7a6909a4ca4bc18fa6ea43efb1801097369a768e75536de19fdcfd`. This local build-tree evidence alone was not installed-prefix validation; binary PLY and general malformed-file safety remain unverified. Production integration, source bundle, notices/legal, ABI and owner approval remain open; do not mark Done.
+
+2026-10-29: owner confirmed selecting OpenMVS for local-only research run [40840595990](https://github.com/Archont561/ODM-conda/actions/runs/40840595990), at commit d63550f. The workflow passed the build, installed-prefix recipe tests, fresh package retest, and limited research audit. This supports the research package only; it does not resolve production integration, corresponding source, comprehensive notices/legal review, ABI, or approval. No packages or sources were uploaded.
+
+2026-10-29: expanded local tests revealed the upstream PLY parser does not swap non-native binary scalars: a generated big-endian PLY with ID 0 was silently accepted with misinterpreted coordinates. Research build 3 rejects non-native byte order before reading the point-cloud body. Recompiled locally, ASCII with and without scalar views, little-endian binary and big-endian clean rejection passed with all previous fixture cases. Fourth patch now SHA256 `4dbaa9e4fa186ce80f6c3f220c67a89bf80fea347bf798bd64a80fc096f03d6d`, staged fingerprint `25a71e02cecf70460d78543c104d8d14e9c5b65456183e96c1674d696f60d217`. Run 40840595990 applies to build 2 only. Production, rights, notices, ABI and general malformed-input handling remain open.
+
+2026-10-29: owner confirmed OpenMVS selection for [run 40842013970](https://github.com/Archont561/ODM-conda/actions/runs/40842013970) at c7fd5a1. Build 3 passed local-only native package build, installed-prefix tests, fresh package retest and limited audit. Artifacts were discarded. This does not prove production readiness, full malformed-input safety, license completeness, source redistribution rights or ABI compatibility.
 <!-- SECTION:NOTES:END -->
