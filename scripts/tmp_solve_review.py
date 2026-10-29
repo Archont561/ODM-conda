@@ -1,6 +1,7 @@
-import hashlib, json, subprocess, sys, tempfile, urllib.request, zipfile
+import hashlib, json, subprocess, sys, tempfile, traceback, urllib.request, zipfile
 from pathlib import Path
 from package_archive import read_package
+sys.excepthook = lambda typ, value, tb: print("::error::" + " ".join(traceback.format_exception(typ, value, tb)).replace("\n", " | "), flush=True)
 
 cases = [('dem2mesh','/tmp/dem.zip','432b5b58d45d0cc3844a9980afc1ba84b0fb8f92da75af3b93d1863d33236d5f'), ('poissonrecon-odm','/tmp/poisson.zip','44c7723e16c9d1bc40e9b1634578836657c02ff4eebf6d13d363146f850903bf')]
 wanted = {'libgdal-core', 'libgomp', 'libjpeg-turbo', 'libpng', 'libzlib'}
