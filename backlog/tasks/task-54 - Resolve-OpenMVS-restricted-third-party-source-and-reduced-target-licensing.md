@@ -4,7 +4,7 @@ title: Resolve OpenMVS restricted third-party source and reduced target licensin
 status: In Progress
 assignee: []
 created_date: '2026-10-28 15:48'
-updated_date: '2026-10-29 22:24'
+updated_date: '2026-10-29 22:32'
 labels:
   - openmvs-odm
   - license
@@ -25,7 +25,7 @@ ordinal: 54000
 ## Implementation Plan
 
 <!-- SECTION:PLAN:BEGIN -->
-Verify the pinned archive, test a disposable reduction that removes IBFS/TRWS and excluded scene implementations after research patching, then rebuild and test the reduced target with a link-map guard; record exact provenance and legal limitations without publishing the source or binary.
+Implement a deterministic local-only reduction for the exact patched source graph with a manifest and fail-closed checks; test negative cases and fresh native ReconstructMesh build from the reduced copy; record unresolved notice and rights review without distributing any source or binaries.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes

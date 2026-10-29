@@ -1,0 +1,51 @@
+name: Temporary local-only reproducible OpenMVS reduced build
+on:
+  push:
+    branches: [arena/61a5f9d1-odm-conda]
+    paths: [.github/workflows/tmp-openmvs-reduced-build.yml, scripts/openmvs_reduced_tree.py]
+permissions:
+  contents: read
+jobs:
+  experiment:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default
+      - name: Prepare local-only builder to use reduced copy
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/build_open_research.py')
+          text = path.read_text()
+          needle = '        verify_openmvs_tree(source, research=True)\n'
+          addition = '''        from openmvs_reduced_tree import make_reduced_tree
+                  import tempfile, hashlib, json
+                  scratch = Path(tempfile.mkdtemp(prefix='reduced-openmvs-', dir=os.environ['RUNNER_TEMP']))
+                  first = scratch / 'first'
+                  second = scratch / 'second'
+                  manifest = make_reduced_tree(source, first)
+                  other = make_reduced_tree(source, second)
+                  if manifest != other:
+                      raise ScaffoldError('Reduced tree manifests differ')
+                  digest = hashlib.sha256(json.dumps(manifest, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+                  print(f"::notice::Reduced copies agree: {manifest['retained_count']} files; tree {manifest['tree_sha256']}; manifest {digest}", flush=True)
+                  shutil.rmtree(second)
+                  source = first
+          '''
+          import textwrap
+          addition = textwrap.dedent(addition).replace('\n', '\n        ').rstrip() + '\n'
+          assert text.count(needle) == 1
+          path.write_text(text.replace(needle, needle + addition))
+          compile(path.read_text(), str(path), 'exec')
+          PY
+      - name: Build, retest and audit from reduced copy; discard outputs
+        env:
+          RESEARCH_COMPONENT: openmvs
+        run: pixi run python scripts/run_open_research.py
