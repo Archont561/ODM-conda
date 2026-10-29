@@ -4,7 +4,7 @@ title: Package the ODM application and validate fast-orthophoto integration (MVP
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-29 09:35'
+updated_date: '2026-10-29 11:19'
 labels:
   - component
   - opendronemap
@@ -45,7 +45,7 @@ Read the exact ODM reference recorded in components.json before choosing source 
 ## Implementation Plan
 
 <!-- SECTION:PLAN:BEGIN -->
-Develop a local-only fast-orthophoto integration prototype against the hash-pinned ODM source: map context paths to an explicitly supplied Conda prefix, test relocatable paths and launcher preflight, investigate dataset rights, and keep component/legal/end-to-end release prerequisites open.
+Attempt local-only assembly and launch prerequisites using existing locked tools and component builds; record exact blockers and possible next steps without packaging or publishing unreviewed research sources.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes

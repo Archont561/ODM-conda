@@ -4,7 +4,7 @@ title: Resolve OpenMVS restricted third-party source and reduced target licensin
 status: In Progress
 assignee: []
 created_date: '2026-10-28 15:48'
-updated_date: '2026-10-28 22:15'
+updated_date: '2026-10-29 11:19'
 labels:
   - openmvs-odm
   - license
@@ -21,6 +21,12 @@ ordinal: 54000
 - [ ] #2 Prove the supported ReconstructMesh build excludes restricted code and shipped headers or document an independently licensed alternative
 - [ ] #3 Record the actual package and source-bundle contents and required notices before release
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Investigate pinned upstream history, build graph and practical replacement or source-distribution routes; document concrete evidence and blockers without distributing restricted archives or claiming legal approval.
+<!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
 

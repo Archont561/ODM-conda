@@ -4,7 +4,7 @@ title: Review poissonrecon-odm package-readiness evidence
 status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-29 10:36'
+updated_date: '2026-10-29 11:19'
 labels:
   - packaging
   - review
@@ -32,7 +32,7 @@ Independently review the deliverables produced by TASK-7 for the poissonrecon-od
 ## Implementation Plan
 
 <!-- SECTION:PLAN:BEGIN -->
-Inventory pinned Poisson source, notice remediation and native artifact evidence; distinguish source and binary obligations and keep pending decisions open.
+Capture bounded actual fresh-test dependency evidence for the verified native artifacts; inspect available matching dependency notices and record limitations, preserving all owner gates.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
