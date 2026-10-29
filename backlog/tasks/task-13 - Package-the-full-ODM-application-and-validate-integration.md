@@ -4,7 +4,7 @@ title: Package the ODM application and validate fast-orthophoto integration (MVP
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-29 16:18'
+updated_date: '2026-10-29 16:28'
 labels:
   - component
   - opendronemap
@@ -51,6 +51,8 @@ Develop a local-only fast-orthophoto integration prototype against the hash-pinn
 Attempt local-only assembly and launch prerequisites using existing locked tools and component builds; record exact blockers and possible next steps without packaging or publishing unreviewed research sources.
 
 Use a temporary CI job to build and audit the two research components, assemble a disposable environment with hash-verified existing non-published artifacts and required tools, run preflight and launcher, and only if those pass attempt the pinned CC0-licensed Seneca candidate without uploading outputs. Record first blocker; keep production and legal gates unchanged.
+
+Re-run disposable integration with independently verified coordinated artifacts and locally built research components. Capture the actual nine-component solve and run preflight, selected imports, launcher and candidate dataset only when prerequisites pass; record relocation and all blockers, retain no research or dataset artifacts.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
