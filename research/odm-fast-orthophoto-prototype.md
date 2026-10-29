@@ -194,3 +194,29 @@ prefix. This is not yet proof of full dataset success: corrected dataset trials
 and [40927535532](https://github.com/Archont561/ODM-conda/actions/runs/40927535532)
 were canceled while running. Neither final raster metadata validation nor
 relocation of the full installed environment has been demonstrated.
+
+### Published four-component combined prefix (2026-10-29)
+
+[Disposable run 40957790376](https://github.com/Archont561/ODM-conda/actions/runs/40957790376)
+installed the four published channel packages together in a fresh Linux x86-64
+prefix, explicitly pinning fpcfilter 0.2 build 1, dem2points build 2,
+fastrasterfilter 1.0 build 2 and odm-orthophoto build 2. The component SHA256s
+matched public channel records. Python 3.12, py-opencv, PDAL, Python-PDAL,
+GDAL and ExifTool were also explicitly requested; the complete 322-package
+filename/hash inventory is in
+[component-build2-dependency-inventory.md](component-build2-dependency-inventory.md#published-four-component-combined-install-2026-10-29).
+The solve selected Python 3.12.16, libgdal-core 3.12.2 `hc2c0581_0`,
+libopencv 4.12.0 `qt6_py312h52d6ec5_612`, libpdal-core 2.10.0 `h9d23c72_0`,
+and python-pdal 3.5.3 `np2py312hadcd02a_4`.
+
+All four installed functional scripts ran in the **same** prefix and passed
+both their generated-data fixtures and their executable `ldd` checks; Python
+imports for OpenCV, GDAL and PDAL passed. These were separate synthetic
+component tests, not outputs chained across components or a full ODM pipeline.
+They establish only this time-sensitive solve on GitHub-hosted Ubuntu 24.04,
+not older glibc runtimes, real-world photogrammetric quality or redistribution
+rights for a dependency bundle. No packages, data or research binaries were
+uploaded. Previous nine-component dataset trials still require rebuilding the
+local-only research packages and rerunning the corrected PROJ launcher; this
+four-component check neither runs nor validates that dataset. TASK-13 remains
+open.
