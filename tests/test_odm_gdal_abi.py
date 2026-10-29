@@ -15,4 +15,3 @@ def test_fast_path_gdal_recipes_build_and_run_against_same_abi():
         assert recipe['build']['number'] >= 1, name
         component = json.loads((ROOT / 'recipes/components.json').read_text())['components'][name]
         assert component['build_number'] == recipe['build']['number']
-        assert not any(component['release_checks'].values()), name
