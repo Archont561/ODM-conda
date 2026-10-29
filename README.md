@@ -9,7 +9,7 @@ ODM 3.6.2; this repository is **not** a complete ODM or NodeODM distribution.
 
 ## Packages
 
-Published to the existing [`archont561/archont561` channel](https://prefix.dev/archont561/archont561):
+Published to the existing [`archont561/archont561` channel](https://prefix.dev/channels/@archont561/archont561):
 
 | Component | Published version | Build |
 | :-- | :-- | --: |
