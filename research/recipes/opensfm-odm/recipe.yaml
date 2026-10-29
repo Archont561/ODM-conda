@@ -14,7 +14,7 @@ source:
     sha256: 95fe9ba737edea8e5737fb9ddda7031d7ca62fd53f53c1c4e95195f3c7d801fd
     target_directory: _external/vmem
 build:
-  number: 4
+  number: 5
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:
@@ -56,7 +56,7 @@ requirements:
     - flask
     - fpdf2
     - joblib
-    - matplotlib
+    - matplotlib >=3.7,<3.11
     - networkx
     - pillow
     - pyproj

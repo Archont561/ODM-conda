@@ -30,7 +30,7 @@ def verify_index(name: str, index: object) -> None:
     expected = {
         'openmvs-odm': ('0.0.0.dev20260516', 3,
                         {'python', 'libboost', 'libopencv', 'tbb', 'mpfr', 'gmp', 'libgomp'}),
-        'opensfm-odm': ('0.5.2', 4,
+        'opensfm-odm': ('0.5.2', 5,
                         {'python', 'numpy', 'py-opencv', 'ceres-solver', 'suitesparse',
                          'gflags', 'glog', 'libgomp', 'rasterio', 'rawpy'}),
     }
