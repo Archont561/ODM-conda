@@ -100,3 +100,31 @@ than overriding generated ABI metadata. The four new candidates remain
 unbuilt; availability, a shared binary solve, all nine components and actual
 ODM execution remain unverified. Owner native builds and reinspection are
 required; gates remain false.
+
+### Coordinated artifact inspection (2026-10-29)
+
+Owner [run 40908393516](https://github.com/Archont561/ODM-conda/actions/runs/40908393516)
+passed but independent [inspection 40908795526](https://github.com/Archont561/ODM-conda/actions/runs/40908795526)
+confirmed artifact `12910914634`, ZIP SHA256
+`fff273a42ac145811f36447824fc86e03820d13b6a6efd2f04111992100970a2`,
+contains only **fastrasterfilter build 2, odm-orthophoto build 2, and
+renderdem build 1**. It does not contain dem2points.
+
+[Follow-up inspection 40908908691](https://github.com/Archont561/ODM-conda/actions/runs/40908908691)
+verified each source archive and all 246 manifest entries, exact declared
+upstream notice bytes in payload and metadata, current audit and a fresh
+retest. Package SHA256: fastrasterfilter
+`52d42537b1ed1ba80a473e4540392d90f49f95e7e6dbb930445c9a3307f859dd`,
+odm-orthophoto `093c55b75981239cb31dccaf66e44e9a4d2addcfe37e31950870451d2f0bb58f`,
+renderdem `451a291036f9bf11c140464d088884ec8980051c5383a667b75d1be7637fea77`.
+Corresponding source-bundle SHA256 respectively:
+`90c3330cf2afeafd6b49cc46779cffaf6682e97918f747cbacd0c36094a95db2`,
+`651ef9bee5651c94684e0f67fd89e1f29e326c0b06414ce021fbe8dbe206dc20`, and
+`411bfab9e9c99af6848e365ed20afb889d1966115f17923c17fca06517b25dce`.
+All three actual packages installed together with PDAL, Python-PDAL, GDAL and
+exiftool; selected libgdal-core was 3.12.2 `hc2c0581_0`, libpdal-core 2.10.0
+`h9d23c72_0`. Their executable files were present. This test used Python 3.13
+OpenCV dependencies, not the ODM Python 3.12 research environment. It did not
+include dem2points, the other five components, relocation, a launcher or
+dataset run. The owner must dispatch the dem2points build-2 candidate separately;
+all release gates remain closed.
