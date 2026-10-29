@@ -161,3 +161,48 @@ re-fetched and all five archive hashes matched; the MVE disclaimer still
 requires source/patent review, and the large Eigen tree and exact dependency
 closure have not been completely reviewed. Earlier artifact and native results
 remain limited to their recorded commits and environments.
+
+### RenderDEM exact artifact and selected dependency notice review (2026-10-29)
+
+Read-only [inspection run 40862253176](https://github.com/Archont561/ODM-conda/actions/runs/40862253176)
+re-fetched and SHA256-checked the historical batch ZIP, selected the unique
+RenderDEM package and source bundle, reran the current artifact audit and a
+fresh isolated functional retest, and checked all 232 source-manifest entries.
+It extracted the hash-verified upstream archive from the bundle and compared
+both declared upstream notices byte-for-byte with the installed payload and
+Conda metadata: the AGPL root text and cxxopts MIT first comment matched in
+both places. The additional packaging MIT notice exists (the audit checks its
+presence, not exact content). Package SHA256 is
+`dc33a1fb2de90eabc0ee241f573bd14f09d4d3481f0fb813bd90f792b4f8b895`;
+source bundle SHA256 is
+`e1f0e18a36c70c9633fcf42b199b3ecbf2bc0aefe2846ea8cc213f8c17182172`.
+The source manifest excludes itself and README-SOURCE.txt. This confirms exact
+bytes of listed files, not corresponding-source sufficiency.
+
+The independent fresh retest solved `libpdal-core 2.10.2 he6b862a_5`,
+`libgdal-core 3.13.3 h7fa801c_4`, `libgomp 16.2.0 he0feb66_7`, and
+`libgcc`/`libstdcxx 16.2.0` among other dependencies. This is a test solve,
+not a lock for a future distribution, the historical build solve, a complete
+SBOM, or a guarantee that downloaded packages below were the exact bytes used
+by the solver. The temporary inspection separately fetched matching conda-forge
+package filenames and recorded SHA256 and license metadata:
+
+| Package | SHA256 | `info/about.json` license | `info/licenses` evidence |
+| --- | --- | --- | --- |
+| `libpdal-core-2.10.2-he6b862a_5.conda` | `8b31fb486e70cd6a24557f3c6203dd5898acbd87710a97758e4580ac7480165b` | `BSD-3-Clause` | `LICENSE.txt` SHA256 `9ab1261b649806f4884539d5fd49d8f2c9a634762ee52f1ddd2330ef417f5cdf`, matching [PDAL 2.10.2's upstream license](https://github.com/PDAL/PDAL/blob/27008f6241be44585c866a29dfc13bb16d678dab/LICENSE.txt). |
+| `libgdal-core-3.13.3-h7fa801c_4.conda` | `03caa0d547a9a193390c4ca67b1738a290c02fdeaf9b4623f2c469fb35b767a2` | `MIT` | `LICENSE.TXT`, `LICENSE_libgeotiff.txt`, `LICENSE_libtiff.txt`; hashes in inspection annotations. GDAL's license inventory includes third-party terms. |
+| `libgomp-16.2.0-he0feb66_7.conda` | `92a0bb350c7be6a4eedcb4e111c60aefd176018e6b1c009a6e025dbe9bbcd758` | `GPL-3.0-only WITH GCC-exception-3.1` | No regular `info/licenses/` entries were observed by the inspection; it did **not** inspect the package payload, so this is not a claim that the package lacks license text elsewhere. |
+
+These three package metadata records are not an analysis of all transitive
+inputs or the applicability of GCC's exception. Assess their exact versioned
+sources, full notices and actual release solve; confirm source-offer and
+service obligations, exact grant/version choice, and owner/qualified approval.
+No release check is changed.
+
+**Correction to TASK-32:** the owner run initially thought to validate
+candidate dem2mesh build 1 actually selected **dem2points**. Inspection of
+artifact `12892015321` verified ZIP SHA256
+`a04b3651eebe670cb9549904567565f15bf8047c9ef6faf71da720b20c2a67ad` and
+found only the dem2points package, audit and source bundle. It provides no
+native validation of dem2mesh build 1. The owner must dispatch a run selecting
+`dem2mesh`; do not use that run as evidence for it.

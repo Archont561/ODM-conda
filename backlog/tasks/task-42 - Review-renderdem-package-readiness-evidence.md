@@ -4,7 +4,7 @@ title: Review renderdem package-readiness evidence
 status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-29 10:56'
+updated_date: '2026-10-29 11:03'
 labels:
   - packaging
   - review
@@ -49,4 +49,8 @@ Complete a decision-ready RenderDEM license review for the pinned tree and histo
 Re-fetched and SHA256-verified RenderDEM commit 93502f2. Inventoried all 11 direct-source files, root AGPLv3 statement, vendored cxxopts MIT notice and CMake link inputs. The package carries these notices, but direct source findings do not establish provenance, exact dependency closure, grant/version decision or complete corresponding-source offer. Owner/qualified review and release gates remain open; see research/component-readiness-review.md.
 
 Cross-package decision record doc-12 consolidates RenderDEM direct-source findings, candidate grant, actual runtime/source obligations and historical validation; owner/qualified decisions remain open.
+
+Read-only inspection https://github.com/Archont561/ODM-conda/actions/runs/40861743072 reverified the historical multi-component ZIP and RenderDEM build 0 package SHA256 dc33a1fb2de90eabc0ee241f573bd14f09d4d3481f0fb813bd90f792b4f8b895; source bundle SHA256 e1f0e18a36c70c9633fcf42b199b3ecbf2bc0aefe2846ea8cc213f8c17182172, all 232 manifest entries, and exact bytes of both declared upstream notices in package payload and info metadata. Current audit and additional fresh isolated retest passed. Package ELF needs libpdalcpp.so.20 and RPATH $ORIGIN/../lib; dependency constraints do not identify the full resolved closure. No source-rights, owner or release approval inferred.
+
+Follow-up https://github.com/Archont561/ODM-conda/actions/runs/40862253176 independently retested historical RenderDEM build 0 and inspected exact-name matching fresh-solve package metadata for PDAL 2.10.2, GDAL 3.13.3 and libgomp 16.2.0. See research/component-readiness-review.md for package and license-text hashes, bounded provenance, and remaining source/owner decisions. Future release solve and full transitive review remain unverified.
 <!-- SECTION:NOTES:END -->

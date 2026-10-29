@@ -4,7 +4,7 @@ title: Review dem2mesh package-readiness evidence
 status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-29 10:56'
+updated_date: '2026-10-29 10:59'
 labels:
   - packaging
   - review
@@ -49,4 +49,6 @@ Inspect the owner build 1 artifact via temporary read-only CI, verify artifact d
 Hash-verified 53-file dem2mesh archive and reviewed CMake static JMeshLib inputs and source grants. Simplify.h names Sven Forstmann and MIT but does not contain the MIT permission text; project added full MIT text at 04ffc389 in 2019, after the vendored file existed. Candidate build 1 adds that exact text conservatively, keeps the original Simplify source attribution, and audits package payload and metadata bytes. Exact historical provenance and adequacy require review. Local build applied patch but failed at conda-forge compiler solve EOF; no candidate native artifact exists. Dirty-tree source bundle verified 244 manifest hashes. Detailed matrix: doc-12. No release gates changed.
 
 Owner-dispatched native workflow https://github.com/Archont561/ODM-conda/actions/runs/40860898752 at commit 9355b8a8c904726f2b40f011dd43c64f457f22e0 passed build and packaged tests, fresh retest, audit, and source bundle; GitHub artifact 12892015321 reports ZIP SHA256 a04b3651eebe670cb9549904567565f15bf8047c9ef6faf71da720b20c2a67ad. Artifact bytes and exact selection have not been independently inspected. License/source review, provenance, owner approval and all release gates remain open.
+
+CORRECTION: independent artifact inspection https://github.com/Archont561/ODM-conda/actions/runs/40861743072 verified artifact 12892015321 contains only dem2points build 0, not dem2mesh. The previously recorded run 40860898752 successfully validated dem2points, not dem2mesh build 1. No dem2mesh build 1 native artifact or tests exist from that run. Need an owner dispatch with dem2mesh selected; gates remain false.
 <!-- SECTION:NOTES:END -->
