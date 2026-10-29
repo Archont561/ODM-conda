@@ -1,20 +1,20 @@
-name: Temporary local-only ODM solve diagnostics
+name: Temporary ODM dependency matrix
 on:
   pull_request:
     branches: [main]
 permissions:
   contents: read
-  actions: read
 jobs:
-  diagnose:
+  solve:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
           persist-credentials: false
-      - name: Analyze completed integration solve log without uploading it
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh run view 40913749262 --log > "$RUNNER_TEMP/integration.log"
-          python3 scripts/tmp_odm_solve_diagnostic.py "$RUNNER_TEMP/integration.log"
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default
+      - name: Solve dependency matrix without publishing
+        run: pixi run python scripts/tmp_odm_solve_diagnostic.py

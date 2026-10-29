@@ -14,7 +14,7 @@ source:
     sha256: 95fe9ba737edea8e5737fb9ddda7031d7ca62fd53f53c1c4e95195f3c7d801fd
     target_directory: _external/vmem
 build:
-  number: 2
+  number: 3
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:
@@ -36,7 +36,7 @@ requirements:
     - python >=3.12,<3.13
     - numpy
     - libopencv >=4.12,<4.13
-    - eigen
+    - eigen >=3.4,<4
     - ceres-solver
     - suitesparse
     - gflags >=2.2.2,<2.3
