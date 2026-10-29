@@ -45,11 +45,10 @@ odm-orthophoto = { version = "==0.0.0.dev20250225", build = "h873e7db_2" }
         for name, digest in expected.items():
             item = selected[name]
             assert item['sha256'] == digest, (name, item['sha256'], digest)
-            print(f"::notice::Verified {item['file_name']} SHA256 {digest}", flush=True)
+            print(f"Verified {item['file_name']} SHA256 {digest}", flush=True)
         print(f'::notice::Combined solve has {len(records)} packages; all component hashes match published records', flush=True)
-        for group in [records[i:i + 30] for i in range(0, len(records), 30)]:
-            line = '; '.join(f"{x['file_name']} SHA256={x.get('sha256') or 'missing'}" for x in group)
-            print(f'::notice::SOLVE {line}', flush=True)
+        line = '; '.join(f"{x['file_name']} SHA256={x.get('sha256') or 'missing'}" for x in records)
+        print(f'::notice::SOLVE {line}', flush=True)
         prefix = project / '.pixi/envs/default'
         for component in ('fpcfilter', 'dem2points', 'fastrasterfilter', 'odm-orthophoto'):
             fixture = prefix / 'share' / 'odm-conda' / component / 'functional_test.py'
