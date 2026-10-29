@@ -191,3 +191,38 @@ complete notices, corresponding-source compliance or release approval.
 The pinned OpenMVS archive was re-fetched and verified at SHA256 `949d420d4506ccd0189574252c8214acce666de837e400e44682e8ddc13e666b`. In its `SceneReconstruct.cpp`, the default defines `DELAUNAY_MAXFLOW_IBFS`; the existing research patch disables that macro, selecting the existing Boost Graph Boykov-Kolmogorov alternative instead. The same patch removes IBFS/TRWS globbed files from the Math target and excludes `SceneDensify.cpp`, `SceneTexture.cpp` and `SceneRefine.cpp` from the reduced MVS target. The source tree still contains IBFS and TRWS, and omitted scene files reference TRWS; the previously passing named-link guard only addresses specified binary inputs. The replacement also introduces Boost headers whose actual version, license, corresponding source and other obligations require review.
 
 One possible route is to obtain affirmative rights-holder permission for distribution of the exact original archives and terms. Another is to investigate a separately generated, precisely defined reduced source tree excluding restricted files and unused references, retaining all required notices, patches, build scripts and dependencies. The latter is **not** an implemented or approved source bundle: stripping the original archive may itself require rights analysis, and a reproducible tree and full corresponding-source sufficiency would need qualified review and a fresh native rebuild. Upstream [commit 58117204](https://github.com/OpenDroneMap/openMVS/commit/58117204c86bbb11a0b25b26a8987676cf11274d) removed many TRWS files but modified IBFS; it is not the pinned fork and is not evidence of an unrestricted replacement or ODM compatibility. Neither route is permission to distribute the original source or research binary. TASK-54 remains open.
+
+### Disposable reduced-tree build experiment (2026-10-29)
+
+A hash-verified copy of the pinned OpenMVS archive was examined locally. Its
+`libs/Math/IBFS` and `libs/Math/TRWS` directories contain 20 regular files in
+total. For [local-only run 40965276525](https://github.com/Archont561/ODM-conda/actions/runs/40965276525),
+the temporary workflow at commit `0e3db8858eeb588702c7c0a62a68e24b0edcccf2`
+first used the existing exact patched-tree graph check, then deleted those two
+directories and the excluded `SceneDensify.cpp`, `SceneRefine.cpp` and
+`SceneTexture.cpp` from the **disposable staged tree before CMake**. The normal
+reduced-target builder then compiled `ReconstructMesh`, checked its GNU link
+map for named restricted and excluded inputs, ran installed and fresh retests,
+and passed the limited package audit. No source, archive or package was uploaded.
+The retained 3,274-file tree fingerprint was
+`e64c1718c05d58ac74051a8a0a216febbcac7144898cea022d378af427549489`,
+computed by the existing path/content fingerprint after ignoring rattler's
+verified generated root files; it includes the staged VCG and Eigen trees,
+does not include modes or directory entries, and is **not an archive hash**.
+
+This demonstrates feasibility of this specific reduced build, not that it is
+an acceptable corresponding-source distribution: original archives were
+fetched before pruning, no independently reproducible distribution archive or
+manifest was produced, and no rights-holder permission or legal decision was
+obtained. The patch and remaining source can still contain references to the
+excluded implementations; deleting named paths does not prove no restricted
+code exists elsewhere. CMake configuration, synthetic fixtures and a named-input
+link-map check do not establish complete behavior, downstream compatibility,
+license provenance, complete notices or independent source sufficiency. The
+experiment excludes densification, texturing and refinement and is not the full
+OpenMVS product. A future candidate must define and independently verify a
+reproducible source transformation and complete build/source/notice inventory,
+review the Boost/CGAL/VCG/Eigen and other inputs, obtain qualified review of
+modification and distribution rights, and repeat native and integration tests.
+The original archive and research package remain **not authorized for
+redistribution**, and all TASK-54 criteria and release gates remain open.
