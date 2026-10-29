@@ -226,3 +226,48 @@ review the Boost/CGAL/VCG/Eigen and other inputs, obtain qualified review of
 modification and distribution rights, and repeat native and integration tests.
 The original archive and research package remain **not authorized for
 redistribution**, and all TASK-54 criteria and release gates remain open.
+
+### Reproducible local-only reduced tree (2026-10-29)
+
+`scripts/openmvs_reduced_tree.py` prepares a **local-research-only** copy from
+the exact staged graph with all four research patches applied. It verifies the
+existing OpenMVS/VCG/Eigen graph fingerprint before copying; excludes the named
+IBFS and TRWS directories and the three excluded scene implementations; requires
+existing root, VCG and Eigen notices; and checks the retained 3,274-file
+path/content fingerprint from the preceding experiment. It refuses an existing
+or overlapping destination and symlinks, leaves its input unchanged, and emits
+a sorted JSON manifest of retained paths, SHA256s and file modes. File modes
+are recorded in the manifest but are **not** part of the existing tree
+fingerprint. The manifest does not assert the legal provenance or completeness
+of any file. It produces neither a distribution archive nor approval to share
+its output. Given an already staged exact research tree, the local-only tool is:
+
+```sh
+pixi run python scripts/openmvs_reduced_tree.py \
+  --source /path/to/verified-patched-research-tree \
+  --destination /path/to/new-local-only-tree > /path/to/local-manifest.json
+```
+
+[Disposable run 40967069992](https://github.com/Archont561/ODM-conda/actions/runs/40967069992)
+created two separate copies from the same verified staged input; their manifests
+were identical. The shared path/content fingerprint was
+`e64c1718c05d58ac74051a8a0a216febbcac7144898cea022d378af427549489`,
+and SHA256 of the canonical JSON manifest (sorted keys, compact separators)
+was `560cc78034924dd9fd83b02c4fba448a66612fc493b86ae8c09da6f0b338ce3b`.
+The experiment switched the research build's CMake source to the first reduced
+copy, then built ReconstructMesh, passed the named-input link-map guard,
+installed tests, a fresh retest and limited package audit. The temporary CI
+workflow and all copies, packages and fetched archives were discarded; the
+exact temporary builder adaptation is available in the run's commit
+`f576151137d4f0b2398c25a6dda09dc385a3d564`. Unit tests exercise deterministic
+copying and reject invalid input, symlinks, overlapping/existing destinations
+and unexpected reduced fingerprints.
+
+Two copies in one run demonstrate deterministic transformation of that input,
+not a guarantee across filesystems or future toolchains. The original full
+archive is still required to prepare the staged input and is not approved for
+distribution. The limited notice checks cover only known root/VCG/Eigen notices,
+not all retained files or transitive dependencies; named path removal does not
+rule out copied restricted code elsewhere. A distributable corresponding-source
+plan, full notices/provenance, permissions and qualified review remain open.
+No recipe, component gate or publication status is changed.
