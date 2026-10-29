@@ -233,3 +233,108 @@ Selected matching-name conda-forge package archives were downloaded independentl
 - `libzlib 1.3.2 h25fd6f3_3`: metadata `Zlib`; archive SHA256 `eb8a0db0aa570124f7d2a93d7c7f596e3390df5e047818d873baad32985fc736`; `info/licenses/LICENSE` SHA256 `e32ff4e00d9d94930537635291da39e7e612703334bf6fde8c7f1686fe8a45a2`.
 
 In particular, no regular metadata license files were observed for the matching libgdal-core 3.11.5 and libgomp archives. This does not establish their absence elsewhere in the packages; payloads were not inspected. Obtain and review actual distribution bytes, notices, all transitive obligations and source offers before owner decisions.
+
+## Release review: three GDAL-aligned build-2 candidates (2026-10-29)
+
+This is an engineering evidence and decision checklist, not legal advice, an
+owner release approval, or a release. Scope is Linux x86-64 CPU only. The
+published build-0 decisions for these components are historical; they do not
+turn the four current build-2 release checks on. The current
+`recipes/components.json` is authoritative: all four checks remain **false**
+for every candidate. Some wording in Backlog doc-6 describes the earlier
+publication and must not be read as the current gate state.
+
+### Evidence common to all three
+
+- These are genuine rebuilds with host and runtime `libgdal-core >=3.12.2,<3.12.3`,
+  not relabeled build-0 artifacts. Build 0 remains the earlier published build.
+  Existing prior owner decisions on each component's license expression are
+  recorded in Backlog TASK-3, TASK-28 and TASK-30; those decisions are not
+  a new approval of the changed build, dependency solve or release gates.
+- Owner-dispatched builds [40908393516](https://github.com/Archont561/ODM-conda/actions/runs/40908393516)
+  (fastrasterfilter and odm-orthophoto) and
+  [40909632056](https://github.com/Archont561/ODM-conda/actions/runs/40909632056)
+  (dem2points) passed. Independent inspection runs
+  [40908908691](https://github.com/Archont561/ODM-conda/actions/runs/40908908691)
+  and [40910163219](https://github.com/Archont561/ODM-conda/actions/runs/40910163219)
+  verified identities and declared upstream notices in package payload and
+  metadata, source-bundle hashes, the current package audit, and fresh retests.
+  The four-package installation selected GDAL 3.12.2 and PDAL 2.10.0 and checked
+  executable presence; individual functional fixtures were tested separately,
+  not in that combined prefix. Full ODM integration is not established.
+- Artifacts 12910914634 and 12911564893 were not expired on 2026-10-29;
+  GitHub reported expiry on 2026-11-12. They are evidence, not a durable
+  corresponding-source offer. A release must generate and attach its own exact
+  source bundle before uploading its binary, and must not overwrite an existing
+  package or release asset. Prior test hashes do not assert byte identity with
+  a future rebuild or its dependency solve.
+- Tested on GitHub-hosted Ubuntu 24.04, not every Linux distribution. The
+  declared glibc 2.28 floor is a toolchain target, not a test on glibc 2.28.
+  No other platform is certified. Per-component fixture limitations in the
+  original readiness tasks still apply.
+
+### fastrasterfilter 1.0 build 2
+
+- Source: [pinned tree and AGPLv3 README](https://github.com/OpenDroneMap/FastRasterFilter/tree/c5d6c074619e573f641c808f9bdd9d431a0b7e4b);
+  vendored [mf2d notice](https://github.com/OpenDroneMap/FastRasterFilter/blob/c5d6c074619e573f641c808f9bdd9d431a0b7e4b/vendor/mf2d/LICENSE)
+  identifies MIT. Recipe proposes `AGPL-3.0-only AND MIT`; TASK-30 records the
+  earlier owner confirmation of the expression and AGPL section 13 policy.
+  Vendored cxxopts and packaging notices also ship.
+- Artifact `fastrasterfilter-1.0-h873e7db_2.conda` SHA256
+  `52d42537b1ed1ba80a473e4540392d90f49f95e7e6dbb930445c9a3307f859dd`;
+  reviewed source bundle SHA256
+  `90c3330cf2afeafd6b49cc46779cffaf6682e97918f747cbacd0c36094a95db2`.
+- Remaining: review the exact changed GDAL 3.12.2 dependency graph and applicable
+  notices/source obligations, recheck license/source completeness and native
+  evidence for this build, and obtain the owner's explicit gate decision and
+  separate publication authorization. Prior synthetic tests do not establish
+  nodata-path behavior or real-world DEM quality (TASK-30).
+
+### odm-orthophoto 0.0.0.dev20250225 build 2
+
+- Source: [pinned tree](https://github.com/OpenDroneMap/odm_orthophoto/tree/55b66d87cc168b8ab287bf10e81d4da0890f84f1)
+  and [AGPLv3 license text](https://github.com/OpenDroneMap/odm_orthophoto/blob/55b66d87cc168b8ab287bf10e81d4da0890f84f1/LICENSE).
+  Recipe proposes `AGPL-3.0-only AND MIT`; TASK-28 and doc-6 record the earlier
+  owner license and network-use policy decision. The upstream license text alone
+  does not independently prove an only-versus-or-later grant.
+- Artifact `odm-orthophoto-0.0.0.dev20250225-h873e7db_2.conda` SHA256
+  `093c55b75981239cb31dccaf66e44e9a4d2addcfe37e31950870451d2f0bb58f`;
+  source bundle SHA256
+  `651ef9bee5651c94684e0f67fd89e1f29e326c0b06414ce021fbe8dbe206dc20`.
+- Remaining: review the changed GDAL and selected OpenCV/native dependency
+  graph and its source/notice obligations, recheck source and native evidence
+  for this build, and obtain the owner's explicit gate decision and separate
+  publication authorization. A generated intermediate orthophoto in a failed
+  ODM trial is not final-output or end-to-end validation.
+
+### dem2points 0.0.0.dev20220721 build 2
+
+- Source: [pinned tree](https://github.com/OpenDroneMap/dem2points/tree/4527122615f41044bde0e79850464ed33549ceeb),
+  [GPLv3 text](https://github.com/OpenDroneMap/dem2points/blob/4527122615f41044bde0e79850464ed33549ceeb/LICENSE),
+  and [BSD three-clause parser notice](https://github.com/OpenDroneMap/dem2points/blob/4527122615f41044bde0e79850464ed33549ceeb/src/CmdLineParser.h).
+  Recipe proposes `GPL-3.0-only AND BSD-3-Clause AND MIT`; TASK-23 records the
+  earlier owner-confirmed version choice for the initial release. The license
+  text by itself does not resolve the upstream grant's version choice.
+- Artifact `dem2points-0.0.0.dev20220721-h873e7db_2.conda` SHA256
+  `f7077c2eb01f380503d2aa5203e20d78e824a1c4adceaa486f4cbaf22bee8cb0`;
+  source bundle SHA256
+  `9029351b2cccf4eeca82c580f7fab8c68f0f05410cae36ca003380c9d16a8ce8`.
+- Remaining: review the changed GDAL 3.12.2 dependency graph and corresponding
+  source/notice obligations, recheck source and native evidence for this build,
+  and obtain the owner's explicit gate decision and separate publication
+  authorization. Upstream cautions that it has limited testing outside ODM.
+
+### Release decision checklist
+
+For **each** component, before flipping gates: review the exact recipe/source
+and bundle, package/installed fixture/audit, actual finalized dependency
+identities and licenses, distribution and source availability, target limits,
+license obligations and any new upstream changes. Have the owner explicitly
+approve each of `license_reviewed`, `source_completeness_reviewed`,
+`native_validation_passed` and `publishable` for that build. Review with qualified
+counsel where appropriate. `pixi run release-check --tag` for all three current
+build-2 tags was executed on 2026-10-29 and correctly blocked all four gates.
+Then, only with separate authorization, recheck channel/asset collisions and
+current OIDC permissions, use the exact component tag on clean trusted
+main HEAD, and let the protected workflow rebuild, retest, audit and provide
+source before the binary. No new release has been authorized here.
