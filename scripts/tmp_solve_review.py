@@ -1,6 +1,6 @@
-import hashlib, json, subprocess, sys, tempfile, traceback, urllib.request, zipfile
+import hashlib, json, subprocess, sys, tarfile, tempfile, traceback, urllib.request, zipfile
+import zstandard
 from pathlib import Path
-from package_archive import read_package
 sys.excepthook = lambda typ, value, tb: print("::error::" + " ".join(traceback.format_exception(typ, value, tb)).replace("\n", " | "), flush=True)
 
 cases = [('dem2mesh','/tmp/dem.zip','432b5b58d45d0cc3844a9980afc1ba84b0fb8f92da75af3b93d1863d33236d5f'), ('poissonrecon-odm','/tmp/poisson.zip','44c7723e16c9d1bc40e9b1634578836657c02ff4eebf6d13d363146f850903bf')]
@@ -27,7 +27,10 @@ for name, path, digest in cases:
             url='https://conda.anaconda.org/conda-forge/linux-64/'+filename
             data=urllib.request.urlopen(url,timeout=90).read()
             p=Path(temp)/filename; p.write_bytes(data)
-            info, payload=read_package(p)
+            with zipfile.ZipFile(p) as outer:
+            info_name = next(n for n in outer.namelist() if n.startswith('info-') and n.endswith('.tar.zst'))
+            with outer.open(info_name) as compressed, zstandard.ZstdDecompressor().stream_reader(compressed) as stream, tarfile.open(fileobj=stream,mode='r|') as tar:
+                info = {m.name: tar.extractfile(m).read() for m in tar if m.isfile() and (m.name == 'info/index.json' or m.name.startswith('info/licenses/'))}
             idx=json.loads(info['info/index.json'])
             assert (idx['name'],idx['version'],idx['build'])==(dep,version,build)
             notices={key:hashlib.sha256(value).hexdigest() for key,value in info.items() if key.startswith('info/licenses/')}
