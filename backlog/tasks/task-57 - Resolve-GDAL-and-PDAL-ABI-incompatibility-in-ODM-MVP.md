@@ -1,9 +1,10 @@
 ---
 id: TASK-57
 title: Resolve GDAL and PDAL ABI incompatibility in ODM MVP
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-10-29 11:53'
+updated_date: '2026-10-29 15:40'
 labels:
   - integration
   - bug
@@ -24,3 +25,9 @@ Disposable integration failed to solve dem2points build 0 with renderdem build 0
 - [ ] #2 Build and individually retest/audit/source-bundle changed packages with appropriately bumped build versions; retain owner release gates.
 - [ ] #3 Install all nine components into a fresh disposable environment, verify imports, binaries and relocation, and continue TASK-13 integration without publishing unapproved artifacts.
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Use a disposable CI solver to identify an attainable GDAL/PDAL/OpenCV runtime baseline; bump and rebuild the affected GDAL-dependent recipes with precise host/run ABI pins, reset changed release gates and keep published historical releases distinct. Validate rendered metadata and fixtures locally, request owner native multi-recipe build, then independently verify artifacts and assemble all nine components for integration. Never relax metadata to conceal ABI incompatibility.
+<!-- SECTION:PLAN:END -->
