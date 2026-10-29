@@ -30,14 +30,14 @@ with tempfile.TemporaryDirectory(prefix='openmvs-review-', dir=os.environ['RUNNE
     hits = [x for x in records if x.get('name') in names]
     assert any(x.get('name') == 'cgal-cpp' for x in hits), [x.get('name') for x in records]
     compact = [{k:x.get(k) for k in ('name','version','build','sha256','license','fn')} for x in sorted(hits, key=lambda a:a['name'])]
-    print('::notice::Native host metadata ' + json.dumps(compact, separators=(',',':')), flush=True)
+    print('REPORT::Native host metadata ' + json.dumps(compact, separators=(',',':')), flush=True)
     builds = list(out.glob('bld/*/reduced-openmvs-*/first/.research-build'))
     assert len(builds) == 1, builds
     dep = subprocess.check_output(['ninja','-C',str(builds[0]),'-t','deps'],text=True)
     host = str(prefixes[0].parent) + '/include/'
     for library in ('CGAL/','boost/'):
         paths = sorted({line.strip().split(host,1)[1] for line in dep.splitlines() if host in line and (host+library) in line})
-        print(f'::notice::{library} native dependency trace count={len(paths)} sample=' + ','.join(paths[:15]),flush=True)
+        print(f'REPORT::{library} native dependency trace count={len(paths)} sample=' + ','.join(paths[:15]),flush=True)
         headers = [prefixes[0].parent/'include'/p for p in paths]
         labels = Counter()
         for header in headers:
@@ -45,11 +45,11 @@ with tempfile.TemporaryDirectory(prefix='openmvs-review-', dir=os.environ['RUNNE
             spdx = re.search(r'SPDX-License-Identifier:\s*([^\r\n*]+)', text)
             label = spdx.group(1).strip() if spdx else ('BSL-reference' if 'Boost Software License' in text else 'no-SPDX-or-Boost-reference-in-first-10k')
             labels[label] += 1
-        print(f'::notice::{library} header marker counts ' + json.dumps(labels,sort_keys=True),flush=True)
+        print(f'REPORT::{library} header marker counts ' + json.dumps(labels,sort_keys=True),flush=True)
         if library == 'CGAL/':
             for item in ('CGAL/AABB_tree.h','CGAL/AABB_traits_3.h'):
                 file = prefixes[0].parent/'include'/item
-                print(f'::notice::installed {item} SHA256={hashlib.sha256(file.read_bytes()).hexdigest()}',flush=True)
+                print(f'REPORT::installed {item} SHA256={hashlib.sha256(file.read_bytes()).hexdigest()}',flush=True)
     # Compare actual installed package headers with public upstream tag, inside scratch only.
     archive = root/'cgal-tag.tar.gz'
     run('curl', '-fsSL', 'https://codeload.github.com/CGAL/cgal/tar.gz/refs/tags/v6.2.1', '-o', archive)
@@ -94,9 +94,9 @@ with tempfile.TemporaryDirectory(prefix='openmvs-review-', dir=os.environ['RUNNE
     dep_lines = {line.strip() for line in dep.splitlines() if '/Eigen/' in line}
     host_eigen = {line for line in dep_lines if line.startswith(host)}
     vendored_eigen = {line for line in dep_lines if '/_external/eigen/' in line}
-    print(f'::notice::Eigen path counts host={len(host_eigen)} vendored={len(vendored_eigen)} total={len(dep_lines)}',flush=True)
+    print(f'REPORT::Eigen path counts host={len(host_eigen)} vendored={len(vendored_eigen)} total={len(dep_lines)}',flush=True)
     matches=list((out/'linux-64').glob('openmvs-odm-*.conda'))
     assert len(matches)==1, matches
     run('rattler-build','test','--package-file',matches[0],'--channel','conda-forge','--channel-priority','strict','--output-dir',root/'retest','--log-style','plain')
     run('python', ROOT/'scripts/audit_open_research.py', 'openmvs-odm', matches[0])
-    print('::notice::Reduced-tree host-inspection build, fresh retest and audit passed; all inputs discarded', flush=True)
+    print('REPORT::Reduced-tree host-inspection build, fresh retest and audit passed; all inputs discarded', flush=True)
