@@ -115,6 +115,9 @@ def inspect():
         results[name] = result
     if set(paths) != selected:
         raise ScaffoldError('Unexpected artifact contents or component selection')
+    for name, result in results.items():
+        summary = json.dumps(result, sort_keys=True, separators=(',', ':'))
+        print(f'::notice title=Inspection {name}::{summary}', flush=True)
     print('BATCH INSPECTION RESULT (not legal, security, or source completeness approval):')
     print(json.dumps({'artifact': ARTIFACT, 'zip_sha256': ZIP_SHA, 'packages': results}, indent=2, sort_keys=True), flush=True)
     print('PASS all three packages and source manifests inspected; release gates remain closed', flush=True)
