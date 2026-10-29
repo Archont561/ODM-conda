@@ -1,5 +1,6 @@
 """Disposable CI-only ODM prototype experiment. Never upload outputs."""
 import hashlib
+import json
 import os
 import subprocess
 import sys
@@ -93,6 +94,13 @@ def main():
         assert subprocess.check_output(['git','-C',str(data),'rev-parse','HEAD'],text=True).strip() == '9220acfdca75cc5e2dd6d27fe48550c5ae0877f2'
         projects=root/'projects'; projects.mkdir(); data.rename(projects/'seneca')
         captured([*launch, '--skip-3dmodel', '--project-path', projects, 'seneca'])
-        print('::notice::Candidate dataset fast-orthophoto command completed; outputs not independently reviewed and not retained', flush=True)
+        ortho=projects/'seneca/odm_orthophoto/odm_orthophoto.tif'
+        if not ortho.is_file() or ortho.stat().st_size == 0:
+            raise RuntimeError('Missing or empty orthophoto')
+        info=subprocess.run([str(prefix/'bin/gdalinfo'), '-json', str(ortho)], text=True, capture_output=True, check=True, env={**os.environ, 'PROJ_DATA': str(prefix/'share/proj'), 'PROJ_LIB': str(prefix/'share/proj')})
+        meta=json.loads(info.stdout)
+        assert len(meta['size']) == 2 and all(x > 0 for x in meta['size']) and len(meta['bands']) >= 3
+        assert meta.get('coordinateSystem') and meta.get('geoTransform')
+        print(f"::notice::Candidate dataset command and basic raster metadata PASS; size={meta['size']}; bands={len(meta['bands'])}; no quality or legal validation; outputs discarded", flush=True)
 
 if __name__ == '__main__': main()
