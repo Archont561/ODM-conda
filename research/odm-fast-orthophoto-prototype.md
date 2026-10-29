@@ -68,3 +68,35 @@ builds, installed tests, fresh retests, audits and source bundles are required
 for all three candidates, followed by a real nine-component solve, relocation,
 launcher and dataset tests. Other incompatibilities may emerge. TASK-57 remains
 open and no publication is authorized.
+
+### Native candidate artifact review and remaining ABI conflict (2026-10-29)
+
+Owner [run 40906236704](https://github.com/Archont561/ODM-conda/actions/runs/40906236704)
+built the three requested build-1 candidates. Independent temporary
+[inspection 40907763520](https://github.com/Archont561/ODM-conda/actions/runs/40907763520)
+verified artifact `12912041865` ZIP SHA256
+`c217093dfc903c34b47e67620f012385f03ecbb777c82bbe990109eb5ac12623`,
+exactly the three expected packages, their upstream source hashes, all 246
+source-manifest hashes per bundle and exact declared upstream notice bytes in
+payload and metadata. Each passed the current package audit and an independent
+fresh retest. The three package SHA256 values were dem2points
+`f7beed995be059343796b2d4727706a6fbf89a4bcd448a4a85ff0ca7c2c6da8d`,
+fastrasterfilter `916027e4fcbd28da4cb39f164fa19b89b60714d43712866f023b0a7efed1e8af`,
+and odm-orthophoto `1ef443343ce49b8890d1a1915b54cb4c09efb3b17ad7998d4f23d091078bcaf6`.
+The corresponding source-bundle hashes were
+`a12acaf203ad72110a10a40f41af7b398da9db4c364ef07cc8f40c9dcee8c43a`,
+`8b491eeea4afdfa6a517c692718c1c58d5f6c9c115235e4045377f686183b121`, and
+`3d4fe0dd6db8bb4dbbaf80e28a4323e3659de1e5a17c26b7c2b36b353960f1db`.
+
+**The combined solve still failed**, even for only the actual dem2points
+build 1 and historical RenderDEM build 0. Rattler's generated dependency from
+the build-1 host solve requires `libgdal-core >=3.12.4,<3.13.0a0`; RenderDEM
+build 0 requires `libpdal-core >=2.10.2,<2.11.0a0`. The successful earlier
+*dependency-only* solve instead selected GDAL 3.12.2 and PDAL 2.10.0. The
+three candidates have therefore been advanced to build 2 with GDAL
+`>=3.12.2,<3.12.3`, and RenderDEM to build 1 with that GDAL range and PDAL
+`>=2.10.0,<2.10.1` in host and run. This coordinates actual build inputs rather
+than overriding generated ABI metadata. The four new candidates remain
+unbuilt; availability, a shared binary solve, all nine components and actual
+ODM execution remain unverified. Owner native builds and reinspection are
+required; gates remain false.

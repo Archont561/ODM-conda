@@ -16,7 +16,7 @@ source:
   sha256: ${{ source_sha256 }}
 
 build:
-  number: 0
+  number: 1
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:
@@ -34,10 +34,12 @@ requirements:
     - ${{ compiler('cxx') }}
     - ${{ stdlib('c') }}
   host:
-    - libpdal-core >=2.10,<2.11
+    - libpdal-core >=2.10.0,<2.10.1
+    - libgdal-core >=3.12.2,<3.12.3
     - libgomp >=14
   run:
-    - libpdal-core >=2.10,<2.11
+    - libpdal-core >=2.10.0,<2.10.1
+    - libgdal-core >=3.12.2,<3.12.3
     - libgomp >=14
 
 tests:

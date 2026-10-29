@@ -19,7 +19,7 @@ source:
   sha256: ${{ source_sha256 }}
 
 build:
-  number: 1
+  number: 2
   skip: target_platform != "linux-64"
   python:
     # rattler-build post-processing compiles every packaged .py file (outside
@@ -42,11 +42,11 @@ requirements:
     - ${{ stdlib('c') }}
   host:
     - eigen >=3.4,<4
-    - libgdal-core >=3.12,<3.13
+    - libgdal-core >=3.12.2,<3.12.3
     - libgomp >=14
     - libopencv >=4.12,<4.13
   run:
-    - libgdal-core >=3.12,<3.13
+    - libgdal-core >=3.12.2,<3.12.3
     - libgomp >=14
     - libopencv >=4.12,<4.13
 
