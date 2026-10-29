@@ -114,7 +114,9 @@ def test_opensfm_research_uses_pdal_compatible_gflags_abi():
     from pathlib import Path
     root = Path(__file__).resolve().parents[1]
     recipe = yaml.safe_load((root / 'research/recipes/opensfm-odm/recipe.yaml').read_text())
-    assert recipe['build']['number'] == 3
+    assert recipe['build']['number'] == 4
     assert 'eigen >=3.4,<4' in recipe['requirements']['host']
+    for scope in ('host', 'run'):
+        assert 'numpy >=1.26,<2' in recipe['requirements'][scope]
     for scope in ('host', 'run'):
         assert 'gflags >=2.2.2,<2.3' in recipe['requirements'][scope]

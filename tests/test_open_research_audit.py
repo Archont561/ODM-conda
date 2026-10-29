@@ -28,7 +28,7 @@ def test_research_audit_rejects_unexpected_checkout_and_sources(monkeypatch):
 def test_research_package_identity_and_runtime_dependencies_fail_closed():
     from audit_open_research import verify_index
 
-    index = {'name': 'opensfm-odm', 'version': '0.5.2', 'build_number': 3, 'subdir': 'linux-64',
+    index = {'name': 'opensfm-odm', 'version': '0.5.2', 'build_number': 4, 'subdir': 'linux-64',
              'depends': ['python >=3.12,<3.13', 'numpy', 'py-opencv >=4.12,<4.13',
                          'ceres-solver', 'suitesparse', 'gflags', 'glog', 'libgomp', 'rasterio', 'rawpy']}
     verify_index('opensfm-odm', index)
