@@ -4,7 +4,7 @@ title: Resolve PoissonRecon bundled libpng security and linkage evidence
 status: In Progress
 assignee: []
 created_date: '2026-10-28 22:40'
-updated_date: '2026-10-29 11:19'
+updated_date: '2026-10-29 11:22'
 labels: []
 dependencies: []
 references:
@@ -31,6 +31,12 @@ The pinned upstream source builds libpng 1.2.29 into a static archive; historica
 ## Implementation Plan
 
 <!-- SECTION:PLAN:BEGIN -->
+Trace pinned PoissonRecon build and linker inputs; add a fail-closed, tested linkage guard or mitigation; document limitations and run local checks. Obtain owner native validation before closing the task; preserve release gates.
+
+Independently fetch the exact run 40835639537 artifact in a temporary read-only CI workflow, verify immutable ZIP and source-bundle digests, audit packaged link evidence and ELF, and run a fresh isolated retest; print bounded evidence to the job log without changing release gates.
+
+Review the exact pinned Poisson source and existing link/source evidence for release readiness; keep security, native and rights gates open until proved.
+
 Capture bounded actual fresh-test dependency evidence for the verified native artifacts; inspect available matching dependency notices and record limitations, preserving all owner gates.
 <!-- SECTION:PLAN:END -->
 

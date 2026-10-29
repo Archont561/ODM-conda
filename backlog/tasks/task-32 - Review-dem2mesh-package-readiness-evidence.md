@@ -4,7 +4,7 @@ title: Review dem2mesh package-readiness evidence
 status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-29 11:19'
+updated_date: '2026-10-29 11:22'
 labels:
   - packaging
   - review
@@ -32,6 +32,10 @@ Independently review the deliverables produced by TASK-6 for the dem2mesh milest
 ## Implementation Plan
 
 <!-- SECTION:PLAN:BEGIN -->
+Review immutable dem2mesh source, compiled JMeshLib and vendored Simplify grants; preserve an exact upstream MIT text conservatively if missing, retest package and identify any remaining provenance or source-offer decisions.
+
+Inspect the owner build 1 artifact via temporary read-only CI, verify artifact digest, package identity and exact notice bytes, source manifest and fresh retest without publishing.
+
 Capture bounded actual fresh-test dependency evidence for the verified native artifacts; inspect available matching dependency notices and record limitations, preserving all owner gates.
 <!-- SECTION:PLAN:END -->
 
