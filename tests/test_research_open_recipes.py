@@ -107,3 +107,13 @@ def test_research_all_runs_both_and_rejects_unknown(monkeypatch):
     monkeypatch.setenv('RESEARCH_COMPONENT', 'all\nopensfm')
     with pytest.raises(ScaffoldError):
         research.main()
+
+
+def test_opensfm_research_uses_pdal_compatible_gflags_abi():
+    import yaml
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    recipe = yaml.safe_load((root / 'research/recipes/opensfm-odm/recipe.yaml').read_text())
+    assert recipe['build']['number'] == 2
+    for scope in ('host', 'run'):
+        assert 'gflags >=2.2.2,<2.3' in recipe['requirements'][scope]

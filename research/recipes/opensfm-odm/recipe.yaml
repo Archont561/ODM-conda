@@ -14,7 +14,7 @@ source:
     sha256: 95fe9ba737edea8e5737fb9ddda7031d7ca62fd53f53c1c4e95195f3c7d801fd
     target_directory: _external/vmem
 build:
-  number: 1
+  number: 2
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:
@@ -39,7 +39,7 @@ requirements:
     - eigen
     - ceres-solver
     - suitesparse
-    - gflags
+    - gflags >=2.2.2,<2.3
     - glog
     - libgomp >=14
   run:
@@ -48,7 +48,7 @@ requirements:
     - py-opencv >=4.12,<4.13
     - ceres-solver
     - suitesparse
-    - gflags
+    - gflags >=2.2.2,<2.3
     - glog
     - libgomp >=14
     - cloudpickle

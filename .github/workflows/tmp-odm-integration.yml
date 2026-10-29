@@ -1,12 +1,14 @@
-name: Temporary ODM ABI constraint matrix
+name: Temporary local-only ODM integration experiment
 on:
   pull_request:
     branches: [main]
 permissions:
   contents: read
+  actions: read
 jobs:
-  diagnose:
+  experiment:
     runs-on: ubuntu-24.04
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
@@ -16,5 +18,7 @@ jobs:
           pixi-version: v0.82.0
           locked: true
           environments: default
-      - name: Solve dependency matrices without packages or publishing
-        run: pixi run python scripts/tmp_odm_solve_diagnostic.py
+      - name: Build and test a disposable local environment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: pixi run python scripts/tmp_odm_experiment.py
