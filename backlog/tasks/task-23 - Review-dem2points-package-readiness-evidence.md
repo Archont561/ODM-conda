@@ -4,7 +4,7 @@ title: Review dem2points package-readiness evidence
 status: Done
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-27 16:34'
+updated_date: '2026-10-29 19:37'
 labels:
   - packaging
   - review
@@ -30,9 +30,9 @@ Independently review the deliverables produced by TASK-22 for the dem2points mil
 - [x] #3 Record a maintainer-facing readiness decision and remaining owner/platform conditions. Completing this task does not itself flip executable release flags, publish a binary or certify untested platforms.
 <!-- AC:END -->
 
-<!-- SECTION:NOTES:BEGIN -->
 ## Implementation Notes
 
+<!-- SECTION:NOTES:BEGIN -->
 Independent review of the dem2points deliverables produced by TASK-22
 (evidence review; no recipe work duplicated). Evidence base: CI run
 [40532334352](https://github.com/Archont561/ODM-conda/actions/runs/40532334352)
@@ -101,3 +101,8 @@ attestations_sha256
 prefix.dev repodata edge cache served a stale copy for several minutes after
 the successful upload — verified with a cache-busted re-fetch.
 <!-- SECTION:NOTES:END -->
+
+2026-10-29: owner explicitly approved all four release gates for dem2points 0.0.0.dev20220721 build 2 and separately authorized its publication after the approval PR passes and merges. Scope is the standalone linux-64 component package, not a bundled dependency environment or full ODM. The earlier owner-approved license expression is GPL-3.0-only AND BSD-3-Clause AND MIT. Native build run 40909632056 and independent package/source/notice inspection with fresh retest run 40910163219 passed; independent package and dependency review run 40935677599 is documented in research/component-readiness-review.md. Earlier binaries and bundles are validation evidence, not an assertion of byte identity for the release rebuild. Testing is on Ubuntu 24.04, not the glibc 2.28 runtime floor; generated fixtures and package checks are not full ODM or real-world coverage. Source must be attached durably before channel upload; trusted main HEAD/tag identity, fresh build/test/audit and collision protections remain mandatory.
+<!-- SECTION:NOTES:END -->
+
+<!-- SECTION:NOTES:BEGIN -->
