@@ -129,4 +129,8 @@ def main():
 
 
 if __name__ == '__main__':
-    fail_cli(main)
+    try:
+        main()
+    except Exception as error:
+        print(f'::error title=Texturing inspection::{type(error).__name__}: {error}', flush=True)
+        raise
