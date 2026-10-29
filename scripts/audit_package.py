@@ -11,6 +11,7 @@ from pathlib import Path, PurePosixPath
 
 from common import ROOT, ScaffoldError, config, fail_cli, find_package, select_components, sha256, source_url
 from package_archive import read_package
+from poisson_linkage import verify_poisson_package_evidence
 
 
 def audit(name: str, component: dict, package: Path, root: Path = ROOT) -> dict:
@@ -30,7 +31,7 @@ def audit(name: str, component: dict, package: Path, root: Path = ROOT) -> dict:
     extra_runtime = {"dem2mesh": {"libgdal-core", "libgomp"}, "dem2points": {"libgdal-core"}, "fastrasterfilter": {"libgdal-core", "libgomp"},
                      "fpcfilter": {"libgomp"},
                      "mvs-texturing-odm": {"tbb", "libjpeg-turbo", "libpng", "libtiff", "libgomp"},
-                     "odm-orthophoto": {"libgdal-core", "libgomp", "libopencv"}, "renderdem": {"libpdal-core", "libgomp"}, "poissonrecon-odm": {"libjpeg-turbo", "libzlib", "libgomp"}}
+                     "odm-orthophoto": {"libgdal-core", "libgomp", "libopencv"}, "renderdem": {"libpdal-core", "libgomp"}, "poissonrecon-odm": {"libpng", "libjpeg-turbo", "libzlib", "libgomp"}}
     required_runtime = {"__glibc", "libgcc", "libstdcxx"} | extra_runtime.get(name, set())
     if not required_runtime.issubset(runtime_names):
         raise ScaffoldError(f"Missing declared runtime dependencies: {required_runtime - runtime_names}")
@@ -38,6 +39,8 @@ def audit(name: str, component: dict, package: Path, root: Path = ROOT) -> dict:
     expected = {f"bin/{component['executable']}", f"{prefix}/SOURCE.txt", f"{prefix}/upstream.json", f"{prefix}/functional_test.py",
                 f"share/licenses/{name}/packaging-MIT.txt"}
     expected.update(f"share/licenses/{name}/{notice['target']}" for notice in component["notices"])
+    if name == "poissonrecon-odm":
+        expected.add(f"{prefix}/link-evidence.json")
     if name == "mvs-texturing-odm":
         expected.add(f"{prefix}/texrecon_fixture.py")
     missing = expected - payload.keys()
@@ -69,12 +72,16 @@ def audit(name: str, component: dict, package: Path, root: Path = ROOT) -> dict:
         executable.write_bytes(native)
         completed = subprocess.run([patchelf, "--print-rpath", str(executable)], text=True, capture_output=True, check=True)
         rpath = completed.stdout.strip()
+        needed = subprocess.run([patchelf, "--print-needed", str(executable)], text=True, capture_output=True, check=True).stdout.splitlines()
+        if name == "poissonrecon-odm":
+            evidence = json.loads(payload[f"{prefix}/link-evidence.json"])
+            verify_poisson_package_evidence(evidence, needed)
         for entry in rpath.split(":"):
             if entry and not (entry.startswith("$ORIGIN/") or entry.startswith("${ORIGIN}/") or entry in ("$ORIGIN", "${ORIGIN}")):
                 raise ScaffoldError(f"Non-relocatable ELF RPATH: {entry!r}")
     return {"component": name, "artifact": package.name, "sha256": sha256(package),
             "license": component["license"], "payload_files": len(payload), "metadata_license_files": len(metadata_notices),
-            "runtime_dependencies": index["depends"], "rpath": rpath, "source_commit": component["source"]["commit"],
+            "runtime_dependencies": index["depends"], "elf_needed": needed, "rpath": rpath, "source_commit": component["source"]["commit"],
             "result": "passed", "scope": "Artifact audit only; not a complete license or ODM integration review"}
 
 

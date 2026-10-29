@@ -1,0 +1,43 @@
+diff -urN a/Makefile b/Makefile
+--- a/Makefile	2026-10-29 07:19:30.871052032 +0000
++++ b/Makefile	2026-10-29 07:19:30.971052496 +0000
+@@ -150,8 +150,7 @@
+ 	$(MD) -p $(BIN)
+ 
+ $(BIN)$(PR_TARGET): $(PR_OBJECTS)
+-	cd PNG  && $(MAKE) COMPILER=$(COMPILER)
+-	$(CXX) -pthread -o $@ $(PR_OBJECTS) -L$(BIN) $(LFLAGS) -ljpeg -lmypng -lz
++	$(CXX) -pthread -o $@ $(PR_OBJECTS) $(LFLAGS) -ljpeg -lpng -lz
+ 
+ $(BIN)$(SR_TARGET): $(SR_OBJECTS)
+ 	cd PNG  && $(MAKE) COMPILER=$(COMPILER)
+diff -urN a/Src/PNG.h b/Src/PNG.h
+--- a/Src/PNG.h	2026-10-29 07:19:30.875052050 +0000
++++ b/Src/PNG.h	2026-10-29 07:19:30.971052496 +0000
+@@ -1,7 +1,7 @@
+ #ifndef PNG_INCLUDED
+ #define PNG_INCLUDED
+ 
+-#include "PNG/png.h"
++#include <png.h>
+ 
+ struct PNGReader : public ImageReader
+ {
+diff -urN a/Src/PNG.inl b/Src/PNG.inl
+--- a/Src/PNG.inl	2026-10-29 07:19:30.879052069 +0000
++++ b/Src/PNG.inl	2026-10-29 07:20:21.567290572 +0000
+@@ -1,5 +1,6 @@
+ #include <stdio.h>
+ #include <vector>
++#include <zlib.h>
+ #ifdef _WIN32
+ #include "PNG/png.h"
+ #else // !_WIN32
+@@ -144,6 +145,6 @@
+ }
+ unsigned int PNGWriter::nextRows( const unsigned char* rows , unsigned int rowNum )
+ {
+-	for( unsigned int r=0 ; r<rowNum ; r++ ) png_write_row( _png_ptr , (png_bytep)( rows + r * 3 * sizeof( unsigned char ) * _png_ptr->width ) );
++	for( unsigned int r=0 ; r<rowNum ; r++ ) png_write_row( _png_ptr , (png_bytep)( rows + r * png_get_channels( _png_ptr , _info_ptr ) * sizeof( unsigned char ) * png_get_image_width( _png_ptr , _info_ptr ) ) );
+ 	return _currentRow += rowNum;
+ }

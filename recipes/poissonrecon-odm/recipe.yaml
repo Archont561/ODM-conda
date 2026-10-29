@@ -14,9 +14,11 @@ source:
   # ODM 3.6.2 references branch 290; this pins its researched head.
   url: https://codeload.github.com/OpenDroneMap/PoissonRecon/tar.gz/97caa6d34d1b05b59888bed019dea89ced74445e
   sha256: ${{ source_sha256 }}
+  patches:
+    - patches/0001-system-libpng.patch
 
 build:
-  number: 1
+  number: 2
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:
@@ -33,15 +35,15 @@ requirements:
     - ${{ compiler('cxx') }}
     - ${{ stdlib('c') }}
   host:
-    # PNG.inl also includes <png.h>; the makefile builds a bundled static
-    # archive. Actual final link inputs require inspection.
-    - libpng
+    # Use a maintained shared libpng rather than the bundled 1.2.29 archive.
+    - libpng >=1.6.59,<1.7
     - libjpeg-turbo
     # The zlib development package supplies the unversioned libz.so for -lz;
     # libzlib alone only supplies the versioned runtime library.
     - zlib
     - libgomp >=14
   run:
+    - libpng >=1.6.59,<1.7
     - libjpeg-turbo
     - libzlib
     - libgomp >=14
@@ -51,6 +53,7 @@ tests:
       files:
         - bin/PoissonRecon
         - share/licenses/poissonrecon-odm/*
+        - share/odm-conda/poissonrecon-odm/link-evidence.json
         - share/odm-conda/poissonrecon-odm/SOURCE.txt
         - share/odm-conda/poissonrecon-odm/functional_test.py
   - script:
