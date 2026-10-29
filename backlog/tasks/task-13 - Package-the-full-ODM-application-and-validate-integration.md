@@ -4,7 +4,7 @@ title: Package the ODM application and validate fast-orthophoto integration (MVP
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-29 16:04'
+updated_date: '2026-10-29 16:18'
 labels:
   - component
   - opendronemap
@@ -69,4 +69,6 @@ Disposable runner https://github.com/Archont561/ODM-conda/actions/runs/408668084
 TASK-57 has a dependency-only candidate solve (GDAL 3.12/PDAL 2.10/OpenCV 4.12); three fast-path GDAL consumers have build-1 candidates and reset release flags. No new artifacts or combined environment exist yet; owner native builds and full integration validation are still required.
 
 TASK-57 independent artifact inspection found that three GDAL build-1 candidates passed individually but still do not solve with historical RenderDEM because actual generated GDAL and PDAL runtime minimums conflict. Four newly coordinated builds are needed before combined-prefix work can continue.
+
+The four GDAL/PDAL-dependent candidate artifacts installed together in a disposable Python 3.12 environment in https://github.com/Archont561/ODM-conda/actions/runs/40910163219; binaries present. This is not the nine-component environment or a launcher/dataset/relocation test. TASK-57 remains open.
 <!-- SECTION:NOTES:END -->

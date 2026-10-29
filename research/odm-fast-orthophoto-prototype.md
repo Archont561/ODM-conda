@@ -128,3 +128,27 @@ OpenCV dependencies, not the ODM Python 3.12 research environment. It did not
 include dem2points, the other five components, relocation, a launcher or
 dataset run. The owner must dispatch the dem2points build-2 candidate separately;
 all release gates remain closed.
+
+### Four-package compatibility check (2026-10-29)
+
+Owner [run 40909632056](https://github.com/Archont561/ODM-conda/actions/runs/40909632056)
+passed on `d4e40293ff9627e21f806cf7f9a31226e969576d`. Independent
+[inspection 40910163219](https://github.com/Archont561/ODM-conda/actions/runs/40910163219)
+confirmed artifact `12911564893`, ZIP SHA256
+`2e6af14e3eaffa0631c59e875fa114b95376f17a1c7c7de4815e9fc3e7eefb87`,
+contains dem2points build 2, its audit report and source bundle only. Package
+SHA256 `f7077c2eb01f380503d2aa5203e20d78e824a1c4adceaa486f4cbaf22bee8cb0`;
+source bundle SHA256 `9029351b2cccf4eeca82c580f7fab8c68f0f05410cae36ca003380c9d16a8ce8`.
+All 246 manifest entries, declared upstream notices in payload and metadata,
+package audit and isolated fresh retest passed.
+
+The same inspection verified the earlier three package hashes and installed
+all four actual packages together with Python 3.12, py-opencv 4.12, PDAL,
+Python-PDAL, GDAL and exiftool. It selected libgdal-core 3.12.2 `hc2c0581_0`,
+libpdal-core 2.10.0 `h9d23c72_0`, libopencv 4.12.0
+`qt6_py312h52d6ec5_612` and python-pdal 3.5.3 `np2py312hadcd02a_4`;
+all four executable files were present. This resolves the observed **four-package
+solver conflict for this fresh environment**, not full integration: fixtures
+were retested individually, not in the combined prefix, and the nine-component
+solve, relocation, ODM launcher and dataset have not been run. Legal and release
+gates remain unchanged.
