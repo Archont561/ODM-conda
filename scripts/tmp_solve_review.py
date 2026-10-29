@@ -16,11 +16,15 @@ for name, path, digest in cases:
         if proc.returncode:
             print('::error::'+name+' retest failed: '+proc.stdout[-3000:].replace('\n',' | '),flush=True); sys.exit(proc.returncode)
         selected = {}
+        solved = []
         for line in proc.stdout.splitlines():
             cols = [s.strip(' │') for s in line.split('┆')]
+            if len(cols) >= 4 and cols[3] == 'conda-forge':
+                solved.append('/'.join(cols[:3]))
             if len(cols) >= 4 and cols[0] in wanted:
                 selected[cols[0]] = cols[1:3]
         assert 'libgomp' in selected and 'libpng' in selected, selected
+        print('::notice::'+name+' fresh test solve: '+', '.join(solved),flush=True)
         results = {}
         for dep, (version, build) in selected.items():
             filename=f'{dep}-{version}-{build}.conda'
