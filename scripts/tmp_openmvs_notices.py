@@ -1,5 +1,8 @@
 """Temporary local-only build input review; never upload binaries or archives."""
 import json
+import hashlib
+import re
+from collections import Counter
 import os
 import subprocess
 import tempfile
@@ -33,6 +36,22 @@ with tempfile.TemporaryDirectory(prefix='openmvs-review-', dir=os.environ['RUNNE
     for library in ('CGAL/','boost/'):
         paths = sorted({line.strip().split(host,1)[1] for line in dep.splitlines() if host in line and (host+library) in line})
         print(f'::notice::{library} native dependency trace count={len(paths)} sample=' + ','.join(paths[:15]),flush=True)
+        headers = [prefixes[0].parent/'include'/p for p in paths]
+        labels = Counter()
+        for header in headers:
+            text = header.read_text(errors='replace')[:10000]
+            spdx = re.search(r'SPDX-License-Identifier:\s*([^\r\n*]+)', text)
+            label = spdx.group(1).strip() if spdx else ('BSL-reference' if 'Boost Software License' in text else 'no-SPDX-or-Boost-reference-in-first-10k')
+            labels[label] += 1
+        print(f'::notice::{library} header marker counts ' + json.dumps(labels,sort_keys=True),flush=True)
+        if library == 'CGAL/':
+            for item in ('CGAL/AABB_tree.h','CGAL/AABB_traits_3.h'):
+                file = prefixes[0].parent/'include'/item
+                print(f'::notice::installed {item} SHA256={hashlib.sha256(file.read_bytes()).hexdigest()}',flush=True)
+    dep_lines = {line.strip() for line in dep.splitlines() if '/Eigen/' in line}
+    host_eigen = {line for line in dep_lines if line.startswith(host)}
+    vendored_eigen = {line for line in dep_lines if '/_external/eigen/' in line}
+    print(f'::notice::Eigen path counts host={len(host_eigen)} vendored={len(vendored_eigen)} total={len(dep_lines)}',flush=True)
     matches=list((out/'linux-64').glob('openmvs-odm-*.conda'))
     assert len(matches)==1, matches
     run('rattler-build','test','--package-file',matches[0],'--channel','conda-forge','--channel-priority','strict','--output-dir',root/'retest','--log-style','plain')
