@@ -4,7 +4,7 @@ title: Reject OpenMVS point clouds lacking visibility without crashing
 status: In Progress
 assignee: []
 created_date: '2026-10-28 15:11'
-updated_date: '2026-10-28 20:11'
+updated_date: '2026-10-29 08:05'
 labels:
   - openmvs-odm
   - packaging
@@ -33,6 +33,8 @@ The pinned ODM OpenMVS ReconstructMesh crashes on a separate PLY point cloud wit
 
 <!-- SECTION:PLAN:BEGIN -->
 Keep a research patch and regression fixture; review and integrate the patch into the pinned production source graph when the OpenMVS recipe is ready; validate good and bad inputs in a fresh installed package.
+
+Trace the exact OpenMVS PLY camera-visibility format, build a generated valid separate-PLY fixture and test both valid and missing visibility through the existing research installed-prefix workflow; record native and production/legal limitations.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -44,3 +46,6 @@ The synthetic MVSI fixture also exercises the patched research executable agains
 
 2026-10-28: local-only native research run 40759635611 at a656bdb passed installed and fresh-environment functional fixtures including generated valid scene and missing-visibility rejection. This does not establish separate PLY input with valid camera indices, production-package coverage, source bundle and notices, or release approval; acceptance criteria remain open.
 <!-- SECTION:NOTES:END -->
+
+
+Research build 2: added strict explicit uint32 camera-index list loading and regression fixtures. The four-patch SHA-verified staged tree compiled locally; generated-scene and separate ASCII PLY reconstruction (53 vertices / 46 faces), rejection of missing, invalid and unordered IDs and invalid schemas, and generated cube cleaning passed. Fourth patch SHA256 `c3b350097791445ff222de26d4791e13d2737af9133271a22aac945cce0d5560`; staged tree fingerprint `847c18300e7a6909a4ca4bc18fa6ea43efb1801097369a768e75536de19fdcfd`. This is local build-tree evidence only: installed-prefix native workflow and fresh retest for build 2 require owner dispatch; binary PLY and general malformed-file safety remain unverified. Production integration, source bundle, notices/legal, ABI and owner approval remain open; do not mark Done.

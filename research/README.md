@@ -305,3 +305,15 @@ psutil BSD notice for the vmem provenance investigation. This is not a complete
 notice or legal reconciliation. Owner-dispatched local-only build 1 runs
 40779149681 (OpenMVS) and 40779183804 (OpenSfM) passed native build, fresh
 retest and limited research audit. See `open-components-license-review.md`.
+
+### OpenMVS visibility research build 2 (TASK-53)
+
+The fourth recipe-only patch adds explicit `property list uchar uint view_indices`
+loading; camera IDs must be nonempty, in range, and strictly increasing. A scalar
+`views` property remains a count, not camera IDs. A locally compiled patched
+source tree passed generated-scene reconstruction, separate ASCII PLY reconstruction
+(53 vertices / 46 faces), missing/invalid visibility and malformed-schema rejection,
+and cube cleaning. This is not installed-prefix or CI package evidence. Binary PLY
+coverage, general malformed/truncated-input safety, ABI, complete corresponding
+source and notices, restricted-code review, owner approval and production integration
+remain open. Do not distribute this local-only research package.

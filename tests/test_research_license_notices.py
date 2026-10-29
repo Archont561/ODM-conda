@@ -38,7 +38,7 @@ def test_openmvs_package_requires_each_notice(monkeypatch):
     share = 'share/odm-conda/openmvs-odm/'
     licenses = 'share/licenses/openmvs-odm/'
     payload = {share + name: b'x' for name in ('SOURCE.txt', 'functional_test.py',
-        'openmvs_synthetic_fixture.py', 'openmvs_pointcloud_fixture.py', 'texrecon_fixture.py')}
+        'openmvs_synthetic_fixture.py', 'openmvs_pointcloud_fixture.py', 'openmvs_fixture.py', 'texrecon_fixture.py')}
     payload.update({licenses + 'upstream-LICENSE.txt': b'x', licenses + 'packaging-MIT.txt': b'x',
                     licenses + 'vcg.txt': raw, 'bin/ReconstructMesh': b'\x7fELFbinary'})
     audit.verify_payload('openmvs-odm', payload)

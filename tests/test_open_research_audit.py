@@ -13,6 +13,7 @@ def test_research_audit_rejects_unexpected_checkout_and_sources(monkeypatch):
         'share/odm-conda/openmvs-odm/functional_test.py': b'test',
         'share/odm-conda/openmvs-odm/openmvs_synthetic_fixture.py': b'test',
         'share/odm-conda/openmvs-odm/openmvs_pointcloud_fixture.py': b'test',
+        'share/odm-conda/openmvs-odm/openmvs_fixture.py': b'test',
         'share/odm-conda/openmvs-odm/texrecon_fixture.py': b'test',
         'share/odm-conda/openmvs-odm/SOURCE.txt': b'LOCAL RESEARCH ONLY',
         'share/licenses/openmvs-odm/packaging-MIT.txt': b'notice',
