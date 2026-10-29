@@ -4,7 +4,7 @@ title: Package the ODM application and validate fast-orthophoto integration (MVP
 status: In Progress
 assignee: []
 created_date: '2026-10-26 19:05'
-updated_date: '2026-10-29 11:36'
+updated_date: '2026-10-29 11:54'
 labels:
   - component
   - opendronemap
@@ -20,6 +20,7 @@ dependencies:
   - TASK-39
   - TASK-41
   - TASK-43
+  - TASK-57
 priority: high
 ordinal: 13000
 ---
@@ -62,4 +63,6 @@ MVP scope (approved, see doc-11): fast-orthophoto path only. Removed gates TASK-
 Local-only prototype: inspected pinned ODM source and staged archive SHA256 5bdf8fe81b9ca47714e8a474139fd206b8090ac4315c2f530a58fcaef29cde5e. Adapter maps ODM paths to an explicit component prefix; verified patched context after moving the source tree. Prefix preflight on odm-dev fails for all nine ODM-specific tools; no combined prefix, genuine binary relocation, launcher execution, dataset run or ABI validation. Candidate Seneca CC0 dataset is 167 images/376 MB, not a verified small fixture; Garfield RGB 28 images/59 MB reportedly fails ODM matching. See research/odm-fast-orthophoto-prototype.md. Production and legal prerequisites remain open.
 
 Restored environment; odm-dev preflight still lacks nine component tools. Local OpenSfM research build verified sources with system CA and applied patch, then failed conda-forge noarch repodata unexpected EOF; no package/prefix/launcher/dataset test. See research/odm-fast-orthophoto-prototype.md.
+
+Disposable runner https://github.com/Archont561/ODM-conda/actions/runs/40866808464 verified seven artifact ZIPs, built research OpenSfM and OpenMVS, passed their packaged and isolated tests and limited audits, but the nine-component install could not solve. https://github.com/Archont561/ODM-conda/actions/runs/40867845237 repeated and exposed GDAL/PDAL conflicts. Minimal two-package reproduction https://github.com/Archont561/ODM-conda/actions/runs/40868856018 shows dem2points requires libgdal-core >=3.11.5,<3.12 while renderdem requires libpdal-core >=2.10,<2.11, with no viable common current conda-forge solve. No combined prefix, preflight, launcher, dataset or relocation test was reached. Research and dataset outputs not uploaded. TASK-57 tracks shared ABI remediation; release gates unchanged.
 <!-- SECTION:NOTES:END -->
