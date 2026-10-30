@@ -1,0 +1,49 @@
+name: Temporary CGAL version header review
+on:
+  push:
+    branches: [arena/04e0a7c9-odm-conda]
+    paths: [.github/workflows/tmp-cgal-review.yml]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default
+      - name: Inspect exact host package and tagged header
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/cgal-review"
+          pixi init --format pixi --scm github --channel conda-forge --platform linux-64 "$RUNNER_TEMP/cgal-review/p"
+          pixi add --manifest-path "$RUNNER_TEMP/cgal-review/p/pixi.toml" 'cgal-cpp==6.2.1'
+          curl -fsSL https://codeload.github.com/CGAL/cgal/tar.gz/refs/tags/v6.2.1 -o "$RUNNER_TEMP/cgal-review/cgal.tar.gz"
+          pixi run python - <<'PY'
+          import difflib,hashlib,json,os,tarfile
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/'cgal-review'
+          prefix=root/'p/.pixi/envs/default'
+          records=list((prefix/'conda-meta').glob('cgal-cpp-*.json'))
+          assert len(records)==1
+          rec=json.loads(records[0].read_text())
+          assert (rec['version'],rec['build'],rec['sha256']) == ('6.2.1','hec4b13c_0','232ea63938c3582460c5767e118fc205963bc0d8c331885b2020ef1c5d0c83a5'), rec
+          installed=(prefix/'include/CGAL/version.h').read_bytes()
+          archive=root/'cgal.tar.gz'
+          assert hashlib.sha256(archive.read_bytes()).hexdigest() == '4a0713351882989dda8b6bbfa942d5013b994f297fbebe1096ce664a92aff1a0'
+          with tarfile.open(archive) as t:
+              members=[m for m in t if m.isfile() and m.name.endswith('/include/CGAL/version.h')]
+              assert len(members)==1
+              upstream=t.extractfile(members[0]).read()
+          diff=list(difflib.unified_diff(upstream.decode().splitlines(),installed.decode().splitlines(),lineterm=''))
+          print('::notice::version.h SHA256 installed='+hashlib.sha256(installed).hexdigest()+' upstream='+hashlib.sha256(upstream).hexdigest())
+          print('::notice::version.h complete unified diff lines='+str(len(diff))+' '+json.dumps(diff,separators=(',',':')))
+          files=rec.get('files',[])
+          print('::notice::CGAL installed license file paths '+json.dumps([x for x in files if 'license' in x.lower() and not x.startswith('include/')][:30]))
+          PY
