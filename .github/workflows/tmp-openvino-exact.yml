@@ -1,0 +1,31 @@
+name: Temporary exact OpenVINO metadata inspection
+on:
+  push:
+    branches: [arena/f05546ee-odm-conda]
+    paths: [.github/workflows/tmp-openvino-exact.yml, scripts/tmp_openvino_exact.py]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+      - name: Install inspection tools
+        run: python -m pip install 'zstandard==0.23.0' 'PyYAML==6.0.2'
+      - name: Inspect exact archive metadata
+        run: python scripts/tmp_openvino_exact.py
+      - name: Report metadata part one
+        run: |
+          python - <<'PY'
+          import json
+          for i,r in enumerate(json.load(open('/tmp/openvino-records.json'))[:7]):
+              print('::notice::OPENVINO_RECORD_'+str(i)+' '+json.dumps(r,separators=(',',':')))
+          PY
+      - name: Report metadata part two
+        run: |
+          python - <<'PY'
+          import json
+          for i,r in enumerate(json.load(open('/tmp/openvino-records.json'))[7:],7):
+              print('::notice::OPENVINO_RECORD_'+str(i)+' '+json.dumps(r,separators=(',',':')))
+          PY
