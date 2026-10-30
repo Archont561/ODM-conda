@@ -640,3 +640,26 @@ its research payload and six hash-verified Conda metadata notice checks. The
 package SHA256 was `25c69f66d30f9943bdca7646cab46d3eb1bc6c917781d6919dcc4a35115afabd`;
 outputs were discarded. This standard research build staged the original graph;
 it is not evidence that all source/notice obligations are resolved.
+
+### Repeatable private reduced builds
+
+`RESEARCH_COMPONENT=reduced-all pixi run python scripts/run_open_research.py`
+(or `scripts/run_reduced_research.py --component poisson|opensfm|openmvs|all`)
+builds the three local-only variants in disposable directories, fresh-retests
+and runs their distinct existing research audits. `reduced-poisson`,
+`reduced-opensfm`, `reduced-openmvs` and `reduced-all` are also choices in the
+local-only research workflow. The OpenMVS reduced recipe uses an explicit
+builder rather than modifying the builder script in a temporary CI checkout.
+Original archives are still fetched privately and all outputs discarded. This
+is not complete corresponding source, a source-offer, or license/release
+approval; the original full-research options and production audits are unchanged.
+
+[Private matrix run 41082954948](https://github.com/Archont561/ODM-conda/actions/runs/41082954948)
+validated each new runner selection on linux-64: all three native builds,
+installed and fresh tests, and separate research audits passed. Discarded
+package SHA256 values: PoissonRecon
+`0ab40fee7fbabc56235b61e0eaf8aa3334f4d89f386f8eafbb9ee07356544b53`,
+scoped OpenSfM `6deb98c0b61108d8888d493917ab7a9e44dc1fadc8ae3230efa66e01c9896a42`,
+and reduced OpenMVS `066edc5f5ce1533ed104c48b012164a81673920af9acd75622b19295adc753c3`.
+The run exercised each selection separately; it did not test the sequential
+`all` dispatch or reproduce a dataset in that run.

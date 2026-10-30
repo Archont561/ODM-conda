@@ -31,7 +31,7 @@ def inventory(prefix: Path) -> dict:
             public_url = None
         files = item.get('files') or []
         notices = [x for x in files if isinstance(x, str) and ('license' in x.lower() or 'copyright' in x.lower() or 'copying' in x.lower())]
-        records.append({k: item.get(k) for k in ('name','version','build','build_number','subdir','sha256','md5','license','license_family')} | {'source_package_url': public_url, 'notice_paths': sorted(notices)})
+        records.append({k: item.get(k) for k in ('name','version','build','build_number','subdir','sha256','md5','license','license_family')} | {'binary_package_url': public_url, 'notice_paths': sorted(notices)})
     if not records:
         raise ScaffoldError('No installed Conda package metadata')
     return {'scope': 'Conda installation records only; URLs identify binary packages, not source archives. Metadata and filename heuristics are not legal, completeness or rights review. Pip distributions and package file bytes are not audited.', 'packages': sorted(records, key=lambda r: (r['name'],r['version'],r['build']))}
