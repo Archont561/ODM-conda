@@ -294,3 +294,4 @@ print('Default and three scoped mode guards PASS')
         print('::notice::Final raster exists with positive dimensions, geotransform, CRS and at least 3 bands; report exists; gdalinfo -stats succeeded. Dataset outputs not retained or uploaded.', flush=True)
 
 if __name__ == '__main__': main()
+# Validate the bumped ODM application build identity.

@@ -9,7 +9,7 @@ source:
   patches:
     - patches/0001-prefix.patch
 build:
-  number: 0
+  number: 1
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:
