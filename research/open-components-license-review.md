@@ -602,3 +602,36 @@ a script and contributor agreements, so non-matches do not imply each must be
 shipped; it also misses embedded notices and transitive dependency terms.
 The package passed installed/fresh tests and the existing research audit. This
 is an inventory, not notice sufficiency, source completeness or release approval.
+
+### OpenMVS unmatched-notice triage (2026-10-30)
+
+`research/openmvs-notice-gap-triage.json` classifies all 12 unmatched
+filename candidates from the prior package comparison against the historical
+499-entry trace. It finds `libs/Math/LMFit/lmmin.cpp` and `lmmin.h` in the
+trace, while LMFit's `COPYING` was absent from the prior research package.
+The hash-recorded `COPYING` is a concrete notice lead. Research recipe build 4
+now conservatively copies that exact file into the payload and declares it,
+the root notices, VCG license and two Eigen notices under `about.license_file`;
+the local audit checks their exact hashes in Conda `info/licenses/`. These
+changes are not a legal conclusion or proof of a complete notice set.
+
+Five other unmatched candidates are root Eigen license files; 251 paths under
+`_external/eigen/Eigen/` occur in the historical trace, so applicability of
+those texts still needs file-level review. The remaining candidates are in
+benchmark, unsupported Eigen, VCG documentation or maintenance-script paths;
+no matching paths from those subtrees occur in that historical trace. Absence
+from this particular trace does **not** prove those files cannot be used or that
+notices are unnecessary. The classification includes a relicense script and
+contributor agreements because the original scan was filename-based.
+
+Build 4 renders and focused local audit tests pass. Its native build, installed
+and fresh tests, package audit and metadata verification are **not yet run**:
+GitHub/API/codeload TLS handshakes failed in this session, preventing the
+private workflow from being pushed or started. Build 3 evidence cannot certify
+build 4. TASK-54 and the release gates remain open.
+
+An offline synthetic `rattler-build` 0.68.0 package confirmed that the six
+nested `license_file` paths are copied into `info/licenses/`, and the new
+hash-based metadata verifier accepted those six synthetic bytes and rejected a
+missing LMFit-style entry. This checks the packaging mechanism only; it is not
+an actual OpenMVS build or validation of the staged notice bytes.

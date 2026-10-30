@@ -26,6 +26,19 @@ SCOPED_DATASET_SHA256 = '17da2621fcebcc9ad469bbb2041fbfbe522eeee98b86e37a1e86e57
 SCOPED_GUARD_SHA256 = '27ea62a3ee8540e3aa4706ce98f444f59e40a9051ef4fab5101d0e5ebc454e11'
 
 
+OPENMVS_METADATA_NOTICES = {
+    'upstream-LICENSE': '0f072d4a0ef59e7f6864bb45629c37417ccef63025b58f4073109d1c830bc55f',
+    **{name: digest for name, (_, digest) in OPENMVS_NOTICES.items()},
+}
+
+
+def verify_openmvs_metadata_notices(info: dict[str, bytes]) -> None:
+    hashes = {hashlib.sha256(raw).hexdigest() for path, raw in info.items() if path.startswith('info/licenses/')}
+    for name, digest in OPENMVS_METADATA_NOTICES.items():
+        if digest not in hashes:
+            raise ScaffoldError(f'Missing or modified OpenMVS Conda metadata notice: {name}')
+
+
 def verify_scoped_assets(payload: dict[str, bytes]) -> None:
     from opensfm_scoped_runtime import EXCLUDED_ASSETS
     root = 'lib/python3.12/site-packages/opensfm/'
@@ -42,7 +55,7 @@ def verify_scoped_assets(payload: dict[str, bytes]) -> None:
 def verify_index(name: str, index: object) -> None:
     """Check the exact local research package identity and critical runtime declarations."""
     expected = {
-        'openmvs-odm': ('0.0.0.dev20260516', 3,
+        'openmvs-odm': ('0.0.0.dev20260516', 4,
                         {'python', 'libboost', 'libopencv', 'tbb', 'mpfr', 'gmp', 'libgomp'}),
         'opensfm-scoped-odm': ('0.5.2', 0,
                         {'python', 'numpy', 'py-opencv', 'ceres-solver', 'suitesparse',
@@ -139,6 +152,8 @@ def main() -> None:
     info, payload = read_package(args.package)
     index = json.loads(info['info/index.json'])
     verify_index(args.component, index)
+    if args.component == 'openmvs-odm':
+        verify_openmvs_metadata_notices(info)
     binaries = verify_payload(args.component, payload)
     patchelf = shutil.which('patchelf')
     if not patchelf:

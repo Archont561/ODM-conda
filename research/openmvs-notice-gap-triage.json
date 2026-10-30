@@ -1,0 +1,112 @@
+{
+  "baseline_trace_entries": 499,
+  "comparison_package_sha256": "2966ff2db1ad02758470b9d761470a5936c7667f1d49ebe40b83e801f7d7753b",
+  "findings": [
+    {
+      "category": "root Eigen license candidate; traced Eigen headers, applicability unresolved",
+      "path": "_external/eigen/COPYING.APACHE",
+      "sample_traced_paths": [
+        "_external/eigen/Eigen/Cholesky",
+        "_external/eigen/Eigen/Core",
+        "_external/eigen/Eigen/Dense",
+        "_external/eigen/Eigen/Eigenvalues",
+        "_external/eigen/Eigen/Geometry"
+      ],
+      "trace_path_count": 251
+    },
+    {
+      "category": "root Eigen license candidate; traced Eigen headers, applicability unresolved",
+      "path": "_external/eigen/COPYING.BSD",
+      "sample_traced_paths": [
+        "_external/eigen/Eigen/Cholesky",
+        "_external/eigen/Eigen/Core",
+        "_external/eigen/Eigen/Dense",
+        "_external/eigen/Eigen/Eigenvalues",
+        "_external/eigen/Eigen/Geometry"
+      ],
+      "trace_path_count": 251
+    },
+    {
+      "category": "root Eigen license candidate; traced Eigen headers, applicability unresolved",
+      "path": "_external/eigen/COPYING.GPL",
+      "sample_traced_paths": [
+        "_external/eigen/Eigen/Cholesky",
+        "_external/eigen/Eigen/Core",
+        "_external/eigen/Eigen/Dense",
+        "_external/eigen/Eigen/Eigenvalues",
+        "_external/eigen/Eigen/Geometry"
+      ],
+      "trace_path_count": 251
+    },
+    {
+      "category": "root Eigen license candidate; traced Eigen headers, applicability unresolved",
+      "path": "_external/eigen/COPYING.LGPL",
+      "sample_traced_paths": [
+        "_external/eigen/Eigen/Cholesky",
+        "_external/eigen/Eigen/Core",
+        "_external/eigen/Eigen/Dense",
+        "_external/eigen/Eigen/Eigenvalues",
+        "_external/eigen/Eigen/Geometry"
+      ],
+      "trace_path_count": 251
+    },
+    {
+      "category": "root Eigen license candidate; traced Eigen headers, applicability unresolved",
+      "path": "_external/eigen/COPYING.MINPACK",
+      "sample_traced_paths": [
+        "_external/eigen/Eigen/Cholesky",
+        "_external/eigen/Eigen/Core",
+        "_external/eigen/Eigen/Dense",
+        "_external/eigen/Eigen/Eigenvalues",
+        "_external/eigen/Eigen/Geometry"
+      ],
+      "trace_path_count": 251
+    },
+    {
+      "category": "benchmark tree; no matching historical traced path",
+      "path": "_external/eigen/bench/btl/COPYING",
+      "sample_traced_paths": [],
+      "trace_path_count": 0
+    },
+    {
+      "category": "source maintenance script; no matching historical traced path",
+      "path": "_external/eigen/scripts/relicense.py",
+      "sample_traced_paths": [],
+      "trace_path_count": 0
+    },
+    {
+      "category": "unsupported Eigen module; no matching historical traced path",
+      "path": "_external/eigen/unsupported/Eigen/src/LevenbergMarquardt/CopyrightMINPACK.txt",
+      "sample_traced_paths": [],
+      "trace_path_count": 0
+    },
+    {
+      "category": "contributor agreement document; no matching historical traced path",
+      "path": "_external/vcg/docs/ContributorLicenseAgreement.md",
+      "sample_traced_paths": [],
+      "trace_path_count": 0
+    },
+    {
+      "category": "contributor agreement document; no matching historical traced path",
+      "path": "_external/vcg/docs/ContributorLicenseAgreement.pdf",
+      "sample_traced_paths": [],
+      "trace_path_count": 0
+    },
+    {
+      "category": "VCG embedded Eigen; no matching historical traced path",
+      "path": "_external/vcg/eigenlib/unsupported/Eigen/src/LevenbergMarquardt/CopyrightMINPACK.txt",
+      "sample_traced_paths": [],
+      "trace_path_count": 0
+    },
+    {
+      "category": "traced LMFit source; candidate notice to carry",
+      "path": "libs/Math/LMFit/COPYING",
+      "sample_traced_paths": [
+        "libs/Math/LMFit/lmmin.cpp",
+        "libs/Math/LMFit/lmmin.h"
+      ],
+      "trace_path_count": 2
+    }
+  ],
+  "scope": "Prior filename inventory and historical trace only; trace absence is not proof of non-inclusion, legal applicability or complete notices."
+}

@@ -66,3 +66,28 @@ def test_scoped_index_requires_mutual_exclusion_constraint():
     verify_index('opensfm-scoped-odm', index)
     with pytest.raises(ScaffoldError):
         verify_index('opensfm-scoped-odm', {**index, 'constrains': []})
+
+
+def test_openmvs_conda_license_metadata_requires_exact_notices(monkeypatch):
+    import hashlib
+    import audit_open_research as audit
+    upstream = b'upstream license'
+    lmfit = b'lmfit license'
+    monkeypatch.setattr(audit, 'OPENMVS_METADATA_NOTICES', {'LICENSE': hashlib.sha256(upstream).hexdigest(), 'COPYING': hashlib.sha256(lmfit).hexdigest()})
+    info = {'info/licenses/LICENSE': upstream, 'info/licenses/libs/Math/LMFit/COPYING': lmfit}
+    audit.verify_openmvs_metadata_notices(info)
+    with pytest.raises(ScaffoldError, match='Missing or modified'):
+        audit.verify_openmvs_metadata_notices({'info/licenses/LICENSE': upstream})
+    with pytest.raises(ScaffoldError, match='Missing or modified'):
+        audit.verify_openmvs_metadata_notices({**info, 'info/licenses/libs/Math/LMFit/COPYING': b'changed'})
+
+
+def test_openmvs_recipe_and_payload_both_include_traced_lmfit_notice():
+    import yaml
+    from common import ROOT
+    from research_license_notices import OPENMVS_NOTICES
+    recipe = yaml.safe_load((ROOT / 'research/recipes/openmvs-odm/recipe.yaml').read_text())
+    path, digest = OPENMVS_NOTICES['lmfit-COPYING.txt']
+    assert path == 'libs/Math/LMFit/COPYING'
+    assert digest == '09c21b5a8ca469b20e0ce3795f19370affba36f532e480e593c9712c91caf4c4'
+    assert path in recipe['about']['license_file']
