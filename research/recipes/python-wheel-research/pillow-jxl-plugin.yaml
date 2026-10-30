@@ -32,7 +32,16 @@ tests:
   - script:
       interpreter: python
       content: |
+        import io
         import pillow_jxl
+        from PIL import Image
+        image = Image.new('RGB', (8, 8), (16, 32, 64))
+        stream = io.BytesIO()
+        image.save(stream, format='JXL', lossless=True)
+        stream.seek(0)
+        result = Image.open(stream)
+        result.load()
+        assert result.size == image.size and result.convert('RGB').getpixel((0, 0)) == (16, 32, 64)
     requirements:
       run:
         - python >=3.12,<3.13

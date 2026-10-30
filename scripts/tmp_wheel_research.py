@@ -9,7 +9,7 @@ from pathlib import Path
 root=Path.cwd()
 with tempfile.TemporaryDirectory(prefix='odm-wheel-research-') as tmp:
     dest=Path(tmp)
-    for recipe in sorted((root/'research/recipes/python-wheel-research').glob('*.yaml')):
+    for recipe in [root/'research/recipes/python-wheel-research/pillow-jxl-plugin.yaml']:
         result = subprocess.run(['rattler-build','build','--recipe',str(recipe),'--target-platform','linux-64','--variant-config',str(root/'recipes/variants.yaml'),'--channel','conda-forge','--channel-priority','strict','--output-dir',str(dest),'--log-style','plain'],text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
         print(result.stdout,flush=True)
         if result.returncode:
