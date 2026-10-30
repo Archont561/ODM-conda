@@ -1,0 +1,19 @@
+name: Temporary run diagnostic
+on:
+  push:
+    branches: [arena/1a7c5c8e-odm-conda]
+    paths: [.github/workflows/tmp-recover.yml]
+permissions:
+  actions: read
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Print bounded failure tail
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh run view 41143397979 --repo Archont561/ODM-conda --log-failed > /tmp/failed.txt || true
+          tail -45 /tmp/failed.txt | sed -E 's/^[^ ]+ +[^ ]+ +[^ ]+ //' | tail -c 12000 | split -b 2800 - /tmp/chunk-
+          for f in /tmp/chunk-*; do echo "::notice::$(tr '\n' '|' < "$f")"; done
