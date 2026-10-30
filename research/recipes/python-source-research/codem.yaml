@@ -1,0 +1,57 @@
+# Local research only: source-built candidate, not approved for distribution.
+schema_version: 1
+package:
+  name: odm-research-codem
+  version: "0.26.1"
+source:
+  url: https://files.pythonhosted.org/packages/91/47/b34067096220e3e55708e7955bb4a7cb25c8cea1ef6aa2e02b8506104250/codem-0.26.1.tar.gz
+  sha256: e5e0f31c0da46f6087ad38e988d0c4351282d67c05f325f96c63a24f76c8dec6
+build:
+  number: 1
+  string: research_${{ hash }}_1
+  skip: target_platform != "linux-64"
+  script:
+    interpreter: python
+    content: |
+      import os, subprocess, sys
+      subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--no-index', '--no-build-isolation', '--prefix', os.environ['PREFIX'], os.environ['SRC_DIR']], check=True)
+requirements:
+  build:
+    - python >=3.12,<3.13
+    - pip
+    - setuptools >=64
+    - wheel
+  host:
+    - python >=3.12,<3.13
+  run:
+    - python >=3.12,<3.13
+    - typing-extensions
+    - pyyaml
+    - rich
+    - python-json-logger
+    - websocket-client
+    - py-opencv
+    - numpy
+    - matplotlib
+    - python-pdal
+    - pdal
+    - pyproj
+    - rasterio
+    - trimesh
+    - scipy
+    - scikit-image
+    - pandas
+    - pyshp
+    - setuptools
+tests:
+  - script:
+      interpreter: python
+      content: |
+        import codem
+    requirements:
+      run:
+        - python >=3.12,<3.13
+about:
+  homepage: https://pypi.org/project/codem/
+  summary: Private research source build, not approved for distribution
+  license: LicenseRef-Unreviewed

@@ -35,3 +35,20 @@ def test_odm_requires_private_identities_and_all_wheel_repackages():
         assert any(x.startswith('odm-research-' + name + ' ') for x in deps)
     for name in ('opensfm-scoped-odm', 'openmvs-odm', 'poissonrecon-odm', 'odm-orthophoto'):
         assert any(x.startswith(name + ' ') and x.endswith(' research_*') for x in deps)
+
+
+def test_pure_python_candidates_use_the_exact_pypi_source_archives():
+    expected = {
+        'pyodm': 'd0433182ac6d5587786391c91d0eeafe0d78c71d618336af78964620dafe87c4',
+        'pysolar': '05913740694e4bb2af8412de3fa278c0435b3b15b2975c8e38625fc4eed1fd6c',
+        'pygltflib': '1f15740d5a7aaf71a5083e285af6b361184958e255659132f4ba8fe4f3d21ea9',
+        'codem': 'e5e0f31c0da46f6087ad38e988d0c4351282d67c05f325f96c63a24f76c8dec6',
+    }
+    for name, digest in expected.items():
+        recipe = yaml.safe_load((ROOT/'research/recipes/python-source-research'/(name+'.yaml')).read_text())
+        assert recipe['source']['url'].startswith('https://files.pythonhosted.org/')
+        assert recipe['source']['url'].endswith('.tar.gz')
+        assert recipe['source']['sha256'] == digest
+        assert recipe['build']['number'] == 1
+        assert '--no-index' in recipe['build']['script']['content']
+        assert '--no-build-isolation' in recipe['build']['script']['content']

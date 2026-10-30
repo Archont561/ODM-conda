@@ -1,0 +1,40 @@
+# Local research only: source-built candidate, not approved for distribution.
+schema_version: 1
+package:
+  name: odm-research-pysolar
+  version: "0.13"
+source:
+  url: https://files.pythonhosted.org/packages/97/f0/6f0b4e997370ce023212a8073ff581fdebb779d7e84435846af90079bfbe/pysolar-0.13.tar.gz
+  sha256: 05913740694e4bb2af8412de3fa278c0435b3b15b2975c8e38625fc4eed1fd6c
+build:
+  number: 1
+  string: research_${{ hash }}_1
+  skip: target_platform != "linux-64"
+  script:
+    interpreter: python
+    content: |
+      import os, subprocess, sys
+      subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--no-index', '--no-build-isolation', '--prefix', os.environ['PREFIX'], os.environ['SRC_DIR']], check=True)
+requirements:
+  build:
+    - python >=3.12,<3.13
+    - pip
+    - setuptools >=64
+    - wheel
+  host:
+    - python >=3.12,<3.13
+  run:
+    - python >=3.12,<3.13
+    - numpy
+tests:
+  - script:
+      interpreter: python
+      content: |
+        import pysolar
+    requirements:
+      run:
+        - python >=3.12,<3.13
+about:
+  homepage: http://pysolar.org
+  summary: Private research source build, not approved for distribution
+  license: LicenseRef-Unreviewed
