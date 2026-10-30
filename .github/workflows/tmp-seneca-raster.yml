@@ -1,0 +1,34 @@
+name: Temporary Seneca raster sanity validation
+on:
+  push:
+    branches: [arena/14f7b1a7-odm-conda]
+    paths: [.github/workflows/tmp-seneca-raster.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - name: Validate prior Seneca raster statistics
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api --allow-escape-sequences repos/Archont561/ODM-conda/actions/jobs/124121031247/logs > "$RUNNER_TEMP/log"
+          python3 - <<'PY'
+          import os,re,json,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          from odm_raster_sanity import validate
+          text=Path(os.environ['RUNNER_TEMP'],'log').read_text(errors='replace')
+          matches=re.findall(r'(?:##\[notice\]|::notice::)Final raster metadata: (\{[^\n\r]*\})', text)
+          assert len(matches)==1
+          r=json.loads(matches[0].replace('\\°','°'))
+          info={'size':r['size'],'geoTransform':r['geoTransform'],'coordinateSystem':{'wkt':r['crs']},'bands':r['bands']}
+          result=validate(info)
+          print('::notice::Prior Seneca raster metadata and statistics passed bounded sanity checks: '+str(result['size'])+'; no visual or geographic validation.')
+          PY
