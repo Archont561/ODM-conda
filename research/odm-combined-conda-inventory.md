@@ -288,3 +288,26 @@ runnable lock and cannot recreate them. Byte-identical rebuilds, complete
 sources and notices, dataset rights, visual/geographic accuracy and release
 approval remain unestablished. The private research variants reuse normal
 package names/build numbers and must not be confused with production artifacts.
+
+### Exact replay OpenVINO source and notice inspection (2026-10-30)
+
+[Private inspection 41121075671](https://github.com/Archont561/ODM-conda/actions/runs/41121075671)
+downloaded the **13 exact 2026.2.1 linux-64 OpenVINO archives** selected by the
+replay, independently checked each archive SHA256 against the captured
+inventory, and inspected its Conda metadata. All 13 index/about license fields
+say Apache-2.0; their embedded rendered recipes name feedstock commit
+[`60076581dd7818d779760e0937f869dfe992eb7b`](https://github.com/conda-forge/openvino-feedstock/tree/60076581dd7818d779760e0937f869dfe992eb7b)
+and the same seven applicable source URLs and hashes. Each has the same four
+`info/licenses` files. All four hashes match the respective files in the
+verified OpenVINO 2026.2.1 primary source archive. The exact archive and recipe
+hashes, pins and notice hashes are recorded in
+[`openvino-2026-2-replay-metadata.json`](openvino-2026-2-replay-metadata.json).
+
+All seven source archives listed by the **rendered linux-64 recipe** were
+fetched separately and their SHA256s matched their pins: OpenVINO, CPU oneDNN,
+KleidiAI, MLAS, GPU oneDNN, level-zero NPU extensions, and ONNX. The ARM
+ComputeLibrary source is conditional and absent from this linux-64 rendered
+recipe; it was not verified. These checks do not verify patch contents, build
+reproducibility, every transitive dependency or submodule, source sufficiency,
+license applicability or the completeness of notices. The archives were not
+retained or redistributed. Owner/qualified review and release gates remain open.

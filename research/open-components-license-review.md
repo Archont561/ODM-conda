@@ -717,3 +717,32 @@ analysis do not establish redistribution rights, complete corresponding source,
 or all Eigen, VCG, CGAL and transitive dependency obligations. Owner/legal
 review and the existing release gates remain open. See the earlier sections for
 precise pins, traces and limitations; no audit or gate was weakened.
+
+### Eigen embedded notice leads in the OpenMVS trace (2026-10-30)
+
+Re-fetched the pinned Eigen archive (SHA256
+`a14492af4d1451a686caadbfd5047ca1216b8c66e71f0e8385afc4bb3ecdc7a3`)
+and checked four files against the historical 251-path trace and hashes. The
+traced `Eigen/src/Core/util/MKL_support.h` (SHA256
+`487f0c220d40b8418876b5c7d9032d3597374cdff790d4022e8f4eea932cf620`)
+contains Intel's copyright and three-condition redistribution notice, including
+a binary reproduction condition. `Eigen/src/Geometry/AlignedBox.h` (SHA256
+`2c95fadc8549fa236d6f8aa38022badf9186d63aed12a102bb806bcf0f6d522e`)
+contains an MPL-2.0 header plus a separate Willow Garage/Open Source Robotics
+Foundation notice for `transform`, also with binary reproduction language.
+`Eigen/src/Core/arch/Default/Half.h` (SHA256
+`3cc9437477c0bd6925ad6187d1552e472321186971a4cf5b8006557e05d11546`)
+has an MPL-2.0 header and a separate Fabian Giesen conversion-routine notice.
+The fourth file, `Eigen/src/Core/util/Macros.h` (SHA256
+`f61847522078d5d94cb0497b6be8da07bc5dec0a4a35dff9865851d379b65e46`),
+contains `BSD` as an operating-system identifier, **not** a BSD notice; the
+prior broad marker scan alone could not distinguish it.
+
+These file-level findings identify concrete notice-review leads, not proof that
+particular conditional code was emitted or that distribution obligations apply.
+The research audit verifies a limited root/VCG/Eigen/LMFit notice subset; it does
+not verify reproduction of these embedded file-specific notices. It also does
+not establish that they are absent from every part of the exact replay package.
+A qualified reviewer must assess applicability and the actual candidate binary,
+source bundle and notices before publication. No source/binary rights or TASK-54
+acceptance criteria are cleared by this inspection.
