@@ -31,6 +31,9 @@ def prepare(archive: Path, destination: Path) -> Path:
         raise ScaffoldError('Unsafe or existing destination')
     try:
         destination.mkdir(mode=0o700)
+    except FileExistsError as error:
+        raise ScaffoldError('Unsafe or existing destination') from error
+    try:
         source=destination/'source'; source.mkdir()
         unpack_archive(archive, source)
         lock=tomllib.loads((source/'Cargo.lock').read_text())
@@ -48,6 +51,17 @@ def prepare(archive: Path, destination: Path) -> Path:
         config=tomllib.loads(result.stdout)
         if config.get('source',{}).get('crates-io',{}).get('replace-with') != 'vendored-sources' or config.get('source',{}).get('vendored-sources',{}).get('directory') != 'vendor' or not (source/'vendor').is_dir():
             raise ScaffoldError('Unexpected Cargo vendor configuration')
+        expected={f"{item['name']}-{item['version']}": item['checksum'] for item in crates}
+        vendor=source/'vendor'
+        if len(expected) != len(crates) or {p.name for p in vendor.iterdir()} != set(expected):
+            raise ScaffoldError('Unexpected vendored crate set')
+        for name, checksum in expected.items():
+            path=vendor/name
+            if path.is_symlink() or not path.is_dir():
+                raise ScaffoldError('Unsafe vendored crate')
+            metadata=json.loads((path/'.cargo-checksum.json').read_text())
+            if metadata.get('package') != checksum or not isinstance(metadata.get('files'), dict):
+                raise ScaffoldError('Vendored crate checksum metadata mismatch')
         (source/'.cargo').mkdir(exist_ok=True)
         (source/'.cargo/config.toml').write_text(result.stdout)
         recipe=destination/'recipe/recipe.yaml'; recipe.parent.mkdir()

@@ -24,7 +24,9 @@ def test_prepare_validates_source_and_stages_cargo_with_dynamic_linking(tmp_path
     monkeypatch.setattr(mod, 'SOURCE_SHA256', hashlib.sha256(source.read_bytes()).hexdigest())
     def vendor(command, **kwargs):
         assert '--locked' in command
-        (kwargs['cwd']/'vendor').mkdir()
+        crate = kwargs['cwd']/'vendor/test-1.0.0'
+        crate.mkdir(parents=True)
+        (crate/'.cargo-checksum.json').write_text('{"package":"' + '1'*64 + '","files":{}}')
         return type('Completed', (), {'stdout': '[source.crates-io]\nreplace-with = "vendored-sources"\n[source.vendored-sources]\ndirectory = "vendor"\n'})()
     monkeypatch.setattr(mod.subprocess, 'run', vendor)
     result = mod.prepare(source, tmp_path/'prepared')

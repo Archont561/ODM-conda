@@ -43,3 +43,4 @@ with tempfile.TemporaryDirectory(prefix='odm-jxl-source-') as tmp:
         print('::error::JPEG XL RETEST FAILED '+res.stdout[-3500:].replace('\n',' | '),flush=True)
         res.check_returncode()
     print('::notice::JPEG XL SOURCE BUILD PASS '+matches[0].name+' '+hashlib.sha256(matches[0].read_bytes()).hexdigest(),flush=True)
+# Recheck staged crate set and lock checksums.
