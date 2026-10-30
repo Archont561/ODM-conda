@@ -21,7 +21,7 @@ EXCLUDED_ASSETS = {
 }
 
 
-def make_scoped_runtime(source: Path, destination: Path) -> dict:
+def make_scoped_runtime(source: Path, destination: Path, *, assets_preexcluded: bool = False) -> dict:
     source, destination = Path(source), Path(destination)
     if source.is_symlink() or not source.is_dir() or destination.exists() or destination.is_symlink():
         raise ScaffoldError('Unsafe or existing runtime source/destination')
@@ -34,8 +34,13 @@ def make_scoped_runtime(source: Path, destination: Path) -> dict:
         raise ScaffoldError('Unexpected installed OpenSfM dataset module')
     for name, expected in EXCLUDED_ASSETS.items():
         path = source / name
-        if not path.is_file() or sha256(path) != expected:
+        if assets_preexcluded:
+            if path.exists() or path.is_symlink():
+                raise ScaffoldError(f'Preexcluded OpenSfM asset is present: {name}')
+        elif not path.is_file() or sha256(path) != expected:
             raise ScaffoldError(f'Unexpected or missing OpenSfM asset: {name}')
+    if assets_preexcluded and (source / 'data/bow').exists() and any((source / 'data/bow').rglob('*')):
+        raise ScaffoldError('Unexpected scoped vocabulary contents')
     marker = '\n    def _image_list_file(self)'
     text = dataset.read_text(encoding='utf-8')
     if text.count(marker) != 1 or (source / 'scoped_runtime_guard.py').exists():
@@ -46,8 +51,9 @@ def make_scoped_runtime(source: Path, destination: Path) -> dict:
         raise ScaffoldError('Unsafe or existing runtime destination') from error
     try:
         shutil.copytree(source, destination, dirs_exist_ok=True)
-        for name in EXCLUDED_ASSETS:
-            (destination / name).unlink()
+        if not assets_preexcluded:
+            for name in EXCLUDED_ASSETS:
+                (destination / name).unlink()
         guard = Path(__file__).with_name('opensfm_scoped_guard.py')
         shutil.copyfile(guard, destination / 'scoped_runtime_guard.py')
         injection = '\n        from opensfm.scoped_runtime_guard import validate_config\n        validate_config(self.config)\n'

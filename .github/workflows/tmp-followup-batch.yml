@@ -1,0 +1,107 @@
+name: Private follow-up validation
+on:
+  push:
+    paths: [.github/workflows/tmp-followup-batch.yml, scripts/opensfm_reduced_recipe.py, scripts/audit_poisson_research.py]
+permissions:
+  contents: read
+jobs:
+  poisson:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default
+      - name: Build and separately audit Poisson candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL https://codeload.github.com/OpenDroneMap/PoissonRecon/tar.gz/97caa6d34d1b05b59888bed019dea89ced74445e -o "$RUNNER_TEMP/original.tar.gz"
+          pixi run python scripts/poisson_reduced_candidate.py --source "$RUNNER_TEMP/original.tar.gz" --output "$RUNNER_TEMP/candidate.tar.gz"
+          pixi run python scripts/poisson_candidate_recipe.py --original "$RUNNER_TEMP/original.tar.gz" --candidate "$RUNNER_TEMP/candidate.tar.gz" --destination "$RUNNER_TEMP/prepared"
+          pixi run rattler-build build --recipe "$RUNNER_TEMP/prepared/packaging/recipes/poissonrecon-odm/recipe.yaml" --target-platform linux-64 --variant-config recipes/variants.yaml --channel conda-forge --channel-priority strict --output-dir "$RUNNER_TEMP/output" --log-style plain > "$RUNNER_TEMP/build.log" 2>&1 || { tail -100 "$RUNNER_TEMP/build.log"; exit 1; }
+          pixi run python scripts/test_package.py --component poissonrecon-odm --output-dir "$RUNNER_TEMP/output"
+          pkg=("$RUNNER_TEMP/output/linux-64/poissonrecon-odm-"*.conda)
+          pixi run python scripts/audit_poisson_research.py --package "${pkg[0]}" --candidate "$RUNNER_TEMP/candidate.tar.gz" > "$RUNNER_TEMP/audit.json"
+          AUDIT="$RUNNER_TEMP/audit.json" pixi run python - <<'PY'
+          import os,json
+          r=json.load(open(os.environ['AUDIT']))
+          print(f"::notice::Reduced Poisson research audit PASS; package SHA256 {r['package_sha256']}; candidate SHA256 {r['candidate_sha256']}")
+          PY
+          if pixi run python scripts/audit_package.py --component poissonrecon-odm --output-dir "$RUNNER_TEMP/output" --reports-dir "$RUNNER_TEMP/reports" > "$RUNNER_TEMP/production-audit.log" 2>&1; then exit 1; fi
+          grep -F 'Published corresponding-source URL is missing' "$RUNNER_TEMP/production-audit.log"
+          echo '::notice::Installed and fresh tests passed; original production audit still rejects research metadata; all files discarded.'
+  opensfm:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default
+      - name: Build scoped OpenSfM from reduced source
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL https://codeload.github.com/OpenDroneMap/OpenSfM/tar.gz/c5328439465e6ace011f39077d1077d7b1cdd65d -o "$RUNNER_TEMP/original.tar.gz"
+          pixi run python scripts/opensfm_reduced_candidate.py --source "$RUNNER_TEMP/original.tar.gz" --output "$RUNNER_TEMP/candidate.tar.gz"
+          pixi run python scripts/opensfm_reduced_recipe.py --original "$RUNNER_TEMP/original.tar.gz" --candidate "$RUNNER_TEMP/candidate.tar.gz" --destination "$RUNNER_TEMP/prepared"
+          pixi run rattler-build build --recipe "$RUNNER_TEMP/prepared/packaging/research/recipes/opensfm-scoped-odm/recipe.yaml" --target-platform linux-64 --variant-config recipes/variants.yaml --channel conda-forge --channel-priority strict --output-dir "$RUNNER_TEMP/output" --log-style plain > "$RUNNER_TEMP/build.log" 2>&1 || { tail -100 "$RUNNER_TEMP/build.log"; exit 1; }
+          pkg=("$RUNNER_TEMP/output/linux-64/opensfm-scoped-odm-"*.conda)
+          pixi run rattler-build test --package-file "${pkg[0]}" --channel conda-forge --channel-priority strict --output-dir "$RUNNER_TEMP/retest" --log-style plain
+          pixi run python scripts/audit_open_research.py opensfm-scoped-odm "${pkg[0]}"
+          sha256sum "${pkg[0]}" "$RUNNER_TEMP/candidate.tar.gz" | sed 's/^/::notice::/'
+          echo '::notice::Reduced-source OpenSfM package built, installed and fresh-tested and separately audited; all files discarded.'
+  openmvs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default
+      - name: Build reduced OpenMVS and compare notice candidates
+        shell: bash
+        run: |
+          set -euo pipefail
+          pixi run python - <<'PY'
+          from pathlib import Path
+          import textwrap
+          path=Path('scripts/build_open_research.py'); text=path.read_text()
+          needle='        verify_openmvs_tree(source, research=True)\n'
+          addition='''from openmvs_reduced_tree import make_reduced_tree
+          import tempfile
+          scratch = Path(tempfile.mkdtemp(prefix='reduced-openmvs-', dir=source.parent))
+          reduced = scratch / 'tree'
+          make_reduced_tree(source, reduced)
+          source = reduced
+          '''
+          assert text.count(needle)==1
+          path.write_text(text.replace(needle,needle+textwrap.indent(addition,'        ')))
+          compile(path.read_text(),str(path),'exec')
+          PY
+          pixi run rattler-build build --recipe research/recipes/openmvs-odm/recipe.yaml --target-platform linux-64 --variant-config recipes/variants.yaml --channel conda-forge --channel-priority strict --output-dir "$RUNNER_TEMP/output" --log-style plain > "$RUNNER_TEMP/build.log" 2>&1 || { tail -100 "$RUNNER_TEMP/build.log"; exit 1; }
+          pkg=("$RUNNER_TEMP/output/linux-64/openmvs-odm-"*.conda)
+          pixi run rattler-build test --package-file "${pkg[0]}" --channel conda-forge --channel-priority strict --output-dir "$RUNNER_TEMP/retest" --log-style plain
+          pixi run python scripts/audit_open_research.py openmvs-odm "${pkg[0]}"
+          pixi run python scripts/compare_openmvs_notices.py --package "${pkg[0]}" > "$RUNNER_TEMP/notice-comparison.json"
+          REPORT="$RUNNER_TEMP/notice-comparison.json" pixi run python - <<'PY'
+          import os,json
+          r=json.load(open(os.environ['REPORT']))
+          print('::notice::Package SHA256 '+r['package_sha256'])
+          print('::notice::Notice comparison '+json.dumps({'matches':[x for x in r['candidates'] if x['payload_matches'] or x['metadata_matches']], 'unmatched':[x['source_path'] for x in r['candidates'] if not x['payload_matches'] and not x['metadata_matches']], 'package_license_files':r['package_license_files'],'conda_license_files':r['conda_license_files']},sort_keys=True))
+          PY
+          echo '::notice::Reduced OpenMVS installed/fresh tests and research audit passed; outputs discarded.'

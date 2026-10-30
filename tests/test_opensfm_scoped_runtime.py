@@ -86,3 +86,22 @@ def test_scoped_destination_race_does_not_delete_competing_directory(tmp_path, m
     with pytest.raises(ScaffoldError, match='existing'):
         scoped.make_scoped_runtime(source, destination)
     assert (destination / 'keep').read_text() == 'other process'
+
+
+def test_preexcluded_assets_require_absence(tmp_path, monkeypatch):
+    from common import ScaffoldError
+    import hashlib
+    import opensfm_scoped_runtime as scoped
+    source = tmp_path / 'source'
+    source.mkdir()
+    dataset = b'class DataSet:\n    def load_config(self):\n        self.config={}\n\n    def _image_list_file(self):\n        pass\n'
+    (source / 'dataset.py').write_bytes(dataset)
+    monkeypatch.setattr(scoped, 'DATASET_SHA256', hashlib.sha256(dataset).hexdigest())
+    monkeypatch.setattr(scoped, 'EXCLUDED_ASSETS', {'data/bow/words.npz':'0'*64})
+    (source / 'data/bow').mkdir(parents=True)
+    (source / 'data/bow/words.npz').write_bytes(b'wrong')
+    with pytest.raises(ScaffoldError, match='present'):
+        scoped.make_scoped_runtime(source, tmp_path/'bad', assets_preexcluded=True)
+    (source / 'data/bow/words.npz').unlink()
+    scoped.make_scoped_runtime(source, tmp_path/'good', assets_preexcluded=True)
+    assert (tmp_path/'good/scoped_runtime_guard.py').is_file()
