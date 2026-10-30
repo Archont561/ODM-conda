@@ -22,14 +22,44 @@ VMEM_FILES = {
     'windows.py': '16b40a510b4cc37225cdfed23a11c0f1319563009f34afafc86d5ed91bd7d0b7',
 }
 VMEM_LICENSE_SHA256 = '3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986'
+SCOPED_DATASET_SHA256 = '17da2621fcebcc9ad469bbb2041fbfbe522eeee98b86e37a1e86e573f5cb2746'
+SCOPED_GUARD_SHA256 = '27ea62a3ee8540e3aa4706ce98f444f59e40a9051ef4fab5101d0e5ebc454e11'
+
+
+OPENMVS_METADATA_NOTICES = {
+    'upstream-LICENSE': '0f072d4a0ef59e7f6864bb45629c37417ccef63025b58f4073109d1c830bc55f',
+    **{name: digest for name, (_, digest) in OPENMVS_NOTICES.items()},
+}
+
+
+def verify_openmvs_metadata_notices(info: dict[str, bytes]) -> None:
+    hashes = {hashlib.sha256(raw).hexdigest() for path, raw in info.items() if path.startswith('info/licenses/')}
+    for name, digest in OPENMVS_METADATA_NOTICES.items():
+        if digest not in hashes:
+            raise ScaffoldError(f'Missing or modified OpenMVS Conda metadata notice: {name}')
+
+
+def verify_scoped_assets(payload: dict[str, bytes]) -> None:
+    from opensfm_scoped_runtime import EXCLUDED_ASSETS
+    root = 'lib/python3.12/site-packages/opensfm/'
+    for filename, expected in (('dataset.py', SCOPED_DATASET_SHA256), ('scoped_runtime_guard.py', SCOPED_GUARD_SHA256)):
+        data = payload.get(root + filename)
+        if data is None or hashlib.sha256(data).hexdigest() != expected:
+            raise ScaffoldError(f'Missing or modified scoped OpenSfM file: {filename}')
+    if (any(root + path in payload for path in EXCLUDED_ASSETS)
+            or any(path.startswith(root + 'data/bow/') for path in payload)):
+        raise ScaffoldError('Scoped OpenSfM contains excluded runtime asset')
 
 
 
 def verify_index(name: str, index: object) -> None:
     """Check the exact local research package identity and critical runtime declarations."""
     expected = {
-        'openmvs-odm': ('0.0.0.dev20260516', 3,
+        'openmvs-odm': ('0.0.0.dev20260516', 4,
                         {'python', 'libboost', 'libopencv', 'tbb', 'mpfr', 'gmp', 'libgomp'}),
+        'opensfm-scoped-odm': ('0.5.2', 0,
+                        {'python', 'numpy', 'py-opencv', 'ceres-solver', 'suitesparse',
+                         'gflags', 'glog', 'libgomp', 'rasterio', 'rawpy'}),
         'opensfm-odm': ('0.5.2', 5,
                         {'python', 'numpy', 'py-opencv', 'ceres-solver', 'suitesparse',
                          'gflags', 'glog', 'libgomp', 'rasterio', 'rawpy'}),
@@ -41,6 +71,9 @@ def verify_index(name: str, index: object) -> None:
             or type(index.get('build_number')) is not int or index['build_number'] != build
             or index.get('subdir') != 'linux-64'):
         raise ScaffoldError('Research package identity mismatch')
+    constraints = index.get('constrains', [])
+    if name == 'opensfm-scoped-odm' and (not isinstance(constraints, list) or 'opensfm-odm <0' not in constraints):
+        raise ScaffoldError('Scoped OpenSfM must conflict with the full research package')
     dependencies = index.get('depends')
     if not isinstance(dependencies, list) or not all(isinstance(item, str) and item.split() for item in dependencies):
         raise ScaffoldError('Invalid research runtime dependency declarations')
@@ -49,7 +82,7 @@ def verify_index(name: str, index: object) -> None:
         raise ScaffoldError(f'Missing research runtime dependencies: {sorted(required - names)}')
 
 def verify_payload(name: str, payload: dict[str, bytes]) -> list[str]:
-    if name not in ('openmvs-odm', 'opensfm-odm'):
+    if name not in ('openmvs-odm', 'opensfm-odm', 'opensfm-scoped-odm'):
         raise ScaffoldError('Unknown research component')
     share = f'share/odm-conda/{name}/'
     licenses = f'share/licenses/{name}/'
@@ -59,7 +92,7 @@ def verify_payload(name: str, payload: dict[str, bytes]) -> list[str]:
                          share + 'openmvs_pointcloud_fixture.py', share + 'openmvs_fixture.py', share + 'texrecon_fixture.py'})
     else:
         required.update({'bin/opensfm', 'bin/opensfm_run_all', share + 'opensfm_main.py',
-                         share + 'opensfm_fixture.py', share + 'opensfm_assets_fixture.py'})
+                         share + 'opensfm_fixture.py', share + ('opensfm_scoped_fixture.py' if name == 'opensfm-scoped-odm' else 'opensfm_assets_fixture.py')})
     missing = required - payload.keys()
     if missing:
         raise ScaffoldError(f'Missing research package files: {sorted(missing)}')
@@ -79,6 +112,8 @@ def verify_payload(name: str, payload: dict[str, bytes]) -> list[str]:
             raise ScaffoldError(f'Unexpected package file or environment leak: {path}')
         if raw.startswith(b'\x7fELF'):
             binaries.append(path)
+    if name == 'opensfm-scoped-odm' and b'scoped runtime omits two vocabularies and sensor_data.sqlite' not in payload[share + 'SOURCE.txt']:
+        raise ScaffoldError('Missing scoped OpenSfM provenance warning')
     if name == 'openmvs-odm':
         verify_notices(payload, {licenses + dest: digest for dest, (_, digest) in OPENMVS_NOTICES.items()})
         if 'bin/ReconstructMesh' not in binaries:
@@ -98,7 +133,11 @@ def verify_payload(name: str, payload: dict[str, bytes]) -> list[str]:
             matches = [p for p in binaries if p.startswith(root + module + '.') and p.endswith('.so')]
             if len(matches) != 1:
                 raise ScaffoldError(f'Missing or ambiguous OpenSfM native module: {module}')
+        if name == 'opensfm-scoped-odm':
+            verify_scoped_assets(payload)
         for path, digest in ASSETS.items():
+            if name == 'opensfm-scoped-odm' and path.startswith('data/bow/'):
+                continue
             data = payload.get(root + path)
             if data is None or hashlib.sha256(data).hexdigest() != digest:
                 raise ScaffoldError(f'Missing or modified OpenSfM asset: {path}')
@@ -107,12 +146,14 @@ def verify_payload(name: str, payload: dict[str, bytes]) -> list[str]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('component', choices=('openmvs-odm', 'opensfm-odm'))
+    parser.add_argument('component', choices=('openmvs-odm', 'opensfm-odm', 'opensfm-scoped-odm'))
     parser.add_argument('package', type=Path)
     args = parser.parse_args()
     info, payload = read_package(args.package)
     index = json.loads(info['info/index.json'])
     verify_index(args.component, index)
+    if args.component == 'openmvs-odm':
+        verify_openmvs_metadata_notices(info)
     binaries = verify_payload(args.component, payload)
     patchelf = shutil.which('patchelf')
     if not patchelf:

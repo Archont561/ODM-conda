@@ -463,3 +463,180 @@ reduced package was created. BoW/VLAD modes would need replacement assets or a
 clearly scoped unsupported-mode policy, and the original source archive still
 contains the removed assets. This is a technical route to explore, not resolution
 of asset rights, corresponding-source obligations or release approval.
+
+The remaining `CGAL/version.h` mismatch was examined in [run 40978864742](https://github.com/Archont561/ODM-conda/actions/runs/40978864742),
+which installed the same hash-identified CGAL 6.2.1 host package and compared
+it to the pinned v6.2.1 tag archive. Beyond expanded URL/Id keywords, the
+installed header reports Git hash `28811b671a12b5caa9e3688569dadbc6b3728fe6`
+in place of upstream tag's placeholder `abcdef`, and release date `20260903`
+in place of `20260608`; the version macro and LGPL-or-commercial SPDX marker
+match. Installed SHA256 is
+`9341bb068b6a12340594870fd9a625f6d9e428c4875cfec9d772e96d3990572b`,
+upstream tag SHA256 is
+`85e3082bcadd8ed8665f00718d2a314d4bcb1a11b64dae3585a640147747e4f8`.
+The package metadata lists `share/doc/CGAL/LICENSE`, `LICENSE.GPL` and
+`LICENSE.LGPL` plus an icon license. These observations do not establish
+package source correspondence, which license option applies, the completeness
+of notices or entitlement to distribute; qualified review remains open.
+
+GitHub's annotated v6.2.1 tag object points to commit
+[`28811b671a12b5caa9e3688569dadbc6b3728fe6`](https://github.com/CGAL/cgal/commit/28811b671a12b5caa9e3688569dadbc6b3728fe6),
+the same hash embedded in the installed header; the commit author date is
+2026-09-03. This explains the relationship to the tagged revision but does not
+independently establish the provenance or completeness of the package's entire
+source tree or accompanying notices.
+
+### Scoped OpenSfM local-only research package
+
+`research/recipes/opensfm-scoped-odm/recipe.yaml` defines a separate Linux
+research package, not a production component. It builds from the same pinned
+OpenSfM/pybind11/vmem research graph, then derives an installed package copy
+without the two vocabularies or the SQLite sensor database. The transformation
+verifies the three excluded hashes and exact `dataset.py` input, refuses
+symlinks and overlapping paths, and preserves the original staged source. A
+guard in dataset configuration explicitly rejects WORDS matching and positive
+BoW/VLAD neighbor settings. The JSON sensor database remains, so cameras absent
+from it may behave differently. Direct callers bypassing dataset configuration,
+runtime mutation of configuration, other matching modes, complete relocation
+and other operating systems remain outside this validation.
+
+The scoped artifact has its own asset checks and a solver constraint excluding
+co-installation with `opensfm-odm`, because both install the same executable
+and Python module paths. This does not replace or weaken the original package's
+audit. [Run 40980422096](https://github.com/Archont561/ODM-conda/actions/runs/40980422096)
+built the initial scoped recipe, passed installed and fresh functional tests
+and the distinct scoped audit; outputs were discarded. The original upstream
+archives containing all three removed assets are still fetched and no reduced
+corresponding-source archive is produced. This evidence does not resolve
+rights in the remaining JSON, vmem, dependencies or model data, or authorize
+redistribution. No release gates changed.
+
+The guarded runtime was also exercised on the Seneca pipeline in
+[run 40979586923](https://github.com/Archont561/ODM-conda/actions/runs/40979586923).
+Default settings and three unsupported configurations were tested before the
+pipeline; it completed and produced a 9521 × 10546 RGBA Byte EPSG:32617 raster
+(110,476,182 bytes) and a 7,327,141-byte report. This run modified a disposable
+prefix, not the final distinct package; outputs were discarded, and dataset
+rights and visual/geographic quality were not independently validated.
+
+The later distinct scoped package built, passed installed and fresh tests and
+its separate audit in [run 40982191066](https://github.com/Archont561/ODM-conda/actions/runs/40982191066)
+at `910804f`; its discarded package SHA256 was
+`55ffe458560964100848b9b50df6238341c07ee025bf84760dba7b874cd7aaa0`.
+Its packaged source notice identifies the omitted assets and unsupported modes.
+
+A separate [run 40980893166](https://github.com/Archont561/ODM-conda/actions/runs/40980893166)
+built and installed the actual scoped package (earlier revision `eb4fef2`, before
+the later solver constraint and notice text), verified its omissions and mode
+guards, and completed the Seneca pipeline. Its discarded scoped package SHA256
+was `bef5d8d3b315169126a5a37f7c9ad274c13f2407a7968e763c080dc262ce189a`;
+the resulting raster was 9539 × 10546 RGBA Byte EPSG:32617 (113,385,888 bytes),
+with a 7,355,235-byte report. Outputs were discarded. This is functional
+integration evidence, not visual/geographic validation or clearance of dataset
+or software rights; the final isolation/notice changes were separately built and
+audited as noted above.
+
+For a repeatable disposable build, select `opensfm-scoped` in the
+**Local-only Open component research build** workflow, or run locally:
+`RESEARCH_COMPONENT=opensfm-scoped pixi run python scripts/run_open_research.py`.
+The workflow does not upload its packages or sources. The existing `all` choice
+continues to select the original OpenMVS and full OpenSfM research recipes.
+
+### Local follow-up: scoped source and reduced-tree inventory
+
+`scripts/opensfm_reduced_candidate.py` verifies the pinned original archive and
+the three individual asset hashes, removes them, and writes a deterministic
+local-only source archive with per-file hashes and modes. Two local runs on
+2026-10-30 produced identical SHA256
+`3f36288338532cee3bf5797b3031868b06b0a29eeb1adbd44905f1f3bf2f2fef`
+(581 retained files; modes depend on the staged filesystem). The original
+archive was fetched privately, not included or uploaded. At that point this was **not a buildable replacement** for the scoped recipe:
+that recipe fetched the original, and its runtime transformation required the
+three assets to be present before removal. A later private build is described below. The archive also omits separate pybind11,
+vmem and other dependency sources, the guard and packaging changes. Its
+manifest and exclusions are not a corresponding-source or rights determination.
+
+Re-staged the exact OpenMVS/VCG/Eigen graph locally, applied the four research
+patches and reproduced the 3274-file reduced fingerprint
+`e64c1718c05d58ac74051a8a0a216febbcac7144898cea022d378af427549489`.
+`scripts/openmvs_notice_inventory.py` generated
+`research/openmvs-reduced-notice-inventory.json`: 17 notice-like filenames,
+495 of 499 historical trace entries match; two excluded notices are absent and
+two patch-modified files differ. The report identifies the previously inspected
+CGAL host package and 93 traced GPL-or-commercial marker paths; other selected
+host package identities appear in the earlier table above. Filename matching
+misses embedded notices and may have false positives, and the historical trace
+is neither the full dependency graph nor complete corresponding source. All
+qualified source, rights and notice reviews remain open.
+
+[Private run 41066302285](https://github.com/Archont561/ODM-conda/actions/runs/41066302285)
+built the actual full and scoped OpenSfM research packages, separately audited
+them, then used their local Conda channel metadata in three Pixi solves. Each
+package solved independently; requesting both was rejected with both package
+names in the solver output. This tests the scoped constraint on linux-64 for
+those builds, not arbitrary package-manager versions or forced installations.
+Packages and source inputs were discarded and no artifacts were uploaded.
+
+### Reduced-source scoped package and shipped-notice comparison
+
+[Private run 41068961668](https://github.com/Archont561/ODM-conda/actions/runs/41068961668)
+reproduced the reduced OpenSfM candidate SHA256
+`3f36288338532cee3bf5797b3031868b06b0a29eeb1adbd44905f1f3bf2f2fef`,
+prepared a local-path recipe and built the scoped package from that source.
+The builder checks the patched, staged 874-file graph fingerprint
+`74c5be8ef66a189a8001816e7564e6b83144856dff176ca2674798f7b809b6d9`
+including separately pinned pybind11 and vmem sources, and checks the assets
+are absent before applying the configuration guard. The package passed its
+installed and fresh functional tests and scoped audit; its discarded SHA256 was
+`0c1bf13c2ab66aa5c21b8e41e924d98a9402f0acb674793921264a22caa0e3e6`.
+No Seneca dataset test was run on this particular package. The original archive
+was privately fetched to validate the candidate, and other source and legal
+obligations are not resolved. No artifacts were uploaded.
+
+The same run built the actual OpenMVS package from the previously fingerprinted
+reduced tree and compared the 17 filename-based candidates against actual
+payload and Conda metadata. Five match shipped license payload bytes; 12 do
+not, and no `info/licenses/` files were present. Results and package hash are
+in `research/openmvs-package-notice-comparison.json`. The candidate list includes
+a script and contributor agreements, so non-matches do not imply each must be
+shipped; it also misses embedded notices and transitive dependency terms.
+The package passed installed/fresh tests and the existing research audit. This
+is an inventory, not notice sufficiency, source completeness or release approval.
+
+### OpenMVS unmatched-notice triage (2026-10-30)
+
+`research/openmvs-notice-gap-triage.json` classifies all 12 unmatched
+filename candidates from the prior package comparison against the historical
+499-entry trace. It finds `libs/Math/LMFit/lmmin.cpp` and `lmmin.h` in the
+trace, while LMFit's `COPYING` was absent from the prior research package.
+The hash-recorded `COPYING` is a concrete notice lead. Research recipe build 4
+now conservatively copies that exact file into the payload and declares it,
+the root notices, VCG license and two Eigen notices under `about.license_file`;
+the local audit checks their exact hashes in Conda `info/licenses/`. These
+changes are not a legal conclusion or proof of a complete notice set.
+
+Five other unmatched candidates are root Eigen license files; 251 paths under
+`_external/eigen/Eigen/` occur in the historical trace, so applicability of
+those texts still needs file-level review. The remaining candidates are in
+benchmark, unsupported Eigen, VCG documentation or maintenance-script paths;
+no matching paths from those subtrees occur in that historical trace. Absence
+from this particular trace does **not** prove those files cannot be used or that
+notices are unnecessary. The classification includes a relicense script and
+contributor agreements because the original scan was filename-based.
+
+Build 4 rendered and focused local audit tests passed. Its native validation
+was initially blocked by GitHub/API/codeload TLS handshakes; the subsequent run
+is recorded below. Build 3 evidence alone cannot certify build 4. TASK-54 and the release gates remain open.
+
+An offline synthetic `rattler-build` 0.68.0 package confirmed that the six
+nested `license_file` paths are copied into `info/licenses/`, and the new
+hash-based metadata verifier accepted those six synthetic bytes and rejected a
+missing LMFit-style entry. This checks the packaging mechanism only; it is not
+an actual OpenMVS build or validation of the staged notice bytes.
+
+After GitHub connectivity returned, [private run 41072875690](https://github.com/Archont561/ODM-conda/actions/runs/41072875690)
+built OpenMVS research build 4, passed installed and fresh tests, and passed
+its research payload and six hash-verified Conda metadata notice checks. The
+package SHA256 was `25c69f66d30f9943bdca7646cab46d3eb1bc6c917781d6919dcc4a35115afabd`;
+outputs were discarded. This standard research build staged the original graph;
+it is not evidence that all source/notice obligations are resolved.

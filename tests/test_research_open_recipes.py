@@ -60,10 +60,11 @@ def test_research_workflow_records_selected_component_safely():
     workflow = (ROOT / '.github/workflows/build-open-research.yml').read_text()
     assert 'run-name: "Local-only research: ${{ inputs.component }}"' in workflow
     assert 'RESEARCH_COMPONENT: ${{ inputs.component }}' in workflow
+    assert '          - opensfm-scoped' in workflow
     assert 'pixi run python scripts/record_open_research_component.py' in workflow
 
 
-@pytest.mark.parametrize('component', ['openmvs', 'opensfm', 'all'])
+@pytest.mark.parametrize('component', ['openmvs', 'opensfm', 'opensfm-scoped', 'all'])
 def test_research_component_annotation(component, tmp_path, capsys):
     from record_open_research_component import record_component
 

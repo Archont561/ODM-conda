@@ -1,0 +1,101 @@
+{
+  "baseline_changed": [
+    {
+      "old_sha256": "bc10591589b13fbdca7293b9200f616418bda6965bb1a9ff40656b696082c7b2",
+      "path": "apps/ReconstructMesh/ReconstructMesh.cpp",
+      "sha256": "d07e58ada4e7ae2d295adb49dd0140bd517b41be414823e7c3b5a5d9b82e5a41"
+    },
+    {
+      "old_sha256": "7c19e1bb8e1589884e61d005d54c68ad5de67ebd736aa48508931ef44a427f44",
+      "path": "libs/MVS/PointCloud.cpp",
+      "sha256": "99f02ac60fc613567ea0854471eb8bc0b9e0614d5002a8505c20f30c8a041f83"
+    }
+  ],
+  "baseline_count": 499,
+  "baseline_matched": 495,
+  "baseline_missing": [
+    "libs/Math/IBFS/license.txt",
+    "libs/Math/TRWS/LICENSE.TXT"
+  ],
+  "baseline_sha256": "670ac7b346f9a361afc5e65a432a2442732bae5475e95fcc7b4b5b9c31427b2b",
+  "host_trace": {
+    "cgal_gpl_or_commercial_paths": 93,
+    "cgal_package": "cgal-cpp-6.2.1-hec4b13c_0.conda",
+    "cgal_package_sha256": "232ea63938c3582460c5767e118fc205963bc0d8c331885b2020ef1c5d0c83a5",
+    "limitations": "Prior Ninja header trace only; does not establish linked code, entire dependency sources or obligations.",
+    "trace_sha256": "a7cb0376878199336341bd12d1cfbfa7133a6a72dc3c45cb8abe2f2e12ed418a"
+  },
+  "notice_name_candidates": [
+    {
+      "path": "COPYRIGHT.md",
+      "sha256": "43cfebf3c7ca2b5d2120cff54a7146136e86960ab99f16fa9e5c8e0a21c1b354"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "0f072d4a0ef59e7f6864bb45629c37417ccef63025b58f4073109d1c830bc55f"
+    },
+    {
+      "path": "_external/eigen/COPYING.APACHE",
+      "sha256": "03379001a7b12a2ec997a25554247d985270b353c10d5bafee9ac8d6519820b7"
+    },
+    {
+      "path": "_external/eigen/COPYING.BSD",
+      "sha256": "51928dce36213c5333ba3172e847d735d4c6e9b7ff2722a326c49067155b82eb"
+    },
+    {
+      "path": "_external/eigen/COPYING.GPL",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": "_external/eigen/COPYING.LGPL",
+      "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551"
+    },
+    {
+      "path": "_external/eigen/COPYING.MINPACK",
+      "sha256": "c87b7f8ee88f6195e91743820c00354833583aef091b72e2d4a49c8e28e798a0"
+    },
+    {
+      "path": "_external/eigen/COPYING.MPL2",
+      "sha256": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85"
+    },
+    {
+      "path": "_external/eigen/COPYING.README",
+      "sha256": "c83230b770f17ef1386ea1fd3681271dd98aa93646bdbfb5bff3a1b7050fff9d"
+    },
+    {
+      "path": "_external/eigen/bench/btl/COPYING",
+      "sha256": "b8d0e2bcbf36f6af3cdbf94055ad2ea675d5a19fc623eb0ec82febb2b08e719b"
+    },
+    {
+      "path": "_external/eigen/scripts/relicense.py",
+      "sha256": "644d4ae0d2f4f41ee9b018793fd6c0f5abc8a138149ac4c82feccc8548e18edb"
+    },
+    {
+      "path": "_external/eigen/unsupported/Eigen/src/LevenbergMarquardt/CopyrightMINPACK.txt",
+      "sha256": "8887036b1039e299ebcc8b95a73ea1538df548393fb8462361c80bea605a4fbe"
+    },
+    {
+      "path": "_external/vcg/LICENSE.txt",
+      "sha256": "589ed823e9a84c56feb95ac58e7cf384626b9cbf4fda2a907bc36e103de1bad2"
+    },
+    {
+      "path": "_external/vcg/docs/ContributorLicenseAgreement.md",
+      "sha256": "a772549758e85a53a89f28bb015cff71ecd0d60f66447d9efa51253e1b8e6d9b"
+    },
+    {
+      "path": "_external/vcg/docs/ContributorLicenseAgreement.pdf",
+      "sha256": "7fa876355da1af19a04d6a3b8a24fc8a3139894499587047c389106d2a4bcde9"
+    },
+    {
+      "path": "_external/vcg/eigenlib/unsupported/Eigen/src/LevenbergMarquardt/CopyrightMINPACK.txt",
+      "sha256": "8887036b1039e299ebcc8b95a73ea1538df548393fb8462361c80bea605a4fbe"
+    },
+    {
+      "path": "libs/Math/LMFit/COPYING",
+      "sha256": "09c21b5a8ca469b20e0ce3795f19370affba36f532e480e593c9712c91caf4c4"
+    }
+  ],
+  "reduced_tree_sha256": "e64c1718c05d58ac74051a8a0a216febbcac7144898cea022d378af427549489",
+  "retained_files": 3274,
+  "scope": "local-research-only; filename heuristic and prior trace are not complete notices, dependency sources, or license clearance"
+}

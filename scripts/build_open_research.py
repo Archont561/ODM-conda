@@ -22,7 +22,7 @@ from research_license_notices import OPENMVS_NOTICES, OPENSFM_NOTICES, PSUTIL_NO
 
 def main() -> None:
     name = os.environ.get('PKG_NAME', '')
-    if name not in ('openmvs-odm', 'opensfm-odm'):
+    if name not in ('openmvs-odm', 'opensfm-odm', 'opensfm-scoped-odm'):
         raise ScaffoldError('Unsupported research component')
     if platform.system() != 'Linux' or platform.machine().lower() not in ('x86_64', 'amd64'):
         raise ScaffoldError('Research builds are linux-64 only')
@@ -70,7 +70,7 @@ def main() -> None:
         cache = (build / 'CMakeCache.txt').read_text(encoding='utf-8')
         if f'VCG_DIR:PATH={vcg}' not in cache.splitlines():
             raise ScaffoldError('OpenMVS did not use the pinned VCG directory')
-    if name == 'opensfm-odm':
+    if name in ('opensfm-odm', 'opensfm-scoped-odm'):
         cache = (build / 'CMakeCache.txt').read_text(encoding='utf-8')
         lines = set(cache.splitlines())
         for line in ('OPENSFM_BUILD_TESTS:BOOL=OFF', 'PYBIND11_TEST:BOOL=OFF'):
@@ -114,6 +114,14 @@ def main() -> None:
                 raise ScaffoldError(f'OpenSfM native module missing or ambiguous: {module}')
         lib.mkdir(parents=True, exist_ok=True)
         shutil.copytree(package, lib / 'opensfm', ignore=shutil.ignore_patterns('src', 'test', '__pycache__', '*.pyc'))
+        if name == 'opensfm-scoped-odm':
+            from opensfm_scoped_runtime import make_scoped_runtime
+            staged, scoped = lib / 'opensfm', lib / 'opensfm-scoped-candidate'
+            report = make_scoped_runtime(staged, scoped)
+            shutil.rmtree(staged)
+            scoped.rename(staged)
+            (share / 'SOURCE.txt').write_text('LOCAL RESEARCH ONLY: scoped runtime omits two vocabularies and sensor_data.sqlite; WORDS, BoW and VLAD modes are unsupported. Upstream archives and other rights are not cleared for redistribution.\n', encoding='utf-8')
+            print(f"PASS: scoped local-only OpenSfM runtime: {report['excluded_count']} assets omitted", flush=True)
         # The exact PyPI vmem sdist is pinned and fingerprinted as a local-only
         # source. This does not resolve its separate GPL obligations.
         shutil.copytree(source / '_external/vmem/vmem', lib / 'vmem',
@@ -122,11 +130,12 @@ def main() -> None:
         # Conservative upstream psutil notice: provenance is still under review.
         copy_notices({'psutil-BSD-3-Clause.txt': (ROOT / 'research/notices/psutil-2021-BSD-3-Clause.txt',
                                                    PSUTIL_NOTICE_SHA256)}, license_dir)
-        for filename in ('opensfm_fixture.py', 'opensfm_assets_fixture.py'):
+        fixtures = ('opensfm_fixture.py', 'opensfm_scoped_fixture.py') if name == 'opensfm-scoped-odm' else ('opensfm_fixture.py', 'opensfm_assets_fixture.py')
+        for filename in fixtures:
             shutil.copy2(ROOT / 'scripts' / filename, share / filename)
         shutil.copy2(source / 'bin/opensfm_main.py', share / 'opensfm_main.py')
         launcher = bindir / 'opensfm'
-        launcher.write_text('#!/usr/bin/env bash\nset -e\nDIR="$(cd "$(dirname "$0")" && pwd)"\nexec "$DIR/python" "$DIR/../share/odm-conda/opensfm-odm/opensfm_main.py" "$@"\n', encoding='utf-8')
+        launcher.write_text('#!/usr/bin/env bash\nset -e\nDIR="$(cd "$(dirname "$0")" && pwd)"\n' + f'exec "$DIR/python" "$DIR/../share/odm-conda/{name}/opensfm_main.py" "$@"\n', encoding='utf-8')
         launcher.chmod(0o755)
         shutil.copy2(source / 'bin/opensfm_run_all', bindir / 'opensfm_run_all')
         copy_notices({dest: (source / rel, digest) for dest, (rel, digest) in OPENSFM_NOTICES.items()}, license_dir)

@@ -1,0 +1,71 @@
+{
+  "conda_license_files": {},
+  "matches": [
+    {
+      "metadata_matches": [],
+      "payload_matches": [
+        "share/licenses/openmvs-odm/openmvs-COPYRIGHT.md"
+      ],
+      "sha256": "43cfebf3c7ca2b5d2120cff54a7146136e86960ab99f16fa9e5c8e0a21c1b354",
+      "source_path": "COPYRIGHT.md"
+    },
+    {
+      "metadata_matches": [],
+      "payload_matches": [
+        "share/licenses/openmvs-odm/upstream-LICENSE.txt"
+      ],
+      "sha256": "0f072d4a0ef59e7f6864bb45629c37417ccef63025b58f4073109d1c830bc55f",
+      "source_path": "LICENSE"
+    },
+    {
+      "metadata_matches": [],
+      "payload_matches": [
+        "share/licenses/openmvs-odm/eigen-COPYING.MPL2.txt"
+      ],
+      "sha256": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85",
+      "source_path": "_external/eigen/COPYING.MPL2"
+    },
+    {
+      "metadata_matches": [],
+      "payload_matches": [
+        "share/licenses/openmvs-odm/eigen-COPYING.README.txt"
+      ],
+      "sha256": "c83230b770f17ef1386ea1fd3681271dd98aa93646bdbfb5bff3a1b7050fff9d",
+      "source_path": "_external/eigen/COPYING.README"
+    },
+    {
+      "metadata_matches": [],
+      "payload_matches": [
+        "share/licenses/openmvs-odm/vcg-LICENSE.txt"
+      ],
+      "sha256": "589ed823e9a84c56feb95ac58e7cf384626b9cbf4fda2a907bc36e103de1bad2",
+      "source_path": "_external/vcg/LICENSE.txt"
+    }
+  ],
+  "package_license_files": {
+    "share/licenses/openmvs-odm/eigen-COPYING.MPL2.txt": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85",
+    "share/licenses/openmvs-odm/eigen-COPYING.README.txt": "c83230b770f17ef1386ea1fd3681271dd98aa93646bdbfb5bff3a1b7050fff9d",
+    "share/licenses/openmvs-odm/openmvs-COPYRIGHT.md": "43cfebf3c7ca2b5d2120cff54a7146136e86960ab99f16fa9e5c8e0a21c1b354",
+    "share/licenses/openmvs-odm/packaging-MIT.txt": "c15a984a751b806989faa1cd801779c5cccf1ce7aea674f09842cdd30867e435",
+    "share/licenses/openmvs-odm/upstream-LICENSE.txt": "0f072d4a0ef59e7f6864bb45629c37417ccef63025b58f4073109d1c830bc55f",
+    "share/licenses/openmvs-odm/vcg-LICENSE.txt": "589ed823e9a84c56feb95ac58e7cf384626b9cbf4fda2a907bc36e103de1bad2"
+  },
+  "package_sha256": "2966ff2db1ad02758470b9d761470a5936c7667f1d49ebe40b83e801f7d7753b",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/41068961668",
+  "scope": "Local-only; filename candidates and byte equality are not complete notice, dependency or legal analysis; unmatched is not proof of obligations.",
+  "source_tree_sha256": "e64c1718c05d58ac74051a8a0a216febbcac7144898cea022d378af427549489",
+  "unmatched": [
+    "_external/eigen/COPYING.APACHE",
+    "_external/eigen/COPYING.BSD",
+    "_external/eigen/COPYING.GPL",
+    "_external/eigen/COPYING.LGPL",
+    "_external/eigen/COPYING.MINPACK",
+    "_external/eigen/bench/btl/COPYING",
+    "_external/eigen/scripts/relicense.py",
+    "_external/eigen/unsupported/Eigen/src/LevenbergMarquardt/CopyrightMINPACK.txt",
+    "_external/vcg/docs/ContributorLicenseAgreement.md",
+    "_external/vcg/docs/ContributorLicenseAgreement.pdf",
+    "_external/vcg/eigenlib/unsupported/Eigen/src/LevenbergMarquardt/CopyrightMINPACK.txt",
+    "libs/Math/LMFit/COPYING"
+  ]
+}

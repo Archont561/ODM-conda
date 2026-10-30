@@ -6,6 +6,7 @@ from typing import Mapping
 from common import ScaffoldError, sha256
 
 OPENMVS_NOTICES = {
+    'lmfit-COPYING.txt': ('libs/Math/LMFit/COPYING', '09c21b5a8ca469b20e0ce3795f19370affba36f532e480e593c9712c91caf4c4'),
     'openmvs-COPYRIGHT.md': ('COPYRIGHT.md', '43cfebf3c7ca2b5d2120cff54a7146136e86960ab99f16fa9e5c8e0a21c1b354'),
     'vcg-LICENSE.txt': ('_external/vcg/LICENSE.txt', '589ed823e9a84c56feb95ac58e7cf384626b9cbf4fda2a907bc36e103de1bad2'),
     'eigen-COPYING.MPL2.txt': ('_external/eigen/COPYING.MPL2', 'fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85'),

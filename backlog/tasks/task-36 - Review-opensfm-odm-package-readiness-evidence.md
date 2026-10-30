@@ -4,7 +4,7 @@ title: Review opensfm-odm package-readiness evidence
 status: In Progress
 assignee: []
 created_date: '2026-10-26 20:59'
-updated_date: '2026-10-30 00:03'
+updated_date: '2026-10-30 15:12'
 labels:
   - packaging
   - review
@@ -53,4 +53,6 @@ Traced 10,000/64-word vocabulary introduction and rename commits and investigate
 Pinned SQLite has 7523 rows: all 3708 lowercased OpenSfM JSON entries match exactly, and 3814 of 3815 added keys and values match historical AliceVision cameraSensors.db b369311; latter contains source fields naming multiple websites and user contributions. Later DroneDB merge script is consistent with this composition but postdates SQLite. Vocabulary training corpus remains unidentified. Record and caveats in research/open-components-license-review.md; rights remain open.
 
 Run 40973960114 completed one Seneca fast-orthophoto scenario after verified vocabularies and SQLite were deleted from the disposable installed prefix; JSON fallback confirmed. No modified package or corresponding-source archive built; modes requiring the vocabularies, cameras outside JSON and source/data rights remain open. See research/odm-fast-orthophoto-prototype.md.
+
+Run 41072814562 used the actual scoped package built from reduced source for successful Seneca; mode guards, JSON fallback and audit passed. Source graph still requires private original, pybind11, vmem and external dependencies; rights and corresponding-source review remain open.
 <!-- SECTION:NOTES:END -->

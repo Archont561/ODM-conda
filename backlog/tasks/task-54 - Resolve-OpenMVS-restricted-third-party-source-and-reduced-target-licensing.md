@@ -4,7 +4,7 @@ title: Resolve OpenMVS restricted third-party source and reduced target licensin
 status: In Progress
 assignee: []
 created_date: '2026-10-28 15:48'
-updated_date: '2026-10-29 23:45'
+updated_date: '2026-10-30 00:42'
 labels:
   - openmvs-odm
   - license
@@ -56,4 +56,8 @@ Run 40969462242 built and inspected the reduced host prefix: CGAL 6.2.1 and Boos
 Run 40972161000 compared 806 traced installed CGAL headers to the v6.2.1 tag: 805 differ and one matches; the two inspected AABB differences are solely expanded URL/Id metadata, not evidence about the remaining files. Exact 93 GPL-or-commercial marker paths recorded in research/openmvs-cgal-gpl-header-trace.json. Simple Boost scan has line-wrap false negatives. Full file/dependency and legal review remain open.
 
 Run 40974576156 compared all 806 traced CGAL headers to v6.2.1 after URL/Id keyword normalization: 805 match, version.h still differs, and SPDX markers match for all 806. Trace and normalized comparisons do not establish complete source or legal obligations.
+
+Run 40978864742 identified version.h differences beyond keywords as Git hash and release date; SPDX marker and version macro match. Package lists CGAL GPL/LGPL notice files. This is not source/rights clearance.
+
+The v6.2.1 annotated tag points to commit 28811b671a12b5caa9e3688569dadbc6b3728fe6, exactly the Git hash recorded in installed version.h; its 2026-09-03 commit date matches installed release-date macro. Exact package source and legal review remain open.
 <!-- SECTION:NOTES:END -->
