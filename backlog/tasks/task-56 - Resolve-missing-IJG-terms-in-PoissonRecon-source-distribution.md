@@ -4,7 +4,7 @@ title: Resolve missing IJG terms in PoissonRecon source distribution
 status: In Progress
 assignee: []
 created_date: '2026-10-29 10:00'
-updated_date: '2026-10-29 23:18'
+updated_date: '2026-10-29 23:45'
 labels:
   - poissonrecon-odm
 dependencies: []
@@ -54,4 +54,6 @@ Traced eight differing JPEG files and jconfig.h unchanged back to the 2018 initi
 The 2018 initial JPEG import 514b259 is also present in author-owned mkazhdan/PoissonRecon; this corroborates upstream history but does not establish earlier origin, exact terms or source/binary redistribution rights. See readiness review; criteria remain open.
 
 Compared first 2018 Poisson JPEG import to libjpeg-turbo historical jpeg-6b tag 5ead57a: 49 identical, 8 changed, jconfig.h unmatched, and exact README SHA matches candidate. The tag is unsigned and later-maintained history; provenance and notice sufficiency still need qualified review. See readiness review.
+
+Run 40974102649 validated strengthened host JPEG linkage checks. Run 40974184592 removed all 59 hash-verified vendored JPEG files only from a private staged build and passed native tests/audit. The original archive is fetched and normal source bundle remains unchanged; this is not a distributable or legally approved source transformation. See readiness review.
 <!-- SECTION:NOTES:END -->

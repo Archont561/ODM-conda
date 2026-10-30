@@ -274,3 +274,30 @@ candidate README but does not establish the exact pre-2018 source, authority
 for all modifications, or whether source/binary notices and accompanying change
 documentation are sufficient. TASK-56 remains open; no release or license gate
 is approved by this comparison.
+
+### Private host-JPEG and reduced-source experiments
+
+The native Poisson build guard now requires the link map to name the host-prefix
+`libjpeg.so`, rejects named bundled JPEG objects and static JPEG archives, and
+requires both `libjpeg.so` in the packaged input inventory and
+`libjpeg.so.8` in the executable's `DT_NEEDED` list during artifact audit. It
+also retains the existing shared-libpng checks. Synthetic negative cases and a
+real GNU toy link-map test exercise the guard. [Run 40974102649](https://github.com/Archont561/ODM-conda/actions/runs/40974102649)
+at `c213735` built the ordinary patched source with this guard, passed packaged
+and fresh tests and the strengthened artifact audit. The guard covers named
+link-map inputs and `DT_NEEDED`, not every compiler dependency, transitive
+library, source or license obligation.
+
+In separate [run 40974184592](https://github.com/Archont561/ODM-conda/actions/runs/40974184592)
+at `8108563`, the exact 59 original `JPEG/` file names and SHA256s from the
+pinned archive were checked in the staged build after patches, then removed;
+the candidate IJG README remained. The PoissonRecon target built, passed the
+host JPEG/link-map guard, installed and fresh tests and artifact audit. The
+original archive was fetched before removal, and the normal source metadata
+in this experimental binary does **not** describe this temporary deletion. No
+binary, archive or dataset was uploaded. The normal recipe still builds from
+the full original archive and the normal corresponding-source bundle embeds
+that archive; this experiment is not an approved sanitizing transformation or
+corresponding-source distribution. Reviewing all retained source, Windows and
+other targets (which reference vendored JPEG), dependency notices and legal
+rights remains necessary. No gate or release approval changed.

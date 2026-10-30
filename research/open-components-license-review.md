@@ -444,3 +444,22 @@ absent despite its explicit license reference. Exact correspondence between
 that upstream file and installed bytes has not been checked. The 272 unmarked
 by the simple scanner must not be described as unlicensed or automatically
 cleared. No source archives or binaries from the experiment were uploaded.
+
+[Run 40974576156](https://github.com/Archont561/ODM-conda/actions/runs/40974576156)
+repeated the same reduced build and compared all 806 traced installed CGAL
+headers to the tag after normalizing expanded `$URL: ...$` and `$Id: ...$`
+keywords. **805 matched after that normalization; one, `CGAL/version.h`, still
+differed.** The first-10,000-byte SPDX markers matched for all 806 mapped
+headers. This does not describe or justify the `version.h` difference, prove
+that every possible header was traced, or establish a license grant or
+corresponding-source completeness. No input or output files were uploaded.
+
+[Disposable Seneca run 40973960114](https://github.com/Archont561/ODM-conda/actions/runs/40973960114)
+verified that one installed fast-orthophoto scenario completed with the two
+vocabulary assets and SQLite removed from its temporary prefix, using the
+3,708-entry JSON sensor fallback. See `research/odm-fast-orthophoto-prototype.md`
+for raster metadata and limitations. The package audit ran before removal; no
+reduced package was created. BoW/VLAD modes would need replacement assets or a
+clearly scoped unsupported-mode policy, and the original source archive still
+contains the removed assets. This is a technical route to explore, not resolution
+of asset rights, corresponding-source obligations or release approval.

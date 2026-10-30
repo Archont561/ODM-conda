@@ -1,4 +1,4 @@
-"""Poisson's link evidence must reject the bundled PNG archive."""
+"""Poisson link evidence must require host PNG and JPEG shared libraries."""
 import pytest
 
 from common import ScaffoldError
@@ -68,8 +68,8 @@ def test_packaged_evidence_requires_dynamic_png_and_safe_inventory():
     evidence = {'map_sha256': 'a' * 64, 'link_inputs': ['PoissonRecon.o', 'libpng.so', 'libjpeg.so']}
     verify_poisson_package_evidence(evidence, ['libpng16.so.16', 'libjpeg.so.8'])
     for bad, needed in ((evidence, []),
-                        ({**evidence, 'link_inputs': ['PoissonRecon.o', 'libmypng.a', 'libpng.so']}, ['libpng16.so.16', 'libjpeg.so.8']),
-                        ({**evidence, 'link_inputs': ['PoissonRecon.o', '/tmp/libpng.so']}, ['libpng16.so.16', 'libjpeg.so.8']),
+                        ({**evidence, 'link_inputs': ['PoissonRecon.o', 'libmypng.a', 'libpng.so', 'libjpeg.so']}, ['libpng16.so.16', 'libjpeg.so.8']),
+                        ({**evidence, 'link_inputs': ['PoissonRecon.o', '/tmp/libpng.so', 'libjpeg.so']}, ['libpng16.so.16', 'libjpeg.so.8']),
                         ({**evidence, 'map_sha256': 'bad'}, ['libpng16.so.16', 'libjpeg.so.8'])):
         with pytest.raises(ScaffoldError):
             verify_poisson_package_evidence(bad, needed)
@@ -77,7 +77,7 @@ def test_packaged_evidence_requires_dynamic_png_and_safe_inventory():
 
 @pytest.mark.parametrize('extra', ['libpng.a', 'libpng16.a', 'LIBPNG16.A', 'libmypng.a'])
 def test_packaged_evidence_rejects_static_png_even_with_shared_png(extra):
-    evidence = {'map_sha256': 'a' * 64, 'link_inputs': ['PoissonRecon.o', 'libpng.so', extra]}
+    evidence = {'map_sha256': 'a' * 64, 'link_inputs': ['PoissonRecon.o', 'libpng.so', 'libjpeg.so', extra]}
     with pytest.raises(ScaffoldError, match='shared-libpng'):
         verify_poisson_package_evidence(evidence, ['libpng16.so.16', 'libjpeg.so.8'])
 

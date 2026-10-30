@@ -300,3 +300,39 @@ dataset imagery and generated outputs were discarded, not uploaded. The
 original OpenMVS archive was still fetched before reduction, and this success
 does not establish corresponding-source completeness, redistribution rights,
 reproducibility or a production release decision. No gates changed.
+
+### Asset-reduced OpenSfM runtime trial (2026-10-29)
+
+[Run 40973960114](https://github.com/Archont561/ODM-conda/actions/runs/40973960114)
+at `48e6b2b` repeated the disposable nine-component reduced-OpenMVS Seneca
+experiment. OpenSfM and OpenMVS packages were built, normally installed-tested,
+fresh-retested and audited **before** any experiment-specific modification.
+In the disposable installed prefix only, the two pinned BoW/VLAD NPZ assets
+and `sensor_data.sqlite` were SHA256-verified and deleted. An installed Python
+functional check confirmed the JSON fallback returned 3,708 entries, including
+`acer ce-5330: 5.75`. The Seneca `--fast-orthophoto --skip-3dmodel` pipeline
+then completed and generated a TIFF and report with those three assets absent.
+This shows that this one scenario can operate without them; it does **not**
+validate BoW/WORDS matching, VLAD retrieval, cameras absent from JSON, other
+configurations, or sensor-data rights. Removing the vocabularies breaks modes
+that request them. The installed prefix was modified after audit; no reduced
+package or corresponding-source bundle was generated or audited.
+
+The raster was 9,545 × 10,629 RGBA Byte, EPSG:32617, with geotransform
+`[305966.33103915723, 0.0499985548731397, 0, 4545656.007730301, 0,
+-0.0499959729402635]`; band ranges were 0–255, and means were 145.988,
+127.301, 151.866 and 142.717. TIFF and report sizes were 112,654,068 and
+7,275,876 bytes. The job hit the Actions per-step notice limit, so the bounded
+metadata was recovered from its completed log by read-only [run 40977152684](https://github.com/Archont561/ODM-conda/actions/runs/40977152684).
+Outputs were not uploaded or visually or geographically validated. Dimensions
+differ from prior trials; causation and equivalence are not established.
+
+The newly built OpenSfM package SHA256 was
+`c12f5ec3eb5e50cc1936503dd7fb46e098ea04dc3a6e3320a0ac3a1b2f2349d6`,
+and reduced-copy OpenMVS package SHA256 was
+`750a0dd55e70015ee1fc3249dd63ba3128ca07b4b3322fe3b24728067e344d33`.
+The other seven inputs, pinned ODM and Seneca revisions match the preceding
+trial. Original research archives and all runtime assets were fetched before
+the deletions; no archive, binary, dataset or generated output was uploaded.
+There is no reduced OpenSfM source distribution or legal approval, and the
+original recipe still installs the assets. No gates were changed.
