@@ -663,3 +663,41 @@ scoped OpenSfM `6deb98c0b61108d8888d493917ab7a9e44dc1fadc8ae3230efa66e01c9896a42
 and reduced OpenMVS `066edc5f5ce1533ed104c48b012164a81673920af9acd75622b19295adc753c3`.
 The run exercised each selection separately; it did not test the sequential
 `all` dispatch or reproduce a dataset in that run.
+
+### Pinned Eigen traced-header marker follow-up (2026-10-30)
+
+The exact OpenMVS recipe's pinned Eigen archive SHA256
+`a14492af4d1451a686caadbfd5047ca1216b8c66e71f0e8385afc4bb3ecdc7a3`
+was fetched locally. All 251 `_external/eigen/Eigen/` entries in the historical
+trace matched their recorded hashes against it. A bounded, whole-file text marker
+scan is recorded in [`openmvs-eigen-traced-markers.json`](openmvs-eigen-traced-markers.json).
+It is a search aid, **not** a per-file license classification or proof that
+traced code reached the binary.
+
+The pinned [`COPYING.README`](https://github.com/eigenteam/eigen-git-mirror/blob/7176ae16238ded7fb5ed30a7f5215825b3abd134/COPYING.README)
+states Eigen is primarily MPL 2.0, some files contain BSD or LGPL code, and
+`EIGEN_MPL2_ONLY` can cause compilation errors for included LGPL code. No such
+compiler enforcement was independently established in the historical run. A
+traced [`IncompleteLUT.h`](https://github.com/eigenteam/eigen-git-mirror/blob/7176ae16238ded7fb5ed30a7f5215825b3abd134/Eigen/src/IterativeLinearSolvers/IncompleteLUT.h)
+contains an LGPL reference to SPARSKIT followed by a statement that permission
+to relicense the ILUT code to MPL2 was given; this is an upstream statement,
+not independent verification of that permission. Some BSD markers are merely
+OS macro names. These findings narrow leads but do not resolve third-party
+terms, notice completeness, build applicability, or release rights. The
+original OpenMVS archive and separate CGAL/dependency source issues remain open.
+
+### Scoped OpenSfM retained sensor data (2026-10-30)
+
+The scoped runtime retains the pinned `sensor_data.json` (SHA256
+`ecc564167bb1e7f01648094a5a1a3f43d7b00b3bd9afa0afca2913fd2620d8`),
+which is already checked by the research audit, despite excluding SQLite and
+the two vocabularies. The same pinned source tree's
+[`sensor_data.readme.txt`](https://github.com/OpenDroneMap/OpenSfM/blob/c5328439465e6ace011f39077d1077d7b1cdd65d/opensfm/data/sensor_data.readme.txt)
+has Git blob `8c3d230d07a9eae9eb47a85c60db03990c0402be` and SHA256
+`f46b641594d0a183c69554dbcdf47c2eae25a44fb9b7f1414a2b67ff8928bc1a`.
+It attributes the initial database to Gregor Brdnik and states that the
+database uses the OpenSfM simplified BSD license. This is evidence of the
+upstream assertion, not independent proof of the initial grant, later entries,
+or sufficient notices. The research package audit checks the JSON bytes but does
+not currently assert this readme's presence or its legal sufficiency; those
+questions and the vmem/source/dependency obligations remain open.
