@@ -1,0 +1,73 @@
+# Local research only: prepare a locked Cargo source tree before building.
+schema_version: 1
+package:
+  name: odm-research-pillow-jxl-plugin
+  version: "1.3.4"
+source:
+  url: https://files.pythonhosted.org/packages/0a/0e/77af926bdf99bac7f1decdca8102b13945a2e2aa9c716ce617e36bcd82d3/pillow_jxl_plugin-1.3.4.tar.gz
+  sha256: 8ea589fc559ea7c5dfccb42af4d8148f5db508f5f4d4518328bab5a31fcb268e
+build:
+  number: 1
+  string: research_${{ hash }}_1
+  skip: target_platform != "linux-64"
+  script:
+    interpreter: python
+    content: |
+      import os, subprocess, sys
+      from pathlib import Path
+      source = Path(os.environ['SRC_DIR'])
+      assert (source / '.cargo/config.toml').is_file(), 'Run prepare_jxl_source.py first'
+      env = os.environ.copy()
+      env['CARGO_NET_OFFLINE'] = 'true'
+      wheel_dir = source / 'built-wheel'
+      subprocess.run(['maturin', 'build', '--release', '--locked', '--offline', '-i', str(Path(os.environ['PREFIX']) / 'bin/python'), '--out', str(wheel_dir)], cwd=source, env=env, check=True)
+      wheels = list(wheel_dir.glob('*.whl'))
+      assert len(wheels) == 1, wheels
+      subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--no-index', '--no-build-isolation', '--prefix', os.environ['PREFIX'], str(wheels[0])], check=True)
+requirements:
+  build:
+    - python >=3.12,<3.13
+    - pip
+    - rust >=1.85
+    - maturin >=1.2,<2
+    - pkg-config
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+  host:
+    - python >=3.12,<3.13
+    - libjxl >=0.11,<0.12
+    - libhwy
+    - libbrotlidec
+    - libbrotlienc
+    - libbrotlicommon
+  run:
+    - python >=3.12,<3.13
+    - packaging
+    - pillow
+    - libjxl >=0.11,<0.12
+    - libhwy
+    - libbrotlidec
+    - libbrotlienc
+    - libbrotlicommon
+tests:
+  - script:
+      interpreter: python
+      content: |
+        import io
+        import pillow_jxl
+        from PIL import Image
+        image = Image.new('RGB', (8, 8), (16, 32, 64))
+        stream = io.BytesIO()
+        image.save(stream, format='JXL', lossless=True)
+        stream.seek(0)
+        result = Image.open(stream)
+        result.load()
+        assert result.size == image.size and result.convert('RGB').getpixel((0, 0)) == (16, 32, 64)
+    requirements:
+      run:
+        - python >=3.12,<3.13
+about:
+  homepage: https://pypi.org/project/pillow-jxl-plugin/
+  summary: Private research source build, not approved for distribution
+  license: LicenseRef-Unreviewed
