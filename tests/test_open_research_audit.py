@@ -37,3 +37,21 @@ def test_research_package_identity_and_runtime_dependencies_fail_closed():
                     {**index, 'depends': 'python numpy'}, {**index, 'subdir': 'osx-arm64'}):
         with pytest.raises(ScaffoldError):
             verify_index('opensfm-odm', changed)
+
+
+def test_scoped_asset_audit_rejects_missing_guard_and_reintroduced_assets(monkeypatch):
+    import audit_open_research as audit
+    import hashlib
+    expected = b'guarded dataset'
+    guard = b'guard code'
+    monkeypatch.setattr(audit, 'SCOPED_DATASET_SHA256', hashlib.sha256(expected).hexdigest())
+    monkeypatch.setattr(audit, 'SCOPED_GUARD_SHA256', hashlib.sha256(guard).hexdigest())
+    root = 'lib/python3.12/site-packages/opensfm/'
+    payload = {root + 'dataset.py': expected, root + 'scoped_runtime_guard.py': guard}
+    audit.verify_scoped_assets(payload)
+    for bad in ({root + 'dataset.py': expected},
+                {**payload, root + 'data/sensor_data.sqlite': b'unwanted'},
+                {**payload, root + 'data/bow/bow_hahog_root_uchar_64.npz': b'unwanted'},
+                {**payload, root + 'dataset.py': b'modified'}):
+        with pytest.raises(ScaffoldError):
+            audit.verify_scoped_assets(bad)
