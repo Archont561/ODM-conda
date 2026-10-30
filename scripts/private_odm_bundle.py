@@ -19,6 +19,8 @@ import subprocess
 import sys
 import tempfile
 import threading
+import urllib.parse
+import urllib.request
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -59,11 +61,13 @@ def seal(bundle: Path, port: int) -> None:
     (bundle/'private-bundle.json').write_text(json.dumps(record, sort_keys=True, indent=2)+'\n')
 
 
-def verify(bundle: Path) -> int:
+def verify(bundle: Path, *, expected_manifest_sha: str | None = None) -> int:
     bundle = Path(bundle)
     manifest = bundle/'private-bundle.json'
     if bundle.is_symlink() or not bundle.is_dir() or manifest.is_symlink() or not manifest.is_file():
         raise ScaffoldError('Missing or unsafe private bundle')
+    if expected_manifest_sha is not None and (not re.fullmatch(r'[a-f0-9]{64}', expected_manifest_sha) or sha256(manifest) != expected_manifest_sha):
+        raise ScaffoldError('Private bundle manifest checksum mismatch')
     data = json.loads(manifest.read_text())
     if data.get('schema_version') != 1 or data.get('scope') != 'private-research-only' or type(data.get('port')) is not int or not 1 <= data['port'] <= 65535 or not isinstance(data.get('files'), dict):
         raise ScaffoldError('Invalid private bundle manifest')
@@ -100,6 +104,21 @@ def build_recipe(recipe: Path, name: str, work: Path, *, skip_tests: bool = Fals
     if not skip_tests:
         run([rattler(), 'test', '--package-file', str(package), '--channel', 'conda-forge', '--channel-priority', 'strict', '--output-dir', str(work/'retest'), '--log-style', 'plain'])
     return package
+
+
+def download_sdist(url: str, expected: str, target: Path) -> None:
+    parsed=urllib.parse.urlsplit(url)
+    if parsed.scheme != 'https' or parsed.hostname != 'files.pythonhosted.org' or parsed.username or parsed.password or not re.fullmatch(r'[a-f0-9]{64}', expected):
+        raise ScaffoldError('Unexpected pinned sdist URL or digest')
+    request=urllib.request.Request(url,headers={'User-Agent':'ODM-conda-private-research/1'})
+    with urllib.request.urlopen(request,timeout=90) as response, target.open('xb') as output:
+        if urllib.parse.urlsplit(response.url).scheme != 'https': raise ScaffoldError('Unsafe sdist redirect')
+        total=0
+        while block := response.read(1024*1024):
+            total += len(block)
+            if total > 512*1024*1024: raise ScaffoldError('Source archive too large')
+            output.write(block)
+    if sha256(target) != expected: raise ScaffoldError('Downloaded sdist checksum mismatch')
 
 
 def private_identity(recipe: Path, build_number: int) -> None:
@@ -148,7 +167,7 @@ def build_packages(work: Path) -> list[Path]:
         name=template.stem; recipe=template
         if name == 'pillow-jxl-plugin':
             info=yaml.safe_load(template.read_text())['source']
-            source=fetch_pinned_archive('pillow-jxl-plugin', {'url':info['url'], 'sha256':info['sha256'], 'commit':'1.3.4'}, work/'source-cache')
+            source=work/'pillow-jxl-plugin.tar.gz'; download_sdist(info['url'],info['sha256'],source)
             jxl_prepare(source,work/'jxl-prepared'); recipe=work/'jxl-prepared/recipe/recipe.yaml'
         packages.append(build_recipe(recipe,'odm-research-'+name,work/('python-'+name)))
     recipe=staged/'research/recipes/odm-fast-research/recipe.yaml'; text=recipe.read_text()
@@ -164,8 +183,8 @@ def build_packages(work: Path) -> list[Path]:
     return packages
 
 
-def replay(bundle: Path, *, dataset: Path | None = None, expected_inventory: list | None = None) -> None:
-    port=verify(bundle)
+def replay(bundle: Path, *, dataset: Path | None = None, expected_inventory: list | None = None, expected_manifest_sha: str | None = None) -> None:
+    port=verify(bundle, expected_manifest_sha=expected_manifest_sha)
     with tempfile.TemporaryDirectory(prefix='odm-private-replay-') as tmp:
         scratch=Path(tmp); project=scratch/'project'; project.mkdir()
         shutil.copy2(bundle/'pixi.toml',project/'pixi.toml'); shutil.copy2(bundle/'pixi.lock',project/'pixi.lock')
@@ -217,9 +236,11 @@ def build(destination: Path, port: int, dataset: Path | None) -> None:
             identities=[(p['name'],p['version'],p['build'],p['sha256'],p['binary_package_url']) for p in original['packages']]
             for name in ('pixi.toml','pixi.lock'): shutil.copy2(project/name,destination/name)
             seal(destination,port)
+            manifest_sha=sha256(destination/'private-bundle.json')
             relocated=work/'relocated-bundle'; shutil.copytree(destination,relocated)
-            replay(relocated,dataset=dataset,expected_inventory=identities)
+            replay(relocated,dataset=dataset,expected_inventory=identities,expected_manifest_sha=manifest_sha)
             print(f'PASS: private bundle retained at {destination}; lock SHA256 {sha256(destination/"pixi.lock")}',flush=True)
+            print(f'Record this manifest SHA256 separately for verified replay: {manifest_sha}',flush=True)
     except Exception:
         shutil.rmtree(destination,ignore_errors=True)
         raise
@@ -228,10 +249,10 @@ def build(destination: Path, port: int, dataset: Path | None) -> None:
 def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__); sub=parser.add_subparsers(dest='action',required=True)
     create=sub.add_parser('build'); create.add_argument('--destination',required=True,type=Path); create.add_argument('--port',type=int,default=PORT); create.add_argument('--dataset',type=Path)
-    test=sub.add_parser('replay'); test.add_argument('--bundle',required=True,type=Path); test.add_argument('--dataset',type=Path)
+    test=sub.add_parser('replay'); test.add_argument('--bundle',required=True,type=Path); test.add_argument('--dataset',type=Path); test.add_argument('--manifest-sha256',help='Independently recorded SHA256 of private-bundle.json')
     args=parser.parse_args()
     if args.action == 'build': build(args.destination,args.port,args.dataset)
-    else: replay(args.bundle,dataset=args.dataset)
+    else: replay(args.bundle,dataset=args.dataset,expected_manifest_sha=args.manifest_sha256)
 
 
 if __name__ == '__main__': fail_cli(main)

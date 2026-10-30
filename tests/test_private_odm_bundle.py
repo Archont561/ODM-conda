@@ -42,3 +42,17 @@ def test_private_variant_identity_does_not_overwrite_production_recipe(tmp_path)
     private_identity(recipe,2)
     assert 'string: research_${{ hash }}_2' in recipe.read_text()
     with pytest.raises(ScaffoldError): private_identity(recipe,1)
+
+
+def test_verify_can_anchor_manifest_hash(tmp_path):
+    import hashlib
+    from private_odm_bundle import seal, verify
+    from common import ScaffoldError
+    bundle=tmp_path/'bundle'; (bundle/'channel/linux-64').mkdir(parents=True); (bundle/'channel/noarch').mkdir()
+    for name in ('pixi.toml','pixi.lock','channel/linux-64/repodata.json','channel/noarch/repodata.json','channel/linux-64/example.conda'):
+        (bundle/name).write_text(name)
+    seal(bundle,48179)
+    digest=hashlib.sha256((bundle/'private-bundle.json').read_bytes()).hexdigest()
+    assert verify(bundle,expected_manifest_sha=digest)==48179
+    with pytest.raises(ScaffoldError,match='manifest checksum'):
+        verify(bundle,expected_manifest_sha='0'*64)

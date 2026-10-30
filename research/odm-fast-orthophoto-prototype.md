@@ -617,3 +617,40 @@ complete corresponding sources for the Conda runtime or Rust dependencies,
 notice sufficiency, Seneca dataset rights, full ODM feature coverage, native
 security review or authority to publish. The five sources' build tools and
 Conda dependencies were solved online; preparation/builds are not fully offline.
+
+### TASK-92: private source build and binary replay (in progress)
+
+`scripts/private_odm_bundle.py` is an experimental orchestration path, **not a
+release or corresponding-source offer**. It attempts the fifteen source-built
+private packages, creates a local channel, and retains a Pixi manifest and lock
+only in a new owner-controlled directory outside the checkout. It checks the
+channel package hashes, lock selection, a relocated locked installation and the
+installed Conda inventory. An optional dataset runs in a temporary copy; derived
+imagery is discarded. Source builds and conda-forge downloads require network
+access; the bundle does **not** retain all sources, conda-forge packages, build
+tools or transitive dependencies and is not an offline or bit-reproducible build.
+
+On a trusted linux-64 machine with the repository's Pixi tools installed, use:
+
+```sh
+pixi run python scripts/private_odm_bundle.py build --destination /private/path/odm-bundle
+# Optionally add --dataset /private/path/dataset to exercise ODM processing.
+pixi run python scripts/private_odm_bundle.py replay --bundle /private/path/odm-bundle --manifest-sha256 <independently-recorded-sha256>
+```
+
+The destination must not exist, its parent must already exist, and it must be
+outside this repository. The directory is created private to the invoking user;
+keep it on access-controlled storage. Record the printed manifest SHA256 through
+a separate trusted channel: the JSON file's own checksums detect accidental
+changes but do **not** authenticate a bundle if an attacker can replace both
+files and manifest. Replay uses a fixed loopback port from the lock; other local
+users can access that HTTP endpoint while it is running, so use an isolated host
+and do not treat loopback as authentication. Relocated replay needs the same
+available port and access to external conda-forge binaries. Rebuilds may produce
+different bytes despite identical package identities.
+
+The restricted original OpenMVS archive, omitted assets, unresolved licenses,
+notices and rights remain outside any publication approval. No package, source,
+lock, dataset or output may be uploaded merely because this research build works.
+Hosted end-to-end validation of this new orchestrator remains in progress; prior
+TASK-91 evidence does not establish that the whole orchestration succeeds.
