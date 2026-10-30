@@ -478,3 +478,59 @@ The package metadata lists `share/doc/CGAL/LICENSE`, `LICENSE.GPL` and
 `LICENSE.LGPL` plus an icon license. These observations do not establish
 package source correspondence, which license option applies, the completeness
 of notices or entitlement to distribute; qualified review remains open.
+
+### Scoped OpenSfM local-only research package
+
+`research/recipes/opensfm-scoped-odm/recipe.yaml` defines a separate Linux
+research package, not a production component. It builds from the same pinned
+OpenSfM/pybind11/vmem research graph, then derives an installed package copy
+without the two vocabularies or the SQLite sensor database. The transformation
+verifies the three excluded hashes and exact `dataset.py` input, refuses
+symlinks and overlapping paths, and preserves the original staged source. A
+guard in dataset configuration explicitly rejects WORDS matching and positive
+BoW/VLAD neighbor settings. The JSON sensor database remains, so cameras absent
+from it may behave differently. Direct callers bypassing dataset configuration,
+runtime mutation of configuration, other matching modes, complete relocation
+and other operating systems remain outside this validation.
+
+The scoped artifact has its own asset checks and a solver constraint excluding
+co-installation with `opensfm-odm`, because both install the same executable
+and Python module paths. This does not replace or weaken the original package's
+audit. [Run 40980422096](https://github.com/Archont561/ODM-conda/actions/runs/40980422096)
+built the initial scoped recipe, passed installed and fresh functional tests
+and the distinct scoped audit; outputs were discarded. The original upstream
+archives containing all three removed assets are still fetched and no reduced
+corresponding-source archive is produced. This evidence does not resolve
+rights in the remaining JSON, vmem, dependencies or model data, or authorize
+redistribution. No release gates changed.
+GitHub's annotated v6.2.1 tag object points to commit
+[`28811b671a12b5caa9e3688569dadbc6b3728fe6`](https://github.com/CGAL/cgal/commit/28811b671a12b5caa9e3688569dadbc6b3728fe6),
+the same hash embedded in the installed header; the commit author date is
+2026-09-03. This explains the relationship to the tagged revision but does not
+independently establish the provenance or completeness of the package's entire
+source tree or accompanying notices.
+
+The guarded runtime was also exercised on the Seneca pipeline in
+[run 40979586923](https://github.com/Archont561/ODM-conda/actions/runs/40979586923).
+Default settings and three unsupported configurations were tested before the
+pipeline; it completed and produced a 9521 × 10546 RGBA Byte EPSG:32617 raster
+(110,476,182 bytes) and a 7,327,141-byte report. This run modified a disposable
+prefix, not the final distinct package; outputs were discarded, and dataset
+rights and visual/geographic quality were not independently validated.
+
+The later distinct scoped package built, passed installed and fresh tests and
+its separate audit in [run 40982191066](https://github.com/Archont561/ODM-conda/actions/runs/40982191066)
+at `910804f`; its discarded package SHA256 was
+`55ffe458560964100848b9b50df6238341c07ee025bf84760dba7b874cd7aaa0`.
+Its packaged source notice identifies the omitted assets and unsupported modes.
+
+A separate [run 40980893166](https://github.com/Archont561/ODM-conda/actions/runs/40980893166)
+built and installed the actual scoped package (earlier revision `eb4fef2`, before
+the later solver constraint and notice text), verified its omissions and mode
+guards, and completed the Seneca pipeline. Its discarded scoped package SHA256
+was `bef5d8d3b315169126a5a37f7c9ad274c13f2407a7968e763c080dc262ce189a`;
+the resulting raster was 9539 × 10546 RGBA Byte EPSG:32617 (113,385,888 bytes),
+with a 7,355,235-byte report. Outputs were discarded. This is functional
+integration evidence, not visual/geographic validation or clearance of dataset
+or software rights; the final isolation/notice changes were separately built and
+audited as noted above.

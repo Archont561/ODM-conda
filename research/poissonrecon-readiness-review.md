@@ -301,3 +301,48 @@ that archive; this experiment is not an approved sanitizing transformation or
 corresponding-source distribution. Reviewing all retained source, Windows and
 other targets (which reference vendored JPEG), dependency notices and legal
 rights remains necessary. No gate or release approval changed.
+
+### Deterministic reduced-source candidate (local only)
+
+`scripts/poisson_reduced_candidate.py` accepts only the pinned original archive
+(SHA256 `88743428a97cbeed7d55e713fcfa42caebbfb7dcb2467d68899bd8feab95364b`),
+unpacks it with the existing safe single-root archive validator, verifies that
+`JPEG/` contains exactly 59 regular files, and creates a deterministic gzip tar
+candidate outside the repository. It includes the retained source, an empty
+`source/JPEG/` directory, a focused packaging copy and a manifest of retained
+file hashes, excluded paths/hashes and original archive identity. The original
+archive itself is **not** included. The packaging copy includes the recipe's
+candidate IJG README patch and other notices, but omits the separate research
+directory (including the full JPEG comparison). This is an intentionally
+scoped local-research artifact, not a source offer or a legal conclusion.
+
+[Run 40979099535](https://github.com/Archont561/ODM-conda/actions/runs/40979099535)
+at `19b0a10` produced two identical candidate archives, verified their manifest
+hashes and empty JPEG directory, and built using a temporary copy of the recipe
+pointing at the candidate tree. Installed and fresh tests and normal artifact
+audit passed with the host shared-JPEG guard. The candidate SHA256 was
+`cba96de67035450ffc8ef016ac9440d5e0680ec2ccb8898465809b60944cc9a0`, recovered
+from the build log by [run 40979919908](https://github.com/Archont561/ODM-conda/actions/runs/40979919908).
+No candidates, original source or binaries were uploaded. Packaging files are
+part of the candidate, so a different checkout or file mode changes its bytes.
+The experimental package's usual source metadata still describes the original
+archive and **does not describe the reduction**; it is not a release candidate.
+Complete corresponding-source and dependency scope, accurate provenance
+metadata, other targets, rights and qualified review are still required. The
+normal source-bundle command remains unchanged and still includes the original
+archive; all release gates remain closed.
+
+For a private local experiment with an already obtained original archive:
+
+```sh
+pixi run python scripts/poisson_reduced_candidate.py \
+  --source /path/to/original.tar.gz --output /outside/repository/candidate.tar.gz
+```
+
+After adding exclusive destination creation, the updated candidate generator
+at `910804f` was independently validated in
+[run 40982191055](https://github.com/Archont561/ODM-conda/actions/runs/40982191055):
+two archives matched, their manifest hashes and absent JPEG tree were checked,
+and the private native build, installed and fresh tests, and normal package
+audit passed. All outputs were discarded. This does not change the source or
+release limitations above.
