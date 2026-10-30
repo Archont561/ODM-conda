@@ -550,10 +550,9 @@ local-only source archive with per-file hashes and modes. Two local runs on
 2026-10-30 produced identical SHA256
 `3f36288338532cee3bf5797b3031868b06b0a29eeb1adbd44905f1f3bf2f2fef`
 (581 retained files; modes depend on the staged filesystem). The original
-archive was fetched privately, not included or uploaded. This is **not yet a
-buildable replacement** for the scoped recipe: that recipe fetches the
-original, and its current runtime transformation requires the three assets to
-be present before it removes them. The archive also omits separate pybind11,
+archive was fetched privately, not included or uploaded. At that point this was **not a buildable replacement** for the scoped recipe:
+that recipe fetched the original, and its runtime transformation required the
+three assets to be present before removal. A later private build is described below. The archive also omits separate pybind11,
 vmem and other dependency sources, the guard and packaging changes. Its
 manifest and exclusions are not a corresponding-source or rights determination.
 
@@ -577,3 +576,29 @@ package solved independently; requesting both was rejected with both package
 names in the solver output. This tests the scoped constraint on linux-64 for
 those builds, not arbitrary package-manager versions or forced installations.
 Packages and source inputs were discarded and no artifacts were uploaded.
+
+### Reduced-source scoped package and shipped-notice comparison
+
+[Private run 41068961668](https://github.com/Archont561/ODM-conda/actions/runs/41068961668)
+reproduced the reduced OpenSfM candidate SHA256
+`3f36288338532cee3bf5797b3031868b06b0a29eeb1adbd44905f1f3bf2f2fef`,
+prepared a local-path recipe and built the scoped package from that source.
+The builder checks the patched, staged 874-file graph fingerprint
+`74c5be8ef66a189a8001816e7564e6b83144856dff176ca2674798f7b809b6d9`
+including separately pinned pybind11 and vmem sources, and checks the assets
+are absent before applying the configuration guard. The package passed its
+installed and fresh functional tests and scoped audit; its discarded SHA256 was
+`0c1bf13c2ab66aa5c21b8e41e924d98a9402f0acb674793921264a22caa0e3e6`.
+No Seneca dataset test was run on this particular package. The original archive
+was privately fetched to validate the candidate, and other source and legal
+obligations are not resolved. No artifacts were uploaded.
+
+The same run built the actual OpenMVS package from the previously fingerprinted
+reduced tree and compared the 17 filename-based candidates against actual
+payload and Conda metadata. Five match shipped license payload bytes; 12 do
+not, and no `info/licenses/` files were present. Results and package hash are
+in `research/openmvs-package-notice-comparison.json`. The candidate list includes
+a script and contributor agreements, so non-matches do not imply each must be
+shipped; it also misses embedded notices and transitive dependency terms.
+The package passed installed/fresh tests and the existing research audit. This
+is an inventory, not notice sufficiency, source completeness or release approval.

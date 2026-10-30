@@ -366,6 +366,17 @@ against the pinned original, built the generated recipe, and passed installed
 and fresh package tests. Installed `upstream.json` matched the generated research
 provenance and `SOURCE.txt` named both hashes and disclaimed a source offer.
 The unmodified production audit **correctly rejected** this intentionally
-different source metadata; no separate full artifact audit has yet been
-implemented for this variant. All inputs and outputs were discarded; no
+different source metadata; at that point no separate research artifact audit
+had yet been implemented for this variant (see the subsequent run below). All inputs and outputs were discarded; no
 publication, comprehensive source audit or license approval follows.
+
+[Private run 41068961668](https://github.com/Archont561/ODM-conda/actions/runs/41068961668)
+built and installed the reduced-source research recipe, passed its fresh test
+and the separate `scripts/audit_poisson_research.py` checks of research
+provenance, package identity and dependencies, bounded payload, notice metadata,
+IJG notice hashes, ELF linkage evidence and RPATH. The unchanged production
+audit rejected its intentionally different provenance. Discarded package SHA256
+`997b6c49b1f5e896bff53bebe7ecc8fdc5b4ecc5821c4e7f3bc998f1c1825cfe`;
+candidate SHA256 `e180c1cf7519712af2f817e8801648c1dab49b9a001a236fe56b7397e2aa7e7b`.
+Candidate packaging bytes depend on the checkout. This is not source-completeness,
+legal or release approval, and no files were uploaded.
