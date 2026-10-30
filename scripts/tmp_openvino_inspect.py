@@ -6,7 +6,7 @@ names=['libopenvino','libopenvino-auto-batch-plugin','libopenvino-auto-plugin','
 with tempfile.TemporaryDirectory(dir=os.environ['RUNNER_TEMP']) as d:
     root=Path(d)
     subprocess.run(['pixi','init','--format','pixi','--scm','github','--channel','conda-forge','--platform','linux-64',str(root)],check=True)
-    subprocess.run(['pixi','add','--manifest-path',str(root/'pixi.toml'),*[x+' ==2026.4.1' for x in names]],check=True)
+    subprocess.run(['pixi','add','--manifest-path',str(root/'pixi.toml'),'python >=3.12,<3.13','libopencv >=4.13,<5','py-opencv >=4.13,<5','libopenvino >=2026.0'],check=True)
     out=[]
     for filename in sorted((root/'.pixi/envs/default/conda-meta').glob('libopenvino*.json')):
         item=json.loads(filename.read_text());url=item['url']; digest=item['sha256']
@@ -29,4 +29,4 @@ with tempfile.TemporaryDirectory(dir=os.environ['RUNNER_TEMP']) as d:
     encoded=base64.b64encode(zlib.compress(json.dumps(out,sort_keys=True,separators=(',',':')).encode(),9)).decode()
     print(f'RESULT_COUNT {len(out)} CHUNKS {(len(encoded)+2999)//3000}',flush=True)
     for i in range(0,len(encoded),3000): print(f'OPENVINO_CHUNK_{i//3000:02d} {encoded[i:i+3000]}',flush=True)
-    print('::notice::INSPECTED '+str(len(out))+' OpenVINO 2026.4.1 packages; metadata licenses '+str(sum(bool(x['index_license']) for x in out))+'; info/licenses present '+str(sum(bool(x['info_licenses']) for x in out)),flush=True)
+    print('::notice::INSPECTED '+str(len(out))+' solver-selected OpenVINO packages; metadata licenses '+str(sum(bool(x['index_license']) for x in out))+'; info/licenses present '+str(sum(bool(x['info_licenses']) for x in out)),flush=True)
