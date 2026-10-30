@@ -237,3 +237,54 @@ separate tested utility to summarize selected PyPI lock records while stripping
 credentials and local paths; the hosted trial used an equivalent temporary
 capture rather than that subsequently added utility. Existing software and
 dataset-rights gates remain open.
+
+### Private, relocatable lock replay (2026-10-30)
+
+[Private run 41115458840](https://github.com/Archont561/ODM-conda/actions/runs/41115458840)
+built and fresh-tested/audited the private 4.13 orthophoto, scoped OpenSfM and
+OpenMVS variants and reduced Poisson. It indexed their nine exact input archives
+in a local channel, solved a new environment, and generated a Pixi lock normally
+(no manual lock edits). The local channel was served **only on loopback** at a
+fixed port. The lock, manifest and channel were copied to a different directory;
+the original channel was removed, each relocated archive hash checked, the
+server restarted at the same loopback URL, and `pixi install --locked` was run
+into a fresh prefix with a separate home and caches. The lock remained
+byte-identical (SHA256
+`fb28601ad4ef3ee2c4327a825ba098e49b0ed1f34b109ecd9a2405d009516681`),
+and all 424 Conda package identities, builds, metadata hashes and sanitized
+URLs matched between prefixes. The selected PyPI dependencies came from the
+same copied lock; this was not an independent byte-by-byte audit of installed
+PyPI distributions. The relocated prefix passed preflight, scoped guards, the
+Seneca pipeline and live raster sanity checks. Outputs were discarded.
+
+A bounded sanitized snapshot is
+[`odm-private-lock-replay-inventory.json`](odm-private-lock-replay-inventory.json),
+recovered by [41118954520](https://github.com/Archont561/ODM-conda/actions/runs/41118954520).
+It records 424 Conda records, 16 PyPI lock records and nine local archive
+hashes; all 424 Conda records in this trial carry SHA256 metadata. The inventory
+sanitizer intentionally strips URL ports, so its `127.0.0.1` entries are
+identifiers, **not usable package URLs**. Selected OpenVINO was 2026.2.1
+`h1f0fae8_1`, but this does not identify other solves. A present license field
+or matching hash does not prove legal compliance or complete corresponding
+source.
+
+For a future **private** replay, make an isolated directory outside the repo,
+use `pixi run python scripts/private_conda_channel.py --destination CHANNEL
+PACKAGE...` on the exact nine audited archives, and bind a temporary server to
+`127.0.0.1` only (for example `python -m http.server 48179 --bind 127.0.0.1
+--directory CHANNEL`). Create a Pixi workspace with that loopback channel
+before conda-forge, add the nine package **names** plus the required runtime
+and PyPI dependencies, and let Pixi create the lock. Keep the lock, manifest,
+channel and checksums together in access-controlled private storage. To replay,
+move the bundle, verify package hashes, serve the same loopback URL/port, and
+run `pixi install --locked` in a new prefix. Never edit `pixi.lock` by hand or
+publish the private channel, binaries or source archives. The helper only
+indexes explicit archives; it does not audit or authorize them.
+
+This experiment used a fixed linux-64 platform and available conda-forge/PyPI
+packages, not an offline or cross-platform replay. The original lock and
+binaries were deliberately discarded after the test; the snapshot is not a
+runnable lock and cannot recreate them. Byte-identical rebuilds, complete
+sources and notices, dataset rights, visual/geographic accuracy and release
+approval remain unestablished. The private research variants reuse normal
+package names/build numbers and must not be confused with production artifacts.
