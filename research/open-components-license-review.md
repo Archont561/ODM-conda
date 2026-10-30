@@ -463,3 +463,18 @@ reduced package was created. BoW/VLAD modes would need replacement assets or a
 clearly scoped unsupported-mode policy, and the original source archive still
 contains the removed assets. This is a technical route to explore, not resolution
 of asset rights, corresponding-source obligations or release approval.
+
+The remaining `CGAL/version.h` mismatch was examined in [run 40978864742](https://github.com/Archont561/ODM-conda/actions/runs/40978864742),
+which installed the same hash-identified CGAL 6.2.1 host package and compared
+it to the pinned v6.2.1 tag archive. Beyond expanded URL/Id keywords, the
+installed header reports Git hash `28811b671a12b5caa9e3688569dadbc6b3728fe6`
+in place of upstream tag's placeholder `abcdef`, and release date `20260903`
+in place of `20260608`; the version macro and LGPL-or-commercial SPDX marker
+match. Installed SHA256 is
+`9341bb068b6a12340594870fd9a625f6d9e428c4875cfec9d772e96d3990572b`,
+upstream tag SHA256 is
+`85e3082bcadd8ed8665f00718d2a314d4bcb1a11b64dae3585a640147747e4f8`.
+The package metadata lists `share/doc/CGAL/LICENSE`, `LICENSE.GPL` and
+`LICENSE.LGPL` plus an icon license. These observations do not establish
+package source correspondence, which license option applies, the completeness
+of notices or entitlement to distribute; qualified review remains open.
