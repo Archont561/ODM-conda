@@ -1,0 +1,30 @@
+name: Temporary raster metadata recovery
+on:
+  push:
+    branches: [arena/04e0a7c9-odm-conda]
+    paths: [.github/workflows/tmp-raster-recovery.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Recover bounded metadata from completed run log
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api --allow-escape-sequences repos/Archont561/ODM-conda/actions/jobs/124121031247/logs > "$RUNNER_TEMP/log"
+          python3 - <<'PY'
+          import json,os,re
+          from pathlib import Path
+          text=Path(os.environ['RUNNER_TEMP'],'log').read_text(errors='replace')
+          matches=re.findall(r'::notice::Final raster metadata: (\{[^\n\r]*\})',text)
+          assert len(matches)==1, f'Expected one metadata record, got {len(matches)}'
+          r=json.loads(matches[0])
+          result={'size':r['size'],'geoTransform':r['geoTransform'],'epsg32617':'32617' in r['crs'],'bands':[{'type':b['type'],'color':b['colorInterpretation'],'mean':b['mean']} for b in r['bands']],'bytes':r['bytes'],'report_bytes':r['report_bytes']}
+          print('::notice::Recovered raster metadata: '+json.dumps(result,separators=(',',':')))
+          assert 'Final raster exists with positive dimensions' in text
+          print('::notice::Final raster and report verified; no dataset or output files uploaded.')
+          PY
