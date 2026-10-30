@@ -376,3 +376,34 @@ recovered those bounded metadata from the completed job log. The original
 archives, packages, dataset and results were discarded, not uploaded. Dataset
 rights and visual/geographic quality remain unverified; this is one scenario,
 not production source, license, security or release approval.
+
+### Seneca dataset rights evidence and raster sanity (2026-10-30)
+
+At pinned dataset commit [`9220acfdca75cc5e2dd6d27fe48550c5ae0877f2`](https://github.com/OpenDroneMap/odm_data_seneca/tree/9220acfdca75cc5e2dd6d27fe48550c5ae0877f2),
+`license.txt` contains the CC0 1.0 Universal text (Git blob
+`670154e3538863b2d9891fd5483160fbdfc89164`; SHA256
+`36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673`),
+and GitHub identifies the repository license as CC0-1.0. Its `README.md` (Git
+blob `894cb4da57505748a511cf0d07635a7791cbfea7`, SHA256
+`36aab03baf4a6eff9f989a1eb9a66d53910eceb9990c5a496f96cbb0509ac938`)
+attributes the aerial dataset to the Ohio Department of Transportation and says
+it was captured 2013-06-04. The pinned tree lists 167 image blobs. The license
+file was added in the pinned commit by Stephen Mather in 2019; the observable
+image introduction was commit `6a634677e27ce09292493d53f873599980a70a9d`
+in 2016. This establishes repository statements and history, not that the
+person adding the waiver controlled all image rights, or that privacy and other
+non-copyright issues are resolved. Qualified review remains needed before
+assuming the dataset meets TASK-13's release-quality rights criterion.
+
+`scripts/odm_raster_sanity.py` checks positive dimensions, finite non-degenerate
+geotransform, a non-empty CRS, at least three bands and finite, internally
+consistent GDAL statistics; Byte values must be 0–255. Unit negative cases and
+a generated 16 × 16 three-band EPSG:32617 GeoTIFF passed locally with GDAL.
+These are basic numerical checks, not visual inspection, geographic accuracy,
+expected-extent validation, image rights verification or a rerun of Seneca.
+
+[Read-only run 41084604140](https://github.com/Archont561/ODM-conda/actions/runs/41084604140)
+recovered the prior completed Seneca trial's GDAL summary from its job log and
+applied these sanity checks successfully to its 9563 × 10541 raster metadata.
+No raster was retained or re-opened; this is not a new pipeline run or visual
+and geographic verification.

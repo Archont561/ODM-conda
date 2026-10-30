@@ -1,0 +1,79 @@
+# Local-only reduced-tree build; no release approval.
+schema_version: 1
+package:
+  name: openmvs-odm
+  version: "0.0.0.dev20260516"
+source:
+  - url: https://codeload.github.com/OpenDroneMap/openMVS/tar.gz/8e4c5f31a16e0e329132c8f26e20a8c5d7b47f53
+    sha256: 949d420d4506ccd0189574252c8214acce666de837e400e44682e8ddc13e666b
+    patches:
+      - patches/0001-reconstruct-only.patch
+      - patches/0002-visibility-check.patch
+      - patches/0003-boost-header-only-system.patch
+      - patches/0004-ply-view-indices.patch
+  - url: https://codeload.github.com/OpenDroneMap/VCG/tar.gz/3fe55c6fa48ca111dab31eaa594ecab33913a8f1
+    sha256: 8f75239f9dd4ee5ba55b0cad25df1b7f9caa8a7e583f8174b40d38421b485f45
+    target_directory: _external/vcg
+  - url: https://codeload.github.com/eigenteam/eigen-git-mirror/tar.gz/7176ae16238ded7fb5ed30a7f5215825b3abd134
+    sha256: a14492af4d1451a686caadbfd5047ca1216b8c66e71f0e8385afc4bb3ecdc7a3
+    target_directory: _external/eigen
+build:
+  number: 4
+  skip: target_platform != "linux-64"
+  python:
+    skip_pyc_compilation:
+      - share/odm-conda/**/*.py
+  script:
+    file: ../../../scripts/build_openmvs_reduced.py
+    interpreter: python
+requirements:
+  build:
+    - python >=3.12,<3.13
+    - cmake >=3.31,<3.32
+    - ninja >=1.11,<2
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+  host:
+    # Boost.System is header-only; patch removes its obsolete CMake component.
+    - libboost-devel >=1.90,<1.91
+    - cgal-cpp
+    - libopencv >=4.12,<4.13
+    - tbb-devel >=2023.1,<2024
+    - mpfr
+    - gmp
+    - zlib
+    - libgomp >=14
+  run:
+    - libboost >=1.90,<1.91
+    - libopencv >=4.12,<4.13
+    - tbb >=2023.1,<2024
+    - mpfr
+    - gmp
+    - libgomp >=14
+    - python >=3.12,<3.13
+tests:
+  - package_contents:
+      files:
+        - bin/ReconstructMesh
+        - share/odm-conda/openmvs-odm/functional_test.py
+  - script:
+      interpreter: python
+      content: |
+        import runpy, sys
+        from pathlib import Path
+        runpy.run_path(str(Path(sys.prefix) / 'share/odm-conda/openmvs-odm/functional_test.py'), run_name='__main__')
+    requirements:
+      run:
+        - python >=3.12,<3.13
+about:
+  homepage: https://github.com/OpenDroneMap/openMVS
+  summary: Local research-only reduced ReconstructMesh build, not redistributable
+  license: LicenseRef-Unreviewed
+  license_file:
+    - LICENSE
+    - COPYRIGHT.md
+    - _external/vcg/LICENSE.txt
+    - _external/eigen/COPYING.MPL2
+    - _external/eigen/COPYING.README
+    - libs/Math/LMFit/COPYING

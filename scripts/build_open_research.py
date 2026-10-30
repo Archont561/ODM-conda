@@ -20,10 +20,12 @@ from opensfm_graph_policy import verify_opensfm_research_tree
 from research_license_notices import OPENMVS_NOTICES, OPENSFM_NOTICES, PSUTIL_NOTICE_SHA256, copy_notices
 
 
-def main() -> None:
+def main(*, reduced_openmvs: bool = False) -> None:
     name = os.environ.get('PKG_NAME', '')
     if name not in ('openmvs-odm', 'opensfm-odm', 'opensfm-scoped-odm'):
         raise ScaffoldError('Unsupported research component')
+    if reduced_openmvs and name != 'openmvs-odm':
+        raise ScaffoldError('Reduced OpenMVS builder cannot build another component')
     if platform.system() != 'Linux' or platform.machine().lower() not in ('x86_64', 'amd64'):
         raise ScaffoldError('Research builds are linux-64 only')
     for variable in ('PREFIX', 'BUILD_PREFIX', 'SRC_DIR'):
@@ -34,6 +36,14 @@ def main() -> None:
         raise ScaffoldError('Refusing an unsafe build or installation prefix')
     if name == 'openmvs-odm':
         verify_openmvs_tree(source, research=True)
+        if reduced_openmvs:
+            import tempfile
+            from openmvs_reduced_tree import make_reduced_tree
+            scratch = tempfile.TemporaryDirectory(prefix='reduced-openmvs-', dir=source.parent)
+            reduced = Path(scratch.name) / 'tree'
+            manifest = make_reduced_tree(source, reduced)
+            print(f"PASS: reduced OpenMVS source {manifest['retained_count']} files SHA256 {manifest['tree_sha256']}", flush=True)
+            source = reduced
     else:
         verify_opensfm_research_tree(source)
 
