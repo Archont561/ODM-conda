@@ -492,8 +492,8 @@ gates are required before publication to Prefix. No gate was changed.
 
 ## Conda-only private installation and research build identities (2026-10-30)
 
-The five previously separate PyPI distributions have local-only Conda repack
-recipes in [`recipes/python-wheel-research`](recipes/python-wheel-research).
+In this historical trial, the five previously separate PyPI distributions had
+local-only Conda wheel-repack recipes (since superseded by source recipes).
 Each repack takes an exact SHA256-pinned upstream wheel, installs it offline
 without dependencies during its build, and declares its Conda runtime
 requirements. These are **wheel repacks, not source-built packages**. In
@@ -508,7 +508,7 @@ validated separately, after the combined run's immutable commit.
 The OpenCV 4.13 orthophoto experiment, reduced Poisson, reduced OpenMVS and
 scoped OpenSfM now use `research_...` build strings, so their Conda identities
 are distinct from the earlier production-style artifacts with the same name and
-version. The ODM recipe explicitly requires these research builds and all five
+version. The ODM recipe at the time required these research builds and all five
 `odm-research-*` repacks. Distinct strings reduce identity collisions; they do
 not make the packages authorized for publication or guarantee that rebuilding
 the same recipe will produce identical bytes.
@@ -529,7 +529,7 @@ previously retained component artifacts were obtained by hash; not every
 component was rebuilt in this run. Temporary binaries, lock, source archives
 and imagery were discarded; the hashes are evidence, not a reusable bundle.
 
-Building a new private channel requires building the five wheel-repack recipes,
+In that historical trial, building a private channel required the five wheel-repack recipes,
 the OpenCV 4.13 variant via `scripts/prepare_opencv413_research.py`, the
 reduced-source Poisson and scoped OpenSfM candidates, reduced OpenMVS, the ODM
 recipe, and the remaining compatible components. The research preparers require
@@ -553,3 +553,67 @@ with 440 matching Conda records and no PyPI entries, and passed the installed
 launcher, Seneca and raster sanity checks. The same limitations and disposal
 policy apply. Identity changes do not make rebuilds byte-reproducible: separate
 runs produced different package hashes even for some unchanged build strings.
+
+## Source-built private Python runtime (2026-10-30)
+
+The five earlier wheel-repack recipes have been replaced by private research
+recipes under [`recipes/python-source-research`](recipes/python-source-research).
+PyODM, Pysolar, pygltflib and CODEM use SHA256-pinned upstream source
+distributions, build with preinstalled Conda tooling, and install with pip's
+`--no-index`, `--no-build-isolation` and `--no-deps` options. Their individually
+built packages and fresh import retests passed in
+[run 41139276835](https://github.com/Archont561/ODM-conda/actions/runs/41139276835).
+The source variants have build number 1, distinct from the earlier wheel repacks.
+
+JPEG XL uses the SHA256-pinned source distribution and its Cargo.lock. The
+private preparer `scripts/prepare_jxl_source.py` checks the source hash and
+registry-only locked crate checksums, runs `cargo vendor --locked` into a new
+local directory, verifies the crate set and vendor checksum metadata, and
+switches the exact upstream maturin configuration from vendored to dynamic
+linking. Preparation requires Cargo and access to crates.io; it must not be
+mistaken for an offline source acquisition. The subsequent Conda build uses
+`maturin --locked --offline --auditwheel skip` with staged crates and Conda
+native libraries. [Run 41140647274](https://github.com/Archont561/ODM-conda/actions/runs/41140647274)
+verified that the resulting extension's ELF `NEEDED` entries include
+`libjxl.so.0.11` and `libjxl_threads.so.0.11`, and passed fresh package tests
+including the lossless JPEG XL round-trip. This is targeted linkage evidence,
+not a complete binary, source or legal audit. That run also exercised the later
+crate-set validation; the integration run below used the preceding preparer.
+
+For a private build, obtain the exact pinned JPEG XL source archive listed in
+its recipe, then with Cargo installed and network access run:
+
+```sh
+pixi run python scripts/prepare_jxl_source.py --source /private/pillow-jxl-source.tar.gz \
+  --destination /private/jxl-prepared
+pixi run rattler-build build --recipe /private/jxl-prepared/recipe/recipe.yaml \
+  --target-platform linux-64 --variant-config recipes/variants.yaml \
+  --channel conda-forge --channel-priority strict --output-dir /private/jxl-build
+```
+
+The destination must not exist and must be outside the checkout. Build the
+other four source recipes normally with rattler-build, run their tests, and
+assemble them and the compatible ODM/component packages in a private channel.
+The staged Cargo source tree and dependency packages are not retained here.
+
+[Private integration run 41139889906](https://github.com/Archont561/ODM-conda/actions/runs/41139889906)
+built all five source candidates, the other research variants and ODM build 2,
+then installed from a loopback-only Conda channel without PyPI lock entries.
+The ODM candidate was `odm-fast-research-3.6.2-hb0f4dca_2.conda`, SHA256
+`3b4fac8f2755300d4765125c02b28894ff6221241c58dd87910400af5f160c06`.
+A byte-identical relocated lock SHA256
+`5ac9c3df78ed7fd205b199b28c05bca546caed1020f353ba2fc68611a607be7a`
+produced 456 matching Conda identity/hash/URL records in the fresh prefix. The
+installed ODM launcher completed the Seneca fast-orthophoto run and raster
+sanity checks. ODM's rattler test phase was skipped; the installed package was
+exercised by the integration. Some component inputs came from existing verified
+artifacts rather than fresh builds. Outputs, original lock, sources and binaries
+were discarded; this is not a retained replay bundle or a reproducible-build
+claim.
+
+The package names, `LicenseRef-Unreviewed` metadata, isolated test channel and
+existing release gates remain research-only. Build success does not establish
+complete corresponding sources for the Conda runtime or Rust dependencies,
+notice sufficiency, Seneca dataset rights, full ODM feature coverage, native
+security review or authority to publish. The five sources' build tools and
+Conda dependencies were solved online; preparation/builds are not fully offline.
