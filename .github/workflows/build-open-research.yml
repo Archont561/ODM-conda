@@ -13,6 +13,10 @@ on:
           - opensfm
           - opensfm-scoped
           - all
+          - reduced-poisson
+          - reduced-opensfm
+          - reduced-openmvs
+          - reduced-all
 
 permissions:
   contents: read

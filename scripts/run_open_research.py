@@ -29,8 +29,18 @@ def run_component(component: str) -> None:
 
 def main() -> None:
     selected = os.environ.get('RESEARCH_COMPONENT', '')
-    if selected not in ('openmvs', 'opensfm', 'opensfm-scoped', 'all'):
-        raise ScaffoldError('Set RESEARCH_COMPONENT to openmvs, opensfm, opensfm-scoped or all')
+    if selected not in ('openmvs', 'opensfm', 'opensfm-scoped', 'all', 'reduced-poisson', 'reduced-opensfm', 'reduced-openmvs', 'reduced-all'):
+        raise ScaffoldError('Unknown RESEARCH_COMPONENT')
+    if selected.startswith('reduced-'):
+        from run_reduced_research import run_all, run_one
+        with tempfile.TemporaryDirectory(prefix='odm-reduced-research-', dir=os.environ.get('RUNNER_TEMP')) as temp:
+            root = Path(temp)
+            if selected == 'reduced-all':
+                run_all(root)
+            else:
+                run_one(selected.removeprefix('reduced-'), root/selected)
+        print('PASS: private reduced research outputs discarded; no release approval', flush=True)
+        return
     for component in (('openmvs', 'opensfm') if selected == 'all' else (selected,)):
         run_component(component)
 

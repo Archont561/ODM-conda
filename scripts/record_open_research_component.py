@@ -9,7 +9,7 @@ from common import ScaffoldError, fail_cli
 
 
 def record_component(component: str, summary: Path | None = None) -> None:
-    if component not in ('openmvs', 'opensfm', 'opensfm-scoped', 'all'):
+    if component not in ('openmvs', 'opensfm', 'opensfm-scoped', 'all', 'reduced-poisson', 'reduced-opensfm', 'reduced-openmvs', 'reduced-all'):
         raise ScaffoldError('Invalid research component')
     print(f'::notice title=Selected research component::{component}', flush=True)
     if summary is not None:
