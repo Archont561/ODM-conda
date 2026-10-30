@@ -29,9 +29,10 @@ jobs:
           pixi run rattler-build build --recipe "$RUNNER_TEMP/prepared/packaging/recipes/poissonrecon-odm/recipe.yaml" --target-platform linux-64 --variant-config recipes/variants.yaml --channel conda-forge --channel-priority strict --output-dir "$RUNNER_TEMP/output" --log-style plain > "$RUNNER_TEMP/build.log" 2>&1 || { tail -100 "$RUNNER_TEMP/build.log"; exit 1; }
           pixi run python scripts/test_package.py --component poissonrecon-odm --output-dir "$RUNNER_TEMP/output"
           pixi run python - <<'PY'
-          import json,os,glob
+          import json,os,glob,sys
           from pathlib import Path
-          from scripts.package_archive import read_package
+          sys.path.insert(0,str(Path.cwd()/"scripts"))
+          from package_archive import read_package
           base=Path(os.environ['RUNNER_TEMP'])
           package=Path(glob.glob(str(base/'output/linux-64/poissonrecon-odm-*.conda'))[0])
           _,payload=read_package(package)
