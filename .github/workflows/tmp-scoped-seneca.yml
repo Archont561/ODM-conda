@@ -1,0 +1,52 @@
+name: Temporary scoped OpenSfM Seneca trial
+on:
+  push:
+    branches: [arena/04e0a7c9-odm-conda]
+    paths: [.github/workflows/tmp-scoped-seneca.yml, scripts/tmp_scoped_seneca.py]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  trial:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default
+      - name: Build OpenMVS from reduced copies
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/build_open_research.py')
+          text = path.read_text()
+          needle = '        verify_openmvs_tree(source, research=True)\n'
+          addition = '''        from openmvs_reduced_tree import make_reduced_tree
+                  import tempfile, hashlib, json
+                  scratch = Path(tempfile.mkdtemp(prefix='reduced-openmvs-', dir=source.parent))
+                  first = scratch / 'first'
+                  second = scratch / 'second'
+                  manifest = make_reduced_tree(source, first)
+                  other = make_reduced_tree(source, second)
+                  if manifest != other:
+                      raise ScaffoldError('Reduced tree manifests differ')
+                  digest = hashlib.sha256(json.dumps(manifest, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+                  print(f"::notice::Reduced copies agree: {manifest['retained_count']} files; tree {manifest['tree_sha256']}; manifest {digest}", flush=True)
+                  shutil.rmtree(second)
+                  source = first
+          '''
+          import textwrap
+          addition = textwrap.indent(textwrap.dedent(addition), '        ')
+          assert text.count(needle) == 1
+          path.write_text(text.replace(needle, needle + addition))
+          compile(path.read_text(), str(path), 'exec')
+          PY
+      - name: Build components and run disposable Seneca trial
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: pixi run python scripts/tmp_scoped_seneca.py
