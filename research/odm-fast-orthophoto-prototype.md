@@ -422,3 +422,14 @@ were discarded; the bounded log evidence was recovered by
 [run 41095611381](https://github.com/Archont561/ODM-conda/actions/runs/41095611381).
 This is not visual or geographic accuracy validation, dataset-rights clearance,
 complete runtime validation, or permission to release the software.
+
+### OpenCV 4.13 private integration
+
+[Run 41102357808](https://github.com/Archont561/ODM-conda/actions/runs/41102357808)
+completed Seneca with three private OpenCV 4.13 research variants and the other
+six components in a combined environment constrained to OpenVINO >=2026.0.
+The live raster passed GDAL metadata/statistics checks: 9508 × 10599 RGBA Byte,
+EPSG:32617; band means 146.368, 127.388, 151.957 and 142.319. Raster and
+report were discarded. The exact resolved OpenVINO version was not recorded.
+This is functional evidence for this run only, not visual/geographic quality,
+dataset-rights clearance or release approval.
