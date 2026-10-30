@@ -1,0 +1,22 @@
+name: Temporary OpenVINO archive inspection
+on:
+  push:
+    branches: [arena/1d04b5db-odm-conda]
+    paths: [.github/workflows/tmp-openvino-inspect.yml, scripts/tmp_openvino_inspect.py]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default
+      - name: Resolve and inspect exact OpenVINO binaries
+        run: pixi run python scripts/tmp_openvino_inspect.py
