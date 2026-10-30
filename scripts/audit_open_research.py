@@ -33,7 +33,8 @@ def verify_scoped_assets(payload: dict[str, bytes]) -> None:
         data = payload.get(root + filename)
         if data is None or hashlib.sha256(data).hexdigest() != expected:
             raise ScaffoldError(f'Missing or modified scoped OpenSfM file: {filename}')
-    if any(root + path in payload for path in EXCLUDED_ASSETS):
+    if (any(root + path in payload for path in EXCLUDED_ASSETS)
+            or any(path.startswith(root + 'data/bow/') for path in payload)):
         raise ScaffoldError('Scoped OpenSfM contains excluded runtime asset')
 
 
@@ -57,6 +58,9 @@ def verify_index(name: str, index: object) -> None:
             or type(index.get('build_number')) is not int or index['build_number'] != build
             or index.get('subdir') != 'linux-64'):
         raise ScaffoldError('Research package identity mismatch')
+    constraints = index.get('constrains', [])
+    if name == 'opensfm-scoped-odm' and (not isinstance(constraints, list) or 'opensfm-odm <0' not in constraints):
+        raise ScaffoldError('Scoped OpenSfM must conflict with the full research package')
     dependencies = index.get('depends')
     if not isinstance(dependencies, list) or not all(isinstance(item, str) and item.split() for item in dependencies):
         raise ScaffoldError('Invalid research runtime dependency declarations')

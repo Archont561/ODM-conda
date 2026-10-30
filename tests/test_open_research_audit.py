@@ -52,6 +52,17 @@ def test_scoped_asset_audit_rejects_missing_guard_and_reintroduced_assets(monkey
     for bad in ({root + 'dataset.py': expected},
                 {**payload, root + 'data/sensor_data.sqlite': b'unwanted'},
                 {**payload, root + 'data/bow/bow_hahog_root_uchar_64.npz': b'unwanted'},
+                {**payload, root + 'data/bow/unknown.npz': b'unwanted'},
                 {**payload, root + 'dataset.py': b'modified'}):
         with pytest.raises(ScaffoldError):
             audit.verify_scoped_assets(bad)
+
+
+def test_scoped_index_requires_mutual_exclusion_constraint():
+    from audit_open_research import verify_index
+    index = {'name': 'opensfm-scoped-odm', 'version': '0.5.2', 'build_number': 0, 'subdir': 'linux-64',
+             'depends': ['python', 'numpy', 'py-opencv', 'ceres-solver', 'suitesparse', 'gflags', 'glog', 'libgomp', 'rasterio', 'rawpy'],
+             'constrains': ['opensfm-odm <0']}
+    verify_index('opensfm-scoped-odm', index)
+    with pytest.raises(ScaffoldError):
+        verify_index('opensfm-scoped-odm', {**index, 'constrains': []})
