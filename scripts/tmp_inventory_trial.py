@@ -151,9 +151,9 @@ print('Default and three scoped mode guards PASS')
         report=inventory(prefix)
         data=json.dumps(report,sort_keys=True,separators=(',',':')).encode()
         encoded=base64.b64encode(zlib.compress(data,9)).decode()
-        print(f'::notice::Conda inventory count {len(report["packages"])} bytes {len(data)} chunks {(len(encoded)+5999)//6000}', flush=True)
-        for i in range(0,len(encoded),6000):
-            print(f'::notice::INVENTORY_CHUNK_{i//6000:02d} {encoded[i:i+6000]}',flush=True)
+        print(f'::notice::Conda inventory count {len(report["packages"])} bytes {len(data)} chunks {(len(encoded)+2999)//3000}', flush=True)
+        for i in range(0,len(encoded),3000):
+            print(f'::notice::INVENTORY_CHUNK_{i//3000:02d} {encoded[i:i+3000]}',flush=True)
         return
         archive=root/'odm.tar.gz'
         run(['curl', '--fail', '--location', 'https://codeload.github.com/OpenDroneMap/ODM/tar.gz/47f41f1f2d09f7c15dff33dd3c15ab29c8a97d45', '--output', archive])
