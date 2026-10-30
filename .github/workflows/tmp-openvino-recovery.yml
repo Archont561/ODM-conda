@@ -10,19 +10,18 @@ jobs:
   recover:
     runs-on: ubuntu-24.04
     steps:
-      - name: Recover sanitized archive inspection
+      - name: Recover alternative solver identity
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          gh api --allow-escape-sequences repos/Archont561/ODM-conda/actions/jobs/124208216707/logs > "$RUNNER_TEMP/log"
+          gh api --allow-escape-sequences repos/Archont561/ODM-conda/actions/jobs/124208393728/logs > "$RUNNER_TEMP/log"
           python3 - <<'PY'
           import os,re
           from pathlib import Path
-          s=Path(os.environ['RUNNER_TEMP'],'log').read_text(errors='replace')
-          match=re.search(r'RESULT_COUNT 13 CHUNKS (\d+)',s); assert match
-          count=int(match.group(1)); assert 0 < count <= 8
-          found=dict((int(i),v) for i,v in re.findall(r'OPENVINO_CHUNK_(\d\d) ([A-Za-z0-9+/=]+)',s))
-          assert sorted(found)==list(range(count)), sorted(found)
-          for i in range(count): print(f'::notice::OPENVINO_CHUNK_{i:02d} {found[i]}')
+          lines=Path(os.environ['RUNNER_TEMP'],'log').read_text(errors='replace').splitlines()
+          lines=[re.sub(r'\x1b\[[0-9;]*m','',x) for x in lines]
+          results=[x.split('Z ',1)[-1].strip() for x in lines if re.search(r'\b(?:libopencv|py-opencv|libopenvino)\s+\d',x)]
+          assert results, 'no solver records'
+          print('::notice::ALTERNATIVE_SOLVE '+' | '.join(results)[-3500:])
           PY
