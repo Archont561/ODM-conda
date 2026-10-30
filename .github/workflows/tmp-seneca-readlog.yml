@@ -15,14 +15,15 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          if ! gh api repos/Archont561/ODM-conda/actions/jobs/123797294286/logs > "$RUNNER_TEMP/job.log" 2> "$RUNNER_TEMP/error.log"; then
+          if ! gh api --allow-escape-sequences repos/Archont561/ODM-conda/actions/jobs/123797294286/logs > "$RUNNER_TEMP/job.log" 2> "$RUNNER_TEMP/error.log"; then
             echo "::error::Log request failed $(sed -E 's#https?://[^ ]+#[url]#g' "$RUNNER_TEMP/error.log" | tail -3 | tr "\n" " ")"
             exit 1
           fi
           python3 - <<'PY'
-          import json, os
+          import json, os, re
           from pathlib import Path
-          lines=Path(os.environ['RUNNER_TEMP'],'job.log').read_text(errors='replace').splitlines()
+          text=Path(os.environ['RUNNER_TEMP'],'job.log').read_text(errors='replace')
+          lines=re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', text).splitlines()
           hits=[line.split('Final raster metadata: ',1)[1] for line in lines if 'Final raster metadata: ' in line]
           assert len(hits)==1, f'expected one metadata line; got {len(hits)} in {len(lines)} log lines'
           data=json.loads(hits[0])
