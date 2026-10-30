@@ -196,3 +196,44 @@ production source or authorize distribution. The earlier report that the runner
 had not started was incorrect: GitHub's job details were temporarily incomplete.
 Local conda-forge solving failed TLS in this sandbox; the hosted run succeeded.
 All existing source, notice, release and dataset-rights gates remain open.
+
+### Fresh OpenCV 4.13 dependency trial
+
+[Private run 41109317029](https://github.com/Archont561/ODM-conda/actions/runs/41109317029)
+rebuilt the private variants, fresh-tested and audited them, installed the nine
+components, checked `pixi install --locked`, and completed the Seneca pipeline
+and raster sanity checks. Its sanitized dependency snapshot is
+[`odm-opencv413-dependency-trial.json`](odm-opencv413-dependency-trial.json),
+recovered by [read-only run 41112705697](https://github.com/Archont561/ODM-conda/actions/runs/41112705697).
+No package, source or imagery was uploaded. This is a **new solve**, not proof
+of the exact version selected by the prior trial 41102357808.
+
+The new linux-64 environment contained 424 installed Conda records, including
+nine local research/reused packages, and 16 PyPI lock records. All 16 PyPI
+records have SHA256 values in the captured lock metadata. The nine local Conda
+records lack SHA256 metadata, but the nine input archives were separately
+hashed and are listed in the snapshot. No Conda record lacked a license
+metadata field; that does not constitute a license, notice or completeness audit.
+Selected Conda records include:
+
+| Package | Version | Build | Binary SHA256 |
+| --- | --- | --- | --- |
+| libopenvino | 2026.2.1 | `h1f0fae8_1` | `7941fb9ba8c3a5a0a2401dc4120e8fcb561b96d928c43374eb93f545019a2858` |
+| libopencv | 4.13.0 | `qt6_hf3622b9_613` | `b8d19c56050c928b49372c2e173ec8aa547c2914c90890d02680e5e9ebf23042` |
+| py-opencv | 4.13.0 | `qt6_h6945e2d_613` | `7e151685d5554c039b2de5564681d8de03afbf08444b713607556787a8fb161a` |
+| libgdal-core | 3.12.2 | `he63569f_2` | `564d9e27f9cb3eae53a945a70c25b92f22f74a27b450dc166a255964623b4383` |
+| libpdal-core | 2.10.0 | `h9d23c72_0` | `c43a137e3b537f8842b3c850e9a319b9cae0ab59143b4fc7358495892e61d279` |
+
+The snapshot is an **inventory, not a runnable Pixi lock**: local absolute
+paths and original binaries were not retained, and the original lock is not
+included. The original locked environment was checked in place, but a separate
+fresh-prefix replay of that exact lock was not performed. Its recorded SHA256
+identifies the original lock bytes for comparison, including private path
+references; it cannot reconstruct those bytes. Thus exact future replay and
+byte-identical local rebuilds are not established. The report captures installed
+Conda metadata and PyPI lock records, not wheel payload audits, corresponding
+sources or legal obligations. `scripts/inventory_pypi_lock.py` provides a
+separate tested utility to summarize selected PyPI lock records while stripping
+credentials and local paths; the hosted trial used an equivalent temporary
+capture rather than that subsequently added utility. Existing software and
+dataset-rights gates remain open.
