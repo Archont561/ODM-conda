@@ -479,6 +479,13 @@ The package metadata lists `share/doc/CGAL/LICENSE`, `LICENSE.GPL` and
 package source correspondence, which license option applies, the completeness
 of notices or entitlement to distribute; qualified review remains open.
 
+GitHub's annotated v6.2.1 tag object points to commit
+[`28811b671a12b5caa9e3688569dadbc6b3728fe6`](https://github.com/CGAL/cgal/commit/28811b671a12b5caa9e3688569dadbc6b3728fe6),
+the same hash embedded in the installed header; the commit author date is
+2026-09-03. This explains the relationship to the tagged revision but does not
+independently establish the provenance or completeness of the package's entire
+source tree or accompanying notices.
+
 ### Scoped OpenSfM local-only research package
 
 `research/recipes/opensfm-scoped-odm/recipe.yaml` defines a separate Linux
@@ -503,12 +510,6 @@ archives containing all three removed assets are still fetched and no reduced
 corresponding-source archive is produced. This evidence does not resolve
 rights in the remaining JSON, vmem, dependencies or model data, or authorize
 redistribution. No release gates changed.
-GitHub's annotated v6.2.1 tag object points to commit
-[`28811b671a12b5caa9e3688569dadbc6b3728fe6`](https://github.com/CGAL/cgal/commit/28811b671a12b5caa9e3688569dadbc6b3728fe6),
-the same hash embedded in the installed header; the commit author date is
-2026-09-03. This explains the relationship to the tagged revision but does not
-independently establish the provenance or completeness of the package's entire
-source tree or accompanying notices.
 
 The guarded runtime was also exercised on the Seneca pipeline in
 [run 40979586923](https://github.com/Archont561/ODM-conda/actions/runs/40979586923).
@@ -534,3 +535,9 @@ with a 7,355,235-byte report. Outputs were discarded. This is functional
 integration evidence, not visual/geographic validation or clearance of dataset
 or software rights; the final isolation/notice changes were separately built and
 audited as noted above.
+
+For a repeatable disposable build, select `opensfm-scoped` in the
+**Local-only Open component research build** workflow, or run locally:
+`RESEARCH_COMPONENT=opensfm-scoped pixi run python scripts/run_open_research.py`.
+The workflow does not upload its packages or sources. The existing `all` choice
+continues to select the original OpenMVS and full OpenSfM research recipes.

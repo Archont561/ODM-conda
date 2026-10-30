@@ -11,6 +11,7 @@ on:
         options:
           - openmvs
           - opensfm
+          - opensfm-scoped
           - all
 
 permissions:
