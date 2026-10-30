@@ -99,6 +99,8 @@ def verify_payload(name: str, payload: dict[str, bytes]) -> list[str]:
             raise ScaffoldError(f'Unexpected package file or environment leak: {path}')
         if raw.startswith(b'\x7fELF'):
             binaries.append(path)
+    if name == 'opensfm-scoped-odm' and b'scoped runtime omits two vocabularies and sensor_data.sqlite' not in payload[share + 'SOURCE.txt']:
+        raise ScaffoldError('Missing scoped OpenSfM provenance warning')
     if name == 'openmvs-odm':
         verify_notices(payload, {licenses + dest: digest for dest, (_, digest) in OPENMVS_NOTICES.items()})
         if 'bin/ReconstructMesh' not in binaries:
