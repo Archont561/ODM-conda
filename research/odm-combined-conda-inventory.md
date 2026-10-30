@@ -142,3 +142,32 @@ matched the notice SHA256 values in all 14 inspected build-0 binaries. The other
 archives, compiler/toolchain inputs and transitive sources were not independently
 verified. A matching notice file or a declared license is not proof of source,
 notice, or license-obligation completeness and does not authorize release.
+
+### OpenCV 4.13 private variant preparation
+
+The previous nine-package set contains three recipes with direct OpenCV 4.12
+requirements: `odm-orthophoto`, scoped OpenSfM and reduced OpenMVS. The other
+six have no direct OpenCV requirement in their recipes; this does not prove
+that their transitive dependencies or ABI are compatible. In particular,
+OpenMVS's previously solved binary had an exact 4.12 runtime constraint.
+
+`pixi run python scripts/prepare_opencv413_research.py --destination /path/outside/repo`
+creates a disposable copy of the packaging inputs and changes only those three
+recipes' host/run OpenCV constraints to `>=4.13,<4.14`. The three copied
+recipes are explicitly marked as private ABI experiments; production recipes,
+source fingerprints and audit scripts are unchanged. The copy is **not** a
+build, audit, source offer or release candidate. Names and build numbers are
+unchanged in these temporary recipes, so the resulting binaries must not be
+published or confused with the approved production artifacts. Rebuild, fresh
+test, audit and integration evidence are still required.
+
+[Private run 41102357808](https://github.com/Archont561/ODM-conda/actions/runs/41102357808)
+was started to build analogous private copies and run the nine-package Seneca
+trial with OpenVINO 2026. At the time of this note the runner was assigned but
+had not started any job steps; the integration credential returned HTTP 403 for
+an attempt to cancel it. Its outcome is **not yet known**. In particular, this
+is not evidence that any 4.13 variant builds, passes tests or solves together.
+The hosted run is tied to an earlier commit; its temporary workflow and trial
+script have been removed from the final tree. If it later completes, review its
+logs and record results before relying on it. Local dependency solving against
+conda-forge also failed with a TLS handshake EOF in this sandbox.
