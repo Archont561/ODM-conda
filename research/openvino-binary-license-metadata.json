@@ -1,0 +1,226 @@
+{
+  "packages": [
+    {
+      "about_license": null,
+      "about_license_file": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "binary_sha256": "d85e5e3b6dc56d6fdfe0c51a8af92407a7ef4fc5584d0e172d059033b8d6d3e0",
+      "build": "hb56ce9e_1",
+      "feedstock_sha": "c362bec1c4eaf45e8f4b9e9f61847b97aba06045",
+      "index_license": null,
+      "info_license_paths_sha256": {},
+      "name": "libopenvino",
+      "rendered_recipe_sha256": "7b752c835ff8b04c554fbfbc7632220ca93091c1fe812c5fe574d68921c138d7",
+      "version": "2025.4.1"
+    },
+    {
+      "about_license": null,
+      "about_license_file": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "binary_sha256": "7ec8faf6b4541f098b5c5c399b971075a1cca0a9bec19aa4ed4e70a88026496c",
+      "build": "hd85de46_1",
+      "feedstock_sha": "c362bec1c4eaf45e8f4b9e9f61847b97aba06045",
+      "index_license": null,
+      "info_license_paths_sha256": {},
+      "name": "libopenvino-auto-batch-plugin",
+      "rendered_recipe_sha256": "0df39a80988311a7f52e099a37acff04bf6bd8bc69daf3998cc08abbf9c12bba",
+      "version": "2025.4.1"
+    },
+    {
+      "about_license": null,
+      "about_license_file": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "binary_sha256": "aee3ae9d91a098263023fc2cb4b2d1e58a7111984c6503ae6e7c8e1169338f02",
+      "build": "hd85de46_1",
+      "feedstock_sha": "c362bec1c4eaf45e8f4b9e9f61847b97aba06045",
+      "index_license": null,
+      "info_license_paths_sha256": {},
+      "name": "libopenvino-auto-plugin",
+      "rendered_recipe_sha256": "8f4c2dbfce474b6b3fe1025c7a63f003180ff42eef4db6d03946caec0dbb4709",
+      "version": "2025.4.1"
+    },
+    {
+      "about_license": null,
+      "about_license_file": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "binary_sha256": "bcf3d31a2bcc666b848506fb52b2979a28d7035e9942d39121d4ea64a27bfbfb",
+      "build": "hd41364c_1",
+      "feedstock_sha": "c362bec1c4eaf45e8f4b9e9f61847b97aba06045",
+      "index_license": null,
+      "info_license_paths_sha256": {},
+      "name": "libopenvino-hetero-plugin",
+      "rendered_recipe_sha256": "3d7d01802ef6046c3eaacb3519223865c5e2f1015053e4b32a7503f9fe9eea6f",
+      "version": "2025.4.1"
+    },
+    {
+      "about_license": null,
+      "about_license_file": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "binary_sha256": "0ce2e257c87076aff0a19f4b9bb79a40fcfea04090e66b2f960cb341b9860c8e",
+      "build": "hb56ce9e_1",
+      "feedstock_sha": "c362bec1c4eaf45e8f4b9e9f61847b97aba06045",
+      "index_license": null,
+      "info_license_paths_sha256": {},
+      "name": "libopenvino-intel-cpu-plugin",
+      "rendered_recipe_sha256": "2ccadf5361ef74c0d18d4db53274a2a721329d9dd04e380eedc389574600115a",
+      "version": "2025.4.1"
+    },
+    {
+      "about_license": null,
+      "about_license_file": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "binary_sha256": "ca1981eb418551a6dbf0ab754a2b7297aae1131e36cde9001862ffdf23625f9d",
+      "build": "hb56ce9e_1",
+      "feedstock_sha": "c362bec1c4eaf45e8f4b9e9f61847b97aba06045",
+      "index_license": null,
+      "info_license_paths_sha256": {},
+      "name": "libopenvino-intel-gpu-plugin",
+      "rendered_recipe_sha256": "24d3ae2823964c419d87ca469dce848ca98abb5e7492571ff751ad228b2e17fa",
+      "version": "2025.4.1"
+    },
+    {
+      "about_license": null,
+      "about_license_file": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "binary_sha256": "0b3bb86bceb8f5f0d074c26f697e3dfc638f5886754d31252db3aff8a1608e82",
+      "build": "hb56ce9e_1",
+      "feedstock_sha": "c362bec1c4eaf45e8f4b9e9f61847b97aba06045",
+      "index_license": null,
+      "info_license_paths_sha256": {},
+      "name": "libopenvino-intel-npu-plugin",
+      "rendered_recipe_sha256": "f8b8a2888a9b936043b041c066193a03006f090050ae408038e48b0794147bb0",
+      "version": "2025.4.1"
+    },
+    {
+      "about_license": null,
+      "about_license_file": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "binary_sha256": "124df6a82752ac14b7d08a4345be7a5d7295183e7f76a7960af97e0b869d754d",
+      "build": "hd41364c_1",
+      "feedstock_sha": "c362bec1c4eaf45e8f4b9e9f61847b97aba06045",
+      "index_license": null,
+      "info_license_paths_sha256": {},
+      "name": "libopenvino-ir-frontend",
+      "rendered_recipe_sha256": "d6f335e0203e658d0c87d9b255883ad463033b9f01b8a6480c39fd9086327971",
+      "version": "2025.4.1"
+    },
+    {
+      "about_license": null,
+      "about_license_file": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "binary_sha256": "22faa2b16c13558c3e245f12deffca6f89e22752dd0135c0826fbbeb43e90603",
+      "build": "h1862bb8_1",
+      "feedstock_sha": "c362bec1c4eaf45e8f4b9e9f61847b97aba06045",
+      "index_license": null,
+      "info_license_paths_sha256": {},
+      "name": "libopenvino-onnx-frontend",
+      "rendered_recipe_sha256": "785394af4f8b68f86610ec795eea239a6de50c23491784b90ccb20fc600543ac",
+      "version": "2025.4.1"
+    },
+    {
+      "about_license": null,
+      "about_license_file": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "binary_sha256": "f03aba53f64b0e2dae1989f9ff680fdc955d087424e1e00c34f3436815c49f18",
+      "build": "h1862bb8_1",
+      "feedstock_sha": "c362bec1c4eaf45e8f4b9e9f61847b97aba06045",
+      "index_license": null,
+      "info_license_paths_sha256": {},
+      "name": "libopenvino-paddle-frontend",
+      "rendered_recipe_sha256": "d28758f52605b91aa37e81d49ec22c379727ee6b7d7176de993a6cc0ed96501f",
+      "version": "2025.4.1"
+    },
+    {
+      "about_license": null,
+      "about_license_file": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "binary_sha256": "5edd997be35bbdda6c8916de46a4ae7f321af6a6b07ba136228404cb713bcbe9",
+      "build": "hecca717_1",
+      "feedstock_sha": "c362bec1c4eaf45e8f4b9e9f61847b97aba06045",
+      "index_license": null,
+      "info_license_paths_sha256": {},
+      "name": "libopenvino-pytorch-frontend",
+      "rendered_recipe_sha256": "25989de26fc28f053a8795bd4a241d09292bd3b04c5812256c21aa3a722b1737",
+      "version": "2025.4.1"
+    },
+    {
+      "about_license": null,
+      "about_license_file": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "binary_sha256": "15aa71394abf35d3a25d2d8f68e419f9dbbc57a0849bc1f8ae34589b77f96aa7",
+      "build": "h0767aad_1",
+      "feedstock_sha": "c362bec1c4eaf45e8f4b9e9f61847b97aba06045",
+      "index_license": null,
+      "info_license_paths_sha256": {},
+      "name": "libopenvino-tensorflow-frontend",
+      "rendered_recipe_sha256": "e92370110b351767f92393910d912fa5ca77f4ff7d4a668201cf310a6afe6816",
+      "version": "2025.4.1"
+    },
+    {
+      "about_license": null,
+      "about_license_file": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "binary_sha256": "13d8f823cd137bcfa7830c13e114e43288b4d43f5d599c4bec3e8f9d07233a29",
+      "build": "hecca717_1",
+      "feedstock_sha": "c362bec1c4eaf45e8f4b9e9f61847b97aba06045",
+      "index_license": null,
+      "info_license_paths_sha256": {},
+      "name": "libopenvino-tensorflow-lite-frontend",
+      "rendered_recipe_sha256": "efff1d6a4463f0687df6aa52d28785824d6cfcbe9b8a2eed62eb561a8350d779",
+      "version": "2025.4.1"
+    }
+  ],
+  "scope": "Hash-identified binary info metadata inspection; not a source/notice completeness or legal audit. info/ paths are package metadata, not installed payload."
+}

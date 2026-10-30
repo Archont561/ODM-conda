@@ -407,3 +407,18 @@ recovered the prior completed Seneca trial's GDAL summary from its job log and
 applied these sanity checks successfully to its 9563 × 10541 raster metadata.
 No raster was retained or re-opened; this is not a new pipeline run or visual
 and geographic verification.
+
+### Fresh nine-component Seneca and live raster sanity recheck
+
+[Private run 41090003564](https://github.com/Archont561/ODM-conda/actions/runs/41090003564)
+built and audited reduced Poisson, scoped OpenSfM and reduced-tree OpenMVS,
+installed them with the six verified local components, passed the selected
+preflight and scoped mode guards, and completed the pinned Seneca pipeline.
+The live output was checked using `odm_raster_sanity.validate` on GDAL JSON
+statistics. It reported a 9639 × 10534 RGBA Byte orthophoto, EPSG:32617, and
+geotransform `[305960.43959553825, 0.0499963214392767, 0, 4545650.983157054, 0, -0.0499957661019422]`.
+Per-band means were 146.252, 127.609, 152.272 and 143.298. The raster and report
+were discarded; the bounded log evidence was recovered by
+[run 41095611381](https://github.com/Archont561/ODM-conda/actions/runs/41095611381).
+This is not visual or geographic accuracy validation, dataset-rights clearance,
+complete runtime validation, or permission to release the software.
