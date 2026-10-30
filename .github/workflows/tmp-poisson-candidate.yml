@@ -27,7 +27,7 @@ jobs:
             pixi run python scripts/poisson_reduced_candidate.py --source "$RUNNER_TEMP/original.tar.gz" --output "$RUNNER_TEMP/candidate2.tar.gz" &&
             cmp "$RUNNER_TEMP/candidate1.tar.gz" "$RUNNER_TEMP/candidate2.tar.gz" &&
             mkdir "$RUNNER_TEMP/unpacked" && tar xzf "$RUNNER_TEMP/candidate1.tar.gz" -C "$RUNNER_TEMP/unpacked" &&
-            pixi run python - <<'PY'
+            pixi run python - <<'PY' &&
           import hashlib,json,os
           from pathlib import Path
           root=Path(os.environ['RUNNER_TEMP'])/'unpacked'

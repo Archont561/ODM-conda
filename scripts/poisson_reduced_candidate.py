@@ -51,7 +51,7 @@ def make_candidate(source: Path, destination: Path, root: Path = ROOT) -> dict:
         # text in research/. This focused candidate omits research material.
         for path in repository_files(root):
             relative = path.relative_to(root)
-            if relative.parts[0] == 'research' or path.name.startswith('tmp-'):
+            if relative.parts[0] == 'research' or path.name.startswith(('tmp-', 'tmp_')):
                 continue
             entries['packaging/' + relative.as_posix()] = (path.read_bytes(), path.stat().st_mode & 0o777)
         manifest = {'schema_version': 1, 'scope': 'local-research-only', 'original_archive_sha256': PINNED_SHA256,
@@ -59,8 +59,14 @@ def make_candidate(source: Path, destination: Path, root: Path = ROOT) -> dict:
                     'files': {name: hashlib.sha256(data).hexdigest() for name, (data, _) in sorted(entries.items())},
                     'warning': 'Not a corresponding-source offer or license clearance. Patches still need to be applied.'}
         entries['CANDIDATE-MANIFEST.json'] = ((json.dumps(manifest, sort_keys=True, indent=2) + '\n').encode(), 0o644)
+        # Claim the destination exclusively before entering cleanup; never
+        # unlink a file created by another process after our initial check.
         try:
-            with destination.open('xb') as output, gzip.GzipFile(filename='', mode='wb', fileobj=output, mtime=0) as compressed:
+            output = destination.open('xb')
+        except FileExistsError as error:
+            raise ScaffoldError('Unsafe or existing destination') from error
+        try:
+            with output, gzip.GzipFile(filename='', mode='wb', fileobj=output, mtime=0) as compressed:
                 with tarfile.open(fileobj=compressed, mode='w', format=tarfile.PAX_FORMAT) as archive:
                     directory = tarfile.TarInfo('source/JPEG')
                     directory.type = tarfile.DIRTYPE
