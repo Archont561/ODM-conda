@@ -15,6 +15,7 @@ source:
     target_directory: _external/vmem
 build:
   number: 0
+  string: research_${{ hash }}_0
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:

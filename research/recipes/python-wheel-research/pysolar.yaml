@@ -1,0 +1,41 @@
+# Local research only: repackages the exact upstream wheel, not a source build.
+schema_version: 1
+package:
+  name: odm-research-pysolar
+  version: "0.13"
+source:
+  url: https://files.pythonhosted.org/packages/71/d4/d9440ff5da6547ac2587f93a9af7e779be0aed78e1f0734dede94e440f6b/pysolar-0.13-py3-none-any.whl
+  sha256: 9019323af1a4db0b1cd5df5570b34a22b290f5ee817497aacfd63475779da004
+build:
+  number: 0
+  string: research_${{ hash }}_0
+  skip: target_platform != "linux-64"
+  script:
+    interpreter: python
+    content: |
+      import os, subprocess, sys
+      from pathlib import Path
+      wheels = list(Path(os.environ['SRC_DIR']).glob('*.whl'))
+      assert len(wheels) == 1, wheels
+      subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--no-index', '--no-build-isolation', '--prefix', os.environ['PREFIX'], str(wheels[0])], check=True)
+requirements:
+  build:
+    - python >=3.12,<3.13
+    - pip
+  host:
+    - python >=3.12,<3.13
+  run:
+    - python >=3.12,<3.13
+    - numpy
+tests:
+  - script:
+      interpreter: python
+      content: |
+        import pysolar
+    requirements:
+      run:
+        - python >=3.12,<3.13
+about:
+  homepage: http://pysolar.org
+  summary: Private research wheel repack, not approved for distribution
+  license: LicenseRef-Unreviewed

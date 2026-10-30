@@ -29,7 +29,13 @@ def prepare(destination: Path, root: Path = ROOT) -> None:
         text = recipe.read_text()
         if text.count(OLD) != 2 or NEW in text:
             raise ScaffoldError(f'Unexpected OpenCV recipe constraints: {relative}')
-        texts[relative] = WARNING + text.replace(OLD, NEW)
+        text = text.replace(OLD, NEW)
+        if relative == 'recipes/odm-orthophoto/recipe.yaml':
+            marker = 'build:\n  number: 2\n'
+            if text.count(marker) != 1:
+                raise ScaffoldError('Unexpected orthophoto build identity')
+            text = text.replace(marker, marker + '  string: research_${{ hash }}_2\n')
+        texts[relative] = WARNING + text
     try:
         destination.mkdir()
     except FileExistsError as error:

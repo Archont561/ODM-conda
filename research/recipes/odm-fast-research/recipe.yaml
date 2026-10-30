@@ -1,5 +1,4 @@
-# Private prototype only. Five separately pinned PyPI dependencies are required;
-# this is not a self-contained or approved release package.
+# Private prototype: uses research wheel repacks, not a source-complete release.
 schema_version: 1
 package:
   name: odm-fast-research
@@ -23,15 +22,20 @@ requirements:
     - python >=3.12,<3.13
   run:
     - python >=3.12,<3.13
-    - opensfm-scoped-odm ==0.5.2
-    - openmvs-odm ==0.0.0.dev20260516
-    - poissonrecon-odm ==13.8
+    - odm-research-pyodm ==1.5.12
+    - odm-research-pysolar ==0.13
+    - odm-research-pillow-jxl-plugin ==1.3.4
+    - odm-research-pygltflib ==1.16.5
+    - odm-research-codem ==0.26.1
+    - opensfm-scoped-odm ==0.5.2 research_*
+    - openmvs-odm ==0.0.0.dev20260516 research_*
+    - poissonrecon-odm ==13.8 research_*
     - fpcfilter ==0.2
     - dem2points ==0.0.0.dev20220721
     - fastrasterfilter ==1.0
     - renderdem ==1.0
     - mvs-texturing-odm ==0.0.0.dev20250818
-    - odm-orthophoto ==0.0.0.dev20250225
+    - odm-orthophoto ==0.0.0.dev20250225 research_*
     - pdal
     - python-pdal
     - gdal

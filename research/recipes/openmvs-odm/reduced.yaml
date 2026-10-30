@@ -19,6 +19,7 @@ source:
     target_directory: _external/eigen
 build:
   number: 4
+  string: research_${{ hash }}_4
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:
