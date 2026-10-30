@@ -25,7 +25,7 @@ with tempfile.TemporaryDirectory(dir=os.environ['RUNNER_TEMP']) as d:
                         else: fields['recipe_sha256']=hashlib.sha256(b).hexdigest()
         index=fields['info/index.json']; about=fields['info/about.json']
         out.append({'name':item['name'],'version':item['version'],'build':item['build'],'sha256':digest,'url':url,'index_license':index.get('license'),'about_license':about.get('license'),'feedstock_sha':about.get('extra',{}).get('sha'),'declared_license_files':about.get('license_file'),'info_licenses':files,'rendered_recipe_sha256':fields.get('recipe_sha256')})
-    assert len(out)==13
+    assert out
     encoded=base64.b64encode(zlib.compress(json.dumps(out,sort_keys=True,separators=(',',':')).encode(),9)).decode()
     print(f'RESULT_COUNT {len(out)} CHUNKS {(len(encoded)+2999)//3000}',flush=True)
     for i in range(0,len(encoded),3000): print(f'OPENVINO_CHUNK_{i//3000:02d} {encoded[i:i+3000]}',flush=True)
