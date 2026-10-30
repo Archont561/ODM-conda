@@ -41,7 +41,11 @@ def make_scoped_runtime(source: Path, destination: Path) -> dict:
     if text.count(marker) != 1 or (source / 'scoped_runtime_guard.py').exists():
         raise ScaffoldError('Unexpected OpenSfM dataset structure')
     try:
-        shutil.copytree(source, destination)
+        destination.mkdir()
+    except FileExistsError as error:
+        raise ScaffoldError('Unsafe or existing runtime destination') from error
+    try:
+        shutil.copytree(source, destination, dirs_exist_ok=True)
         for name in EXCLUDED_ASSETS:
             (destination / name).unlink()
         guard = Path(__file__).with_name('opensfm_scoped_guard.py')

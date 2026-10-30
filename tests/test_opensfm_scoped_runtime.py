@@ -59,3 +59,30 @@ def test_scoped_copy_rejects_unverified_and_existing_inputs(tmp_path):
     target.mkdir()
     with pytest.raises(ScaffoldError):
         scoped.make_scoped_runtime(source, target)
+
+
+def test_scoped_destination_race_does_not_delete_competing_directory(tmp_path, monkeypatch):
+    import hashlib
+    from pathlib import Path
+    import opensfm_scoped_runtime as scoped
+    from common import ScaffoldError
+    source = tmp_path / 'source'
+    source.mkdir()
+    dataset = b'class DataSet:\n    def load_config(self):\n        self.config={}\n\n    def _image_list_file(self):\n        pass\n'
+    (source / 'dataset.py').write_bytes(dataset)
+    monkeypatch.setattr(scoped, 'DATASET_SHA256', hashlib.sha256(dataset).hexdigest())
+    monkeypatch.setattr(scoped, 'EXCLUDED_ASSETS', {})
+    destination = tmp_path / 'candidate'
+    original_mkdir = Path.mkdir
+
+    def competing_mkdir(path, *args, **kwargs):
+        if path == destination:
+            original_mkdir(path)
+            (path / 'keep').write_text('other process')
+            raise FileExistsError('competing directory')
+        return original_mkdir(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, 'mkdir', competing_mkdir)
+    with pytest.raises(ScaffoldError, match='existing'):
+        scoped.make_scoped_runtime(source, destination)
+    assert (destination / 'keep').read_text() == 'other process'

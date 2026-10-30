@@ -73,3 +73,29 @@ def test_candidate_rejects_symlink_members_and_destination_inside_packaging(tmp_
     with pytest.raises(ScaffoldError, match='Unsupported'):
         candidate.make_candidate(source, tmp_path / 'candidate.tar.gz', root=packaging)
     assert not (tmp_path / 'candidate.tar.gz').exists()
+
+
+def test_existing_destination_race_does_not_delete_other_file(tmp_path, monkeypatch):
+    import poisson_reduced_candidate as candidate
+    from common import sha256
+    source = tmp_path / 'source.tar.gz'
+    fixture_archive(source)
+    monkeypatch.setattr(candidate, 'PINNED_SHA256', sha256(source))
+    packaging = tmp_path / 'packaging'
+    packaging.mkdir()
+    (packaging / 'recipe.yaml').write_text('packaging')
+    monkeypatch.setattr(candidate, 'repository_files', lambda root: [root / 'recipe.yaml'])
+    target = tmp_path / 'candidate.tar.gz'
+    original_open = Path.open
+
+    def competing_open(path, mode='r', *args, **kwargs):
+        if path == target and mode == 'xb':
+            with original_open(path, 'wb') as other:
+                other.write(b'other process')
+            raise FileExistsError('competing file')
+        return original_open(path, mode, *args, **kwargs)
+
+    monkeypatch.setattr(Path, 'open', competing_open)
+    with pytest.raises(ScaffoldError, match='existing'):
+        candidate.make_candidate(source, target, root=packaging)
+    assert target.read_bytes() == b'other process'
