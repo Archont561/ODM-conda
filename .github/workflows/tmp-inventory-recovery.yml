@@ -11,24 +11,25 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        half: [0, 1]
+        group: [0, 1, 2]
     steps:
       - name: Recover sanitized inventory from job log
         env:
           GH_TOKEN: ${{ github.token }}
-          HALF: ${{ matrix.half }}
+          GROUP: ${{ matrix.group }}
         run: |
           set -euo pipefail
-          gh api --allow-escape-sequences repos/Archont561/ODM-conda/actions/jobs/124156577655/logs > "$RUNNER_TEMP/log"
+          gh api --allow-escape-sequences repos/Archont561/ODM-conda/actions/jobs/124166023520/logs > "$RUNNER_TEMP/log"
           python3 - <<'PY'
           import os,re
           from pathlib import Path
           text=Path(os.environ['RUNNER_TEMP'],'log').read_text(errors='replace')
+          match=re.search(r'Conda inventory count (\d+) bytes (\d+) chunks (\d+)',text)
+          assert match, 'missing inventory count'
+          count=int(match.group(3))
+          assert 0 < count <= 24, count
           found=dict((int(i),v) for i,v in re.findall(r'(?:##\[notice\]|::notice::)INVENTORY_CHUNK_(\d\d) ([A-Za-z0-9+/=]+)',text))
-          assert sorted(found)==list(range(10)), sorted(found)
-          start=int(os.environ['HALF'])*5
-          for i in range(start,start+5):
-              for j in range(2):
-                  part=found[i][j*3000:(j+1)*3000]
-                  if part: print(f'::notice::INVENTORY_PART_{i:02d}_{j} {part}')
+          assert sorted(found)==list(range(count)), sorted(found)
+          for i in range(int(os.environ['GROUP'])*8,min((int(os.environ['GROUP'])+1)*8,count)):
+              print(f'::notice::INVENTORY_CHUNK_{i:02d} {found[i]}')
           PY
