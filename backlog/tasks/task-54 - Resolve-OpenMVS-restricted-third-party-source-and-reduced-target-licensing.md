@@ -4,7 +4,7 @@ title: Resolve OpenMVS restricted third-party source and reduced target licensin
 status: In Progress
 assignee: []
 created_date: '2026-10-28 15:48'
-updated_date: '2026-10-30 00:42'
+updated_date: '2026-10-30 20:18'
 labels:
   - openmvs-odm
   - license
@@ -60,4 +60,6 @@ Run 40974576156 compared all 806 traced CGAL headers to v6.2.1 after URL/Id keyw
 Run 40978864742 identified version.h differences beyond keywords as Git hash and release date; SPDX marker and version macro match. Package lists CGAL GPL/LGPL notice files. This is not source/rights clearance.
 
 The v6.2.1 annotated tag points to commit 28811b671a12b5caa9e3688569dadbc6b3728fe6, exactly the Git hash recorded in installed version.h; its 2026-09-03 commit date matches installed release-date macro. Exact package source and legal review remain open.
+
+Reverified pinned Eigen archive and traced file hashes. MKL_support.h includes Intel three-condition notice; AlignedBox.h includes separate Willow Garage/Open Source Robotics Foundation notice; Half.h includes Fabian Giesen notice. Macros.h BSD marker refers to OS, not a license. Embedded-notice applicability and exact package/source-bundle reproduction need qualified review; no criteria closed. See research/open-components-license-review.md.
 <!-- SECTION:NOTES:END -->

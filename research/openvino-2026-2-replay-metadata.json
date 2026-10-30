@@ -1,0 +1,242 @@
+{
+  "feedstock_commit": "60076581dd7818d779760e0937f869dfe992eb7b",
+  "inspection_run": "https://github.com/Archont561/ODM-conda/actions/runs/41121075671",
+  "packages": [
+    {
+      "about_license": "Apache-2.0",
+      "build": "h1f0fae8_1",
+      "license": "Apache-2.0",
+      "name": "libopenvino",
+      "notice_sha256": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "85481d0f8a01308fb8c837e0007897ab5f35c90b6ee6333e6e6dfeff4ca3f46c",
+        "info/licenses/licensing/third-party-programs.txt": "30a989975c8ae23ec106b70cb5de774a03a318869790ba52f1aec104eb4d09cc"
+      },
+      "recipe_sha256": "09353e44ce064a243eb6b235d53378602b0f2310dbc120b77bc14b9448acabe5",
+      "sha256": "7941fb9ba8c3a5a0a2401dc4120e8fcb561b96d928c43374eb93f545019a2858"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "h7e124b3_1",
+      "license": "Apache-2.0",
+      "name": "libopenvino-auto-batch-plugin",
+      "notice_sha256": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "85481d0f8a01308fb8c837e0007897ab5f35c90b6ee6333e6e6dfeff4ca3f46c",
+        "info/licenses/licensing/third-party-programs.txt": "30a989975c8ae23ec106b70cb5de774a03a318869790ba52f1aec104eb4d09cc"
+      },
+      "recipe_sha256": "e779996e0b8d9e8b64719168b3955c3655adbff2abfdba36c36a9f546cd60414",
+      "sha256": "3ac14d36fa890840ae8474b8a9f0a094b8542fd8fbc409faf3d465c68f20aff0"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "h7e124b3_1",
+      "license": "Apache-2.0",
+      "name": "libopenvino-auto-plugin",
+      "notice_sha256": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "85481d0f8a01308fb8c837e0007897ab5f35c90b6ee6333e6e6dfeff4ca3f46c",
+        "info/licenses/licensing/third-party-programs.txt": "30a989975c8ae23ec106b70cb5de774a03a318869790ba52f1aec104eb4d09cc"
+      },
+      "recipe_sha256": "55902c5cba14ab87fc0a9862c304be791837110585b0bb5ec20d1388e4915451",
+      "sha256": "499a472fc7b598ad3753b8f2afe60eb5a277d48eca9362e8aca094b2862587a7"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "hd41364c_1",
+      "license": "Apache-2.0",
+      "name": "libopenvino-hetero-plugin",
+      "notice_sha256": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "85481d0f8a01308fb8c837e0007897ab5f35c90b6ee6333e6e6dfeff4ca3f46c",
+        "info/licenses/licensing/third-party-programs.txt": "30a989975c8ae23ec106b70cb5de774a03a318869790ba52f1aec104eb4d09cc"
+      },
+      "recipe_sha256": "26a8dedf096b0cfab790f93d57b2c839829aa33eb82be6c6519e0849e3e1f118",
+      "sha256": "bec24379598a4405de171ad151945e79743c6bd049aceabf190b753c3f7a11da"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "h1f0fae8_1",
+      "license": "Apache-2.0",
+      "name": "libopenvino-intel-cpu-plugin",
+      "notice_sha256": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "85481d0f8a01308fb8c837e0007897ab5f35c90b6ee6333e6e6dfeff4ca3f46c",
+        "info/licenses/licensing/third-party-programs.txt": "30a989975c8ae23ec106b70cb5de774a03a318869790ba52f1aec104eb4d09cc"
+      },
+      "recipe_sha256": "d63f55d58b9fa7bbe1d8e0b2d72ee6dc39378dbc0f7c05373837ad8f585a79ae",
+      "sha256": "eecc040a7838752a2dff9b4435a4c59bbc67b83e0c880457935b968206cb20b5"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "h1f0fae8_1",
+      "license": "Apache-2.0",
+      "name": "libopenvino-intel-gpu-plugin",
+      "notice_sha256": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "85481d0f8a01308fb8c837e0007897ab5f35c90b6ee6333e6e6dfeff4ca3f46c",
+        "info/licenses/licensing/third-party-programs.txt": "30a989975c8ae23ec106b70cb5de774a03a318869790ba52f1aec104eb4d09cc"
+      },
+      "recipe_sha256": "6beae6a9cb69767dbb49eaced3229ef3bad63b734feb83590ab901f8edb12ab2",
+      "sha256": "a47442ce578b022e19a306f963536a108cc79385f4e09d57a14a849b6a864604"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "h1f0fae8_1",
+      "license": "Apache-2.0",
+      "name": "libopenvino-intel-npu-plugin",
+      "notice_sha256": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "85481d0f8a01308fb8c837e0007897ab5f35c90b6ee6333e6e6dfeff4ca3f46c",
+        "info/licenses/licensing/third-party-programs.txt": "30a989975c8ae23ec106b70cb5de774a03a318869790ba52f1aec104eb4d09cc"
+      },
+      "recipe_sha256": "e3b882c7bf39af5c0ac0d1156be5269b8119a43305a787013186dedcd771a0fa",
+      "sha256": "45a91feb68ccce90ad0fa86520572233ca20be56deae0c920f86133d020ad1e8"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "hd41364c_1",
+      "license": "Apache-2.0",
+      "name": "libopenvino-ir-frontend",
+      "notice_sha256": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "85481d0f8a01308fb8c837e0007897ab5f35c90b6ee6333e6e6dfeff4ca3f46c",
+        "info/licenses/licensing/third-party-programs.txt": "30a989975c8ae23ec106b70cb5de774a03a318869790ba52f1aec104eb4d09cc"
+      },
+      "recipe_sha256": "a121a3b896bfd44ba3ff166cf9077343580e6971d58341200be8040edd926a7d",
+      "sha256": "ebeba9a3ac9505ee69b556865b7d1b9fbbad01ca1ebe6a4249ff62c3dc677b47"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "h607c73d_1",
+      "license": "Apache-2.0",
+      "name": "libopenvino-onnx-frontend",
+      "notice_sha256": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "85481d0f8a01308fb8c837e0007897ab5f35c90b6ee6333e6e6dfeff4ca3f46c",
+        "info/licenses/licensing/third-party-programs.txt": "30a989975c8ae23ec106b70cb5de774a03a318869790ba52f1aec104eb4d09cc"
+      },
+      "recipe_sha256": "89de806e59e7b3e634683910fc3d004506645e96c5f863ee3cb59396221c883f",
+      "sha256": "7b105c0102356352d6d9518a112ff6343dab6b8f32c837809117cd26cbf006df"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "h607c73d_1",
+      "license": "Apache-2.0",
+      "name": "libopenvino-paddle-frontend",
+      "notice_sha256": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "85481d0f8a01308fb8c837e0007897ab5f35c90b6ee6333e6e6dfeff4ca3f46c",
+        "info/licenses/licensing/third-party-programs.txt": "30a989975c8ae23ec106b70cb5de774a03a318869790ba52f1aec104eb4d09cc"
+      },
+      "recipe_sha256": "16c4fe3eef00a573e7342bfd6ea930e27bdce3c672f48a69279eb164e9c573b0",
+      "sha256": "af45c03d41ebe0b48c28b68be31ee919cb801ac5077164808a66db515ad6a316"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "hecca717_1",
+      "license": "Apache-2.0",
+      "name": "libopenvino-pytorch-frontend",
+      "notice_sha256": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "85481d0f8a01308fb8c837e0007897ab5f35c90b6ee6333e6e6dfeff4ca3f46c",
+        "info/licenses/licensing/third-party-programs.txt": "30a989975c8ae23ec106b70cb5de774a03a318869790ba52f1aec104eb4d09cc"
+      },
+      "recipe_sha256": "56234c7378513f9624a644bc9356873f7d40ba211c368ef5cb19cc5d7d4f052c",
+      "sha256": "e6353874a36143ffb7db7ec2c3767fd5e3434a8eeff41a569bc46e68259f668f"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "h21c0c73_1",
+      "license": "Apache-2.0",
+      "name": "libopenvino-tensorflow-frontend",
+      "notice_sha256": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "85481d0f8a01308fb8c837e0007897ab5f35c90b6ee6333e6e6dfeff4ca3f46c",
+        "info/licenses/licensing/third-party-programs.txt": "30a989975c8ae23ec106b70cb5de774a03a318869790ba52f1aec104eb4d09cc"
+      },
+      "recipe_sha256": "da1a2d36579aa7d4ab496b733dd2097c0d62e39e6075d684409b3738196e9656",
+      "sha256": "cffe112815b8eb57528fdfdf8b39f6a0915884291147dab5bc2066d2bf123031"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "hecca717_1",
+      "license": "Apache-2.0",
+      "name": "libopenvino-tensorflow-lite-frontend",
+      "notice_sha256": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "85481d0f8a01308fb8c837e0007897ab5f35c90b6ee6333e6e6dfeff4ca3f46c",
+        "info/licenses/licensing/third-party-programs.txt": "30a989975c8ae23ec106b70cb5de774a03a318869790ba52f1aec104eb4d09cc"
+      },
+      "recipe_sha256": "8d1f8652aeb9b970e75368a3890f9607a7dbb39d1896e7eb64a3977e17c692f3",
+      "sha256": "142e7b24173ca8c32dbdb29c60f33a56ffb21a4ed733c9d6ab160c3a213ff52e"
+    }
+  ],
+  "replay_run": "https://github.com/Archont561/ODM-conda/actions/runs/41115458840",
+  "scope": "Exact selected linux-64 binaries and seven rendered source archives, not complete source, notices, build reproduction, applicability or legal review. Archives discarded.",
+  "source": [
+    {
+      "patches": [
+        "patches/0002-don-t-prescribe-protobuf-major-version.patch"
+      ],
+      "sha256": "9255a1cd87ad330242ed5063c2bcb2d04cc6897ab50b9fc95da5ac4a4625ae4d",
+      "url": "https://github.com/openvinotoolkit/openvino/archive/refs/tags/2026.2.1.tar.gz",
+      "verified_archive_sha256": "9255a1cd87ad330242ed5063c2bcb2d04cc6897ab50b9fc95da5ac4a4625ae4d"
+    },
+    {
+      "folder": "src/plugins/intel_cpu/thirdparty/onednn",
+      "sha256": "2843f9d4e92a83d16d37a92dcc29b87732415f9cd9fd87769651aa67da197521",
+      "url": "https://github.com/openvinotoolkit/oneDNN/archive/87f65fdd1927b1d0cbdf0ea37728146abfbffb52.tar.gz",
+      "verified_archive_sha256": "2843f9d4e92a83d16d37a92dcc29b87732415f9cd9fd87769651aa67da197521"
+    },
+    {
+      "folder": "src/plugins/intel_cpu/thirdparty/kleidiai",
+      "sha256": "7f6dc8992d229d5a0be8c2dec09011bab7c45201ed06ae60fbcd3c9343d09368",
+      "url": "https://github.com/ARM-software/kleidiai/archive/7d82645ca2f3c3d58a5c0b1a96905e53916c8ff8.tar.gz",
+      "verified_archive_sha256": "7f6dc8992d229d5a0be8c2dec09011bab7c45201ed06ae60fbcd3c9343d09368"
+    },
+    {
+      "folder": "src/plugins/intel_cpu/thirdparty/mlas",
+      "sha256": "0a44fbfd4b13e8609d66ddac4b11a27c90c1074cde5244c91ad197901666004c",
+      "url": "https://github.com/openvinotoolkit/mlas/archive/d1bc25ec4660cddd87804fcf03b2411b5dfb2e94.tar.gz",
+      "verified_archive_sha256": "0a44fbfd4b13e8609d66ddac4b11a27c90c1074cde5244c91ad197901666004c"
+    },
+    {
+      "folder": "src/plugins/intel_gpu/thirdparty/onednn_gpu",
+      "sha256": "175fe1fd5b4fb53c5250b7e7c1bc815498365c6fb3ca198002cd045fee57747b",
+      "url": "https://github.com/uxlfoundation/oneDNN/archive/20db47e2d3c4df1b66e93bed2e97d30da175512d.tar.gz",
+      "verified_archive_sha256": "175fe1fd5b4fb53c5250b7e7c1bc815498365c6fb3ca198002cd045fee57747b"
+    },
+    {
+      "folder": "src/plugins/intel_npu/thirdparty/level-zero-ext",
+      "sha256": "3255ea26d1d530a57a6558573cc233b717ecd34bf7adafd9401887ee4ddf5d6b",
+      "url": "https://github.com/intel/level-zero-npu-extensions/archive/f9ad3bf89c2418d714aef2e6b96a5aafb12a1971.tar.gz",
+      "verified_archive_sha256": "3255ea26d1d530a57a6558573cc233b717ecd34bf7adafd9401887ee4ddf5d6b"
+    },
+    {
+      "folder": "thirdparty/onnx/onnx",
+      "sha256": "b466af96fd8d9f485d1bb14f9bbdd2dfb8421bc5544583f014088fb941a1d21e",
+      "url": "https://github.com/onnx/onnx/archive/refs/tags/v1.18.0.tar.gz",
+      "verified_archive_sha256": "b466af96fd8d9f485d1bb14f9bbdd2dfb8421bc5544583f014088fb941a1d21e"
+    }
+  ],
+  "source_notice_sha256": {
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+    "licensing/runtime-third-party-programs.txt": "85481d0f8a01308fb8c837e0007897ab5f35c90b6ee6333e6e6dfeff4ca3f46c",
+    "licensing/third-party-programs.txt": "30a989975c8ae23ec106b70cb5de774a03a318869790ba52f1aec104eb4d09cc"
+  }
+}
