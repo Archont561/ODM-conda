@@ -142,3 +142,57 @@ matched the notice SHA256 values in all 14 inspected build-0 binaries. The other
 archives, compiler/toolchain inputs and transitive sources were not independently
 verified. A matching notice file or a declared license is not proof of source,
 notice, or license-obligation completeness and does not authorize release.
+
+### OpenCV 4.13 private variant preparation
+
+The previous nine-package set contains three recipes with direct OpenCV 4.12
+requirements: `odm-orthophoto`, scoped OpenSfM and reduced OpenMVS. The other
+six have no direct OpenCV requirement in their recipes; this does not prove
+that their transitive dependencies or ABI are compatible. In particular,
+OpenMVS's previously solved binary had an exact 4.12 runtime constraint.
+
+`pixi run python scripts/prepare_opencv413_research.py --destination /path/outside/repo`
+creates a disposable copy of the packaging inputs and changes only those three
+recipes' host/run OpenCV constraints to `>=4.13,<4.14`. The three copied
+recipes are explicitly marked as private ABI experiments; production recipes,
+source fingerprints and audit scripts are unchanged. The copy is **not** a
+build, audit, source offer or release candidate. Names and build numbers are
+unchanged in these temporary recipes, so the resulting binaries must not be
+published or confused with the approved production artifacts. Rebuild, fresh
+test, audit and integration evidence are required for any future variant.
+
+[Private run 41102357808](https://github.com/Archont561/ODM-conda/actions/runs/41102357808)
+built analogous temporary OpenCV 4.13 recipe copies and passed native builds,
+installed and fresh tests, and their existing respective package audits for
+orthophoto, reduced-source scoped OpenSfM, and reduced-tree OpenMVS. Reduced
+PoissonRecon was also built, fresh-tested and audited; five previously retained
+components were independently hash-verified. All nine packages solved together
+with `libopenvino >=2026.0`, and the selected preflight and scoped mode guards
+passed. The completed Seneca run and live GDAL metadata/statistics sanity check
+produced a 9508 × 10599 RGBA Byte raster, EPSG:32617, geotransform
+`[305967.61184717366, 0.0499971454197316, 0, 4545655.251033577, 0, -0.0499993027651392]`.
+The raster and report were discarded; no research binaries, source archives or
+imagery were uploaded. No visual/geographic accuracy or dataset-rights review
+is implied.
+
+The run recorded 424 Conda records, zero records missing a license metadata
+field and nine local records missing SHA256 metadata. These are counts, not a
+retained transitive inventory or legal clearance. The exact resolved OpenVINO
+version and complete dependency set were not recorded by this trial; only its
+`>=2026.0` constraint and the successful solve are established. The temporary
+local package hashes emitted by that run were:
+
+- orthophoto `5453e33dcdbe12d55ba8c8303c0189aead297dbe0397c6183798232bdfb003ab`
+- scoped OpenSfM `5c2c0093bdc500d64b2a3056a74b73912297e005de6e1a696952b665b3cc0e7c`
+- reduced OpenMVS `a7375b1874f763a60bfdb3e902bfa6bcbe411e1de479dabe05db3fa3772a15d5`
+- reduced PoissonRecon `46469cfedb22d7522496283b4333a8eb917c8a774b8465f3ac4e6e074ee7a493`
+
+The run used a temporary script implementing the same three staged recipe
+edits; it did **not** invoke the subsequently added preparer. The temporary
+script and workflow were removed from the final tree. Its experiment retains
+normal package names and build numbers: passing existing audits does not
+establish that its modified orthophoto recipe corresponds to any published
+production source or authorize distribution. The earlier report that the runner
+had not started was incorrect: GitHub's job details were temporarily incomplete.
+Local conda-forge solving failed TLS in this sandbox; the hosted run succeeded.
+All existing source, notice, release and dataset-rights gates remain open.
