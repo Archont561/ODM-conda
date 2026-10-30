@@ -16,8 +16,7 @@ jobs:
         run: |
           set -euo pipefail
           if ! gh api repos/Archont561/ODM-conda/actions/jobs/123797294286/logs > "$RUNNER_TEMP/job.log" 2> "$RUNNER_TEMP/error.log"; then
-            echo "::error::Log request failed"
-            sed -E 's#https?://[^ ]+#[url]#g' "$RUNNER_TEMP/error.log" | tail -10
+            echo "::error::Log request failed $(sed -E 's#https?://[^ ]+#[url]#g' "$RUNNER_TEMP/error.log" | tail -3 | tr "\n" " ")"
             exit 1
           fi
           python3 - <<'PY'
