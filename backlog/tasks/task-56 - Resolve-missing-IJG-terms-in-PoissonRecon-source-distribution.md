@@ -4,7 +4,7 @@ title: Resolve missing IJG terms in PoissonRecon source distribution
 status: In Progress
 assignee: []
 created_date: '2026-10-29 10:00'
-updated_date: '2026-10-29 11:24'
+updated_date: '2026-10-29 23:45'
 labels:
   - poissonrecon-odm
 dependencies: []
@@ -34,6 +34,8 @@ Verify pinned Poisson archive and compare its IJG subset against an identifiable
 Compare pinned vendored JPEG files with an immutable IJG 6b reference; retain its unaltered README and full comparison as source materials; include a conservative verified notice in a bumped, non-published package, and revalidate without asserting legal clearance.
 
 Trace modified JPEG files and unmatched configuration/build files to the first observable upstream commits and compare identified sources; document evidence and unresolved authoritative provenance and rights.
+
+Investigate original PoissonRecon JPEG import and compare modified files against authoritative or closer upstream references without assuming redistribution permission.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
@@ -48,4 +50,10 @@ Owner-dispatched native workflow https://github.com/Archont561/ODM-conda/actions
 Temporary read-only inspection https://github.com/Archont561/ODM-conda/actions/runs/40859056365 verified ZIP SHA256 44c7723e16c9d1bc40e9b1634578836657c02ff4eebf6d13d363146f850903bf and exact Poisson-only membership. Package SHA256 1e61c71dd24d73802d90b2db89057db1a612548949c9952767b2f765df4e93ab; source bundle SHA256 817e8a5cac0e08a8f5050970dd2b34478b4475391db57daa17207488bc8d0c84; 240 manifest entries verified including README and comparison, with clean build commit ec83f085. Reaudit passed with exact IJG notice bytes in payload and metadata; RPATH $ORIGIN/../lib and ELF needs libpng16.so.16 and libjpeg.so.8. Raw linker map unavailable; metadata constraints are not resolved dependency inventory. Legal/source/provenance decisions remain open; no release gates changed.
 
 Traced eight differing JPEG files and jconfig.h unchanged back to the 2018 initial visible import 514b259; Makefile first appears in b97aaf4 and was later changed in 99e3d90. Generated jconfig refers to ckconfig.c and jconfig.doc. See research/poissonrecon-readiness-review.md. Earlier author/provenance and authoritative grant remain unresolved.
+
+The 2018 initial JPEG import 514b259 is also present in author-owned mkazhdan/PoissonRecon; this corroborates upstream history but does not establish earlier origin, exact terms or source/binary redistribution rights. See readiness review; criteria remain open.
+
+Compared first 2018 Poisson JPEG import to libjpeg-turbo historical jpeg-6b tag 5ead57a: 49 identical, 8 changed, jconfig.h unmatched, and exact README SHA matches candidate. The tag is unsigned and later-maintained history; provenance and notice sufficiency still need qualified review. See readiness review.
+
+Run 40974102649 validated strengthened host JPEG linkage checks. Run 40974184592 removed all 59 hash-verified vendored JPEG files only from a private staged build and passed native tests/audit. The original archive is fetched and normal source bundle remains unchanged; this is not a distributable or legally approved source transformation. See readiness review.
 <!-- SECTION:NOTES:END -->

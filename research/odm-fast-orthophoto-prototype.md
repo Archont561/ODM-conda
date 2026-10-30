@@ -262,3 +262,77 @@ OpenMVS includes restricted source despite build exclusions; no research
 packages, restricted source, dataset images or outputs were uploaded. No
 release gates were changed. TASK-13 and the research-component legal reviews
 remain open.
+
+### Reduced-copy OpenMVS Seneca trial (2026-10-29)
+
+[Disposable run 40968370151](https://github.com/Archont561/ODM-conda/actions/runs/40968370151)
+at `940470bd87eef3923e7ea786c64e84d61d8542e3` completed the nine-component
+pipeline on Ubuntu 24.04 using OpenMVS **built from the verified physically
+reduced copy**, rather than the original-tree build in run 40960012356. Two
+copies matched the 3,274-file path/content fingerprint
+`e64c1718c05d58ac74051a8a0a216febbcac7144898cea022d378af427549489` and
+manifest SHA256 `560cc78034924dd9fd83b02c4fba448a66612fc493b86ae8c09da6f0b338ce3b`.
+The run rebuilt and fresh-retested both research components and passed their
+limited audits. Local OpenMVS build 3 SHA256 was
+`8a16adfb63dab049e9e15a0879abc99dd2b7164348c7defc862bca93ba1004f9`;
+OpenSfM build 5 was
+`31b416c0f69ef2e76afde033b4b1a6d734bf5cb714d55d43bf8cfc75f0994237`.
+The other seven package hashes and selected GDAL/PDAL/OpenCV dependencies
+matched the preceding successful trial listed above. They are not all released
+components: renderdem, PoissonRecon, mvs-texturing, OpenSfM and OpenMVS remain
+research-only in this experiment. The temporary script at the run commit records
+its exact inputs and commands. It verified ODM 3.6.2 archive SHA256
+`5bdf8fe81b9ca47714e8a474139fd206b8090ac4315c2f530a58fcaef29cde5e`,
+checked out Seneca commit `9220acfdca75cc5e2dd6d27fe48550c5ae0877f2`,
+and invoked the prototype with `--skip-3dmodel`.
+
+Preflight, launcher help, pipeline execution and `gdalinfo -stats` passed. The
+final raster had 9,667 × 10,305 pixels, four RGBA Byte bands, EPSG:32617 and
+geotransform `[305959.77768083906, 0.0499969077372014, 0,
+4545641.752753492, 0, -0.0499959349708179]`. All bands reported 0–255;
+means were 146.064, 127.328, 151.934 and 146.098. The TIFF was 113,227,130
+bytes and the PDF report 7,262,535 bytes. Dimensions and extent differ from
+the prior run; these runs do not isolate the cause or establish numerical or
+visual equivalence. Metadata checks do not validate visual quality, geographic
+accuracy, crop completeness or report contents. Dataset provenance remains
+independently unverified. Research packages, original restricted source,
+dataset imagery and generated outputs were discarded, not uploaded. The
+original OpenMVS archive was still fetched before reduction, and this success
+does not establish corresponding-source completeness, redistribution rights,
+reproducibility or a production release decision. No gates changed.
+
+### Asset-reduced OpenSfM runtime trial (2026-10-29)
+
+[Run 40973960114](https://github.com/Archont561/ODM-conda/actions/runs/40973960114)
+at `48e6b2b` repeated the disposable nine-component reduced-OpenMVS Seneca
+experiment. OpenSfM and OpenMVS packages were built, normally installed-tested,
+fresh-retested and audited **before** any experiment-specific modification.
+In the disposable installed prefix only, the two pinned BoW/VLAD NPZ assets
+and `sensor_data.sqlite` were SHA256-verified and deleted. An installed Python
+functional check confirmed the JSON fallback returned 3,708 entries, including
+`acer ce-5330: 5.75`. The Seneca `--fast-orthophoto --skip-3dmodel` pipeline
+then completed and generated a TIFF and report with those three assets absent.
+This shows that this one scenario can operate without them; it does **not**
+validate BoW/WORDS matching, VLAD retrieval, cameras absent from JSON, other
+configurations, or sensor-data rights. Removing the vocabularies breaks modes
+that request them. The installed prefix was modified after audit; no reduced
+package or corresponding-source bundle was generated or audited.
+
+The raster was 9,545 × 10,629 RGBA Byte, EPSG:32617, with geotransform
+`[305966.33103915723, 0.0499985548731397, 0, 4545656.007730301, 0,
+-0.0499959729402635]`; band ranges were 0–255, and means were 145.988,
+127.301, 151.866 and 142.717. TIFF and report sizes were 112,654,068 and
+7,275,876 bytes. The job hit the Actions per-step notice limit, so the bounded
+metadata was recovered from its completed log by read-only [run 40977152684](https://github.com/Archont561/ODM-conda/actions/runs/40977152684).
+Outputs were not uploaded or visually or geographically validated. Dimensions
+differ from prior trials; causation and equivalence are not established.
+
+The newly built OpenSfM package SHA256 was
+`c12f5ec3eb5e50cc1936503dd7fb46e098ea04dc3a6e3320a0ac3a1b2f2349d6`,
+and reduced-copy OpenMVS package SHA256 was
+`750a0dd55e70015ee1fc3249dd63ba3128ca07b4b3322fe3b24728067e344d33`.
+The other seven inputs, pinned ODM and Seneca revisions match the preceding
+trial. Original research archives and all runtime assets were fetched before
+the deletions; no archive, binary, dataset or generated output was uploaded.
+There is no reduced OpenSfM source distribution or legal approval, and the
+original recipe still installs the assets. No gates were changed.

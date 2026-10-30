@@ -271,3 +271,195 @@ not all retained files or transitive dependencies; named path removal does not
 rule out copied restricted code elsewhere. A distributable corresponding-source
 plan, full notices/provenance, permissions and qualified review remain open.
 No recipe, component gate or publication status is changed.
+
+### Retained-tree and native dependency review (2026-10-29)
+
+The earlier `research/openmvs-notices.json` is a historical trace inventory,
+not a complete license inventory. Reconstructed pinned OpenMVS/VCG/Eigen
+archives with all four research patches and compared its 499 path/hash entries
+with a newly reduced tree: **495 match**, two restricted license files are
+absent with their excluded IBFS/TRWS directories, and two retained files differ
+because the later `0004-ply-view-indices.patch` changed them. Their current
+SHA256s are `d07e58ada4e7ae2d295adb49dd0140bd517b41be414823e7c3b5a5d9b82e5a41`
+for `apps/ReconstructMesh/ReconstructMesh.cpp` and
+`99f02ac60fc613567ea0854471eb8bc0b9e0614d5002a8505c20f30c8a041f83`
+for `libs/MVS/PointCloud.cpp`. The OpenMVS root, VCG and Eigen root/MPL2 and
+COPYING.README entries match. The older inventory reflects an earlier patch
+state; do not use it as an exact-byte manifest for this reduced tree. This
+comparison neither identifies every applicable notice nor proves the origins of
+retained code. Local manifest bytes depend on recorded file modes; the
+path/content fingerprint is the comparable value.
+
+A separate [disposable native review run 40969462242](https://github.com/Archont561/ODM-conda/actions/runs/40969462242)
+at `3058c62005a6e8a053c6f0d1e52327400c31090a` built the verified reduced copy,
+passed its fresh retest and limited package audit, and examined its actual host
+prefix metadata and Ninja dependency database. Selected host records were:
+
+| Package | Version/build | SHA256 | Metadata license |
+| --- | --- | --- | --- |
+| cgal-cpp | 6.2.1 `hec4b13c_0` | `232ea63938c3582460c5767e118fc205963bc0d8c331885b2020ef1c5d0c83a5` | GPL3/LGPL3 |
+| libboost | 1.90.0 `h1101c1b_3` | `868cae2463765495b59ebc1146bd4089f2983439a1ac469eec36b09575b47162` | BSL-1.0 |
+| libboost-devel | 1.90.0 `hdab9b82_3` | `0d9008828401ba26fd0f0c0e81cc1a617ecaacd00855cc5273b97acf2e4e9cb7` | BSL-1.0 |
+| eigen | 5.0.1 `h19c2612_3` | `e134dba3ad3523573d5902ff1222a4033372089ea31efa99e6adaf0aa18f904a` | MPL-2.0 |
+| eigen-abi | 5.0.1.80 `hf414acd_3` | `2c0ae975516a66f50a525666dd128dd82e27aec6370d1a846b1390f3fbc03a98` | MPL-2.0 |
+| gmp | 6.3.0 `hfd2156b_3` | `f36c336efc874f346a53a9011f67e997f9faac505562cc18c13b6d399cfe61c7` | GPL-2.0-or-later OR LGPL-3.0-or-later |
+| mpfr | 4.2.2 `ha2cb11d_1` | `0be79ef2ee536e0c5d3ddb4a52bbae9f26d08560623299f33db2f4c4a17c525a` | LGPL-3.0-only |
+
+These are host records, not a full runtime or corresponding-source inventory;
+in particular the existence of host Eigen does not establish whether it or the
+pinned Eigen headers were selected. Ninja's recorded dependency paths included
+806 distinct `CGAL/` and 2,112 distinct `boost/` host headers, including
+`CGAL/AABB_tree.h` and `CGAL/AABB_traits_3.h`. This trace is not proof of
+specific compiled code, all required files, or a complete license expression.
+As a reviewer lead, the corresponding CGAL upstream [6.2.1 AABB_tree.h](https://github.com/CGAL/cgal/blob/v6.2.1/AABB_tree/include/CGAL/AABB_tree.h)
+and [AABB_traits_3.h](https://github.com/CGAL/cgal/blob/v6.2.1/AABB_tree/include/CGAL/AABB_traits_3.h)
+identify `GPL-3.0-or-later OR LicenseRef-Commercial`; exact byte correspondence
+to the installed package headers was not independently checked. File-level
+CGAL terms and any commercial grant, Boost exceptions or other per-file terms,
+VCG/Eigen notices and modified source, transitive native dependencies and the
+actual corresponding-source boundary require qualified review. Metadata labels
+are not a substitute for that review. No package or original archive was
+uploaded; no legal or release gate was changed.
+
+### OpenSfM asset and vmem provenance leads (2026-10-29)
+
+The 10,000-word vocabulary was introduced as `bow_hahog_root_uchar.npz` in
+[c686ad2](https://github.com/mapillary/OpenSfM/commit/c686ad2e8c62664c63115968d86c605c83f8b04a)
+([PR 429](https://github.com/mapillary/OpenSfM/pull/429)) and renamed in
+[d8cabec](https://github.com/mapillary/OpenSfM/commit/d8cabec9e8a510d0c1c3a5be97dd8f6657ef09f9).
+That rename commit also adds the 64-word vocabulary; [PR 466](https://github.com/mapillary/OpenSfM/pull/466)
+describes it as trained. History does not identify the training data or prove
+rights to distribute either model. The sensor database README credits Gregor
+Brdnik and calls its database simplified BSD; contributions and detailed data,
+the bundled SQLite database, and fork-specific terms still need investigation.
+
+For the exact hash-verified vmem 1.0.2 sdist, `posix.py` and `utils.py` match
+byte-for-byte the files in vmem commit [ce5e7bf](https://github.com/pierotofy/vmem/commit/ce5e7bf4901c6c51786fd92b9be12ddec835032b):
+SHA256 `174a7c475334f6dd525ba21dd982d720710c0321e2255e047a7571f5b9d94bb6`
+and `17135d5f5b53e5525d2fff6be1369a19af2219b3ceb8cce68045c60ba74f0594`,
+respectively. The first implementation [ab0f32e](https://github.com/pierotofy/vmem/commit/ab0f32e524db5803e3e6d29015572c241c5378c7)
+had no copyright headers; [169d714](https://github.com/pierotofy/vmem/commit/169d714e56eda9460058ae6814356ac9735b9140)
+and ce5e7bf later added Rodola BSD-style headers to `posix.py` and `utils.py`.
+The original `utils.py` `usage_percent` AST matches psutil `_common.py` at
+[93e1c46](https://github.com/giampaolo/psutil/commit/93e1c468ab4ac7922472114b3aeeacda2c8676a1);
+original `posix.py` functions are similar to psutil `_pslinux.py` with
+procfs/page-size changes and removed fields or warnings, but are not AST
+identical. Similarity is a provenance lead, not proof of copying or a legal
+conclusion. vmem's GPL metadata/README and psutil's BSD notice remain
+conservatively included; exact applicability and license compatibility remain
+for qualified review. No OpenSfM gate is changed.
+
+A follow-up [run 40970246461](https://github.com/Archont561/ODM-conda/actions/runs/40970246461)
+at `3bca88e` repeated the build, retest and audit and counted file markers in
+the first 10,000 bytes of the traced host headers. Of the 806 CGAL paths, 93
+identified `GPL-3.0-or-later OR LicenseRef-Commercial`, 683
+`LGPL-3.0-or-later OR LicenseRef-Commercial`, 29 `LGPL-3.0-or-later`, and one
+`BSL-1.0`. Of 2,112 Boost paths, 1,840 referenced the Boost Software License;
+272 had neither an SPDX marker nor that phrase in the scanned prefix. This is
+an automated marker count, not a file-by-file license analysis or evidence of
+license grant selection. The traced Eigen dependencies were 251 paths under
+the retained vendored Eigen tree and zero under the host prefix in this run;
+this does not cover unrecorded tools or a different solve/build.
+
+Installed `CGAL/AABB_tree.h` and `CGAL/AABB_traits_3.h` SHA256s were
+`55d57cfd3ab1ea62373150eb28410e05560a9614ea915598b7afabe6622a9904` and
+`c16821483935696c2c6d9a7b1173d025183c599975b8f06a2500884b33fd30bc`.
+Their upstream tag counterparts hash to
+`10d72986ffe39d5afdf74918e8f59312a41d2aecc0fdebca15f0757632aa292c` and
+`430d8fbd6e08982b1fe93b15a18122725e98dfb4ae065c6303618572d0d9a863`;
+they are not byte-identical, and the differences were not inspected. Review
+the exact installed header contents and package source rather than assuming the
+upstream tag alone represents them. The legal and corresponding-source
+questions above remain unresolved.
+
+### Sensor database composition investigation
+
+The pinned `sensor_data.sqlite` SHA256 is
+`45e7b0ed2d9978ae236ae522497514ded59ffd83f76bc0180555a36b2562fa31`.
+ODM fork commit [cca015d](https://github.com/OpenDroneMap/OpenSfM/commit/cca015d1b11c276d1ff61526b0d460f6544c7c7b)
+added it on 2022-12-13 and made `opensfm/sensors.py` prefer SQLite over JSON,
+falling back to JSON on absence or query failure. It has 7,523 `id,focal`
+rows. The pinned `sensor_data.json` has 3,708 entries; after lowercasing JSON
+keys, every one appears in SQLite with an exactly equal numeric value and there
+are 3,815 additional SQLite keys (no lowercase collisions). The 3,610-entry
+`sensor_data_detailed.json` is separate; this comparison is not a complete
+row-by-row provenance assessment.
+
+A historical [AliceVision cameraSensors.db](https://github.com/alicevision/AliceVision/blob/b36931179c2299801ace912ac98561daa3f18456/src/aliceVision/sensorDB/cameraSensors.db)
+was last changed before the SQLite import in commit
+[b369311](https://github.com/alicevision/AliceVision/commit/b36931179c2299801ace912ac98561daa3f18456);
+its SHA256 is `86969c1eed031294065f65d94a49d83560f78c7524f18a04eee24dbce3fc316e`.
+Parsing its semicolon-separated make/model/focal entries, lowercasing, using
+model alone when it starts with make and otherwise joining make and model, and
+retaining the first valid occurrence yields 7,445 distinct keys. Of the 3,815
+SQLite-only keys, **3,814 match** this historical database exactly in both key
+and numeric value; the sole unmatched key is `hasselblad l2d-20c`. The
+AliceVision file itself includes source fields naming multiple websites and
+user contributions. The observed match is strong evidence of shared data,
+not proof of direct copying or authority to sublicense those sources.
+
+The later 2025 [DroneDB merge script](https://github.com/DroneDB/DroneDB/blob/8871193e0042b1821c964a1110c6561e950f1cdc/data/create_sensor_data.py)
+combines OpenSfM JSON, AliceVision database and a DroneDB additions file using
+the same broad normalization and first-source precedence, but its public commit
+postdates the 2022 SQLite import and cannot establish the historical generation
+procedure. The source rights and exact originating version must be reviewed
+independently; the old OpenSfM sensor README's simplified-BSD statement cannot
+by itself clear the additional SQLite content. Earlier source history traces the
+initial JSON/detailed data and README to [62815d3](https://github.com/mapillary/OpenSfM/commit/62815d39e796ddc04389d9b59c76bada86dc1404)
+and their relocation to [9011fd3](https://github.com/mapillary/OpenSfM/commit/9011fd352c650418dfb8cd327f6b8a7dc3a7915a);
+subsequent contributions also need review.
+
+For the vocabularies, PR 429 and PR 466 explain the use of the assets but do
+not identify a training corpus or provide a model-specific grant. A focused
+inspection of the pinned OpenSfM `bow.py`, configuration, executable scripts
+and documentation did not reveal a vocabulary training-data manifest. This is
+a bounded search, not proof that no provenance record exists. The two trained
+assets' rights and possible replacement with independently sourced and trained
+vocabularies remain open.
+
+### Installed CGAL/tag comparison and file-level leads
+
+[Disposable run 40972161000](https://github.com/Archont561/ODM-conda/actions/runs/40972161000)
+at `461c88b` repeated the build and compared the 806 traced installed CGAL
+headers against the public v6.2.1 tag archive (SHA256
+`4a0713351882989dda8b6bbfa942d5013b994f297fbebe1096ce664a92aff1a0`).
+One was byte-identical and 805 differed. For the two sampled AABB headers,
+the complete unified diff consists of expansion of `$URL$` and `$Id$` to
+v6.2.1-specific metadata; the `GPL-3.0-or-later OR LicenseRef-Commercial`
+SPDX line is unchanged. This explains those two sample mismatches, **not** all
+805 differences; the other files have not been individually compared.
+
+The exact 93 traced installed paths whose first 10,000 bytes contained the
+GPL-or-commercial SPDX marker are listed in
+`research/openmvs-cgal-gpl-header-trace.json`, linked to the exact host package
+and run. This is a bounded reviewer lead: header dependency recording and
+markers do not by themselves establish linked code, commercial licensing,
+applicability of a particular grant, source obligations or notice sufficiency.
+The other CGAL marker groups and Boost headers still require review.
+
+The prior simple Boost string search has false negatives: for example, the
+upstream 1.90.0 [`archive_exception.hpp`](https://github.com/boostorg/serialization/blob/boost-1.90.0/include/boost/archive/archive_exception.hpp)
+wraps “Boost Software” and “License” across two lines, so the exact phrase is
+absent despite its explicit license reference. Exact correspondence between
+that upstream file and installed bytes has not been checked. The 272 unmarked
+by the simple scanner must not be described as unlicensed or automatically
+cleared. No source archives or binaries from the experiment were uploaded.
+
+[Run 40974576156](https://github.com/Archont561/ODM-conda/actions/runs/40974576156)
+repeated the same reduced build and compared all 806 traced installed CGAL
+headers to the tag after normalizing expanded `$URL: ...$` and `$Id: ...$`
+keywords. **805 matched after that normalization; one, `CGAL/version.h`, still
+differed.** The first-10,000-byte SPDX markers matched for all 806 mapped
+headers. This does not describe or justify the `version.h` difference, prove
+that every possible header was traced, or establish a license grant or
+corresponding-source completeness. No input or output files were uploaded.
+
+[Disposable Seneca run 40973960114](https://github.com/Archont561/ODM-conda/actions/runs/40973960114)
+verified that one installed fast-orthophoto scenario completed with the two
+vocabulary assets and SQLite removed from its temporary prefix, using the
+3,708-entry JSON sensor fallback. See `research/odm-fast-orthophoto-prototype.md`
+for raster metadata and limitations. The package audit ran before removal; no
+reduced package was created. BoW/VLAD modes would need replacement assets or a
+clearly scoped unsupported-mode policy, and the original source archive still
+contains the removed assets. This is a technical route to explore, not resolution
+of asset rights, corresponding-source obligations or release approval.

@@ -14,7 +14,7 @@ def verify_poisson_link_map(path: Path, prefix: Path) -> dict:
     seen = set()
     inputs = []
     digest = hashlib.sha256()
-    forbidden = re.compile(r'libmypng|libpng[^/\s()]*\.a(?:\(|\b)|(?:^|/)PNG/[^\s]*\.o', re.IGNORECASE)
+    forbidden = re.compile(r'libmypng|lib(?:png|jpeg)[^/\s()]*\.a(?:\(|\b)|(?:^|[\s/])(?:PNG|JPEG)/[^\s]*\.o', re.IGNORECASE)
     try:
         with path.open('rb') as stream:
             for raw in stream:
@@ -24,7 +24,7 @@ def verify_poisson_link_map(path: Path, prefix: Path) -> dict:
                 line = raw.decode('utf-8')
                 seen.update(marker for marker in markers if marker in line)
                 if forbidden.search(line):
-                    raise ScaffoldError('Bundled or static PNG input found in link map')
+                    raise ScaffoldError('Bundled or static PNG/JPEG input found in link map')
                 if line.startswith('LOAD '):
                     inputs.append(line[5:].strip())
     except (OSError, UnicodeError) as error:
@@ -38,6 +38,11 @@ def verify_poisson_link_map(path: Path, prefix: Path) -> dict:
     if (len(png) != 1 or not expected.is_file() or Path(png[0]) != expected
             or expected.resolve().parent != (prefix / 'lib').resolve()):
         raise ScaffoldError('PoissonRecon must link host-prefix libpng.so')
+    jpeg = [item for item in inputs if re.fullmatch(r'libjpeg\.so(?:\.\d+)*', Path(item).name)]
+    expected_jpeg = prefix / 'lib' / 'libjpeg.so'
+    if (len(jpeg) != 1 or not expected_jpeg.is_file() or Path(jpeg[0]) != expected_jpeg
+            or expected_jpeg.resolve().parent != (prefix / 'lib').resolve()):
+        raise ScaffoldError('PoissonRecon must link host-prefix libjpeg.so')
     # Preserve a path-free inventory and hash; the raw map stays in the build tree.
     return {'map_sha256': digest.hexdigest(), 'link_inputs': [Path(item).name for item in inputs]}
 
@@ -49,8 +54,8 @@ def verify_poisson_package_evidence(evidence: object, needed: list[str]) -> None
     inputs = evidence.get('link_inputs')
     if (not isinstance(digest, str) or not re.fullmatch(r'[0-9a-f]{64}', digest)
             or not isinstance(inputs, list) or not all(isinstance(item, str) for item in inputs)
-            or 'libpng.so' not in inputs or 'PoissonRecon.o' not in inputs
-            or any('libmypng' in item.lower() or re.fullmatch(r'libpng[^/\\]*\.a', item, re.IGNORECASE)
+            or 'libpng.so' not in inputs or 'libjpeg.so' not in inputs or 'PoissonRecon.o' not in inputs
+            or any('libmypng' in item.lower() or re.fullmatch(r'lib(?:png|jpeg)[^/\\]*\.a', item, re.IGNORECASE)
                    or '/' in item or '\\' in item for item in inputs)
-            or 'libpng16.so.16' not in needed):
+            or 'libpng16.so.16' not in needed or 'libjpeg.so.8' not in needed):
         raise ScaffoldError('Invalid PoissonRecon shared-libpng link evidence')
