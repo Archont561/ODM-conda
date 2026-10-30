@@ -4,7 +4,7 @@ title: Resolve GDAL and PDAL ABI incompatibility in ODM MVP
 status: In Progress
 assignee: []
 created_date: '2026-10-29 11:53'
-updated_date: '2026-10-29 18:01'
+updated_date: '2026-10-30 15:12'
 labels:
   - integration
   - bug
@@ -46,4 +46,6 @@ Owner run https://github.com/Archont561/ODM-conda/actions/runs/40908393516 at 75
 Owner run https://github.com/Archont561/ODM-conda/actions/runs/40909632056 at d4e40293ff9627e21f806cf7f9a31226e969576d passed. Independent read-only https://github.com/Archont561/ODM-conda/actions/runs/40910163219 verified ZIP 12911564893 SHA256 2e6af14e3eaffa0631c59e875fa114b95376f17a1c7c7de4815e9fc3e7eefb87 contains dem2points build 2 only, package SHA256 f7077c2eb01f380503d2aa5203e20d78e824a1c4adceaa486f4cbaf22bee8cb0 and source bundle SHA256 9029351b2cccf4eeca82c580f7fab8c68f0f05410cae36ca003380c9d16a8ce8; verified 246 source manifest entries, upstream notice bytes, audit and fresh retest. Separately verified prior three artifact package hashes and installed all four with Python 3.12, Python OpenCV 4.12, PDAL and GDAL, selecting libgdal-core 3.12.2 hc2c0581_0 and libpdal-core 2.10.0 h9d23c72_0; checked binary presence. This is not functional testing in the combined prefix, nine-component solve, relocation, full ODM integration, complete license/source review or approval. Release gates stay closed.
 
 Nine-package disposable installation and selected-import/executable preflight succeeded in run 40915195339 with GDAL 3.12.2, PDAL 2.10.0, gflags 2.2.x and Eigen 3.4 after genuine OpenSfM rebuilds. This demonstrates one solve, not complete relocation or dataset integration. Research artifacts were discarded; release gates remain closed.
+
+Private integration run 41072814562 installed the nine current package variants in one fresh environment with selected GDAL 3.12.2, PDAL 2.10.0 and OpenCV 4.12.0 identities, passed preflight/imports and Seneca. Exact package hashes, constraints and limitations in research/odm-fast-orthophoto-prototype.md. Complete release closure, source/legal and applicable ABI review remain open.
 <!-- SECTION:NOTES:END -->

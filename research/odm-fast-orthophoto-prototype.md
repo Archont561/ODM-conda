@@ -336,3 +336,43 @@ trial. Original research archives and all runtime assets were fetched before
 the deletions; no archive, binary, dataset or generated output was uploaded.
 There is no reduced OpenSfM source distribution or legal approval, and the
 original recipe still installs the assets. No gates were changed.
+
+### Reduced-source candidates and Seneca integration (2026-10-30)
+
+Private [run 41072814562](https://github.com/Archont561/ODM-conda/actions/runs/41072814562)
+built the scoped OpenSfM package from its reduced primary archive, reduced-source
+PoissonRecon, and OpenMVS build 4 from verified reduced copies. Each passed its
+installed and fresh package tests and applicable research audit. The nine real
+packages were installed into a fresh Pixi environment alongside integration
+requirements, then selected binaries/imports and the ODM prototype preflight
+passed. OpenSfM's three excluded assets were absent; default mode, explicit
+WORDS/BoW/VLAD rejection and JSON sensor fallback passed. The chosen core
+versions included libgdal-core 3.12.2 `hc2c0581_0`, libpdal-core 2.10.0
+`h9d23c72_0`, libopencv 4.12.0 `qt6_py312h52d6ec5_612`, py-opencv 4.12.0
+`qt6_py312h598be00_612`, and python-pdal 3.5.3 `np2py312hadcd02a_4`.
+This records selected identities, not every transitive dependency or a general
+ABI/security proof.
+
+The nine package SHA256 identities were:
+
+| Package | SHA256 |
+| --- | --- |
+| fpcfilter 0.2 b1 | `8d3949bf9fdb570e30afbcd91174ee5f80e9b8cd06525a26899642bc5ed1e679` |
+| dem2points 0.0.0.dev20220721 b2 | `d7876edf091b2990e1b9325e0f6cd0ae2a4e863ab5499edacf267e5d3fd4996f` |
+| fastrasterfilter 1.0 b2 | `2738b09958d6b57360065ca5e68b1bcbe96a6f5c727cd0e3cdba1f8b018096c4` |
+| odm-orthophoto 0.0.0.dev20250225 b2 | `c64be4380202cfe6e41cc41ac4ec171d25f2ceaaf45b666a21a2250f3b6ae614` |
+| renderdem 1.0 b1 | `451a291036f9bf11c140464d088884ec8980051c5383a667b75d1be7637fea77` |
+| mvs-texturing-odm 0.0.0.dev20250818 b2 | `af287aa4cb94f5b34e1e55d202e428123a1cc6d8ddc505ee74717e23ed92c4bc` |
+| reduced PoissonRecon 13.8 b3 | `7e4775fed953c3e3453e02971d4f9c96396d10e882a199081b9bfcea52e2eaf1` |
+| reduced-source opensfm-scoped-odm 0.5.2 b0 | `e1ab0126083e77abd922970718e347b0b641264d67161008489df5e3e287dc30` |
+| reduced-copy openmvs-odm 0.0.0.dev20260516 b4 | `8a64bf79186c9078fb91b4f9ba1d3234c843e49aebb058a82184fed74efec9a0` |
+
+The Seneca fast-orthophoto pipeline completed. Its raster was 9563 × 10541 RGBA
+Byte, EPSG:32617, geotransform `[305964.5459215405, 0.0499953893421963, 0,
+4545652.637375606, 0, -0.0499993851093828]`; band means were 146.24, 127.5,
+152.07 and 143.513. The TIFF was 112,964,268 bytes and the report 7,327,735
+bytes. A separate read-only [run 41078491919](https://github.com/Archont561/ODM-conda/actions/runs/41078491919)
+recovered those bounded metadata from the completed job log. The original
+archives, packages, dataset and results were discarded, not uploaded. Dataset
+rights and visual/geographic quality remain unverified; this is one scenario,
+not production source, license, security or release approval.

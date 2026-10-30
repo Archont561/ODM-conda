@@ -624,14 +624,19 @@ from this particular trace does **not** prove those files cannot be used or that
 notices are unnecessary. The classification includes a relicense script and
 contributor agreements because the original scan was filename-based.
 
-Build 4 renders and focused local audit tests pass. Its native build, installed
-and fresh tests, package audit and metadata verification are **not yet run**:
-GitHub/API/codeload TLS handshakes failed in this session, preventing the
-private workflow from being pushed or started. Build 3 evidence cannot certify
-build 4. TASK-54 and the release gates remain open.
+Build 4 rendered and focused local audit tests passed. Its native validation
+was initially blocked by GitHub/API/codeload TLS handshakes; the subsequent run
+is recorded below. Build 3 evidence alone cannot certify build 4. TASK-54 and the release gates remain open.
 
 An offline synthetic `rattler-build` 0.68.0 package confirmed that the six
 nested `license_file` paths are copied into `info/licenses/`, and the new
 hash-based metadata verifier accepted those six synthetic bytes and rejected a
 missing LMFit-style entry. This checks the packaging mechanism only; it is not
 an actual OpenMVS build or validation of the staged notice bytes.
+
+After GitHub connectivity returned, [private run 41072875690](https://github.com/Archont561/ODM-conda/actions/runs/41072875690)
+built OpenMVS research build 4, passed installed and fresh tests, and passed
+its research payload and six hash-verified Conda metadata notice checks. The
+package SHA256 was `25c69f66d30f9943bdca7646cab46d3eb1bc6c917781d6919dcc4a35115afabd`;
+outputs were discarded. This standard research build staged the original graph;
+it is not evidence that all source/notice obligations are resolved.
