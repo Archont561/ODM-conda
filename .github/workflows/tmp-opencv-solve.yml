@@ -1,0 +1,21 @@
+name: Temporary alternative OpenCV solve
+on:
+  push:
+    branches: [arena/1d04b5db-odm-conda]
+    paths: [.github/workflows/tmp-opencv-solve.yml]
+permissions:
+  contents: read
+jobs:
+  solve:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          run-install: false
+      - name: Probe alternative OpenCV 4.13 and OpenVINO 2026
+        run: |
+          set -euo pipefail
+          pixi init --format pixi --scm github --channel conda-forge --platform linux-64 "$RUNNER_TEMP/solve"
+          pixi add --manifest-path "$RUNNER_TEMP/solve/pixi.toml" 'python >=3.12,<3.13' 'libopencv >=4.13,<5' 'py-opencv >=4.13,<5' 'libopenvino >=2026.0'
+          pixi list --manifest-path "$RUNNER_TEMP/solve/pixi.toml" --locked | grep -E 'libopencv|py-opencv|libopenvino'
