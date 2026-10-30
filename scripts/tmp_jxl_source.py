@@ -22,6 +22,20 @@ with tempfile.TemporaryDirectory(prefix='odm-jxl-source-') as tmp:
         print('::error::JPEG XL BUILD FAILED '+res.stdout[-3500:].replace('\n',' | '),flush=True)
         res.check_returncode()
     matches=list((dest/'linux-64').glob('odm-research-pillow-jxl-plugin-*.conda'));assert len(matches)==1
+    # Inspect the packaged native extension rather than assuming its linkage.
+    import zipfile, tarfile, zstandard
+    with zipfile.ZipFile(matches[0]) as z:
+        payload=next(n for n in z.namelist() if n.startswith('pkg-') and n.endswith('.tar.zst'))
+        with z.open(payload) as src, zstandard.ZstdDecompressor().stream_reader(src) as stream, tarfile.open(fileobj=stream,mode='r|') as tar:
+            extensions=[]
+            for member in tar:
+                if member.isfile() and member.name.endswith('.so') and 'pillow_jxl' in member.name:
+                    target=rootdir/'jxl-extension.so'; target.write_bytes(tar.extractfile(member).read()); extensions.append(target)
+            assert len(extensions)==1,extensions
+    info=subprocess.check_output(['readelf','-d',str(extensions[0])],text=True)
+    needed=[line.strip() for line in info.splitlines() if '(NEEDED)' in line]
+    print('::notice::JPEG XL EXTENSION NEEDED '+'; '.join(needed),flush=True)
+    assert any('libjxl.so.' in line for line in needed),needed
     res=subprocess.run(['rattler-build','test','--package-file',str(matches[0]),'--channel','conda-forge','--output-dir',str(rootdir/'retest'),'--log-style','plain'],text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
     print(res.stdout,flush=True)
     if res.returncode:
