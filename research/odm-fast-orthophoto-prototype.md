@@ -433,3 +433,69 @@ EPSG:32617; band means 146.368, 127.388, 151.957 and 142.319. Raster and
 report were discarded. The exact resolved OpenVINO version was not recorded.
 This is functional evidence for this run only, not visual/geographic quality,
 dataset-rights clearance or release approval.
+
+## Private Conda application candidate (2026-10-30)
+
+The research-only [`odm-fast-research` recipe](recipes/odm-fast-research/recipe.yaml)
+packages the pinned, prefix-patched ODM 3.6.2 application and installs a
+relocatable `odm-fast-research` launcher. It declares the nine component names
+and the Conda runtime dependencies used for this experiment. It is limited to
+`--fast-orthophoto`, rejects point classification and split/merge, and requires
+five additional PyPI dependencies; it is **not a self-contained or publishable
+ODM package**.
+
+[Private run 41124481691](https://github.com/Archont561/ODM-conda/actions/runs/41124481691)
+built `odm-fast-research-3.6.2-hb0f4dca_0.conda` (SHA256
+`33edc1236acad9b6bb96764bfc9156d9536cc42717f1139316d31ec426fae044`)
+and installed it through a loopback-only channel containing the nine actual
+component archives. The candidate's Conda dependencies pulled those nine
+components; the five PyPI requirements were added separately. A copied,
+byte-identical lock (SHA256
+`3509f09317a47e7aeef40e27a29295b2fd776e0a112364d450669e29e17b2cb6`)
+was installed into a relocated prefix with isolated caches, producing 425
+matching Conda records. The installed package launcher ran help and the Seneca
+fast-orthophoto pipeline; final raster and report existed and metadata/statistics
+sanity checks passed. This is not visual/geographic accuracy or dataset-rights
+validation. The build skipped rattler's own test phase because the component
+packages were not yet available in its build channel; the later relocated
+integration exercised the installed package, not a separate rattler test.
+
+This was a new private solve, not a byte-identical rebuild of the older replay.
+Three published components and two retained build artifacts were retrieved by
+hash; orthophoto, reduced Poisson, scoped OpenSfM and reduced OpenMVS were
+privately rebuilt and individually tested/audited. The lock, archives, dataset
+and output were discarded, and the temporary trial is not an automated release
+pipeline. Availability of those historical retained artifacts is not guaranteed.
+
+For a new private experiment on linux-64, build the recipe with the repository's
+locked tools (network access to conda-forge and the pinned ODM archive required):
+
+```sh
+pixi run rattler-build build --recipe research/recipes/odm-fast-research/recipe.yaml \
+  --target-platform linux-64 --variant-config recipes/variants.yaml \
+  --channel conda-forge --channel-priority strict --output-dir /private/odm-build \
+  --test skip
+```
+
+Separately obtain or rebuild **the exact compatible nine component packages**,
+run their tests and audits, and use `scripts/private_conda_channel.py` to index
+those archives together with the ODM candidate in an access-controlled directory
+outside this repository. Bind its HTTP server to loopback only. Create a fresh
+Pixi project with that local channel first and conda-forge second, then add
+`odm-fast-research`. The trial additionally installed these PyPI requirements:
+`pyodm==1.5.12`, `pysolar==0.13`, `pillow-jxl-plugin==1.3.4`,
+`pygltflib==1.16.5`, `codem==0.26.1`. These aren't expressed by the Conda
+recipe; use `pixi add --pypi` and retain the resulting private lock if a future
+exact replay is required. With the environment active, invoke
+`odm-fast-research --fast-orthophoto --skip-3dmodel --project-path PROJECTS DATASET`.
+Inputs must be independently suitable and authorized for use. Neither the
+private recipe nor this procedure guarantees full ODM features or a current
+future solve.
+
+**Publication remains blocked.** OpenMVS and OpenSfM variants are explicitly
+unreviewed, production source/notice obligations and other component gates
+remain open, the Conda metadata does not capture the PyPI dependencies, and the
+private variant reuses some production package identities with different bytes.
+Distinct reviewed package identities, independently retained sources, native
+validation, dependency packaging, qualified review and owner-controlled release
+gates are required before publication to Prefix. No gate was changed.
