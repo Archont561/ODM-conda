@@ -346,3 +346,26 @@ two archives matched, their manifest hashes and absent JPEG tree were checked,
 and the private native build, installed and fresh tests, and normal package
 audit passed. All outputs were discarded. This does not change the source or
 release limitations above.
+
+### Local research recipe from reduced candidate
+
+`scripts/poisson_candidate_recipe.py` takes the private reduced candidate and
+hash-pinned original archive, verifies candidate file hashes and compares every
+retained source and omitted JPEG hash back to the original, then prepares a
+local-path research recipe in a fresh directory. The generated builder's
+`SOURCE.txt` and `upstream.json` name the candidate archive hash, identify the
+original as not included and explicitly disclaim a corresponding-source offer.
+It does not alter the production recipe or production audit. The candidate's
+packaging manifest is an integrity check, not independently authenticated
+packaging provenance, and the generated recipe includes a local absolute path;
+it is neither a portable release recipe nor a source-completeness decision.
+
+[Private run 41066302285](https://github.com/Archont561/ODM-conda/actions/runs/41066302285)
+created and compared two candidates, checked the manifest and source files
+against the pinned original, built the generated recipe, and passed installed
+and fresh package tests. Installed `upstream.json` matched the generated research
+provenance and `SOURCE.txt` named both hashes and disclaimed a source offer.
+The unmodified production audit **correctly rejected** this intentionally
+different source metadata; no separate full artifact audit has yet been
+implemented for this variant. All inputs and outputs were discarded; no
+publication, comprehensive source audit or license approval follows.

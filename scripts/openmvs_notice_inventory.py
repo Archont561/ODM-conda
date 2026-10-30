@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
-from common import ROOT, ScaffoldError, fail_cli, sha256
+from common import ROOT, ScaffoldError, fail_cli, relative_path, sha256
 from openmvs_reduced_tree import EXPECTED_REDUCED_TREE
 from openmvs_graph_policy import fingerprint_tree
 
@@ -18,7 +18,7 @@ def inventory(tree: Path, baseline: Path = ROOT / 'research/openmvs-notices.json
     recorded = json.loads(baseline.read_text())['entries']
     matched, missing, changed = [], [], []
     for item in recorded:
-        path = tree / item['path']
+        path = relative_path(tree, item['path'])
         if not path.is_file():
             missing.append(item['path'])
         elif sha256(path) != item['sha256']:

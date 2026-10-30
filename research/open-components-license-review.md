@@ -541,3 +541,39 @@ For a repeatable disposable build, select `opensfm-scoped` in the
 `RESEARCH_COMPONENT=opensfm-scoped pixi run python scripts/run_open_research.py`.
 The workflow does not upload its packages or sources. The existing `all` choice
 continues to select the original OpenMVS and full OpenSfM research recipes.
+
+### Local follow-up: scoped source and reduced-tree inventory
+
+`scripts/opensfm_reduced_candidate.py` verifies the pinned original archive and
+the three individual asset hashes, removes them, and writes a deterministic
+local-only source archive with per-file hashes and modes. Two local runs on
+2026-10-30 produced identical SHA256
+`3f36288338532cee3bf5797b3031868b06b0a29eeb1adbd44905f1f3bf2f2fef`
+(581 retained files; modes depend on the staged filesystem). The original
+archive was fetched privately, not included or uploaded. This is **not yet a
+buildable replacement** for the scoped recipe: that recipe fetches the
+original, and its current runtime transformation requires the three assets to
+be present before it removes them. The archive also omits separate pybind11,
+vmem and other dependency sources, the guard and packaging changes. Its
+manifest and exclusions are not a corresponding-source or rights determination.
+
+Re-staged the exact OpenMVS/VCG/Eigen graph locally, applied the four research
+patches and reproduced the 3274-file reduced fingerprint
+`e64c1718c05d58ac74051a8a0a216febbcac7144898cea022d378af427549489`.
+`scripts/openmvs_notice_inventory.py` generated
+`research/openmvs-reduced-notice-inventory.json`: 17 notice-like filenames,
+495 of 499 historical trace entries match; two excluded notices are absent and
+two patch-modified files differ. The report identifies the previously inspected
+CGAL host package and 93 traced GPL-or-commercial marker paths; other selected
+host package identities appear in the earlier table above. Filename matching
+misses embedded notices and may have false positives, and the historical trace
+is neither the full dependency graph nor complete corresponding source. All
+qualified source, rights and notice reviews remain open.
+
+[Private run 41066302285](https://github.com/Archont561/ODM-conda/actions/runs/41066302285)
+built the actual full and scoped OpenSfM research packages, separately audited
+them, then used their local Conda channel metadata in three Pixi solves. Each
+package solved independently; requesting both was rejected with both package
+names in the solver output. This tests the scoped constraint on linux-64 for
+those builds, not arbitrary package-manager versions or forced installations.
+Packages and source inputs were discarded and no artifacts were uploaded.
