@@ -701,3 +701,19 @@ upstream assertion, not independent proof of the initial grant, later entries,
 or sufficient notices. The research package audit checks the JSON bytes but does
 not currently assert this readme's presence or its legal sufficiency; those
 questions and the vmem/source/dependency obligations remain open.
+
+### Remaining OpenSfM and OpenMVS release blockers
+
+The newer-OpenVINO compatibility probe did not remove the existing blockers.
+Scoped OpenSfM still requires review of the retained sensor database grant and
+subsequent contributions, vmem's conflicting notices and provenance, the ODM
+fork's AGPL/BSD wording, other source/dependency notices and complete
+corresponding source. Its two vocabularies and SQLite database are omitted
+only from the scoped candidate; the original archives still contain them.
+
+Reduced-tree OpenMVS still starts from the original archive containing restricted
+IBFS/TRWS material. Its build-time exclusions and historical traced-header
+analysis do not establish redistribution rights, complete corresponding source,
+or all Eigen, VCG, CGAL and transitive dependency obligations. Owner/legal
+review and the existing release gates remain open. See the earlier sections for
+precise pins, traces and limitations; no audit or gate was weakened.

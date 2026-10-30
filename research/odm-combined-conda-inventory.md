@@ -85,3 +85,60 @@ the installed prefix. Future inventories can optionally hash archive files via
 `pixi run python scripts/inventory_conda_environment.py --prefix PREFIX --local-packages DIRECTORY`;
 this helper is unit-tested, but was added after this native run, which calculated
 its digests independently. All original release and rights caveats apply.
+
+### Newer OpenVINO compatibility and notice probe (2026-10-30)
+
+[Private combined run 41097529820](https://github.com/Archont561/ODM-conda/actions/runs/41097529820)
+built and retested the three research candidates and attempted to install them
+alongside the six retained packages with `libopenvino >=2026.0`. The **combined
+solve failed**: the newly built OpenMVS package requires
+`libopencv >=4.12.0,<4.12.1.0a0`; the available 4.12.0 solver candidates in
+that run required OpenVINO versions 2025.0.0, 2025.2.0, 2025.3.0 or 2025.4.1,
+not 2026. A separate [minimal solver run 41097698612](https://github.com/Archont561/ODM-conda/actions/runs/41097698612)
+confirmed the same conflict for Python 3.12 and OpenCV 4.12 constraints; its
+error was recovered by [41097771349](https://github.com/Archont561/ODM-conda/actions/runs/41097771349).
+The other job in the combined run failed before solving due to an invalid
+`pixi init --scm none` option; it is not evidence about compatibility. Because
+the actual nine-package solve failed, **no newer-OpenVINO combined preflight,
+Seneca pipeline, or raster validation ran** in this experiment. No requirements
+or existing audits were weakened.
+
+An independent [probe 41097920931](https://github.com/Archont561/ODM-conda/actions/runs/41097920931)
+with Python 3.12, OpenCV `>=4.13,<5` and OpenVINO `>=2026` did solve and install
+OpenCV 4.13.0 build `qt6_h7897e75_619`, py-opencv 4.13.0 build
+`qt6_h06c354c_619` and OpenVINO 2026.4.1 build `hbb11d60_0` (identity
+recovered by [41098068203](https://github.com/Archont561/ODM-conda/actions/runs/41098068203)).
+This was **not** a nine-package solve or an ABI/functional test; the existing
+OpenMVS package's `<4.12.1.0a0` dependency rules it out. A candidate upgrade
+would require deliberate rebuilds and native retests against a new OpenCV ABI,
+or an independently reviewed OpenCV 4.12 variant without the old dependency.
+Neither route is validated here.
+
+Archive inspection findings, each downloaded binary checked against its solved
+SHA256, are recorded as follows:
+
+- [2026.0.0 build 1 standalone](openvino-2026-binary-metadata.json),
+  [run 41097867840](https://github.com/Archont561/ODM-conda/actions/runs/41097867840):
+  all 13 requested split packages have `Apache-2.0` index/about license fields,
+  but none contains files under `info/licenses/`. The later field fix alone
+  therefore did not address this notice-location gap.
+- [2026.4.1 build 1 standalone](openvino-2026-4-binary-metadata.json),
+  [run 41098131974](https://github.com/Archont561/ODM-conda/actions/runs/41098131974):
+  13 requested split packages each have `Apache-2.0` metadata and four files
+  under `info/licenses/`.
+- [OpenCV 4.13 alternative solve](openvino-opencv-413-probe-metadata.json),
+  [run 41098426733](https://github.com/Archont561/ODM-conda/actions/runs/41098426733):
+  a separate repeat solve selected **14** OpenVINO 2026.4.1 build-0 packages
+  including a GGUF frontend; each has `Apache-2.0` metadata and four
+  `info/licenses/` files. These are not the build-1 archives above.
+
+The selected build-0 binaries identify [feedstock commit c82659b5f2f7ba9b519179764c700478326726ac](https://github.com/conda-forge/openvino-feedstock/tree/c82659b5f2f7ba9b519179764c700478326726ac).
+Its [recipe](https://github.com/conda-forge/openvino-feedstock/blob/c82659b5f2f7ba9b519179764c700478326726ac/recipe/meta.yaml)
+pins the main OpenVINO 2026.4.1 archive SHA256
+`1ee85264556025486a4745a2d452ea823c578b3d162768bfef590366d2e6c539`,
+plus multiple third-party archives and patches. The main archive was independently
+fetched and its SHA256 matched; the four corresponding files in that archive
+matched the notice SHA256 values in all 14 inspected build-0 binaries. The other
+archives, compiler/toolchain inputs and transitive sources were not independently
+verified. A matching notice file or a declared license is not proof of source,
+notice, or license-obligation completeness and does not authorize release.

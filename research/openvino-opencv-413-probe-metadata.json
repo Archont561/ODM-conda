@@ -1,0 +1,329 @@
+{
+  "inspection_run": "https://github.com/Archont561/ODM-conda/actions/runs/41098426733",
+  "packages": [
+    {
+      "about_license": "Apache-2.0",
+      "build": "hbb11d60_0",
+      "declared_license_files": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "feedstock_sha": "c82659b5f2f7ba9b519179764c700478326726ac",
+      "index_license": "Apache-2.0",
+      "info_licenses": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "caf4040a8c3043c9fdc7638ccc61078b40ce623e69e3bcd2bc544ae70a368b2f",
+        "info/licenses/licensing/third-party-programs.txt": "fb2375313cded7058a6deb0b399badc4d899aca28338a9fbb9faf1f69aa7e516"
+      },
+      "name": "libopenvino",
+      "rendered_recipe_sha256": "6c9bdc9d4cb49dc52da6bbbc10d4f35de07ae31f99cc2b951d1d4ba2da2a0694",
+      "sha256": "84765b48201aa42534c3ffbfd731238ed5a67c71c3419b94444aa6956cdec2dc",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libopenvino-2026.4.1-hbb11d60_0.conda",
+      "version": "2026.4.1"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "ha1dfb6f_0",
+      "declared_license_files": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "feedstock_sha": "c82659b5f2f7ba9b519179764c700478326726ac",
+      "index_license": "Apache-2.0",
+      "info_licenses": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "caf4040a8c3043c9fdc7638ccc61078b40ce623e69e3bcd2bc544ae70a368b2f",
+        "info/licenses/licensing/third-party-programs.txt": "fb2375313cded7058a6deb0b399badc4d899aca28338a9fbb9faf1f69aa7e516"
+      },
+      "name": "libopenvino-auto-batch-plugin",
+      "rendered_recipe_sha256": "96cc0a91683339e6f52cead0f9255222578ecd05ebe2c57a1daf3a7e1989ae84",
+      "sha256": "17923821739f902efd0aacc9f51c59f77c7d23db551b6745cc88790c3f5701c3",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libopenvino-auto-batch-plugin-2026.4.1-ha1dfb6f_0.conda",
+      "version": "2026.4.1"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "ha1dfb6f_0",
+      "declared_license_files": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "feedstock_sha": "c82659b5f2f7ba9b519179764c700478326726ac",
+      "index_license": "Apache-2.0",
+      "info_licenses": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "caf4040a8c3043c9fdc7638ccc61078b40ce623e69e3bcd2bc544ae70a368b2f",
+        "info/licenses/licensing/third-party-programs.txt": "fb2375313cded7058a6deb0b399badc4d899aca28338a9fbb9faf1f69aa7e516"
+      },
+      "name": "libopenvino-auto-plugin",
+      "rendered_recipe_sha256": "1e4722aa68d554f3730980b6dcb68ff992a45e29a3febc998fab5c7d1658962f",
+      "sha256": "fb87f3005319c28cbc805aa2fa9de64b667a7b296536bf1cff7bbf0ec07b8dc8",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libopenvino-auto-plugin-2026.4.1-ha1dfb6f_0.conda",
+      "version": "2026.4.1"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "ha1dfb6f_0",
+      "declared_license_files": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "feedstock_sha": "c82659b5f2f7ba9b519179764c700478326726ac",
+      "index_license": "Apache-2.0",
+      "info_licenses": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "caf4040a8c3043c9fdc7638ccc61078b40ce623e69e3bcd2bc544ae70a368b2f",
+        "info/licenses/licensing/third-party-programs.txt": "fb2375313cded7058a6deb0b399badc4d899aca28338a9fbb9faf1f69aa7e516"
+      },
+      "name": "libopenvino-gguf-frontend",
+      "rendered_recipe_sha256": "c2f6b404bd8564c6db14fb0117b9cfeab2a62550550577645690e3ea15439811",
+      "sha256": "94ac25b791bb79ad2f39dcc0333dcc2ffd0e5b75f04fceacfbbed48ba694a5a9",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libopenvino-gguf-frontend-2026.4.1-ha1dfb6f_0.conda",
+      "version": "2026.4.1"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "h44d2802_0",
+      "declared_license_files": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "feedstock_sha": "c82659b5f2f7ba9b519179764c700478326726ac",
+      "index_license": "Apache-2.0",
+      "info_licenses": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "caf4040a8c3043c9fdc7638ccc61078b40ce623e69e3bcd2bc544ae70a368b2f",
+        "info/licenses/licensing/third-party-programs.txt": "fb2375313cded7058a6deb0b399badc4d899aca28338a9fbb9faf1f69aa7e516"
+      },
+      "name": "libopenvino-hetero-plugin",
+      "rendered_recipe_sha256": "f6550ac73c4ba5bd078854da2e0857009caf0d60db1b279e264d8c024dc0db02",
+      "sha256": "db356c9d88acd72e9aacc48b5debec96adddf43676a275a1aa0a5431c56da7b3",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libopenvino-hetero-plugin-2026.4.1-h44d2802_0.conda",
+      "version": "2026.4.1"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "hbb11d60_0",
+      "declared_license_files": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "feedstock_sha": "c82659b5f2f7ba9b519179764c700478326726ac",
+      "index_license": "Apache-2.0",
+      "info_licenses": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "caf4040a8c3043c9fdc7638ccc61078b40ce623e69e3bcd2bc544ae70a368b2f",
+        "info/licenses/licensing/third-party-programs.txt": "fb2375313cded7058a6deb0b399badc4d899aca28338a9fbb9faf1f69aa7e516"
+      },
+      "name": "libopenvino-intel-cpu-plugin",
+      "rendered_recipe_sha256": "b0c8036185f1117c960ceed39687d6a544f8ee4307f93c1b6369b4f3ba8df902",
+      "sha256": "5deb40e5f3effd21950cf722ca33a2026e65428598e75407bca517a4a3568ac6",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libopenvino-intel-cpu-plugin-2026.4.1-hbb11d60_0.conda",
+      "version": "2026.4.1"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "hbb11d60_0",
+      "declared_license_files": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "feedstock_sha": "c82659b5f2f7ba9b519179764c700478326726ac",
+      "index_license": "Apache-2.0",
+      "info_licenses": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "caf4040a8c3043c9fdc7638ccc61078b40ce623e69e3bcd2bc544ae70a368b2f",
+        "info/licenses/licensing/third-party-programs.txt": "fb2375313cded7058a6deb0b399badc4d899aca28338a9fbb9faf1f69aa7e516"
+      },
+      "name": "libopenvino-intel-gpu-plugin",
+      "rendered_recipe_sha256": "d2810b60ea924cc585e6c3fabb71f7e8e1a56fcc62b9e066babf900fc5d41cd0",
+      "sha256": "615edb0454cd68cad7199f99d90df24e96df724b079408daadde6bd20518b91f",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libopenvino-intel-gpu-plugin-2026.4.1-hbb11d60_0.conda",
+      "version": "2026.4.1"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "hbb11d60_0",
+      "declared_license_files": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "feedstock_sha": "c82659b5f2f7ba9b519179764c700478326726ac",
+      "index_license": "Apache-2.0",
+      "info_licenses": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "caf4040a8c3043c9fdc7638ccc61078b40ce623e69e3bcd2bc544ae70a368b2f",
+        "info/licenses/licensing/third-party-programs.txt": "fb2375313cded7058a6deb0b399badc4d899aca28338a9fbb9faf1f69aa7e516"
+      },
+      "name": "libopenvino-intel-npu-plugin",
+      "rendered_recipe_sha256": "02a4027ae5dfe556bfbf8795fe28268cc282cf38a6c9144b93eb831b19c99e64",
+      "sha256": "eccb1fe9e72c4d510c875363b1b44cbfb8e5295b725cc81d0b98ea48a5be2293",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libopenvino-intel-npu-plugin-2026.4.1-hbb11d60_0.conda",
+      "version": "2026.4.1"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "h44d2802_0",
+      "declared_license_files": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "feedstock_sha": "c82659b5f2f7ba9b519179764c700478326726ac",
+      "index_license": "Apache-2.0",
+      "info_licenses": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "caf4040a8c3043c9fdc7638ccc61078b40ce623e69e3bcd2bc544ae70a368b2f",
+        "info/licenses/licensing/third-party-programs.txt": "fb2375313cded7058a6deb0b399badc4d899aca28338a9fbb9faf1f69aa7e516"
+      },
+      "name": "libopenvino-ir-frontend",
+      "rendered_recipe_sha256": "07c14d9de08bd19c041c0c3ce1cda19423a55b438bd832290fb75f5a1215e57b",
+      "sha256": "48a34d70260dc80cf5597e086d48defdf95dd75c885473d21a6d3f1917e22e45",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libopenvino-ir-frontend-2026.4.1-h44d2802_0.conda",
+      "version": "2026.4.1"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "he88238d_0",
+      "declared_license_files": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "feedstock_sha": "c82659b5f2f7ba9b519179764c700478326726ac",
+      "index_license": "Apache-2.0",
+      "info_licenses": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "caf4040a8c3043c9fdc7638ccc61078b40ce623e69e3bcd2bc544ae70a368b2f",
+        "info/licenses/licensing/third-party-programs.txt": "fb2375313cded7058a6deb0b399badc4d899aca28338a9fbb9faf1f69aa7e516"
+      },
+      "name": "libopenvino-onnx-frontend",
+      "rendered_recipe_sha256": "1ec0309ff092f30d941a83c60adf115f5bb6ebcc93f186046abafb9e878422e9",
+      "sha256": "298bd001b14dc2b1b800d80d6f42fbc4babe3a33305f683a885c3bc384c6b0cd",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libopenvino-onnx-frontend-2026.4.1-he88238d_0.conda",
+      "version": "2026.4.1"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "he88238d_0",
+      "declared_license_files": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "feedstock_sha": "c82659b5f2f7ba9b519179764c700478326726ac",
+      "index_license": "Apache-2.0",
+      "info_licenses": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "caf4040a8c3043c9fdc7638ccc61078b40ce623e69e3bcd2bc544ae70a368b2f",
+        "info/licenses/licensing/third-party-programs.txt": "fb2375313cded7058a6deb0b399badc4d899aca28338a9fbb9faf1f69aa7e516"
+      },
+      "name": "libopenvino-paddle-frontend",
+      "rendered_recipe_sha256": "777205542ed48b097aa158398acc63756518a31b87ebf0010804473d14d252e6",
+      "sha256": "1ad57502bb0d5514e326899dba79fa281ef015fab9de3c6331f969168a0fa83a",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libopenvino-paddle-frontend-2026.4.1-he88238d_0.conda",
+      "version": "2026.4.1"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "ha9a73ca_0",
+      "declared_license_files": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "feedstock_sha": "c82659b5f2f7ba9b519179764c700478326726ac",
+      "index_license": "Apache-2.0",
+      "info_licenses": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "caf4040a8c3043c9fdc7638ccc61078b40ce623e69e3bcd2bc544ae70a368b2f",
+        "info/licenses/licensing/third-party-programs.txt": "fb2375313cded7058a6deb0b399badc4d899aca28338a9fbb9faf1f69aa7e516"
+      },
+      "name": "libopenvino-pytorch-frontend",
+      "rendered_recipe_sha256": "b766ea7d38040fd924869f3ef328b53699962ad61f2c3e66fbdddb07e8fbfa28",
+      "sha256": "d2f40a3fc0c2bbc2be2ddaea61bb0589b1e79ee071e439556fe8bd05025209d3",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libopenvino-pytorch-frontend-2026.4.1-ha9a73ca_0.conda",
+      "version": "2026.4.1"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "ha81ce1e_0",
+      "declared_license_files": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "feedstock_sha": "c82659b5f2f7ba9b519179764c700478326726ac",
+      "index_license": "Apache-2.0",
+      "info_licenses": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "caf4040a8c3043c9fdc7638ccc61078b40ce623e69e3bcd2bc544ae70a368b2f",
+        "info/licenses/licensing/third-party-programs.txt": "fb2375313cded7058a6deb0b399badc4d899aca28338a9fbb9faf1f69aa7e516"
+      },
+      "name": "libopenvino-tensorflow-frontend",
+      "rendered_recipe_sha256": "ebec6cdfa50344a08469433c5dfc6ae8ea3e1f90c6bcda701203911281ca776f",
+      "sha256": "267edd4129799b5db5bb64a1b46aee1da5248fa39fd277c709b898ab2b87060d",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libopenvino-tensorflow-frontend-2026.4.1-ha81ce1e_0.conda",
+      "version": "2026.4.1"
+    },
+    {
+      "about_license": "Apache-2.0",
+      "build": "ha9a73ca_0",
+      "declared_license_files": [
+        "LICENSE",
+        "licensing/third-party-programs.txt",
+        "licensing/onednn_third-party-programs.txt",
+        "licensing/runtime-third-party-programs.txt"
+      ],
+      "feedstock_sha": "c82659b5f2f7ba9b519179764c700478326726ac",
+      "index_license": "Apache-2.0",
+      "info_licenses": {
+        "info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "info/licenses/licensing/onednn_third-party-programs.txt": "f1b16991dfe8488f3f5f07cccba575c31c91175a9f2c8d9e1569665f86e0b2f6",
+        "info/licenses/licensing/runtime-third-party-programs.txt": "caf4040a8c3043c9fdc7638ccc61078b40ce623e69e3bcd2bc544ae70a368b2f",
+        "info/licenses/licensing/third-party-programs.txt": "fb2375313cded7058a6deb0b399badc4d899aca28338a9fbb9faf1f69aa7e516"
+      },
+      "name": "libopenvino-tensorflow-lite-frontend",
+      "rendered_recipe_sha256": "dec7bc3f87b195d43d932fd7e24fc5e2fd6e54f929038c1adb89658363dd6add",
+      "sha256": "567d1c2b062de2797cd6e2a7e11b689c2cc226963d0974167e8daa6e668e0bb1",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libopenvino-tensorflow-lite-frontend-2026.4.1-ha9a73ca_0.conda",
+      "version": "2026.4.1"
+    }
+  ],
+  "recovery_run": "https://github.com/Archont561/ODM-conda/actions/runs/41098498593",
+  "scope": "Standalone OpenCV 4.13 alternative, not the nine-package environment; binary info metadata only, not source or legal completeness audit."
+}
