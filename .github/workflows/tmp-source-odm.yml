@@ -1,0 +1,25 @@
+name: Temporary private source-built ODM integration
+on:
+  push:
+    branches: [arena/1a7c5c8e-odm-conda]
+    paths: [.github/workflows/tmp-source-odm.yml, scripts/tmp_source_odm.py]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default
+      - name: Build and privately test source-built runtime
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: pixi run python scripts/tmp_source_odm.py
