@@ -27,6 +27,23 @@ requirements:
   run:
     - python >=3.12,<3.13
     - typing-extensions
+    - pyyaml
+    - rich
+    - python-json-logger
+    - websocket-client
+    - py-opencv
+    - numpy
+    - matplotlib
+    - python-pdal
+    - pdal
+    - pyproj
+    - rasterio
+    - trimesh
+    - scipy
+    - scikit-image
+    - pandas
+    - pyshp
+    - setuptools
 tests:
   - script:
       interpreter: python
