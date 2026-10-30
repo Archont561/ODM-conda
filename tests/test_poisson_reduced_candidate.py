@@ -54,3 +54,22 @@ def test_rejects_wrong_archive_and_existing_destination(tmp_path):
     with pytest.raises(ScaffoldError, match='existing'):
         candidate.make_candidate(source, target, root=tmp_path)
     assert target.read_bytes() == b'keep'
+
+
+def test_candidate_rejects_symlink_members_and_destination_inside_packaging(tmp_path, monkeypatch):
+    import poisson_reduced_candidate as candidate
+    from common import sha256
+    source = tmp_path / 'unsafe.tar.gz'
+    with tarfile.open(source, 'w:gz') as archive:
+        link = tarfile.TarInfo('upstream/JPEG/escape')
+        link.type = tarfile.SYMTYPE
+        link.linkname = '../Makefile'
+        archive.addfile(link)
+    monkeypatch.setattr(candidate, 'PINNED_SHA256', sha256(source))
+    packaging = tmp_path / 'packaging'
+    packaging.mkdir()
+    with pytest.raises(ScaffoldError, match='outside'):
+        candidate.make_candidate(source, packaging / 'candidate.tar.gz', root=packaging)
+    with pytest.raises(ScaffoldError, match='Unsupported'):
+        candidate.make_candidate(source, tmp_path / 'candidate.tar.gz', root=packaging)
+    assert not (tmp_path / 'candidate.tar.gz').exists()
