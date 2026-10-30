@@ -434,9 +434,9 @@ report were discarded. The exact resolved OpenVINO version was not recorded.
 This is functional evidence for this run only, not visual/geographic quality,
 dataset-rights clearance or release approval.
 
-## Private Conda application candidate (2026-10-30)
+## Private Conda application candidate (earlier 2026-10-30 trial)
 
-The research-only [`odm-fast-research` recipe](recipes/odm-fast-research/recipe.yaml)
+The version of the research-only `odm-fast-research` recipe tested in this earlier trial
 packages the pinned, prefix-patched ODM 3.6.2 application and installs a
 relocatable `odm-fast-research` launcher. It declares the nine component names
 and the Conda runtime dependencies used for this experiment. It is limited to
@@ -467,8 +467,8 @@ privately rebuilt and individually tested/audited. The lock, archives, dataset
 and output were discarded, and the temporary trial is not an automated release
 pipeline. Availability of those historical retained artifacts is not guaranteed.
 
-For a new private experiment on linux-64, build the recipe with the repository's
-locked tools (network access to conda-forge and the pinned ODM archive required):
+The earlier trial built its recipe with the repository's locked tools (network
+access to conda-forge and the pinned ODM archive required):
 
 ```sh
 pixi run rattler-build build --recipe research/recipes/odm-fast-research/recipe.yaml \
@@ -477,25 +477,79 @@ pixi run rattler-build build --recipe research/recipes/odm-fast-research/recipe.
   --test skip
 ```
 
-Separately obtain or rebuild **the exact compatible nine component packages**,
-run their tests and audits, and use `scripts/private_conda_channel.py` to index
-those archives together with the ODM candidate in an access-controlled directory
-outside this repository. Bind its HTTP server to loopback only. Create a fresh
-Pixi project with that local channel first and conda-forge second, then add
-`odm-fast-research`. The trial additionally installed these PyPI requirements:
-`pyodm==1.5.12`, `pysolar==0.13`, `pillow-jxl-plugin==1.3.4`,
-`pygltflib==1.16.5`, `codem==0.26.1`. These aren't expressed by the Conda
-recipe; use `pixi add --pypi` and retain the resulting private lock if a future
-exact replay is required. With the environment active, invoke
-`odm-fast-research --fast-orthophoto --skip-3dmodel --project-path PROJECTS DATASET`.
-Inputs must be independently suitable and authorized for use. Neither the
-private recipe nor this procedure guarantees full ODM features or a current
-future solve.
+In that earlier trial, the five PyPI dependencies were added separately. **Do not
+use these older instructions against the updated recipe:** the later Conda-only
+trial and its updated requirements are described below. Neither trial establishes
+full ODM feature support or an offline, future-proof build.
 
 **Publication remains blocked.** OpenMVS and OpenSfM variants are explicitly
 unreviewed, production source/notice obligations and other component gates
 remain open, the Conda metadata does not capture the PyPI dependencies, and the
-private variant reuses some production package identities with different bytes.
+older trial reused some production package identities with different bytes.
 Distinct reviewed package identities, independently retained sources, native
 validation, dependency packaging, qualified review and owner-controlled release
 gates are required before publication to Prefix. No gate was changed.
+
+## Conda-only private installation and research build identities (2026-10-30)
+
+The five previously separate PyPI distributions have local-only Conda repack
+recipes in [`recipes/python-wheel-research`](recipes/python-wheel-research).
+Each repack takes an exact SHA256-pinned upstream wheel, installs it offline
+without dependencies during its build, and declares its Conda runtime
+requirements. These are **wheel repacks, not source-built packages**. In
+particular the JPEG XL wheel includes a native extension and may contain bundled binary code; its
+corresponding source, native dependencies, provenance and release
+obligations remain unverified. `LicenseRef-Unreviewed` is intentional. Independent
+[run 41129610665](https://github.com/Archont561/ODM-conda/actions/runs/41129610665)
+built and fresh-tested all five imports. [Run 41132661773](https://github.com/Archont561/ODM-conda/actions/runs/41132661773)
+also tested a lossless JPEG XL image round-trip. The JPEG XL test addition was
+validated separately, after the combined run's immutable commit.
+
+The OpenCV 4.13 orthophoto experiment, reduced Poisson, reduced OpenMVS and
+scoped OpenSfM now use `research_...` build strings, so their Conda identities
+are distinct from the earlier production-style artifacts with the same name and
+version. The ODM recipe explicitly requires these research builds and all five
+`odm-research-*` repacks. Distinct strings reduce identity collisions; they do
+not make the packages authorized for publication or guarantee that rebuilding
+the same recipe will produce identical bytes.
+
+[Private integration run 41129908688](https://github.com/Archont561/ODM-conda/actions/runs/41129908688)
+built the new candidates and installed ODM with **no PyPI entries or separate
+PyPI additions**. It copied the lock and all 15 local archives to a different
+directory, removed the original channel, and installed into a fresh prefix with
+isolated caches. The byte-identical lock SHA256 was
+`8fadfcfd5fdcf973491b46bcc92022eeeaa457a5eb2c156a6cb9d267e812aac0`;
+all 440 Conda package identity/hash/URL records matched. The installed launcher
+completed the Seneca fast-orthophoto pipeline; raster and report existence and
+raster metadata/statistics sanity passed. Rattler's own test phase for the ODM
+application candidate was skipped; its installed launcher and pipeline were
+exercised in the later integration. The individual wheel repacks passed their
+package tests during the run. As before, three published components and two
+previously retained component artifacts were obtained by hash; not every
+component was rebuilt in this run. Temporary binaries, lock, source archives
+and imagery were discarded; the hashes are evidence, not a reusable bundle.
+
+Building a new private channel requires building the five wheel-repack recipes,
+the OpenCV 4.13 variant via `scripts/prepare_opencv413_research.py`, the
+reduced-source Poisson and scoped OpenSfM candidates, reduced OpenMVS, the ODM
+recipe, and the remaining compatible components. The research preparers require
+exact pinned inputs and a destination outside the checkout. Index those resulting
+archives using `scripts/private_conda_channel.py`, serve the channel on loopback
+only, and solve `odm-fast-research` with that channel before conda-forge. A
+retained private Pixi lock, manifest and all exact archives are needed to replay
+a particular solve. This trial still used online conda-forge and a disposable
+runner; it does not establish an offline build, a publicly installable package,
+full ODM modes, visual/geographic correctness or dataset rights. Normal source,
+license, audit and owner-controlled release gates remain unchanged.
+
+A final [repeat integration 41134867203](https://github.com/Archont561/ODM-conda/actions/runs/41134867203)
+used the updated JPEG XL round-trip test and bumped ODM candidate build number
+1 to distinguish its changed dependency metadata from the earlier build 0. It
+built `odm-fast-research-3.6.2-hb0f4dca_1.conda` SHA256
+`e89cf0198902e01c9b3e5970bdbf93d6081c9fea4fff2dc2c896b7fe20e23a60`,
+replayed lock SHA256
+`551ba9fa9d15ebdfd47dab13a629b1e8d39c60362e0ff38875af3922faa5cffe`
+with 440 matching Conda records and no PyPI entries, and passed the installed
+launcher, Seneca and raster sanity checks. The same limitations and disposal
+policy apply. Identity changes do not make rebuilds byte-reproducible: separate
+runs produced different package hashes even for some unchanged build strings.
