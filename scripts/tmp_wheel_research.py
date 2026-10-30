@@ -20,3 +20,4 @@ with tempfile.TemporaryDirectory(prefix='odm-wheel-research-') as tmp:
         assert len(result)==1,(name,result)
         subprocess.run(['rattler-build','test','--package-file',str(result[0]),'--channel','conda-forge','--output-dir',str(dest/'retest'),'--log-style','plain'],check=True)
         print('::notice::WHEEL REPACK PASS '+result[0].name+' '+hashlib.sha256(result[0].read_bytes()).hexdigest(),flush=True)
+# Re-run after dependency correction.
