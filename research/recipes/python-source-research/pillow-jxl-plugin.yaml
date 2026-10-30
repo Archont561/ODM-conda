@@ -20,7 +20,7 @@ build:
       env = os.environ.copy()
       env['CARGO_NET_OFFLINE'] = 'true'
       wheel_dir = source / 'built-wheel'
-      subprocess.run(['maturin', 'build', '--release', '--locked', '--offline', '-i', str(Path(os.environ['PREFIX']) / 'bin/python'), '--out', str(wheel_dir)], cwd=source, env=env, check=True)
+      subprocess.run(['maturin', 'build', '--release', '--locked', '--offline', '--auditwheel', 'skip', '-i', str(Path(os.environ['PREFIX']) / 'bin/python'), '--out', str(wheel_dir)], cwd=source, env=env, check=True)
       wheels = list(wheel_dir.glob('*.whl'))
       assert len(wheels) == 1, wheels
       subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--no-index', '--no-build-isolation', '--prefix', os.environ['PREFIX'], str(wheels[0])], check=True)

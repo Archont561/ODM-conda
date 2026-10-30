@@ -35,7 +35,8 @@ with tempfile.TemporaryDirectory(prefix='odm-jxl-source-') as tmp:
     info=subprocess.check_output(['readelf','-d',str(extensions[0])],text=True)
     needed=[line.strip() for line in info.splitlines() if '(NEEDED)' in line]
     print('::notice::JPEG XL EXTENSION NEEDED '+'; '.join(needed),flush=True)
-    assert any('libjxl.so.' in line for line in needed),needed
+    assert any('[libjxl.so.' in line for line in needed),needed
+    assert not any('libjxl-' in line for line in needed),needed
     res=subprocess.run(['rattler-build','test','--package-file',str(matches[0]),'--channel','conda-forge','--output-dir',str(rootdir/'retest'),'--log-style','plain'],text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
     print(res.stdout,flush=True)
     if res.returncode:
