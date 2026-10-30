@@ -21,8 +21,12 @@ jobs:
           from pathlib import Path
           text=Path(os.environ['RUNNER_TEMP'],'log').read_text(errors='replace')
           matches=re.findall(r'::notice::Final raster metadata: (\{[^\n\r]*\})',text)
-          assert len(matches)==1, f'Expected one metadata record, got {len(matches)}'
-          r=json.loads(matches[0])
+          if len(matches)!=1:
+              candidates=[line[-1200:] for line in text.splitlines() if 'Final raster' in line]
+              print('::error::Metadata matches '+str(len(matches))+'; matching log tails '+repr(candidates)[-5000:]); raise SystemExit(1)
+          try: r=json.loads(matches[0])
+          except Exception as e:
+              print('::error::JSON parse failed '+str(e)+' raw tail '+repr(matches[0])[-2500:]); raise
           result={'size':r['size'],'geoTransform':r['geoTransform'],'epsg32617':'32617' in r['crs'],'bands':[{'type':b['type'],'color':b['colorInterpretation'],'mean':b['mean']} for b in r['bands']],'bytes':r['bytes'],'report_bytes':r['report_bytes']}
           print('::notice::Recovered raster metadata: '+json.dumps(result,separators=(',',':')))
           assert 'Final raster exists with positive dimensions' in text
