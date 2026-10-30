@@ -2,7 +2,7 @@ name: Temporary scoped OpenSfM package validation
 on:
   push:
     branches: [arena/04e0a7c9-odm-conda]
-    paths: [.github/workflows/tmp-opensfm-scoped-build.yml, research/recipes/opensfm-scoped-odm/**, scripts/opensfm_scoped_*.py, scripts/audit_open_research.py, scripts/build_open_research.py]
+    paths: [.github/workflows/tmp-opensfm-scoped-build.yml, research/recipes/opensfm-scoped-odm/**, scripts/opensfm_scoped_*.py, scripts/audit_open_research.py, scripts/build_open_research.py, scripts/run_open_research.py]
 permissions:
   contents: read
 jobs:

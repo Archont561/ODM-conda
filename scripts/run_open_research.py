@@ -4,7 +4,7 @@ import os
 import tempfile
 from pathlib import Path
 
-from common import ROOT, ScaffoldError, fail_cli, rattler, run
+from common import ROOT, ScaffoldError, fail_cli, rattler, run, sha256
 
 
 def run_component(component: str) -> None:
@@ -20,6 +20,7 @@ def run_component(component: str) -> None:
         packages = list((output / 'linux-64').glob(component + '-odm-*.conda'))
         if len(packages) != 1:
             raise ScaffoldError('Expected exactly one research package')
+        print(f'PASS: {component} research package SHA256 {sha256(packages[0])}', flush=True)
         run([rattler(), 'test', '--package-file', str(packages[0]), '--channel', 'conda-forge',
              '--channel-priority', 'strict', '--output-dir', str(root / 'retest'), '--log-style', 'plain'])
         run(['python', str(ROOT / 'scripts/audit_open_research.py'), component + '-odm', str(packages[0])])
