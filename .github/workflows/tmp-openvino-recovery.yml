@@ -20,5 +20,5 @@ jobs:
           import os
           from pathlib import Path
           s=Path(os.environ['RUNNER_TEMP'],'log').read_text(errors='replace')
-          print('::notice::SOLVER_LOG '+s[-5500:].replace('\n',' | ')[:3500])
+          print('::notice::SOLVER_LOG '+s[-3200:].replace('\n',' | '))
           PY
