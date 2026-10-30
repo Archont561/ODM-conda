@@ -1,0 +1,31 @@
+name: Temporary environment inventory recovery
+on:
+  push:
+    branches: [arena/14f7b1a7-odm-conda]
+    paths: [.github/workflows/tmp-inventory-recovery.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  recover:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        half: [0, 1]
+    steps:
+      - name: Recover sanitized inventory from job log
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HALF: ${{ matrix.half }}
+        run: |
+          set -euo pipefail
+          gh api --allow-escape-sequences repos/Archont561/ODM-conda/actions/jobs/124156577655/logs > "$RUNNER_TEMP/log"
+          python3 - <<'PY'
+          import os,re
+          from pathlib import Path
+          text=Path(os.environ['RUNNER_TEMP'],'log').read_text(errors='replace')
+          found=dict((int(i),v) for i,v in re.findall(r'(?:##\[notice\]|::notice::)INVENTORY_CHUNK_(\d\d) ([A-Za-z0-9+/=]+)',text))
+          assert sorted(found)==list(range(10)), sorted(found)
+          start=int(os.environ['HALF'])*5
+          for i in range(start,start+5): print(f'::notice::INVENTORY_CHUNK_{i:02d} {found[i]}')
+          PY
