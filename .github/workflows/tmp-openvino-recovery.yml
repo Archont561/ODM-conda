@@ -1,0 +1,24 @@
+name: Temporary OpenVINO evidence recovery
+on:
+  push:
+    branches: [arena/1d04b5db-odm-conda]
+    paths: [.github/workflows/tmp-openvino-recovery.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  recover:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Read solver log
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api --allow-escape-sequences repos/Archont561/ODM-conda/actions/jobs/124207042116/logs > "$RUNNER_TEMP/log"
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          s=Path(os.environ['RUNNER_TEMP'],'log').read_text(errors='replace')
+          print('::notice::SOLVER_LOG '+s[-5500:].replace('\n',' | ')[:3500])
+          PY
