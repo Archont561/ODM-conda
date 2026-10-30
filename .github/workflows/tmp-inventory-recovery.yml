@@ -27,5 +27,8 @@ jobs:
           found=dict((int(i),v) for i,v in re.findall(r'(?:##\[notice\]|::notice::)INVENTORY_CHUNK_(\d\d) ([A-Za-z0-9+/=]+)',text))
           assert sorted(found)==list(range(10)), sorted(found)
           start=int(os.environ['HALF'])*5
-          for i in range(start,start+5): print(f'::notice::INVENTORY_CHUNK_{i:02d} {found[i]}')
+          for i in range(start,start+5):
+              for j in range(2):
+                  part=found[i][j*3000:(j+1)*3000]
+                  if part: print(f'::notice::INVENTORY_PART_{i:02d}_{j} {part}')
           PY
