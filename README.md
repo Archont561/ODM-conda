@@ -57,6 +57,7 @@ Native builds need source and Conda dependency access. `pixi run check` does not
 - [Publishing guide](backlog/docs/guides/doc-7%20-%20Publish-to-the-existing-Prefix-channel.md)
 - [Component readiness](research/component-readiness-review.md)
 - [ODM integration prototype](research/odm-fast-orthophoto-prototype.md)
+- [ODM Prefix release-readiness inventory](research/odm-prefix-release-readiness.md)
 - [Offline development](backlog/docs/guides/doc-9%20-%20Offline-development-tooling-and-provisioning-boundaries.md)
 - [Backlog](backlog/) and [agent instructions](AGENTS.md)
 
