@@ -207,7 +207,8 @@ def replay(bundle: Path, *, dataset: Path | None = None, expected_inventory: lis
                 run([str(prefix/'bin/odm-fast-research'),'--fast-orthophoto','--skip-3dmodel','--project-path',str(projects),'dataset'])
                 raster=projects/'dataset/odm_orthophoto/odm_orthophoto.tif'; report=projects/'dataset/odm_report/report.pdf'
                 if not raster.is_file() or not report.is_file() or not raster.stat().st_size or not report.stat().st_size: raise ScaffoldError('Dataset outputs missing')
-                info=subprocess.check_output([str(prefix/'bin/gdalinfo'),'-json','-stats',str(raster)],text=True)
+                raster_env=env.copy(); raster_env['PROJ_DATA']=raster_env['PROJ_LIB']=str(prefix/'share/proj'); raster_env['PATH']=str(prefix/'bin')+os.pathsep+os.defpath
+                info=subprocess.check_output([str(prefix/'bin/gdalinfo'),'-json','-stats',str(raster)],text=True,env=raster_env)
                 from odm_raster_sanity import validate
                 validate(json.loads(info))
                 print('PASS: private dataset pipeline and raster sanity (outputs discarded)',flush=True)

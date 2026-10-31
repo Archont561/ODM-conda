@@ -56,3 +56,20 @@ def test_verify_can_anchor_manifest_hash(tmp_path):
     assert verify(bundle,expected_manifest_sha=digest)==48179
     with pytest.raises(ScaffoldError,match='manifest checksum'):
         verify(bundle,expected_manifest_sha='0'*64)
+
+
+def test_pinned_sdist_download_checks_content_and_url(tmp_path, monkeypatch):
+    import hashlib
+    import io
+    from private_odm_bundle import download_sdist
+    from common import ScaffoldError
+    class Response(io.BytesIO):
+        url = 'https://files.pythonhosted.org/source.tar.gz'
+    monkeypatch.setattr('private_odm_bundle.urllib.request.urlopen',lambda *_args, **_kwargs: Response(b'source'))
+    digest=hashlib.sha256(b'source').hexdigest()
+    download_sdist(Response.url,digest,tmp_path/'source.tar.gz')
+    assert (tmp_path/'source.tar.gz').read_bytes()==b'source'
+    with pytest.raises(ScaffoldError, match='checksum mismatch'):
+        download_sdist(Response.url,'0'*64,tmp_path/'bad.tar.gz')
+    with pytest.raises(ScaffoldError, match='Unexpected pinned'):
+        download_sdist('https://example.com/archive',digest,tmp_path/'bad-url.tar.gz')

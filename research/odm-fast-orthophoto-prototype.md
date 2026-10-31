@@ -618,7 +618,7 @@ notice sufficiency, Seneca dataset rights, full ODM feature coverage, native
 security review or authority to publish. The five sources' build tools and
 Conda dependencies were solved online; preparation/builds are not fully offline.
 
-### TASK-92: private source build and binary replay (in progress)
+### TASK-92: private source build and binary replay (owner retention pending)
 
 `scripts/private_odm_bundle.py` is an experimental orchestration path, **not a
 release or corresponding-source offer**. It attempts the fifteen source-built
@@ -630,7 +630,7 @@ imagery is discarded. Source builds and conda-forge downloads require network
 access; the bundle does **not** retain all sources, conda-forge packages, build
 tools or transitive dependencies and is not an offline or bit-reproducible build.
 
-On a trusted linux-64 machine with the repository's Pixi tools installed, use:
+On a trusted linux-64 machine with the repository's Pixi tools and Cargo installed, use:
 
 ```sh
 pixi run python scripts/private_odm_bundle.py build --destination /private/path/odm-bundle
@@ -652,5 +652,15 @@ different bytes despite identical package identities.
 The restricted original OpenMVS archive, omitted assets, unresolved licenses,
 notices and rights remain outside any publication approval. No package, source,
 lock, dataset or output may be uploaded merely because this research build works.
-Hosted end-to-end validation of this new orchestrator remains in progress; prior
-TASK-91 evidence does not establish that the whole orchestration succeeds.
+Hosted run [41145494232](https://github.com/Archont561/ODM-conda/actions/runs/41145494232)
+built all 15 candidates from the pinned sources, including 40 locked JPEG XL
+Cargo crates, with no downloaded prior build artifacts. It formed the local
+channel, then replayed a relocated bundle with the byte-identical Conda-only
+lock (SHA256 `9ba79ddeef7b695d1fca2f86fbc967fc667ab5e4a416046a7a5205dc5628f1f5`),
+compared 456 installed Conda identities and hashes, and passed the launcher,
+pinned Seneca pipeline and raster sanity. ODM package tests were skipped; the
+installed launcher and pipeline were tested instead. The run used a temporary
+private directory and discarded its bundle and outputs; it did **not** create a
+lasting owner-held bundle. Earlier run 41143397979 exposed a download-helper
+mismatch, fixed before the successful run. Warnings about two optional PDAL HDF
+plugins during the first run were not analyzed as general plugin validation.
