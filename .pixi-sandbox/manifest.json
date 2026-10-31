@@ -1,0 +1,2478 @@
+{
+  "schema": 5,
+  "tool": {
+    "name": "pixi-sandbox",
+    "version": "0.9.0"
+  },
+  "created_at": "2026-10-31T01:39:32Z",
+  "platform": "linux-64",
+  "shard_limit_bytes": 99614720,
+  "source": {
+    "commit": "b9979e8",
+    "lock_sha256": "f066746c2599d9cea26150790493df1595fc2841be992fef9fb91eb409a19ff5"
+  },
+  "tools": {
+    "pixi": {
+      "version": "0.82.0",
+      "pinned_sha256": "1dff1db704884f078c44b4c7fb3c5bc6f946fc3d1fa679edf214ad79187a9c64",
+      "linkage": "static",
+      "size_bytes": 67864352,
+      "path": "tools/linux-64/pixi"
+    },
+    "pixi-sandbox": {
+      "version": "0.9.0",
+      "pinned_sha256": "d42cf670d32bcc393745128c5b0f63a95ad88dc3064f8f158b5fa7cb31f44498",
+      "linkage": "static",
+      "size_bytes": 7602184,
+      "path": "tools/linux-64/pixi-sandbox"
+    }
+  },
+  "envs": {
+    "agent-tools": {
+      "platform": "linux-64",
+      "pack_path": ".pixi-sandbox/envs/agent-tools/pack",
+      "packed_size_bytes": 49268895,
+      "unpacked_size_bytes": 179699502,
+      "pixi_environment_fingerprint": "bcad4171332de250",
+      "blobs": [
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/_openmp_mutex-4.5-20_gnu.conda",
+          "size": 28948,
+          "sha256": "1dd3fffd892081df9726d7eb7e0dea6198962ba775bd88842135a4ddb4deb3c9"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/bun-1.3.11-hb9fe482_5.conda",
+          "size": 17940849,
+          "sha256": "b1bec9fba865e9502c1a5c7681e4b37d61291e35f3bbdb10664f66c50362df31"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/bzip2-1.0.8-hda65f42_10.conda",
+          "size": 257808,
+          "sha256": "1a0d382c515ebf55f8ee1f38c8b81bc95af5c2acc42ad53b66bc5df932032f96"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/c-ares-1.34.9-hebe6cf0_0.conda",
+          "size": 233759,
+          "sha256": "bd95dd25b80b5c4faf5349542377bf89b2794e23d0f7aa7f1c431e4f3b633f3c"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/hdrhistogram-c-0.11.9-h421ea60_1.conda",
+          "size": 38736,
+          "sha256": "04363c6cd15b7d9e48b622e196471b725630c84e82bfa7a4adbf36f5e94a2c06"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/icu-75.1-he02047a_0.conda",
+          "size": 12129203,
+          "sha256": "71e750d509f5fa3421087ba88ef9a7b9be11c53174af3aa4d06aff4c18b38e8e"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/libarchive-3.8.9-gpl_hc2c16d8_100.conda",
+          "size": 876197,
+          "sha256": "000b4baa9ce849b5fb259af9256331d0c7872361ac63a2bba0d0c48eb35663d0"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/libbrotlicommon-1.2.1-h39a168f_0.conda",
+          "size": 80370,
+          "sha256": "8eccfbfdb8ecba32eabfb6ee92f70e818e5f3a35a01c507f7b6bd56e00e4c617"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/libbrotlidec-1.2.1-ha411449_0.conda",
+          "size": 34703,
+          "sha256": "4b4bda6f70ad511bdff95fdd958dca74b6e0534ae335ddcb1d8c6569774d2429"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/libbrotlienc-1.2.1-h018ffa1_0.conda",
+          "size": 298098,
+          "sha256": "61974cf9bb07115ed6725dacf83d0d985443d78dd123cc4f2758856fda5376ec"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/libdeflate-1.25-hd45a770_1.conda",
+          "size": 73710,
+          "sha256": "82e134c8a08b1eed9a2ed8ab578b89aa1730dcde3dea8dd87645ed0637878e54"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/libgcc-16.2.0-ha9f2e26_7.conda",
+          "size": 1058444,
+          "sha256": "e031634c3a928f9594eba868bc46ef5230d6571a364a0c63215b06c4563bfcea"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/libgcc-ng-16.2.0-h69a702a_7.conda",
+          "size": 28616,
+          "sha256": "03b54d7008de080a17cc2174b0e4acd6d06e1c981b2eb19846f46d8f59966034"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/libgomp-16.2.0-he0feb66_7.conda",
+          "size": 640566,
+          "sha256": "92a0bb350c7be6a4eedcb4e111c60aefd176018e6b1c009a6e025dbe9bbcd758"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/libhwy-1.4.0-h57c4cff_2.conda",
+          "size": 1462974,
+          "sha256": "06ab9eb5db305b29f0f671dced4a43eca4b0c1990351bad963d25341057f74d4"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/libiconv-1.18-h0cb94f2_3.conda",
+          "size": 789471,
+          "sha256": "f943117edb9cd4d9c61cc972eee5a34291dc55ea7a6e9e38da104995841cbcb6"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/liblzma-5.8.3-hb03c661_1.conda",
+          "size": 112995,
+          "sha256": "9787df8c22a59c9a70d3e5a10db9ad663485e75e9ccc3f09bd092cb7b95e0dab"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/libsqlite-3.53.4-h0737f62_102.conda",
+          "size": 969522,
+          "sha256": "0f6e60634de2b55da15772fe65485965fd9b61afcce0d749c1446f625babba30"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/libstdcxx-16.2.0-h934c35e_7.conda",
+          "size": 6615436,
+          "sha256": "fa7018298629fc429971fffd6ecba3d27a7b02e4e890d6a93ea01ffebe8cb745"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/libstdcxx-ng-16.2.0-hdf11a46_7.conda",
+          "size": 28665,
+          "sha256": "337f481db36cc357884f05f404ccd1b3a7e0fc1ee48ec5c884e4281d213bc863"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/libxml2-16-2.15.1-ha9997c6_0.conda",
+          "size": 556302,
+          "sha256": "71436e72a286ef8b57d6f4287626ff91991eb03c7bdbe835280521791efd1434"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/libxml2-2.15.1-h26afc86_0.conda",
+          "size": 45283,
+          "sha256": "ec0735ae56c3549149eebd7dc22c0bed91fd50c02eaa77ff418613ddda190aa8"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/libzlib-1.3.2-h25fd6f3_3.conda",
+          "size": 63713,
+          "sha256": "eb8a0db0aa570124f7d2a93d7c7f596e3390df5e047818d873baad32985fc736"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/lol-html-3.0.1-hb17b654_0.conda",
+          "size": 483710,
+          "sha256": "6075e31164285fcd4a087fcc680f8c928c0b47f6fb1aefc99664c2ddf0db4802"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/ls-hpack-2.3.5-h280c20c_0.conda",
+          "size": 99800,
+          "sha256": "fe57537d4fd99845c9d94870e46fe78e0e7ace0343991dac765d55777da1e500"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/lz4-c-1.10.0-hee9eb32_2.conda",
+          "size": 181812,
+          "sha256": "b8c0e930183e6b7f83cd35ace102f2b8c2f0faae41dc05255dc72f247dfc556a"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/lzo-2.10-hebe6cf0_1003.conda",
+          "size": 191573,
+          "sha256": "a0a1400198e5302d8367f2ed53437ee3cc41dbc463cb481921ce765578780b7a"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/openssl-3.6.5-h781a0a9_0.conda",
+          "size": 3195299,
+          "sha256": "9c1533f1cf784f0e250919c0c9762d0b0e6bc727a79290ffb7cea1ceca1d038c"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/repodata.json",
+          "size": 19387,
+          "sha256": "d0674ef2ea5f3d11fb1ea0b70b2806d6325531084d315ad7a6811f9ef6b8b679"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/linux-64/zstd-1.5.7-hb78ec9c_7.conda",
+          "size": 601301,
+          "sha256": "47d682b9f6d6ec9eb1a6e6c3e75ea6273e899e78fb7fc59f81d39745009fbc60"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/noarch/ca-certificates-2026.10.23-hbd8a1cb_0.conda",
+          "size": 130057,
+          "sha256": "95619b9c1184be7175392eeb0ee7eeb5ccf25d280951f4225f2d62e725790be3"
+        },
+        {
+          "path": "envs/agent-tools/pack/channel/noarch/repodata.json",
+          "size": 624,
+          "sha256": "62b1d265a38b8ec34a8fdb28ea96a92b9ae4b37f7d6b86ba3b179c6ada9c3dfb"
+        },
+        {
+          "path": "envs/agent-tools/pack/environment.yml",
+          "size": 918,
+          "sha256": "1289615be5a6348c051ec6a8939ce19acc6d4b16f430428746c1606062354b26"
+        },
+        {
+          "path": "envs/agent-tools/pack/files.json",
+          "size": 127748,
+          "sha256": "609f476679b2644483e88d807dd2fb597b816cff8963517244330e7bba52af9f"
+        },
+        {
+          "path": "envs/agent-tools/pack/pixi-pack.json",
+          "size": 46,
+          "sha256": "193554675661d32afa441686ae8ad9379012d6d1a4088f29c4937b3c00bcd629"
+        }
+      ],
+      "files": {
+        "blob": {
+          "path": "envs/agent-tools/pack/files.json",
+          "size": 127748,
+          "sha256": "609f476679b2644483e88d807dd2fb597b816cff8963517244330e7bba52af9f"
+        },
+        "entries": 991
+      }
+    },
+    "default": {
+      "platform": "linux-64",
+      "pack_path": ".pixi-sandbox/envs/default/pack",
+      "packed_size_bytes": 91764626,
+      "unpacked_size_bytes": 323254245,
+      "pixi_environment_fingerprint": "e98084ef36cd6656",
+      "blobs": [
+        {
+          "path": "envs/default/pack/channel/linux-64/_openmp_mutex-4.5-20_gnu.conda",
+          "size": 28948,
+          "sha256": "1dd3fffd892081df9726d7eb7e0dea6198962ba775bd88842135a4ddb4deb3c9"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/actionlint-1.7.12-h8bc977c_0.conda",
+          "size": 2131192,
+          "sha256": "1fff5ee0d83045ef90104ca83f52b4c44feb4ab2036fc7903fe9733f50721209"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/bzip2-1.0.8-hda65f42_10.conda",
+          "size": 257808,
+          "sha256": "1a0d382c515ebf55f8ee1f38c8b81bc95af5c2acc42ad53b66bc5df932032f96"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/cffi-2.1.1-py312h703531f_3.conda",
+          "size": 302937,
+          "sha256": "7c6e8b24d62e0bfa5d14050cd29053778f399feefa7d6887b04575210285a849"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/convco-0.7.2-hf473dc7_0.conda",
+          "size": 2223315,
+          "sha256": "e6b3e61618a1fc545dd2c8401606fbb620aee978b63bcede7a0b8d3baa64b634"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/ld_impl_linux-64-2.46.1-default_hbd61a6d_103.conda",
+          "size": 742109,
+          "sha256": "901649b1edbe841fd4ee7e2d491a05184ed540eb01cdae506872f344babc1d28"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/lefthook-2.1.14-hfc2019e_0.conda",
+          "size": 5407657,
+          "sha256": "e7f37e0161fb515eb82a02763415fa1b470a888f815020b49b237c07b426425d"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/libexpat-2.8.5-hd2095e1_0.conda",
+          "size": 77893,
+          "sha256": "6de73033a7c5f712c9c5a54124e4581e025691029835e5bceaf10a333a7e7bc0"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/libffi-3.7.0-h81df57d_1.conda",
+          "size": 68004,
+          "sha256": "c8c7583ef063bc3c430f1d48298e5ad24f796a35c22ed5b14183325825a61106"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/libgcc-16.2.0-ha9f2e26_7.conda",
+          "size": 1058444,
+          "sha256": "e031634c3a928f9594eba868bc46ef5230d6571a364a0c63215b06c4563bfcea"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/libgomp-16.2.0-he0feb66_7.conda",
+          "size": 640566,
+          "sha256": "92a0bb350c7be6a4eedcb4e111c60aefd176018e6b1c009a6e025dbe9bbcd758"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/liblzma-5.8.3-hb03c661_1.conda",
+          "size": 112995,
+          "sha256": "9787df8c22a59c9a70d3e5a10db9ad663485e75e9ccc3f09bd092cb7b95e0dab"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/libnsl-2.0.1-hb9d3cd8_1.conda",
+          "size": 33731,
+          "sha256": "927fe72b054277cde6cb82597d0fcf6baf127dcbce2e0a9d8925a68f1265eef5"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/libpython-3.12.16-ha57cdbe_0_cpython.conda",
+          "size": 8763999,
+          "sha256": "71126cad347dfd1be645b1207baa3729e64f055edb5f785dadeb84872480a015"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/libsqlite-3.54.1-h0737f62_100.conda",
+          "size": 980418,
+          "sha256": "107ba2f9134b45a6fdaf8d2485f432e3a643fdfaf711a325d0c9139b580b3523"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/libstdcxx-16.2.0-h934c35e_7.conda",
+          "size": 6615436,
+          "sha256": "fa7018298629fc429971fffd6ecba3d27a7b02e4e890d6a93ea01ffebe8cb745"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/libuuid-2.42.4-hcfc3c73_0.conda",
+          "size": 34442,
+          "sha256": "f34b8d1de9a2bf62476d8608057d9b8a918d97444236dc53a47128f2fae79041"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/libxcrypt-4.4.38-h280c20c_0.conda",
+          "size": 101957,
+          "sha256": "f7e9292dd219a6435bbb1223da9586c3e70d66d169c5a92f08db3f2127df04e9"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/libzlib-1.3.2-h25fd6f3_3.conda",
+          "size": 63713,
+          "sha256": "eb8a0db0aa570124f7d2a93d7c7f596e3390df5e047818d873baad32985fc736"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/ncurses-6.6-hdb14827_1.conda",
+          "size": 911196,
+          "sha256": "5d46557214ed184381dafe835b7c94a474a1c3b307a08a250b1ea4779b44ffb3"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/openssl-3.6.5-h781a0a9_0.conda",
+          "size": 3195299,
+          "sha256": "9c1533f1cf784f0e250919c0c9762d0b0e6bc727a79290ffb7cea1ceca1d038c"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/patchelf-0.19.2-hee9eb32_0.conda",
+          "size": 152126,
+          "sha256": "74ba13a7cd793cae441317d1963f824b1c45f49adde34f9801b3c766986592c5"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/python-3.12.16-h5f976f7_0_cpython.conda",
+          "size": 22997826,
+          "sha256": "a40188b47c3995bc42a33820be4d780af5c11cc295409413fb925549f0abfe92"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/pyyaml-6.0.3-py312h8a5da7c_1.conda",
+          "size": 198293,
+          "sha256": "cb142bfd92f6e55749365ddc244294fa7b64db6d08c45b018ff1c658907bfcbf"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/rattler-build-0.68.0-ha759004_0.conda",
+          "size": 19494680,
+          "sha256": "0627d021b37293211bf843dd3b1e91ea1689143f61cade4ea83eb0126053551f"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/readline-8.3-hd6e31c0_1.conda",
+          "size": 348899,
+          "sha256": "01b3fe073a66e321970d09e04b388708f8cbdca5cdfbfcb7c9eeb470ad10383d"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/repodata.json",
+          "size": 20586,
+          "sha256": "9c62bd7fe0c27026c045cc1677fb50d2678b1f6a68123d5eb6bbca3275b4301f"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/shellcheck-0.11.0-hfc2019e_2.conda",
+          "size": 2973063,
+          "sha256": "0f2a8f55cd54eefdc428cb9699d14725502e4a61d9aecb6f3bc2f22e3bb7ba96"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/taplo-0.10.0-h2d90d6e_2.conda",
+          "size": 4059385,
+          "sha256": "712373761f69efc4f5c6752210f73d508c1ea77df39b6cee8f83e11aed32fcae"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/tk-8.6.13-noxft_h1df4ec4_4.conda",
+          "size": 3566806,
+          "sha256": "a1a241d172c1ccab067ba245206dd048bc3c2d1b84504b53c9468e99adfc16a1"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/yaml-0.2.5-hebe6cf0_3.conda",
+          "size": 84936,
+          "sha256": "d164dfa75ecd538f6fd68765defcc06aa875bc697b9b215362d79a2a73125dd0"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/zstandard-0.25.0-py312h1b36aeb_4.conda",
+          "size": 466862,
+          "sha256": "a3183adc689cfafdaa7e6a21a2c9174894125fc838cb538955246c6543e5b8da"
+        },
+        {
+          "path": "envs/default/pack/channel/linux-64/zstd-1.5.7-hb78ec9c_7.conda",
+          "size": 601301,
+          "sha256": "47d682b9f6d6ec9eb1a6e6c3e75ea6273e899e78fb7fc59f81d39745009fbc60"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/attrs-26.1.0-pyhcf101f3_0.conda",
+          "size": 64927,
+          "sha256": "1b6124230bb4e571b1b9401537ecff575b7b109cc3a21ee019f65e083b8399ab"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/ca-certificates-2026.10.23-hbd8a1cb_0.conda",
+          "size": 130057,
+          "sha256": "95619b9c1184be7175392eeb0ee7eeb5ccf25d280951f4225f2d62e725790be3"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/click-8.5.0-pyh5ded981_0.conda",
+          "size": 112341,
+          "sha256": "9afb0c2c089330321a219c7ee5a25313bd574d4024be606cbb33e7a5735df662"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/colorama-0.4.6-pyhd8ed1ab_1.conda",
+          "size": 27011,
+          "sha256": "ab29d57dc70786c1269633ba3dff20288b81664d3ff8d21af995742e2bb03287"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/exceptiongroup-1.3.1-pyhd8ed1ab_0.conda",
+          "size": 21333,
+          "sha256": "ee6cf346d017d954255bbcbdb424cddea4d14e4ed7e9813e429db1d795d01144"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/hypothesis-6.155.1-pyha770c72_0.conda",
+          "size": 388604,
+          "sha256": "1380a8579ff37c5621ad5f8f9e905b12631dc6dbf1abb353d81b08f7397ca5c0"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/iniconfig-2.3.1-pyhd8ed1ab_0.conda",
+          "size": 14485,
+          "sha256": "8f53876d0fb3525235e39635dd55633abe0a4307b1b3ab1415c80a9e0bbdf663"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/packaging-26.3-pyhc364b38_0.conda",
+          "size": 116363,
+          "sha256": "c432626b16768b8dab228bfb706f7060c2d462a21c516d240f68f2f902b5a044"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/pluggy-1.7.0-pyh5ded981_0.conda",
+          "size": 30111,
+          "sha256": "34c40106bc3172b3a47656e84837e13a5d4829d413d65f30fb214e7568a09cea"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/pycparser-3.12-pyh5ded981_1.conda",
+          "size": 68212,
+          "sha256": "eefb1b2140c1a6c33a85186f954e857e1a824365deeda4e11db9b99c1b5950aa"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/pygments-2.21.0-pyhcf101f3_0.conda",
+          "size": 959376,
+          "sha256": "f5f015ff1bc3e1b7fc08eee096b1865234189ae0b82bebdb86a5369116e42fa0"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/pytest-9.1.1-pyhc364b38_2.conda",
+          "size": 306724,
+          "sha256": "430051d80765207a7d782b2b188230ba1489d35c6e75fd9903f76cb9fda4af16"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/python_abi-3.12-9_cp312.conda",
+          "size": 6751,
+          "sha256": "ee9c2922e07afc85fc82d5fa82c9ac2c79da3be3283a5e17bf2f2ae38dbd02fb"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/repodata.json",
+          "size": 10292,
+          "sha256": "94d20ae2d3a27542d671fe5f75c33bf637bb9b1071d01b0a50a33ba49542f328"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/setuptools-84.2.1-pyhe730653_0.conda",
+          "size": 567436,
+          "sha256": "17add609d1a31c874e39a03935072be59bcafb06d42383eceabea746d12e6025"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/sortedcontainers-2.4.0-pyhd8ed1ab_1.conda",
+          "size": 28657,
+          "sha256": "d1e3e06b5cf26093047e63c8cc77b70d970411c5cbc0cb1fad461a8a8df599f7"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/tomli-2.5.0-pyh5ded981_0.conda",
+          "size": 21687,
+          "sha256": "93b6f517fb7adff00b62be02b798d384a1b34d0e368fdb576fb248bcb3bb9ec7"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/typing_extensions-4.16.0-pyhcf101f3_0.conda",
+          "size": 52631,
+          "sha256": "2d888f90af0686044882c74193ec80a90ec1943145d94a7b1b048958acda1848"
+        },
+        {
+          "path": "envs/default/pack/channel/noarch/tzdata-2026e-h5d301ff_0.conda",
+          "size": 119208,
+          "sha256": "2b7ca858879f183ce2dcc65b300f48a0133d5430550f35b23d80d405a0788dbf"
+        },
+        {
+          "path": "envs/default/pack/environment.yml",
+          "size": 1552,
+          "sha256": "bbe4f21f74736eb47c697e4d1666a3a22cc84411acdd2e3f78f646369ec12e17"
+        },
+        {
+          "path": "envs/default/pack/files.json",
+          "size": 1067117,
+          "sha256": "221e802bda11d2eafca47f1154c86424f5f3104a40d64af569bf6280f5d263bf"
+        },
+        {
+          "path": "envs/default/pack/pixi-pack.json",
+          "size": 46,
+          "sha256": "193554675661d32afa441686ae8ad9379012d6d1a4088f29c4937b3c00bcd629"
+        }
+      ],
+      "files": {
+        "blob": {
+          "path": "envs/default/pack/files.json",
+          "size": 1067117,
+          "sha256": "221e802bda11d2eafca47f1154c86424f5f3104a40d64af569bf6280f5d263bf"
+        },
+        "entries": 7829
+      }
+    },
+    "odm-dev": {
+      "platform": "linux-64",
+      "pack_path": ".pixi-sandbox/envs/odm-dev/pack",
+      "packed_size_bytes": 743876681,
+      "unpacked_size_bytes": 3276958696,
+      "pixi_environment_fingerprint": "40daf872922107ce",
+      "blobs": [
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/_openmp_mutex-4.5-20_gnu.conda",
+          "size": 28948,
+          "sha256": "1dd3fffd892081df9726d7eb7e0dea6198962ba775bd88842135a4ddb4deb3c9"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/actionlint-1.7.12-h8bc977c_0.conda",
+          "size": 2131192,
+          "sha256": "1fff5ee0d83045ef90104ca83f52b4c44feb4ab2036fc7903fe9733f50721209"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/alsa-lib-1.2.16.1-h7cc23a3_1.conda",
+          "size": 594986,
+          "sha256": "a35bddac04be093769e81814465a537961c6ed0f8d3cc23d6dce6ecdfaf71821"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/aom-3.9.1-hac33072_0.conda",
+          "size": 2706396,
+          "sha256": "b08ef033817b5f9f76ce62dfcac7694e7b6b4006420372de22494503decac855"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/attr-2.5.2-hb03c661_1.conda",
+          "size": 31386,
+          "sha256": "78c516af87437f52d883193cf167378f592ad445294c69f7c69f56059087c40d"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/aws-c-auth-0.9.3-hef928c7_0.conda",
+          "size": 133443,
+          "sha256": "d9c5babed03371448bb0dc91a1573c80d278d1222a3b0accef079ed112e584f9"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/aws-c-cal-0.9.13-h2c9d079_1.conda",
+          "size": 56230,
+          "sha256": "f21d648349a318f4ae457ea5403d542ba6c0e0343b8642038523dd612b2a5064"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/aws-c-common-0.12.6-hb03c661_0.conda",
+          "size": 239605,
+          "sha256": "926a5b9de0a586e88669d81de717c8dd3218c51ce55658e8a16af7e7fe87c833"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/aws-c-compression-0.3.1-h8b1a151_9.conda",
+          "size": 22272,
+          "sha256": "96edccb326b8c653c8eb95a356e01d4aba159da1a97999577b7dd74461b040b4"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/aws-c-event-stream-0.5.7-h28f887f_1.conda",
+          "size": 58806,
+          "sha256": "a5b151db1c8373b6ca2dacea65bc8bda02791a43685eebfa4ea987bb1a758ca9"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/aws-c-http-0.10.7-ha8fc4e3_5.conda",
+          "size": 224580,
+          "sha256": "5527224d6e0813e37426557d38cb04fed3753d6b1e544026cfbe2654f5e556be"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/aws-c-io-0.23.3-hdaf4b65_5.conda",
+          "size": 181361,
+          "sha256": "07d7f2a4493ada676084c3f4313da1fab586cf0a7302572c5d8dde6606113bf4"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/aws-c-mqtt-0.13.3-hc63082f_11.conda",
+          "size": 216454,
+          "sha256": "fb102b0346a1f5c4f3bb680ec863c529b0333fa4119d78768c3e8a5d1cc2c812"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/aws-c-s3-0.11.3-h06ab39a_1.conda",
+          "size": 151382,
+          "sha256": "8de2292329dce2fd512413d83988584d616582442a07990f67670f9bc793a98b"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/aws-c-sdkutils-0.2.4-h8b1a151_4.conda",
+          "size": 59383,
+          "sha256": "9d62c5029f6f8219368a8665f0a549da572dc777f52413b7d75609cacdbc02cc"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/aws-checksums-0.2.7-h8b1a151_5.conda",
+          "size": 76915,
+          "sha256": "a8693d2e06903a09e98fe724ed5ec32e7cd1b25c405d754f0ab7efb299046f19"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/aws-crt-cpp-0.35.4-h8824e59_0.conda",
+          "size": 408804,
+          "sha256": "524fc8aa2645e5701308b865bf5c523257feabc6dfa7000cb8207ccfbb1452a1"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/aws-sdk-cpp-1.11.606-h20b40b1_10.conda",
+          "size": 3472674,
+          "sha256": "e0d81b7dd6d054d457a1c54d17733d430d96dc5ca9b2ca69a72eb41c3fc8c9bf"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/azure-core-cpp-1.16.2-h206d751_0.conda",
+          "size": 348729,
+          "sha256": "321d1070905e467b6bc6f5067b97c1868d7345c272add82b82e08a0224e326f0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/azure-identity-cpp-1.13.3-hed0cdb0_1.conda",
+          "size": 250511,
+          "sha256": "2beb6ae8406f946b8963a67e72fe74453e1411c5ae7e992978340de6c512d13c"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/azure-storage-blobs-cpp-12.16.0-hdd73cc9_1.conda",
+          "size": 579825,
+          "sha256": "cef75b91bdd5a65c560b501df78905437cc2090a64b4c5ecd7da9e08e9e9af7c"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/azure-storage-common-cpp-12.12.0-ha7a2c86_1.conda",
+          "size": 150405,
+          "sha256": "ef7d1cae36910b21385d0816f8524a84dee1513e0306927e41a6bd32b5b9a0d0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/azure-storage-files-datalake-cpp-12.14.0-h52c5a47_1.conda",
+          "size": 302524,
+          "sha256": "55aa8ad5217d358e0ccf4a715bd1f9bafef3cd1c2ea4021f0e916f174c20f8e3"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/blosc-1.21.6-he440d0b_1.conda",
+          "size": 48427,
+          "sha256": "e7af5d1183b06a206192ff440e08db1c4e8b2ca1f8376ee45fb2f3a85d4ee45d"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/bzip2-1.0.8-hda65f42_10.conda",
+          "size": 257808,
+          "sha256": "1a0d382c515ebf55f8ee1f38c8b81bc95af5c2acc42ad53b66bc5df932032f96"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/c-ares-1.34.9-hebe6cf0_0.conda",
+          "size": 233759,
+          "sha256": "bd95dd25b80b5c4faf5349542377bf89b2794e23d0f7aa7f1c431e4f3b633f3c"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/c-blosc2-2.23.1-hc31b594_0.conda",
+          "size": 353899,
+          "sha256": "b6ce82ebe3cf24e70179bd656eacfa97ce9df9a500f2cec6843043466a5e6af8"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/cairo-1.18.6-h3c89d7e_0.conda",
+          "size": 1007110,
+          "sha256": "5d0efc6f9981468aca72897460d9b2d17b74dff72787f20a9d2330e214064515"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/capnproto-1.3.0-h791c776_1.conda",
+          "size": 4184704,
+          "sha256": "14a4445a2af39123ae3841f15da7380bfeee1092ade0d9181bd29816c64d7ca5"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/ceres-solver-2.2.0-cpugplhc142d66_210.conda",
+          "size": 1512609,
+          "sha256": "2881e9545dc9ac93290a53265b0cc71282aaf79d608e14f177af7fa4eae0c811"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/cffi-2.1.1-py312h703531f_3.conda",
+          "size": 302937,
+          "sha256": "7c6e8b24d62e0bfa5d14050cd29053778f399feefa7d6887b04575210285a849"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/cfitsio-4.6.3-ha0b56bc_0.conda",
+          "size": 759758,
+          "sha256": "31beae4b063f5e39ade020d3ee1ade0fdc8d5556fafac4d004ebe74ffbad44dd"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/cgal-cpp-6.1.1-h9b37d73_1.conda",
+          "size": 6074137,
+          "sha256": "8485813dc743678ed518a242ef718f2dca555a4592f613438cec28cc03380d73"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/cmake-4.4.4-hff7ac6b_0.conda",
+          "size": 26080138,
+          "sha256": "1c04749bc4a45d5712ba81d7bf38204f6f3a53803b8c223571e7a0a1e1dbbebf"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/convco-0.7.2-hf473dc7_0.conda",
+          "size": 2223315,
+          "sha256": "e6b3e61618a1fc545dd2c8401606fbb620aee978b63bcede7a0b8d3baa64b634"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/cpd-0.5.5-h434a139_2.conda",
+          "size": 145869,
+          "sha256": "f8dcdac7e17d64e389ebb15bc2bed5f854981aadb82671913b4de7468ece161c"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/cyrus-sasl-2.1.28-hac629b4_1.conda",
+          "size": 210103,
+          "sha256": "7684da83306bb69686c0506fb09aa7074e1a55ade50c3a879e4e5df6eebb1009"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/dav1d-1.2.1-hd590300_0.conda",
+          "size": 760229,
+          "sha256": "22053a5842ca8ee1cf8e1a817138cdb5e647eb2c46979f84153f6ad7bde73020"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/dbus-1.16.2-he8c428d_2.conda",
+          "size": 449564,
+          "sha256": "87a0a42d4ccc527597eff3234509dfb03e0d9bf67d5e2b6fc758e2ef389d8abe"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/double-conversion-3.4.0-hecca717_0.conda",
+          "size": 71809,
+          "sha256": "40cdd1b048444d3235069d75f9c8e1f286db567f6278a93b4f024e5642cfaecc"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/draco-1.5.7-h00ab1b0_0.conda",
+          "size": 915252,
+          "sha256": "97722216c26379b2d9fe9ceed783074d6f84b2594ebc2fc0b0cad084ca50aa3d"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/eigen-3.4.0-h54a6638_2.conda",
+          "size": 1173190,
+          "sha256": "a627704a4dc57459dbcdec8296c3f7f1801e53d441b7cadb56a2caa57920a5b3"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/eigen-abi-3.4.0.100-h3bcb7cf_2.conda",
+          "size": 13146,
+          "sha256": "6060ac3c240bfd079946aa4ba9b4749b4ffecbdc734b14910a44eb9d2ec84d6f"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/exiftool-13.59-pl5321ha770c72_0.conda",
+          "size": 4835953,
+          "sha256": "08e774dae9adaa2029388a52667b1ed8b4c4e6adf01983cc12e8840d03028cc7"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/ffmpeg-8.0.1-gpl_h43fde53_912.conda",
+          "size": 12479894,
+          "sha256": "ace426e0372a8cea862ada112336fe04b5445f21e761c7042a33ec5900258af6"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/fgt-0.4.11-h87365c0_1.conda",
+          "size": 46579,
+          "sha256": "9d85b3952ea29acaf4b9d9fadbd67e74ca0381e768cc3aba195491f6dd4c4dc9"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/flann-1.9.2-he1b7b50_6.conda",
+          "size": 1990499,
+          "sha256": "690c6e8204678d40fff369c96110735a1a6f0b47256359676aa26176a151a4a6"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/fmt-12.1.0-h76c4fd7_1.conda",
+          "size": 199072,
+          "sha256": "25d14a197601fdd616f2e501431b52887e69b31e7defbc1679381d718357ceb7"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/fontconfig-2.18.3-h4db4eae_1.conda",
+          "size": 296288,
+          "sha256": "5a3eb10b18a97223ab06b3a7f0d7f56658db2f2800e2f2af95836fe3bf55ba63"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/freeglut-3.2.2-h215f996_4.conda",
+          "size": 146159,
+          "sha256": "f94040a0d7c449038811097e145f223bd3b2ab4c5181870c6e27e1b9dd777d48"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/freetype-2.14.3-ha770c72_2.conda",
+          "size": 175239,
+          "sha256": "612a8e0c1a6ecae23da54d81ef395f6ebb5c8e4468ec2611593ebce75876a4e0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/freexl-2.0.0-h1f12c17_3.conda",
+          "size": 61572,
+          "sha256": "2be93e21acabadd6f32a830f328d23e4c6369898df0f69396c2c37be6ef0d15e"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/fribidi-1.0.17-h7cc23a3_0.conda",
+          "size": 64102,
+          "sha256": "3ba79ebfbd14ca5db4affaf10ee8001064e907de5baabc2dbe5bcd9aec856c9f"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/gdk-pixbuf-2.44.8-h68053f1_2.conda",
+          "size": 581961,
+          "sha256": "32f3ebd1871cb6ac7eac36c78c410860f38e8d252d5857a80f6abfcb79c7e0ff"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/geos-3.14.1-h55b0958_0.conda",
+          "size": 2002850,
+          "sha256": "dc9f03bef913c8b3c94e93a61318b7437bd5e4f7136ef841e68df8de082405d5"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/geotiff-1.7.4-h1000f5c_4.conda",
+          "size": 144495,
+          "sha256": "d17e2f34fe5c61eb620e8679368d8ee90be36379cd6023f8690bdcba1c60761c"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/gflags-2.2.2-h5888daf_1005.conda",
+          "size": 119654,
+          "sha256": "6c33bf0c4d8f418546ba9c250db4e4221040936aef8956353bc764d4877bc39a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/giflib-5.2.2-ha257d8a_1.conda",
+          "size": 77403,
+          "sha256": "3611c5d605cd56017704e6c01c7bd849e74a656a546d4c49d655fde49ddfeecc"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/glog-0.7.1-hbabe93e_0.conda",
+          "size": 143452,
+          "sha256": "dc824dc1d0aa358e28da2ecbbb9f03d932d976c8dca11214aa1dcdfcbd054ba2"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/glslang-16.6.0-h980caa0_0.conda",
+          "size": 1449282,
+          "sha256": "390b9e94b29b53366673e5460b433c9daa34788f5cdabf8b30bf40cf086c60dd"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/gmp-6.3.0-hfd2156b_3.conda",
+          "size": 493498,
+          "sha256": "f36c336efc874f346a53a9011f67e997f9faac505562cc18c13b6d399cfe61c7"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/graphite2-1.3.15-h54a6638_1.conda",
+          "size": 102835,
+          "sha256": "7fa3b6a9c081fa3e545573152a788d061a0a0ba57df7251cc0f4f75225fc93e7"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/harfbuzz-15.0.0-ha770c72_0.conda",
+          "size": 11075,
+          "sha256": "66e49a0888ad60b69766c8a82a4c5b8be0000b1b0d595710ffaba079fd717e5e"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/hdf4-4.2.15-h2a13503_7.conda",
+          "size": 756742,
+          "sha256": "0d09b6dc1ce5c4005ae1c6a19dc10767932ef9a5e9c755cfdbb5189ac8fb0684"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/hdf5-1.14.6-nompi_h19486de_110.conda",
+          "size": 3721555,
+          "sha256": "ac57ce3abbda2a82d6192bc36fbd7fe96e867d84c999ef81a3da034dfd01a995"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/icu-78.3-py310h44b86e0_2.conda",
+          "size": 14459115,
+          "sha256": "9f07834f0c546ab14d885ce0366285f61f44e326c0edd1fc63b8294e113ae432"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/imath-3.2.2-hde8ca8f_0.conda",
+          "size": 160289,
+          "sha256": "43f30e6fd8cbe1fef59da760d1847c9ceff3fb69ceee7fd4a34538b0927959dd"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/intel-gmmlib-22.10.2-h7148c6a_0.conda",
+          "size": 1007001,
+          "sha256": "a916de0f52de5ce16dc7869ca433dc420be55cae6a04592333ae9923545aa096"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/intel-media-driver-25.3.4-hecca717_0.conda",
+          "size": 8424610,
+          "sha256": "286679d4c175e8db2d047be766d1629f1ea5828bff9fe7e6aac2e6f0fad2b427"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/jasper-4.2.9-hd038ad9_2.conda",
+          "size": 724460,
+          "sha256": "a7b36f828a4d85171e61b3153997b5513f766d02501b2b596129edb0e8896d04"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/json-c-0.18-hebe6cf0_2.conda",
+          "size": 90204,
+          "sha256": "78ec5a672acc8a6bf9c74268b88a72230809517aebe75a11acf959d3f9a63fe0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/kealib-1.6.2-hb2f3951_3.conda",
+          "size": 199068,
+          "sha256": "268fb71aa63c376fb735c1cf72dc12fef4ac2aaa2eb1851b4be00d4b9d5d769c"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/keyutils-1.6.3-h7cc23a3_1.conda",
+          "size": 135295,
+          "sha256": "dd053c96dcb0dcfd59422aefea9d2fe937a190167f34fba7893ec1e10a7e8963"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/krb5-1.22.2-hbc21106_2.conda",
+          "size": 1394333,
+          "sha256": "2a5c38c85e63df84c4e69ee71439841ce570d259ae3060627bb9a49a938d66f4"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/lame-3.100-h166bdaf_1003.tar.bz2",
+          "size": 508258,
+          "sha256": "aad2a703b9d7b038c0f745b853c6bb5f122988fe1a7a096e0e606d9cbec4eaab"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/lcms2-2.19.1-h9073bf1_3.conda",
+          "size": 254292,
+          "sha256": "03e675b9adaf235aab880e4133c72f4830e87bc7da2df59d6194771612239b22"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/ld_impl_linux-64-2.46.1-default_hbd61a6d_103.conda",
+          "size": 742109,
+          "sha256": "901649b1edbe841fd4ee7e2d491a05184ed540eb01cdae506872f344babc1d28"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/lefthook-2.1.14-hfc2019e_0.conda",
+          "size": 5407657,
+          "sha256": "e7f37e0161fb515eb82a02763415fa1b470a888f815020b49b237c07b426425d"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/lerc-4.2.0-hdb68285_0.conda",
+          "size": 271158,
+          "sha256": "bf9fdebf55d8bc99d83531cdffda00703f4dc5f93a1a956768c147362c72feda"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/level-zero-1.34.0-h7148c6a_0.conda",
+          "size": 793820,
+          "sha256": "bec267795589d6a42711e1ad2426f08acab1c2e01ce1a56d235af8b398a15164"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libabseil-20250512.1-cxx17_hba17884_0.conda",
+          "size": 1310612,
+          "sha256": "dcd1429a1782864c452057a6c5bc1860f2b637dc20a2b7e6eacd57395bbceff8"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libadbc-driver-manager-1.10.0-hb700be7_0.conda",
+          "size": 142254,
+          "sha256": "0622b762493deef78d5df7b64b4a95ff044f78057c8532d84a950a30aeb9be69"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libaec-1.1.5-h088129d_0.conda",
+          "size": 36544,
+          "sha256": "822e4ae421a7e9c04e841323526321185f6659222325e1a9aedec811c686e688"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libamd-3.3.3-h456b2da_7100101.conda",
+          "size": 48250,
+          "sha256": "5fc32a5497c9919ffde729a604b0acfa97c403ce5b2b27b28ca261cf0c4643aa"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libarchive-3.8.9-gpl_h3152399_101.conda",
+          "size": 875346,
+          "sha256": "bfae027a67d02325cd6b75edd60beb67cf24483af9df0ae9ef74d4438e41c806"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libarrow-23.0.0-h40b5c2d_2_cpu.conda",
+          "size": 6478168,
+          "sha256": "4c6f817c4008d09dc72a1fd91121fd97be670f76c5b3e61aef0f3f48667d60c7"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libarrow-acero-23.0.0-h635bf11_2_cpu.conda",
+          "size": 612958,
+          "sha256": "5fd1f8f394d6c1a910f66d6b8236db0f8dd0495bf01950defa2863de42d26c68"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libarrow-compute-23.0.0-h8c2c5c3_2_cpu.conda",
+          "size": 3007456,
+          "sha256": "3f6b4c27aa4741349bd9e314924f938a821b8ed42f503ef41558cc7cf0e13e00"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libarrow-dataset-23.0.0-h635bf11_2_cpu.conda",
+          "size": 612157,
+          "sha256": "03b453325748e0f5045fb3cd820f1061a5094f67cc51ba4f5750d9ab0b5577bd"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libass-0.17.4-h96ad9f0_0.conda",
+          "size": 152179,
+          "sha256": "035eb8b54e03e72e42ef707420f9979c7427776ea99e0f1e3c969f92eb573f19"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libattr-2.5.2-hb03c661_1.conda",
+          "size": 53316,
+          "sha256": "0cef37eb013dc7091f17161c357afbdef9a9bc79ef6462508face6db3f37db77"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libavif16-1.4.2-hcfa2d63_0.conda",
+          "size": 149510,
+          "sha256": "10c362ae43bce56f7ff88b51f8bd3a867d081585ce0fd1d7cb6271a28143a5f9"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libblas-3.11.0-11_h4a7cf45_openblas.conda",
+          "size": 18246,
+          "sha256": "d942e0c820d60a613a6f786d074f0820fb6343e3f1ccfb110b1d98b44fb75968"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libboost-1.88.0-hd24cca6_7.conda",
+          "size": 3072984,
+          "sha256": "dd489228e1916c7720c925248d0ba12803d1dc8b9898be0c51f4ab37bab6ffa5"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libboost-devel-1.88.0-hfcd1e18_7.conda",
+          "size": 40112,
+          "sha256": "249e7a58aee14a619d4f6bca3ad955b7a0a84aad6ab201f734bb21ea16e654e6"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libboost-headers-1.88.0-ha770c72_7.conda",
+          "size": 14584021,
+          "sha256": "88194078f2de6b68c40563871ccf638fd48cd1cf1d203ac4e653cee9cedd31a6"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libbrotlicommon-1.2.1-h39a168f_0.conda",
+          "size": 80370,
+          "sha256": "8eccfbfdb8ecba32eabfb6ee92f70e818e5f3a35a01c507f7b6bd56e00e4c617"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libbrotlidec-1.2.1-ha411449_0.conda",
+          "size": 34703,
+          "sha256": "4b4bda6f70ad511bdff95fdd958dca74b6e0534ae335ddcb1d8c6569774d2429"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libbrotlienc-1.2.1-h018ffa1_0.conda",
+          "size": 298098,
+          "sha256": "61974cf9bb07115ed6725dacf83d0d985443d78dd123cc4f2758856fda5376ec"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libbtf-2.3.2-hf02c80a_7100101.conda",
+          "size": 26913,
+          "sha256": "fe36f414f48ab87251f02aeef1fcbb6f3929322316842dada0f8142db2710264"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libcamd-3.3.3-hf02c80a_7100101.conda",
+          "size": 44119,
+          "sha256": "16e9ae4e173a8606b0b8be118dbdcf4e03c9dd9777eea6bf9dff4397133d0d06"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libcap-2.78-h084b8d7_1.conda",
+          "size": 124306,
+          "sha256": "8cb25174d6b6fac95d31e86cfe41faffc8ee9dacbf2bfd22e6c23377e8f338c1"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libcblas-3.11.0-11_h0358290_openblas.conda",
+          "size": 18196,
+          "sha256": "f7d1bbdea61cf94ba219d17b2cb571a29830f8025385af799bff5a7ad1ef45e6"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libccolamd-3.3.4-hf02c80a_7100101.conda",
+          "size": 41578,
+          "sha256": "cc90aa5e0ad1f7ae9a29d9a42aacd7f7f02aba0bf5467513bfda7e6b18a4cbc8"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libcholmod-5.3.1-h9cf07ce_7100101.conda",
+          "size": 990886,
+          "sha256": "69540315b4b8de93b383243334151ed19e98968baaa59440ba645a3bff68d765"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libclang-cpp22.1-22.1.8-default_h0acdd01_11.conda",
+          "size": 24529645,
+          "sha256": "e7a3df524a2900677c460e8cd1407db8aabadc3d19e6a713a58a4f29b1d4bef7"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libclang-cpp23.1-23.1.4-default_h0acdd01_0.conda",
+          "size": 25352501,
+          "sha256": "b276618b7f9378c7cd0cf15235928b48c042362778a3e366fc6d7df04b4b7069"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libclang13-23.1.4-default_he646a05_0.conda",
+          "size": 15440123,
+          "sha256": "d048fdd1f59a697439323ce42ed26c381aaf5ef1624a8811e067a79e93c47219"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libcolamd-3.3.4-hf02c80a_7100101.conda",
+          "size": 33160,
+          "sha256": "00d1b976b914f0c20ae6f81f4e4713fa87717542eba8757b9a3c9e8abcc29858"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libcrc32c-1.1.2-h9c3ff4c_0.tar.bz2",
+          "size": 20440,
+          "sha256": "fd1d153962764433fe6233f34a72cdeed5dcf8a883a85769e8295ce940b5b0c5"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libcups-2.3.3-h7a8fb5f_6.conda",
+          "size": 4518030,
+          "sha256": "205c4f19550f3647832ec44e35e6d93c8c206782bdd620c1d7cf66237580ff9c"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libcurl-8.23.0-ha042cf0_0.conda",
+          "size": 505683,
+          "sha256": "d2db14d80efb4f2e76e76561c633f1767f7543987f2bcb54a067a9d264d432ab"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libcxsparse-4.4.1-hf02c80a_7100101.conda",
+          "size": 113979,
+          "sha256": "ab40fc8a4662f550d053576a56db896247bc81eb291eff3811f24c231829e3dd"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libdeflate-1.25-hd45a770_1.conda",
+          "size": 73710,
+          "sha256": "82e134c8a08b1eed9a2ed8ab578b89aa1730dcde3dea8dd87645ed0637878e54"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libdrm-2.4.129-h7cc23a3_0.conda",
+          "size": 313461,
+          "sha256": "ea46b0ca0fa16af1f8b329b740e6cd8b4577c5378fa8717b28a885f70668633d"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libedit-3.1.20260512-pl5321h373387f_0.conda",
+          "size": 135877,
+          "sha256": "45301f14f4eb66da57cfaf2d265f3eeee73f8b07e99614ee3afc5b26eea91126"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libegl-1.7.0-ha4b6fd6_5.conda",
+          "size": 46694,
+          "sha256": "13d3fde9c1dcf254968cc70652222a43f25d04e69555ccf855553110e753288e"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libev-4.33-h280c20c_3.conda",
+          "size": 43220,
+          "sha256": "e4418f68d01a6307c4431b585c71b584f40189877364e542ee87deb777f5e85b"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libevent-2.1.12-h5348a74_2.conda",
+          "size": 431007,
+          "sha256": "f874779772878f3b509c607de9089c282f71232fde4cac876fc660d29670f28d"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libexpat-2.9.0-hd2095e1_0.conda",
+          "size": 78894,
+          "sha256": "7b930a8b6bc6553cb754b4977a11f9c862c719a652fc2d128d89270992ce8beb"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libfabric-2.7.0-ha770c72_0.conda",
+          "size": 14443,
+          "sha256": "25ba6ec589b09f1e74132fef73d47de81e8c719796c75d8d8749ba6df923781f"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libfabric1-2.7.0-hf0f7150_0.conda",
+          "size": 768044,
+          "sha256": "e5337e9e6f0a795c0c4f82ed9f4e737415315998bb1a95ebba0d4288763b980b"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libffi-3.7.0-h81df57d_1.conda",
+          "size": 68004,
+          "sha256": "c8c7583ef063bc3c430f1d48298e5ad24f796a35c22ed5b14183325825a61106"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libflac-1.5.0-he200343_1.conda",
+          "size": 424563,
+          "sha256": "e755e234236bdda3d265ae82e5b0581d259a9279e3e5b31d745dc43251ad64fb"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libfreetype-2.14.3-ha770c72_2.conda",
+          "size": 8407,
+          "sha256": "fb12ecb46c30d18d928c0e8fc346ab13b5f6fc8a9cacae4f2f4bb188782586f5"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libfreetype6-2.14.3-h5e6c136_2.conda",
+          "size": 387671,
+          "sha256": "ec607dd5445dd17ff6bf8b7fe6832e5504c226dd91d3aaea7ba83569808b0ce4"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgcc-16.2.0-ha9f2e26_7.conda",
+          "size": 1058444,
+          "sha256": "e031634c3a928f9594eba868bc46ef5230d6571a364a0c63215b06c4563bfcea"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgcc-ng-16.2.0-h69a702a_7.conda",
+          "size": 28616,
+          "sha256": "03b54d7008de080a17cc2174b0e4acd6d06e1c981b2eb19846f46d8f59966034"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgdal-3.12.2-h8233c4f_3.conda",
+          "size": 426968,
+          "sha256": "838a1445bc296eacc459b619eea4abb8a053692ac56ee1de65fb334b3e7234e2"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgdal-adbc-3.12.2-h392d2be_0.conda",
+          "size": 507260,
+          "sha256": "37d090f928ecdd3d1fe58fd57ff5638f4bd119a3473e28df52f91f5436b2eaf2"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgdal-arrow-parquet-3.12.2-he3cdf81_0.conda",
+          "size": 881794,
+          "sha256": "8edb44fc1e615cb126dd8c060ef280b4d3d44ec8717de2cbd5d2764e88223475"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgdal-core-3.12.2-hc2c0581_0.conda",
+          "size": 12920509,
+          "sha256": "8cf6fcbdbcfad427e9bb102270236bbb20f0f0293753d6c3b147840dcfe7849c"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgdal-fits-3.12.2-h4f635c4_0.conda",
+          "size": 481921,
+          "sha256": "91bef76268f227c74b7396bc1a63f7fb76d930e7b2c7a012fcc2a0de34f0a506"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgdal-grib-3.12.2-h882aa52_0.conda",
+          "size": 745466,
+          "sha256": "5d5799a204dba182401793d2a2fd0dcf6403b7fd21b7d747358023193e1d01e2"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgdal-hdf4-3.12.2-hf70aa56_0.conda",
+          "size": 562554,
+          "sha256": "4dd08a66a48515223272cf53b42db19fe55d08f7abfe67b381b8f7cac50feb7e"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgdal-hdf5-3.12.2-hcaab353_0.conda",
+          "size": 673088,
+          "sha256": "2b1908125dc9e68064d45bcd1990e3551116e129e94353126c659124b801f5f5"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgdal-jp2openjpeg-3.12.2-h2e1842f_0.conda",
+          "size": 474055,
+          "sha256": "04878df9d0d8d27154176960c5d730fcd2a81968e284d93f865cae120d11810f"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgdal-kea-3.12.2-ha85fd2f_0.conda",
+          "size": 487723,
+          "sha256": "48ef449b67beaca07469e572b358a5a256c93bd46fb52e8ae16043c1b7a78baf"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgdal-netcdf-3.12.2-h03ef1cf_0.conda",
+          "size": 746798,
+          "sha256": "048591878644c5cd5aefe15f9a8625ae1d33ac53a89218a4c48eb108dedabbf7"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgdal-pdf-3.12.2-hd658c48_0.conda",
+          "size": 677571,
+          "sha256": "cb5a086729a36b6e70983e207973482920593480f37248aa88759e3af5279378"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgdal-pg-3.12.2-h65699a6_0.conda",
+          "size": 530137,
+          "sha256": "945da41ab8138a05637b19dc955518a1f36de7c761322e614074e8bd9c6c0679"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgdal-postgisraster-3.12.2-h65699a6_0.conda",
+          "size": 484222,
+          "sha256": "503c0290a2ad15120c66f698e0ed2cf1e25f1150628db0053ab48552d5ca3b3a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgdal-tiledb-3.12.2-hc533288_0.conda",
+          "size": 706165,
+          "sha256": "7420e4e8be73ffa93a3f8e3628bfe5ef3fdc137cd80010a385c55feb40787455"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgdal-xls-3.12.2-h392d2be_0.conda",
+          "size": 437575,
+          "sha256": "4c1f9f5b2c186a88eb22cf5495150b49465d81eacbd966fee125d9635bc81c72"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgfortran-16.2.0-h69a702a_7.conda",
+          "size": 28571,
+          "sha256": "9682ae4dd11487e10b904b3cb3ab6379cad25233d45fdfdf90d54349df244494"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgfortran5-16.2.0-h6b99dfc_7.conda",
+          "size": 2528180,
+          "sha256": "04dbab12c925b92977bb835dd2f5eda413607afa79f95a554e5a04b07a380322"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgl-1.7.0-ha4b6fd6_5.conda",
+          "size": 131988,
+          "sha256": "7b2e7e31e8a4f5a01c45ecadcd8aa68c8f733b035240bc7ba9881835ef4bf7b4"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libglib-2.90.0-h569388d_0.conda",
+          "size": 4819130,
+          "sha256": "9e688e046550415c030c3d08ed9a3fd13a51d7bc56295283b858b6c3070bb9f8"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libglu-9.0.3-h5888daf_1.conda",
+          "size": 325262,
+          "sha256": "a0105eb88f76073bbb30169312e797ed5449ebb4e964a756104d6e54633d17ef"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libglvnd-1.7.0-ha4b6fd6_5.conda",
+          "size": 133827,
+          "sha256": "6eb77601a44b78c4631d886d54ef54f321c2bdc69fdefc4065a1e0491f030c76"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libglx-1.7.0-ha4b6fd6_5.conda",
+          "size": 79834,
+          "sha256": "d1f0d51aea6bcc5d915969cbed32e72a8ed6a95931b87357ef8d0866573688c4"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgomp-16.2.0-he0feb66_7.conda",
+          "size": 640566,
+          "sha256": "92a0bb350c7be6a4eedcb4e111c60aefd176018e6b1c009a6e025dbe9bbcd758"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgoogle-cloud-2.39.0-hdb79228_0.conda",
+          "size": 1307909,
+          "sha256": "d3341cf69cb02c07bbd1837968f993da01b7bd467e816b1559a3ca26c1ff14c5"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgoogle-cloud-storage-2.39.0-hdbdcf42_0.conda",
+          "size": 804189,
+          "sha256": "59eb8365f0aee384f2f3b2a64dcd454f1a43093311aa5f21a8bb4bd3c79a6db8"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libgrpc-1.73.1-h3288cfb_1.conda",
+          "size": 8349777,
+          "sha256": "bc9d32af6167b1f5bcda216dc44eddcb27f3492440571ab12f6e577472a05e34"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libharfbuzz-15.0.0-h23af247_0.conda",
+          "size": 1628948,
+          "sha256": "d3190aedc31b449627ba5bdb8423a62fd234623ab99959c0a5a580e4d6ef6420"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libharfbuzz-devel-15.0.0-h23af247_0.conda",
+          "size": 2464838,
+          "sha256": "1409a10889a683a95eff4eac5bd2f99631f40c3ef51f7fbd139a90cc3bc36862"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libhwloc-2.13.0-default_he001693_1000.conda",
+          "size": 2436378,
+          "sha256": "5041d295813dfb84652557839825880aae296222ab725972285c5abe3b6e4288"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libhwy-1.4.0-h57c4cff_2.conda",
+          "size": 1462974,
+          "sha256": "06ab9eb5db305b29f0f671dced4a43eca4b0c1990351bad963d25341057f74d4"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libiconv-1.18-h0cb94f2_3.conda",
+          "size": 789471,
+          "sha256": "f943117edb9cd4d9c61cc972eee5a34291dc55ea7a6e9e38da104995841cbcb6"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libjpeg-turbo-3.2.0-hb03c661_1.conda",
+          "size": 650434,
+          "sha256": "bba8538e6538ed58a8479b332337b96986561f975d06cfa2039a016c2d246ee4"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libjxl-0.11.2-h174a0a3_1.conda",
+          "size": 1846962,
+          "sha256": "0c8a78c6a42a6e4c6de3a5e82d692f60400d43f4cc80591745f28b37daad9c70"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libklu-2.3.5-h95ff59c_7100101.conda",
+          "size": 131775,
+          "sha256": "6b4d462642c240dc3671af74f7705b23f34eea0f71e0d9dbcf14b4ed008311ff"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libkml-1.3.0-haa4a5bd_1023.conda",
+          "size": 412514,
+          "sha256": "f6348ac9cebbc03f765ea6d2da88d57d19531585c8f3a963b98635b208e8bef1"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/liblapack-3.11.0-11_h47877c9_openblas.conda",
+          "size": 18227,
+          "sha256": "1ad3f43c9319ef398a8ef45989f4903a06e3965b51e77fc669a4c894168a8411"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/liblapacke-3.11.0-11_h6ae95b6_openblas.conda",
+          "size": 18236,
+          "sha256": "912a8a4d152781f932b2afebf2c9d0c3537060998407bc306c4dd971adc4c0ad"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libldl-3.3.2-hf02c80a_7100101.conda",
+          "size": 23391,
+          "sha256": "590232cd302047023ab31b80458833a71b10aeabee7474304dc65db322b5cd70"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libllvm22-22.1.8-h474f4eb_3.conda",
+          "size": 44629067,
+          "sha256": "135b8b9bfed6a20cdbda657ddb4584d483203eb0e4c29e448a60d4bcc762f391"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libllvm23-23.1.4-h474f4eb_1.conda",
+          "size": 45078820,
+          "sha256": "17aabc12cc1f07be885d4d7fd749cb67763e28427fda6352b003701ab3d81026"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/liblzma-5.8.3-hb03c661_1.conda",
+          "size": 112995,
+          "sha256": "9787df8c22a59c9a70d3e5a10db9ad663485e75e9ccc3f09bd092cb7b95e0dab"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libnetcdf-4.9.3-nompi_hbf2fc22_104.conda",
+          "size": 870788,
+          "sha256": "cae2f8fe5258fc1a1d2b61cbc9190ed2c0a1b7cdf5d4aac98da071ade6dac152"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libnghttp2-1.68.1-h74cf4be_1.conda",
+          "size": 649974,
+          "sha256": "11a2f54a6f391e25738bce0023e6ef499600147bbcf21c1fa69d2e251b03cc6a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libnl-3.11.0-hb03c661_1.conda",
+          "size": 735004,
+          "sha256": "d0f2fd77aad83641c11bc3686bac677e99869f1d62b99e5064c9d99af8bfde6a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libnsl-2.0.1-hb9d3cd8_1.conda",
+          "size": 33731,
+          "sha256": "927fe72b054277cde6cb82597d0fcf6baf127dcbce2e0a9d8925a68f1265eef5"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libntlm-1.8-hb9d3cd8_0.conda",
+          "size": 33418,
+          "sha256": "3b3f19ced060013c2dd99d9d46403be6d319d4601814c772a3472fe2955612b0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libogg-1.3.5-hd0c01bc_1.conda",
+          "size": 218500,
+          "sha256": "ffb066ddf2e76953f92e06677021c73c85536098f1c21fcd15360dbc859e22e4"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopenblas-0.3.34-pthreads_hf13c14d_2.conda",
+          "size": 6845411,
+          "sha256": "69a722751e14eab2eb3bfdcb9acb1187afbd962b0c49b48d829341e0f6787f60"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopencv-4.12.0-qt6_py313hbb662ea_612.conda",
+          "size": 32680981,
+          "sha256": "4f28a2b341b24804cc60480e46b28986bd29dfe744856fa52d005c16d03dde76"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopengl-1.7.0-ha4b6fd6_5.conda",
+          "size": 50627,
+          "sha256": "7bdca717c840e17d7dd050f925dd964da61086c2612b8579a4ff4147105f291f"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopentelemetry-cpp-1.21.0-hb9b0907_1.conda",
+          "size": 885397,
+          "sha256": "ba9b09066f9abae9b4c98ffedef444bbbf4c068a094f6c77d70ef6f006574563"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopentelemetry-cpp-headers-1.21.0-ha770c72_1.conda",
+          "size": 363444,
+          "sha256": "b3a1b36d5f92fbbfd7b6426982a99561bdbd7e4adbafca1b7f127c9a5ab0a60f"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopenvino-2025.4.1-hb56ce9e_1.conda",
+          "size": 6504144,
+          "sha256": "d85e5e3b6dc56d6fdfe0c51a8af92407a7ef4fc5584d0e172d059033b8d6d3e0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopenvino-auto-batch-plugin-2025.4.1-hd85de46_1.conda",
+          "size": 114792,
+          "sha256": "7ec8faf6b4541f098b5c5c399b971075a1cca0a9bec19aa4ed4e70a88026496c"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopenvino-auto-plugin-2025.4.1-hd85de46_1.conda",
+          "size": 250114,
+          "sha256": "aee3ae9d91a098263023fc2cb4b2d1e58a7111984c6503ae6e7c8e1169338f02"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopenvino-hetero-plugin-2025.4.1-hd41364c_1.conda",
+          "size": 212030,
+          "sha256": "bcf3d31a2bcc666b848506fb52b2979a28d7035e9942d39121d4ea64a27bfbfb"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopenvino-intel-cpu-plugin-2025.4.1-hb56ce9e_1.conda",
+          "size": 12956806,
+          "sha256": "0ce2e257c87076aff0a19f4b9bb79a40fcfea04090e66b2f960cb341b9860c8e"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopenvino-intel-gpu-plugin-2025.4.1-hb56ce9e_1.conda",
+          "size": 11421657,
+          "sha256": "ca1981eb418551a6dbf0ab754a2b7297aae1131e36cde9001862ffdf23625f9d"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopenvino-intel-npu-plugin-2025.4.1-hb56ce9e_1.conda",
+          "size": 1743490,
+          "sha256": "0b3bb86bceb8f5f0d074c26f697e3dfc638f5886754d31252db3aff8a1608e82"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopenvino-ir-frontend-2025.4.1-hd41364c_1.conda",
+          "size": 200411,
+          "sha256": "124df6a82752ac14b7d08a4345be7a5d7295183e7f76a7960af97e0b869d754d"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopenvino-onnx-frontend-2025.4.1-h1862bb8_1.conda",
+          "size": 1902792,
+          "sha256": "22faa2b16c13558c3e245f12deffca6f89e22752dd0135c0826fbbeb43e90603"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopenvino-paddle-frontend-2025.4.1-h1862bb8_1.conda",
+          "size": 745483,
+          "sha256": "f03aba53f64b0e2dae1989f9ff680fdc955d087424e1e00c34f3436815c49f18"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopenvino-pytorch-frontend-2025.4.1-hecca717_1.conda",
+          "size": 1266512,
+          "sha256": "5edd997be35bbdda6c8916de46a4ae7f321af6a6b07ba136228404cb713bcbe9"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopenvino-tensorflow-frontend-2025.4.1-h0767aad_1.conda",
+          "size": 1324086,
+          "sha256": "15aa71394abf35d3a25d2d8f68e419f9dbbc57a0849bc1f8ae34589b77f96aa7"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopenvino-tensorflow-lite-frontend-2025.4.1-hecca717_1.conda",
+          "size": 496261,
+          "sha256": "13d8f823cd137bcfa7830c13e114e43288b4d43f5d599c4bec3e8f9d07233a29"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libopus-1.6.1-hebe6cf0_1.conda",
+          "size": 330213,
+          "sha256": "82873b6c8478e19ab7aef0828ad3619b6633ad185a90a52f39dcb2c30c0c075e"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpango-1.58.2-hce4e988_3.conda",
+          "size": 343535,
+          "sha256": "251dfa10f843dfb14ccc8c33d7ec0f18ac75f51be119100f65468a046b1b33ce"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpango-devel-1.58.2-h317d9d0_3.conda",
+          "size": 211407,
+          "sha256": "75df9cf6e8c8b94648beaa8c7bf0d3c1efd7c3e0ebfb26529e415185a065c2a3"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libparquet-23.0.0-h7376487_2_cpu.conda",
+          "size": 1393478,
+          "sha256": "f8a747df762d1197196d6113a1fb56b9c6d396c1b37727f2caeef2887d3e0733"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libparu-1.0.0-hc6afc67_7100101.conda",
+          "size": 89738,
+          "sha256": "50144e87b95d1309d2043aa5bf02035b948b1ae9ec6ec44ee97b7aec1cccd70a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpciaccess-0.19-hb03c661_1.conda",
+          "size": 30070,
+          "sha256": "addc80c69d362a9e6c40305c493139a8e9ee504b2f45a6687dbdaa9da3c6183c"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpdal-2.10.0-h260171b_0.conda",
+          "size": 12371,
+          "sha256": "c82ebbebffab0e421a51daa94573b8aefd39bc693480fc6150283c931ebbb64f"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpdal-arrow-2.10.0-h53f548f_0.conda",
+          "size": 209727,
+          "sha256": "4f8f27ae061a53404e84b852fa0068756bdb0b2aee4da770ef18087320a06d28"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpdal-core-2.10.0-h9d23c72_0.conda",
+          "size": 3823992,
+          "sha256": "c43a137e3b537f8842b3c850e9a319b9cae0ab59143b4fc7358495892e61d279"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpdal-cpd-2.10.0-h2e8a393_0.conda",
+          "size": 161671,
+          "sha256": "1448c4460e51dc19295cab5ed828f105aa5f31e482db0e7979fe38073d16b7b9"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpdal-draco-2.10.0-h2e8a393_0.conda",
+          "size": 138237,
+          "sha256": "7afa9ac0778fbcfac7f6b2f48d4ab79ee9515fa778fd224db20f86e7a4ce0120"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpdal-e57-2.10.0-h1f3591b_0.conda",
+          "size": 4891554,
+          "sha256": "fb49a447b138706b50785b3d4618d444232b25e92778962f5f4c5f14c1e27b28"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpdal-hdf-2.10.0-h01cf3b3_0.conda",
+          "size": 106746,
+          "sha256": "eb432d395b2d63baa36835d11ea52ee616e7c923e9c6d8b773002867bf702331"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpdal-icebridge-2.10.0-h01cf3b3_0.conda",
+          "size": 55006,
+          "sha256": "80741e4056c626968ba9fdf85c58e96804b54585746c9701ee553df36dd5ec6f"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpdal-nitf-2.10.0-h811f341_0.conda",
+          "size": 155706,
+          "sha256": "4fb320fd23557e4c7d1ebe77bba0f0df92f2e548c66d56c31f2bee5887d661b7"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpdal-pgpointcloud-2.10.0-hb16824e_0.conda",
+          "size": 98685,
+          "sha256": "0f6ac007281a38a8d465eff732e01e2a717bbf7649d8f7b94128fea3aa1c1aaf"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpdal-tiledb-2.10.0-hc527eab_0.conda",
+          "size": 262795,
+          "sha256": "f40de4103279b04765f7d11ff5d9c8b5467d1a2d02405e3b14a0e11e75966dae"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpdal-trajectory-2.10.0-h1ebb429_0.conda",
+          "size": 127008,
+          "sha256": "be9f6dd6eb64795692b1ba2b89b404dc80207c18bbea96e1c52cb57c6857c9ba"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpmix-5.0.8-h31fc519_4.conda",
+          "size": 731098,
+          "sha256": "2837759fb832ab8587622602531f8e4b5d5e5ec12ea9b3936be06f384b933800"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpng-1.6.59-h922cc85_0.conda",
+          "size": 316872,
+          "sha256": "c7381be8ef713501f6cd2f5ad473e401f2edeaec3c46788296b8dbf0de165e15"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpq-18.6-h3883810_3.conda",
+          "size": 2720456,
+          "sha256": "60fa3b973f6f68a367171336382d801404ee7b38c987c3b6a55c207086f736de"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libprotobuf-6.31.1-hfb7daa7_5.conda",
+          "size": 4204474,
+          "sha256": "b04322e2128684d4043e256f56b74528b0a0a296ba4a81299056ec04655a0580"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpsl-0.23.1-hd9e3e90_1.conda",
+          "size": 72519,
+          "sha256": "09e8effdc89bc5d021349318d32b85594f5b8d8e3ab8f90a85b81f8fe695a566"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libpython-3.12.16-ha57cdbe_0_cpython.conda",
+          "size": 8763999,
+          "sha256": "71126cad347dfd1be645b1207baa3729e64f055edb5f785dadeb84872480a015"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/librbio-4.3.4-hf02c80a_7100101.conda",
+          "size": 46633,
+          "sha256": "c502b4203cc0d38f49005994b5c80c89660bcd40ff170c529cda90827ec6b1f4"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libre2-11-2025.11.05-h7b12aa8_0.conda",
+          "size": 211099,
+          "sha256": "eb5d5ef4d12cdf744e0f728b35bca910843c8cf1249f758cf15488ca04a21dbb"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/librsvg-2.62.4-ha427ee3_0.conda",
+          "size": 4692221,
+          "sha256": "b8036adad17ceddcef416790131492fd236d34c64a0b2754934903087fa84279"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/librttopo-1.1.0-h55b0958_21.conda",
+          "size": 234367,
+          "sha256": "1a3c7f637bfac44e7afee097f08b5ae0c367194f9608daea314ab616dc7757e0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libsndfile-1.2.2-hc7d488a_2.conda",
+          "size": 355619,
+          "sha256": "57cb5f92110324c04498b96563211a1bca6a74b2918b1e8df578bfed03cc32e4"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libspatialite-5.1.0-gpl_h2abfd87_119.conda",
+          "size": 4097449,
+          "sha256": "403c1ad74ee70caaac02216a233ef9ec4531497ee14e7fea93a254a005ece88d"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libspex-3.2.3-h9226d62_7100101.conda",
+          "size": 79220,
+          "sha256": "24dffff614943c547ba094f8eb03b412a18cc4654663202f1aab9158bfa875ba"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libspqr-4.3.4-h23b7119_7100101.conda",
+          "size": 203419,
+          "sha256": "52851575496122f9088c9f5a4283da7fbb277d9a877b5ce60a939554df542f3c"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libsqlite-3.54.1-h13e7031_0.conda",
+          "size": 983668,
+          "sha256": "07b3c98282022f05781122d073f84e944bfb4299946e8457ece3ce6c384ff78e"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libssh2-1.11.1-h6154650_1.conda",
+          "size": 306045,
+          "sha256": "7e463000fa1cba3f3a6597b776f6ab301d425a96e3bc20d0d9d76a3b9f237aa3"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libstdcxx-16.2.0-h934c35e_7.conda",
+          "size": 6615436,
+          "sha256": "fa7018298629fc429971fffd6ecba3d27a7b02e4e890d6a93ea01ffebe8cb745"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libstdcxx-ng-16.2.0-hdf11a46_7.conda",
+          "size": 28665,
+          "sha256": "337f481db36cc357884f05f404ccd1b3a7e0fc1ee48ec5c884e4281d213bc863"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libsuitesparseconfig-7.10.1-h901830b_7100101.conda",
+          "size": 42708,
+          "sha256": "d8f32a0b0ee17fbace7af4bd34ad554cc855b9c18e0aeccf8395e1478c161f37"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libsystemd0-262.1-h26e0ef7_0.conda",
+          "size": 574718,
+          "sha256": "fc930c169a0844dcb1f3084032d3f4e53798b2f48d4c7f4a151a87012833008a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libthrift-0.22.0-h7d032f7_2.conda",
+          "size": 423861,
+          "sha256": "af6025aa4a4fc3f4e71334000d2739d927e2f678607b109ec630cc17d716918a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libtiff-4.7.2-hcc2c06a_1.conda",
+          "size": 459753,
+          "sha256": "10e125da82ca93e09191e66e5a94d566b2cf8d4024e2a0db3a9114297447e0d9"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libudev1-262.1-h26e0ef7_0.conda",
+          "size": 184945,
+          "sha256": "63bc48418ed3be6166c27f294504153bf3da8579aa5d565ae4fee8bdd1682e54"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libumfpack-6.3.5-h873dde6_7100101.conda",
+          "size": 404065,
+          "sha256": "9a2c0049210c0223084c29b39404ad6da6538e7a4d1ed74ee8423212998fd686"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libunwind-1.8.3-hd2e8b67_1.conda",
+          "size": 77572,
+          "sha256": "298ad2cd734582f2f21b4026fe8d1856b3b2e8d2a673a21a31b965adf3b54750"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/liburing-2.14-h4dbf13b_1.conda",
+          "size": 158988,
+          "sha256": "ae813e53b6e7bc8f06ae5a8c00be69b44e842366557641f91bf363db46322b5f"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libusb-1.0.30-h0d1bbbc_1.conda",
+          "size": 91155,
+          "sha256": "e4a2807bf3306672f2f91f481e347d8d5d24e786130123cffe36a3d0d282d87e"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libutf8proc-2.11.3-hfe17d71_0.conda",
+          "size": 85969,
+          "sha256": "ecbf4b7520296ed580498dc66a72508b8a79da5126e1d6dc650a7087171288f9"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libuuid-2.42.4-hcfc3c73_0.conda",
+          "size": 34442,
+          "sha256": "f34b8d1de9a2bf62476d8608057d9b8a918d97444236dc53a47128f2fae79041"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libuv-1.52.1-h280c20c_1.conda",
+          "size": 420040,
+          "sha256": "67761d0206f84140047a367eaf9befe03a7e157a29ee25aee0047b40801cc6b6"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libva-2.24.1-hb83e432_1.conda",
+          "size": 225085,
+          "sha256": "ce7fbe2855257467196613b9fa2bdedb36d4fc3419c43804e52cfe9eb094a35e"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libvorbis-1.3.7-h54a6638_2.conda",
+          "size": 285894,
+          "sha256": "ca494c99c7e5ecc1b4cd2f72b5584cef3d4ce631d23511184411abcbb90a21a5"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libvpl-2.15.0-h54a6638_1.conda",
+          "size": 287944,
+          "sha256": "bf0010d93f5b154c59bd9d3cc32168698c1d24f2904729f4693917cce5b27a9f"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libvpx-1.15.2-hd2095e1_1.conda",
+          "size": 1119517,
+          "sha256": "fa57017db022e72a4bf7f0136998340fff87a1f1304b4f6c91d9947ff2fdc9e4"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libvulkan-loader-1.4.357.0-h0e34353_2.conda",
+          "size": 206957,
+          "sha256": "a70c25b66321ee77f9892b205e3247263c400803f543dc8aca53d569a59c5a77"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libwebp-base-1.6.0-hd42ef1d_1.conda",
+          "size": 428430,
+          "sha256": "8415001414f488c85b72b9d8cc2071dfb3981a47bc3c8eb56ef91a57d12eae7f"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libxcb-1.17.0-hb83e432_2.conda",
+          "size": 395120,
+          "sha256": "7b49e6fd2a584b7f072943e6adf4149677af5121246975278804782d37752837"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libxcrypt-4.4.38-h280c20c_0.conda",
+          "size": 101957,
+          "sha256": "f7e9292dd219a6435bbb1223da9586c3e70d66d169c5a92f08db3f2127df04e9"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libxkbcommon-1.13.2-h59c2f34_2.conda",
+          "size": 945345,
+          "sha256": "156fdf41b9f3efc54c077b5b8570b810a87800b978c12348c27ec6e0ddc20359"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libxml2-16-2.15.4-hf3af7cc_1.conda",
+          "size": 569062,
+          "sha256": "d1906463070c21f3215cd5de93164f31c44d5bac6ae9b5d8f5adf42b1e304039"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libxml2-2.15.4-h7df9aa5_1.conda",
+          "size": 46570,
+          "sha256": "8c32be9e8720bc413d2b4267517459d7d71fad4a5f398a2aa8319b6d7b8a00e6"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libxml2-devel-2.15.4-h7df9aa5_1.conda",
+          "size": 80612,
+          "sha256": "0475554ae72a9c28e86c7f461a120c8a237df6811dcfbdf1aa5e9ce5cfd15d63"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libxslt-1.1.45-h8e12856_1.conda",
+          "size": 250314,
+          "sha256": "3beb51b5ce8d2e0690b8517d3d955972d502cfbe2899279cbb9cbb6ff134d360"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libzip-1.12.1-h6008cf6_0.conda",
+          "size": 116457,
+          "sha256": "1168d3f6b32868b7fb0a4f34239c3cfb1f8203203ce672b23c7dbdae5603f8cc"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/libzlib-1.3.2-h25fd6f3_3.conda",
+          "size": 63713,
+          "sha256": "eb8a0db0aa570124f7d2a93d7c7f596e3390df5e047818d873baad32985fc736"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/lz4-c-1.10.0-hee9eb32_2.conda",
+          "size": 181812,
+          "sha256": "b8c0e930183e6b7f83cd35ace102f2b8c2f0faae41dc05255dc72f247dfc556a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/lzo-2.10-hebe6cf0_1003.conda",
+          "size": 191573,
+          "sha256": "a0a1400198e5302d8367f2ed53437ee3cc41dbc463cb481921ce765578780b7a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/metis-5.1.0-h86e3903_1008.conda",
+          "size": 3956091,
+          "sha256": "c845827efbac5eaf722260493dbf06a520c89bf0d59c46605af72cb47c3f75e9"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/minizip-4.2.2-haac24f3_1.conda",
+          "size": 566663,
+          "sha256": "75384c7e6ea3cd72969c0163ec52ddaed08590bb292e959d1afd2a6ffcc237a6"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/mpfr-4.2.2-ha2cb11d_1.conda",
+          "size": 730409,
+          "sha256": "0be79ef2ee536e0c5d3ddb4a52bbae9f26d08560623299f33db2f4c4a17c525a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/mpg123-1.32.9-h8142553_0.conda",
+          "size": 487458,
+          "sha256": "72393d525761389d0225534d20f4cd917e255704f337f84939b74464d9bc6acb"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/muparser-2.3.5-hee9eb32_1.conda",
+          "size": 233133,
+          "sha256": "c9322797c769560e96025d294f0daacbcf7ed95ae68903dd2e398ffb87fa2c73"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/ncurses-6.6-hdb14827_1.conda",
+          "size": 911196,
+          "sha256": "5d46557214ed184381dafe835b7c94a474a1c3b307a08a250b1ea4779b44ffb3"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/ninja-1.13.2-h171cf75_1.conda",
+          "size": 186767,
+          "sha256": "2b5f2e865122f9fc0637f520a7cb22e16b9727b2db6761ee16cb5e6404412c81"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/nitro-2.7.dev8-h59595ed_0.conda",
+          "size": 731004,
+          "sha256": "80b125f82b1553ed00550a642dcaefb5f046d69f6d1eefa9ee3ac8d5b273e029"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/nlohmann_json-3.12.0-h54a6638_2.conda",
+          "size": 136372,
+          "sha256": "8f8b554c74b032b3e63a8828fb0ecc7ae4f5c5a6bd0afcf75423d5ff79290cb0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/nspr-4.40-h29cc59b_0.conda",
+          "size": 231356,
+          "sha256": "7cf473259ef9945ce19ecc898a2dd146cd32dc86099d87b86f79c5e5b0ef55f0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/nss-3.118-h445c969_0.conda",
+          "size": 2057773,
+          "sha256": "44dd98ffeac859d84a6dcba79a2096193a42fc10b29b28a5115687a680dd6aea"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/numpy-2.5.4-py312he827f4e_0.conda",
+          "size": 9240540,
+          "sha256": "8d562d8fcc44a93c65793a361f39a75712bb3cf2aa1d1a09bcc8ef072e54a1c3"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/ocl-icd-2.3.4-hb03c661_1.conda",
+          "size": 109598,
+          "sha256": "75f3bf733523a338f73d6c276c4a26634877cd970edb558f2769d9fa52b100a9"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/opencl-headers-2025.06.13-hecca717_0.conda",
+          "size": 55754,
+          "sha256": "8de2f0cd8a659b01abf86e7fbb8cea4f28ada62fd288429a2bbc040db1b98dd0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/openexr-3.4.15-ha9edf89_0.conda",
+          "size": 1226202,
+          "sha256": "20eb5025e7dabe02bc89bbdb325ab74cf9193314676775288a392df2edec130d"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/openh264-2.6.0-h8c49934_2.conda",
+          "size": 737036,
+          "sha256": "6d54eeb307488f725a8f14af955467249735fa69ffd822763e53784aff05b8a3"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/openjpeg-2.5.4-heb1ab33_2.conda",
+          "size": 391242,
+          "sha256": "131688a88bea8da92fe418c4558c5073435e2848911bc4c836c3a9dd5994b4aa"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/openjph-0.31.0-h8d634f6_0.conda",
+          "size": 295193,
+          "sha256": "3c7a4118c678c43952ea10183388f175a4bcee16a1c61d90dab2fbdafddc45d7"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/openldap-2.6.13-hbde042b_0.conda",
+          "size": 786149,
+          "sha256": "21c4f6c7f41dc9bec2ea2f9c80440d9a4d45a6f2ac13243e658f10dcf1044146"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/openmpi-5.0.11-hee33aa4_0.conda",
+          "size": 3987369,
+          "sha256": "14b0aac9c9253586558fdede5e0ccfaf3a359dd5c702514af642b96e1f3322f0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/openssl-3.6.5-h781a0a9_0.conda",
+          "size": 3195299,
+          "sha256": "9c1533f1cf784f0e250919c0c9762d0b0e6bc727a79290ffb7cea1ceca1d038c"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/orc-2.2.2-h19cb568_0.conda",
+          "size": 1317120,
+          "sha256": "84cfe4e11d3186c0c369f111700e978c849fb9e4ab7ed031acbe3663daacd141"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/pango-1.58.2-h2f58602_3.conda",
+          "size": 15014,
+          "sha256": "255c7311441dddee7858279b799156387a6719d3a114dce861cbf379f6fb9d6e"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/patchelf-0.19.2-hee9eb32_0.conda",
+          "size": 152126,
+          "sha256": "74ba13a7cd793cae441317d1963f824b1c45f49adde34f9801b3c766986592c5"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/pcre2-10.47-h8b3dc9c_1.conda",
+          "size": 1218833,
+          "sha256": "9ebb10a4eb3be51ae67d85c679f5a7a50cb040ed25c783e6331a225ea09991d4"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/perl-5.32.1-10_h7cc23a3_perl5.conda",
+          "size": 13478478,
+          "sha256": "6ab2c89273347c20144c20691f98c3721e930af38e801ec16c737d2e24406010"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/pixman-0.46.4-h54a6638_3.conda",
+          "size": 376704,
+          "sha256": "829d8288764282de5a9f7b9169acb75cc7dc0b6c3fe2535cfe87dea3436bbc5d"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/pkg-config-0.29.2-h1114479_1013.conda",
+          "size": 141376,
+          "sha256": "8f27ee1b6166c5be505dba4b0dd0f3b3b81ddec811f6118cc337b90cbd3937a4"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/poppler-25.12.0-hf9ef692_0.conda",
+          "size": 1990451,
+          "sha256": "85f68ea8c8808fa0c81976832b81423d6e0e2dd6abe59651ea071a9e67822d19"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/postgresql-18.6-hcb5e64f_3.conda",
+          "size": 5855060,
+          "sha256": "e764d45ed304b00810b66aed3dda1cabfe81e724455ad91217fcb83fc3f9f5c5"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/proj-9.7.1-he0df7b0_3.conda",
+          "size": 3593669,
+          "sha256": "c94d3d8ef40d1ea018860d66c416003bc03adede7d212efc9218bb64041fe2f7"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/prometheus-cpp-1.3.0-h26ae035_1.conda",
+          "size": 195623,
+          "sha256": "a8114acfa58fe3c3f7d7c5cc5212db82d013aa1037ecf6fd28a76ed51d0e5841"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/pthread-stubs-0.4-h7cc23a3_1004.conda",
+          "size": 9630,
+          "sha256": "4a44fd00ea73b79ca2c89b0727b9ccf61c506ead71e67a9abfa4c590042b5a4a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/pugixml-1.15-h3f63f65_0.conda",
+          "size": 118488,
+          "sha256": "23c98a5000356e173568dc5c5770b53393879f946f3ace716bbdefac2a8b23d2"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/pulseaudio-client-17.0-hb10c1b2_4.conda",
+          "size": 754544,
+          "sha256": "a044cfac9027a058bd6e59b6a514a6f08d735c85156bd30d577a5fd07f87581f"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/python-3.12.16-h5f976f7_0_cpython.conda",
+          "size": 22997826,
+          "sha256": "a40188b47c3995bc42a33820be4d780af5c11cc295409413fb925549f0abfe92"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/python-pdal-3.5.3-np2py312hadcd02a_4.conda",
+          "size": 412900,
+          "sha256": "7ad04dcb7a34dd4e4ffeb94e02f9c26d340d39f184cbc6125d814b8ccef7cdaa"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/pyyaml-6.0.3-py312h8a5da7c_1.conda",
+          "size": 198293,
+          "sha256": "cb142bfd92f6e55749365ddc244294fa7b64db6d08c45b018ff1c658907bfcbf"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/qt6-main-6.10.2-pl5321h16c4a6b_6.conda",
+          "size": 58118322,
+          "sha256": "dd2fdde2cfecd29d4acd2bacbb341f00500d8b3b1c0583a8d92e07fc1e4b1106"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/rattler-build-0.68.0-ha759004_0.conda",
+          "size": 19494680,
+          "sha256": "0627d021b37293211bf843dd3b1e91ea1689143f61cade4ea83eb0126053551f"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/rav1e-0.8.1-hbab41bb_1.conda",
+          "size": 5207447,
+          "sha256": "6887a0689c6e563a77218e23b2a2ff4b8a10e9de85e41dace6a384c8d4f1c413"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/rdma-core-65.0-h7b4f2e6_0.conda",
+          "size": 1321393,
+          "sha256": "2da73957fc57eb46efc0d42bb8d73fa3bf36ea98c02a31ce17de06a40d2a1884"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/re2-2025.11.05-h5301d42_0.conda",
+          "size": 27316,
+          "sha256": "2f225ddf4a274743045aded48053af65c31721e797a45beed6774fdc783febfb"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/readline-8.3-hd6e31c0_1.conda",
+          "size": 348899,
+          "sha256": "01b3fe073a66e321970d09e04b388708f8cbdca5cdfbfcb7c9eeb470ad10383d"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/repodata.json",
+          "size": 264966,
+          "sha256": "9baffa081b0f273a75074475e8b1450958f2cf105a55104972ecf4a213ef9ddd"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/rhash-1.4.6-hb03c661_2.conda",
+          "size": 194994,
+          "sha256": "186a5b225077ad5f4656966da947d43307101950751ef4a239b455588756b4e1"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/s2n-1.6.2-he8a4886_1.conda",
+          "size": 394197,
+          "sha256": "dec76e9faa3173579d34d226dbc91892417a80784911daf8e3f0eb9bad19d7a6"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/sdl2-2.32.56-h54a6638_0.conda",
+          "size": 589145,
+          "sha256": "987ad072939fdd51c92ea8d3544b286bb240aefda329f9b03a51d9b7e777f9de"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/sdl3-3.4.18-h5330f5c_0.conda",
+          "size": 2153112,
+          "sha256": "4000b4e37255d86095e3a0eb5ebaab7f330c0b47f816b0a2a01f533a171def78"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/shaderc-2025.5-h718be3e_1.conda",
+          "size": 113513,
+          "sha256": "0c2d6f24ee2b614ee1da4d7d99cc9944ea1ace65455a47d48d8c1f726317168a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/shellcheck-0.11.0-hfc2019e_2.conda",
+          "size": 2973063,
+          "sha256": "0f2a8f55cd54eefdc428cb9699d14725502e4a61d9aecb6f3bc2f22e3bb7ba96"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/snappy-1.2.2-h34e00bb_2.conda",
+          "size": 45695,
+          "sha256": "8635d10c7f127808b09c0c8e77b21a255829e0934e49326548c949f7e0551f09"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/spdlog-1.17.0-hb6aa676_2.conda",
+          "size": 197438,
+          "sha256": "5fca627690d56c6f87a9dabafceee54cb75d7da392309bb080333948c048365a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/spirv-tools-2026.4-h7148c6a_2.conda",
+          "size": 2433353,
+          "sha256": "e8791349946b2c98ffa5cc67cf1525931e066aef8a01800d6f7c151444a3f052"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/sqlite-3.54.1-h9ffa6c4_0.conda",
+          "size": 219640,
+          "sha256": "75d479f5eef99880e81f4502376ace68b6920c02b28212e318f1b5c017c71f1a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/suitesparse-7.10.1-h5b2951e_7100101.conda",
+          "size": 12135,
+          "sha256": "7c1c5bd2ba8385202ac3cb4c9c7f9bb87a2e677e977afd72c910314c014b28be"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/svt-av1-4.0.1-hecca717_0.conda",
+          "size": 2619743,
+          "sha256": "4a1d2005153b9454fc21c9bad1b539df189905be49e851ec62a6212c2e045381"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/taplo-0.10.0-h2d90d6e_2.conda",
+          "size": 4059385,
+          "sha256": "712373761f69efc4f5c6752210f73d508c1ea77df39b6cee8f83e11aed32fcae"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/tbb-2023.1.0-hfd44327_0.conda",
+          "size": 187290,
+          "sha256": "ea35780ec77e2431bcfc193e75ddcc3ec1ae79a34464469b0b2186d93035c9e7"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/tbb-devel-2023.1.0-hfd44327_0.conda",
+          "size": 1149473,
+          "sha256": "3864611b51536ee003ff0bcdd34c14d2f5f5a85e9f0f5d9dd2991b1d3f47dbb0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/tiledb-2.30.0-h0ae08fb_6.conda",
+          "size": 4405058,
+          "sha256": "b40b8a5754ace5ae8ede2cb72d1967c17d8e2f4c5573e4a98876c5d787f71272"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/tk-8.6.13-noxft_h1df4ec4_4.conda",
+          "size": 3566806,
+          "sha256": "a1a241d172c1ccab067ba245206dd048bc3c2d1b84504b53c9468e99adfc16a1"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/tzcode-2026e-hebe6cf0_0.conda",
+          "size": 71773,
+          "sha256": "7167bd77f9aa78d58c8cd13de97511c8131b51c6c81e184dc38f3f7a6d51eac4"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/ucc-1.8.0-h539fd1b_2.conda",
+          "size": 12957132,
+          "sha256": "073f75becf0aade3d7a6606609630dd0fef1aa37a9a73a34c8c7ced6b75c5b2e"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/ucx-1.22.0-h6cc3e34_1.conda",
+          "size": 9343926,
+          "sha256": "e8fb16ed2033c66bc81fb36003e8bc0a21db9232aa5fec8f3a7ae5bd97e5085c"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/uriparser-0.9.8-hac33072_0.conda",
+          "size": 48270,
+          "sha256": "2aad2aeff7c69a2d7eecd7b662eef756b27d6a6b96f3e2c2a7071340ce14543e"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/wayland-1.26.0-hc1c935e_2.conda",
+          "size": 340058,
+          "sha256": "df65b987979e6d7f88e756494da5a230d4f2d08d17437d04eecd35559c3a04e4"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/x264-1!164.3095-pl5321h63c0a64_3.conda",
+          "size": 782067,
+          "sha256": "4a9f0f54bc10d3bf2e0bde433672942be0bc7f561457b7902a44fbb8d51d3efb"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/x265-3.5-h73f68a7_4.conda",
+          "size": 2237095,
+          "sha256": "fbf129786d8ed8949bddad9959c5edae25dc968efbe43a6567625f66d4bcf3b2"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xcb-util-0.4.1-h4f16b4b_2.conda",
+          "size": 20772,
+          "sha256": "ad8cab7e07e2af268449c2ce855cbb51f43f4664936eff679b1f3862e6e4b01d"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xcb-util-cursor-0.1.6-hb03c661_0.conda",
+          "size": 20829,
+          "sha256": "c2be9cae786fdb2df7c2387d2db31b285cf90ab3bfabda8fa75a596c3d20fc67"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xcb-util-image-0.4.0-hb711507_2.conda",
+          "size": 24551,
+          "sha256": "94b12ff8b30260d9de4fd7a28cca12e028e572cbc504fd42aa2646ec4a5bded7"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xcb-util-keysyms-0.4.1-hb711507_0.conda",
+          "size": 14314,
+          "sha256": "546e3ee01e95a4c884b6401284bb22da449a2f4daf508d038fdfa0712fe4cc69"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xcb-util-renderutil-0.3.10-hb711507_0.conda",
+          "size": 16978,
+          "sha256": "2d401dadc43855971ce008344a4b5bd804aca9487d8ebd83328592217daca3df"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xcb-util-wm-0.4.2-hb711507_0.conda",
+          "size": 51689,
+          "sha256": "31d44f297ad87a1e6510895740325a635dd204556aa7e079194a0034cdd7e66a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xerces-c-3.3.0-h78fed68_2.conda",
+          "size": 1675829,
+          "sha256": "1acbd62b33b6efc985f70e0b9f0013ca18fcef2df5a18edb1c81a6b63ad20dc0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xkeyboard-config-2.48-hebe6cf0_1.conda",
+          "size": 441638,
+          "sha256": "5d803109509756b39e018b780746ed4210cff640eb428fd58fa6c64c9c15ae6b"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xorg-libice-1.1.2-h280c20c_0.conda",
+          "size": 62517,
+          "sha256": "49b532d1df875c6749d9078b56a76f3f5db49a5abe0ca620b593ed474ef0ebf1"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xorg-libsm-1.2.6-h0d788c3_1.conda",
+          "size": 30739,
+          "sha256": "ef907caee0665cf3b0f775602cc50e388e3bade8ce22ecade0873ff26604b2fd"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xorg-libx11-1.8.14-hb83e432_0.conda",
+          "size": 846774,
+          "sha256": "1815dc9900bf3a4678caeb343bccbbc74cd5e5a5ff3f6e0a2c01c5e19cd9d30b"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xorg-libxau-1.0.12-h7cc23a3_2.conda",
+          "size": 18793,
+          "sha256": "3ec065b94554dc48a4ca582a960a5484bc166b26e83ce0954653e08d17e8bd53"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xorg-libxcomposite-0.4.7-hb03c661_0.conda",
+          "size": 14415,
+          "sha256": "048c103000af9541c919deef03ae7c5e9c570ffb4024b42ecb58dbde402e373a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xorg-libxcursor-1.2.3-hb9d3cd8_0.conda",
+          "size": 32533,
+          "sha256": "832f538ade441b1eee863c8c91af9e69b356cd3e9e1350fff4fe36cc573fc91a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xorg-libxdamage-1.1.6-hb9d3cd8_0.conda",
+          "size": 13217,
+          "sha256": "43b9772fd6582bf401846642c4635c47a9b0e36ca08116b3ec3df36ab96e0ec0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xorg-libxdmcp-1.1.5-h7cc23a3_2.conda",
+          "size": 22606,
+          "sha256": "8a095df9bc1d2e50f2504ce8858a047ae29ea634aad6cc0b43298c63361da6d9"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xorg-libxext-1.3.7-h7cc23a3_1.conda",
+          "size": 53124,
+          "sha256": "aa9bbe8b278aacc194e280ff5037f9f9a1f2c5b33ed97de8e7f01cfbe90dda43"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xorg-libxfixes-6.0.2-h7cc23a3_1.conda",
+          "size": 21440,
+          "sha256": "aec84f554fc897bf4085c7bc8b8f0740e4c224e13bca3cc51c93e7699d56f83a"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xorg-libxi-1.8.4-h7cc23a3_0.conda",
+          "size": 49659,
+          "sha256": "bb12543188be23b6e16e478d8b550d4e60bb52dc9c6f0667a5c865ceb3e7a881"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xorg-libxrandr-1.5.5-h7cc23a3_1.conda",
+          "size": 31106,
+          "sha256": "05a7f25d7f7f5cd32b27a019233ece97167fd8ade255bc13a0e49e53387f4c30"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xorg-libxrender-0.9.13-h7cc23a3_0.conda",
+          "size": 34604,
+          "sha256": "008d610d6ec1d021ad678024afd5dcf534ff84d9c1e9d2877ff36d112c89896f"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xorg-libxscrnsaver-1.2.4-hb9d3cd8_0.conda",
+          "size": 14412,
+          "sha256": "58e8fc1687534124832d22e102f098b5401173212ac69eb9fd96b16a3e2c8cb2"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xorg-libxtst-1.2.6-h7cc23a3_0.conda",
+          "size": 34918,
+          "sha256": "9d8e7a2db860da3f362284650b447a96688b834bdb3122707b04bae512a1a178"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/xorg-libxxf86vm-1.1.7-hb03c661_0.conda",
+          "size": 18701,
+          "sha256": "64db17baaf36fa03ed8fae105e2e671a7383e22df4077486646f7dbf12842c9f"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/yaml-0.2.5-hebe6cf0_3.conda",
+          "size": 84936,
+          "sha256": "d164dfa75ecd538f6fd68765defcc06aa875bc697b9b215362d79a2a73125dd0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/zlib-1.3.2-h25fd6f3_3.conda",
+          "size": 96132,
+          "sha256": "16080a1c7724f7d25727cdc23c7658e0cec2db52448c1dc0c33467ee2c6e1c62"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/zlib-ng-2.3.3-hce19668_1.conda",
+          "size": 123959,
+          "sha256": "8b786bb4380fa69a718b08a400040b865bc9207eda337e0a1955717c3c3a9403"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/zstandard-0.25.0-py312h1b36aeb_4.conda",
+          "size": 466862,
+          "sha256": "a3183adc689cfafdaa7e6a21a2c9174894125fc838cb538955246c6543e5b8da"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/linux-64/zstd-1.5.7-hb78ec9c_7.conda",
+          "size": 601301,
+          "sha256": "47d682b9f6d6ec9eb1a6e6c3e75ea6273e899e78fb7fc59f81d39745009fbc60"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/attrs-26.1.0-pyhcf101f3_0.conda",
+          "size": 64927,
+          "sha256": "1b6124230bb4e571b1b9401537ecff575b7b109cc3a21ee019f65e083b8399ab"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/ca-certificates-2026.10.23-hbd8a1cb_0.conda",
+          "size": 130057,
+          "sha256": "95619b9c1184be7175392eeb0ee7eeb5ccf25d280951f4225f2d62e725790be3"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/click-8.5.0-pyh5ded981_0.conda",
+          "size": 112341,
+          "sha256": "9afb0c2c089330321a219c7ee5a25313bd574d4024be606cbb33e7a5735df662"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/colorama-0.4.6-pyhd8ed1ab_1.conda",
+          "size": 27011,
+          "sha256": "ab29d57dc70786c1269633ba3dff20288b81664d3ff8d21af995742e2bb03287"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/exceptiongroup-1.3.1-pyhd8ed1ab_0.conda",
+          "size": 21333,
+          "sha256": "ee6cf346d017d954255bbcbdb424cddea4d14e4ed7e9813e429db1d795d01144"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/font-ttf-dejavu-sans-mono-2.37-hab24e00_0.tar.bz2",
+          "size": 397370,
+          "sha256": "58d7f40d2940dd0a8aa28651239adbf5613254df0f75789919c4e6762054403b"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/font-ttf-inconsolata-3.000-h77eed37_0.tar.bz2",
+          "size": 96530,
+          "sha256": "c52a29fdac682c20d252facc50f01e7c2e7ceac52aa9817aaf0bb83f7559ec5c"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/font-ttf-source-code-pro-2.038-h77eed37_0.tar.bz2",
+          "size": 700814,
+          "sha256": "00925c8c055a2275614b4d983e1df637245e19058d79fc7dd1a93b8d9fb4b139"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/font-ttf-ubuntu-0.83-h77eed37_3.conda",
+          "size": 1620504,
+          "sha256": "2821ec1dc454bd8b9a31d0ed22a7ce22422c0aef163c59f49dfdf915d0f0ca14"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/fonts-conda-ecosystem-1-0.tar.bz2",
+          "size": 3667,
+          "sha256": "a997f2f1921bb9c9d76e6fa2f6b408b7fa549edd349a77639c9fe7a23ea93e61"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/fonts-conda-forge-1-hc364b38_1.conda",
+          "size": 4059,
+          "sha256": "54eea8469786bc2291cc40bca5f46438d3e062a399e8f53f013b6a9f50e98333"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/hypothesis-6.155.1-pyha770c72_0.conda",
+          "size": 388604,
+          "sha256": "1380a8579ff37c5621ad5f8f9e905b12631dc6dbf1abb353d81b08f7397ca5c0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/iniconfig-2.3.1-pyhd8ed1ab_0.conda",
+          "size": 14485,
+          "sha256": "8f53876d0fb3525235e39635dd55633abe0a4307b1b3ab1415c80a9e0bbdf663"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/mpi-1.0.1-openmpi.conda",
+          "size": 6571,
+          "sha256": "e1698675ec83a2139c0b02165f47eaf0701bcab043443d9008fc0f8867b07798"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/packaging-26.3-pyhc364b38_0.conda",
+          "size": 116363,
+          "sha256": "c432626b16768b8dab228bfb706f7060c2d462a21c516d240f68f2f902b5a044"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/pdal-2.10.0-hc364b38_1.conda",
+          "size": 3606,
+          "sha256": "3100b7875fbfca3d9f7875e221033422ac62168ddfda586614218f4a2b9dd51e"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/pluggy-1.7.0-pyh5ded981_0.conda",
+          "size": 30111,
+          "sha256": "34c40106bc3172b3a47656e84837e13a5d4829d413d65f30fb214e7568a09cea"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/poppler-data-0.4.12-hd8ed1ab_0.conda",
+          "size": 2348171,
+          "sha256": "2f227e17b3c0346112815faa605502b66c1c4511a856127f2899abf15a98a2cf"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/pycparser-3.12-pyh5ded981_1.conda",
+          "size": 68212,
+          "sha256": "eefb1b2140c1a6c33a85186f954e857e1a824365deeda4e11db9b99c1b5950aa"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/pygments-2.21.0-pyhcf101f3_0.conda",
+          "size": 959376,
+          "sha256": "f5f015ff1bc3e1b7fc08eee096b1865234189ae0b82bebdb86a5369116e42fa0"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/pytest-9.1.1-pyhc364b38_2.conda",
+          "size": 306724,
+          "sha256": "430051d80765207a7d782b2b188230ba1489d35c6e75fd9903f76cb9fda4af16"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/python_abi-3.12-9_cp312.conda",
+          "size": 6751,
+          "sha256": "ee9c2922e07afc85fc82d5fa82c9ac2c79da3be3283a5e17bf2f2ae38dbd02fb"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/repodata.json",
+          "size": 15814,
+          "sha256": "652a6d0e0a7e5d67022e76410557ba3566d34e4b37f6e0ff7c827cf92ad7da8f"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/setuptools-84.2.1-pyhe730653_0.conda",
+          "size": 567436,
+          "sha256": "17add609d1a31c874e39a03935072be59bcafb06d42383eceabea746d12e6025"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/sortedcontainers-2.4.0-pyhd8ed1ab_1.conda",
+          "size": 28657,
+          "sha256": "d1e3e06b5cf26093047e63c8cc77b70d970411c5cbc0cb1fad461a8a8df599f7"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/tomli-2.5.0-pyh5ded981_0.conda",
+          "size": 21687,
+          "sha256": "93b6f517fb7adff00b62be02b798d384a1b34d0e368fdb576fb248bcb3bb9ec7"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/typing_extensions-4.16.0-pyhcf101f3_0.conda",
+          "size": 52631,
+          "sha256": "2d888f90af0686044882c74193ec80a90ec1943145d94a7b1b048958acda1848"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/tzdata-2026e-h5d301ff_0.conda",
+          "size": 119208,
+          "sha256": "2b7ca858879f183ce2dcc65b300f48a0133d5430550f35b23d80d405a0788dbf"
+        },
+        {
+          "path": "envs/odm-dev/pack/channel/noarch/wayland-protocols-1.49-hd8ed1ab_0.conda",
+          "size": 147954,
+          "sha256": "04ce686cd187d379344f9b2be7b4da5f431b265dc0944a6b764fab9da9171948"
+        },
+        {
+          "path": "envs/odm-dev/pack/environment.yml",
+          "size": 12192,
+          "sha256": "93479bf0f8421f6b81460e7582e26cb8cc6b4350fe97c7414aef9234ca73c615"
+        },
+        {
+          "path": "envs/odm-dev/pack/files.json",
+          "size": 10273308,
+          "sha256": "2e32fe9909fc297ac26134077bbd47ac19c14332ebc9a732e7f07674a6c0bf8d"
+        },
+        {
+          "path": "envs/odm-dev/pack/pixi-pack.json",
+          "size": 46,
+          "sha256": "193554675661d32afa441686ae8ad9379012d6d1a4088f29c4937b3c00bcd629"
+        }
+      ],
+      "files": {
+        "blob": {
+          "path": "envs/odm-dev/pack/files.json",
+          "size": 10273308,
+          "sha256": "2e32fe9909fc297ac26134077bbd47ac19c14332ebc9a732e7f07674a6c0bf8d"
+        },
+        "entries": 68962
+      }
+    }
+  }
+}
