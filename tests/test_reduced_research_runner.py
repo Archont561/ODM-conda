@@ -2,10 +2,12 @@ from pathlib import Path
 from common import ROOT
 
 
-def test_reduced_recipe_differs_only_in_builder():
+def test_reduced_recipe_differs_only_in_builder_and_research_identity():
     full = (ROOT/'research/recipes/openmvs-odm/recipe.yaml').read_text()
     reduced = (ROOT/'research/recipes/openmvs-odm/reduced.yaml').read_text()
-    assert reduced == '# Local-only reduced-tree build; no release approval.\n' + full.replace('../../../scripts/build_open_research.py', '../../../scripts/build_openmvs_reduced.py')
+    expected = full.replace('../../../scripts/build_open_research.py', '../../../scripts/build_openmvs_reduced.py')
+    expected = expected.replace('build:\n  number: 4\n', 'build:\n  number: 4\n  string: research_${{ hash }}_4\n')
+    assert reduced == '# Local-only reduced-tree build; no release approval.\n' + expected
 
 
 def test_runner_uses_reduced_recipe_and_individual_audits(monkeypatch, tmp_path):

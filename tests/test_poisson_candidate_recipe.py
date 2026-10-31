@@ -18,7 +18,7 @@ def test_prepare_rewrites_recipe_and_provenance_without_touching_original(tmp_pa
     packaging = tmp_path / 'packaging'
     recipe = packaging / 'recipes/poissonrecon-odm/recipe.yaml'
     recipe.parent.mkdir(parents=True)
-    recipe.write_text('source:\n  url: https://codeload.github.com/OpenDroneMap/PoissonRecon/tar.gz/97caa6d34d1b05b59888bed019dea89ced74445e\n  sha256: ${{ source_sha256 }}\n')
+    recipe.write_text('source:\n  url: https://codeload.github.com/OpenDroneMap/PoissonRecon/tar.gz/97caa6d34d1b05b59888bed019dea89ced74445e\n  sha256: ${{ source_sha256 }}\nbuild:\n  number: 3\n')
     builder = packaging / 'scripts/build_component.py'
     builder.parent.mkdir()
     builder.write_text('def main():\n    pass\n\n\nif __name__ == "__main__":\n    main()\n')
@@ -27,6 +27,7 @@ def test_prepare_rewrites_recipe_and_provenance_without_touching_original(tmp_pa
     candidate.make_candidate(original, archive, root=packaging)
     destination = tmp_path / 'prepared'
     info = prepare(archive, destination, original, root=packaging)
+    assert 'string: research_${{ hash }}_3' in (destination / 'packaging/recipes/poissonrecon-odm/recipe.yaml').read_text()
     generated = (destination / 'packaging/recipes/poissonrecon-odm/recipe.yaml').read_text()
     assert str(destination / 'source') in generated
     assert 'codeload.github.com' not in generated and 'sha256: ${{ source_sha256 }}' not in generated

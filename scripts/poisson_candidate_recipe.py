@@ -89,6 +89,10 @@ def prepare(candidate: Path, destination: Path, original: Path, root: Path = ROO
             # JSON quoting is valid YAML and avoids path quoting/injection errors.
             text = text.replace(old_url, '  path: ' + json.dumps(str((destination / 'source').resolve())) + '\n').replace(old_sha, '')
             text = text.replace('  source_sha256: "88743428a97cbeed7d55e713fcfa42caebbfb7dcb2467d68899bd8feab95364b"\n', '')
+            marker = 'build:\n  number: 3\n'
+            if text.count(marker) != 1:
+                raise ScaffoldError('Unexpected Poisson build identity')
+            text = text.replace(marker, marker + '  string: research_${{ hash }}_3\n')
             recipe.write_text('# LOCAL RESEARCH ONLY - not a distributable recipe\n' + text)
             builder = destination / 'packaging/scripts/build_component.py'
             script = builder.read_text()

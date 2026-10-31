@@ -1,0 +1,42 @@
+# Local research only: source-built candidate, not approved for distribution.
+schema_version: 1
+package:
+  name: odm-research-pyodm
+  version: "1.5.12"
+source:
+  url: https://files.pythonhosted.org/packages/0c/c0/cf79538d68a6d5d1eba7dc4024d89a05c8e0f5c27eaa0cd3d59891b51630/pyodm-1.5.12.tar.gz
+  sha256: d0433182ac6d5587786391c91d0eeafe0d78c71d618336af78964620dafe87c4
+build:
+  number: 1
+  string: research_${{ hash }}_1
+  skip: target_platform != "linux-64"
+  script:
+    interpreter: python
+    content: |
+      import os, subprocess, sys
+      subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--no-index', '--no-build-isolation', '--prefix', os.environ['PREFIX'], os.environ['SRC_DIR']], check=True)
+requirements:
+  build:
+    - python >=3.12,<3.13
+    - pip
+    - setuptools >=64
+    - wheel
+  host:
+    - python >=3.12,<3.13
+  run:
+    - python >=3.12,<3.13
+    - requests
+    - requests-toolbelt
+    - urllib3
+tests:
+  - script:
+      interpreter: python
+      content: |
+        import pyodm
+    requirements:
+      run:
+        - python >=3.12,<3.13
+about:
+  homepage: https://github.com/OpenDroneMap/PyODM
+  summary: Private research source build, not approved for distribution
+  license: LicenseRef-Unreviewed

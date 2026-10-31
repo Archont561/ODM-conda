@@ -1,0 +1,56 @@
+# Private prototype: source-based research inputs, not a source-complete release.
+schema_version: 1
+package:
+  name: odm-fast-research
+  version: "3.6.2"
+source:
+  url: https://codeload.github.com/OpenDroneMap/ODM/tar.gz/47f41f1f2d09f7c15dff33dd3c15ab29c8a97d45
+  sha256: 5bdf8fe81b9ca47714e8a474139fd206b8090ac4315c2f530a58fcaef29cde5e
+  patches:
+    - patches/0001-prefix.patch
+build:
+  number: 2
+  skip: target_platform != "linux-64"
+  python:
+    skip_pyc_compilation:
+      - share/odm-conda/**/*.py
+  script:
+    file: ../../../scripts/build_odm_research.py
+    interpreter: python
+requirements:
+  build:
+    - python >=3.12,<3.13
+  run:
+    - python >=3.12,<3.13
+    - odm-research-pyodm ==1.5.12 research_*_1
+    - odm-research-pysolar ==0.13 research_*_1
+    - odm-research-pillow-jxl-plugin ==1.3.4 research_*_1
+    - odm-research-pygltflib ==1.16.5 research_*_1
+    - odm-research-codem ==0.26.1 research_*_1
+    - opensfm-scoped-odm ==0.5.2 research_*
+    - openmvs-odm ==0.0.0.dev20260516 research_*
+    - poissonrecon-odm ==13.8 research_*
+    - fpcfilter ==0.2
+    - dem2points ==0.0.0.dev20220721
+    - fastrasterfilter ==1.0
+    - renderdem ==1.0
+    - mvs-texturing-odm ==0.0.0.dev20250818
+    - odm-orthophoto ==0.0.0.dev20250225 research_*
+    - pdal
+    - python-pdal
+    - gdal
+    - exiftool
+    - scikit-image
+    - scikit-learn
+    - shapely
+    - fiona
+    - edt
+    - piexif
+    - trimesh
+    - onnxruntime
+    - packaging
+    - libopenvino >=2026.0
+about:
+  homepage: https://github.com/OpenDroneMap/ODM
+  summary: Private fast-orthophoto research candidate; not for distribution
+  license: LicenseRef-Unreviewed
