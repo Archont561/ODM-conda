@@ -53,12 +53,18 @@ def test_workflow_has_boolean_checkboxes_for_every_implemented_component():
     data = yaml.safe_load((ROOT / '.github/workflows/build.yml').read_text())
     dispatch = data.get('on', data.get(True))['workflow_dispatch']['inputs']
     names = {name.replace('-', '_'): name for name in config()['components']}
-    assert set(dispatch) == set(names)
+    assert set(dispatch) == set(names) | {"odm"}
     assert all(item['type'] == 'boolean' and item['default'] is False for item in dispatch.values())
     job = data['jobs']['build']
     for input_name in names:
         key = 'SELECT_' + input_name.upper()
         assert job['env'][key] == '${{ inputs.' + input_name + ' }}'
+    assert '!inputs.odm' in job['if']
+    assert all(f'inputs.{name}' in job['if'] for name in names)
+    research = data['jobs']['odm-research']
+    assert research['if'] == '${{ inputs.odm }}'
+    assert not any('upload-artifact' in step.get('uses', '') for step in research['steps'])
+    assert 'pixi run python scripts/run_private_odm_workflow.py' in [step.get('run') for step in research['steps']]
     commands = [step.get('run') for step in job['steps']]
     assert 'pixi run build --workflow-checkboxes' in commands
     for task in ('test', 'audit', 'sources'):

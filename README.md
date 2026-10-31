@@ -48,7 +48,7 @@ pixi run audit --component fpcfilter
 pixi run sources --component fpcfilter
 ```
 
-Native builds need source and Conda dependency access. `pixi run check` does not compile components. The owner-dispatched **Build and test native components** workflow supports selecting multiple recipes; it does not publish them.
+Native builds need source and Conda dependency access. `pixi run check` does not compile components. The owner-dispatched **Build and test native components** workflow supports selecting multiple recipes. Its ODM checkbox runs a separate private research build and replay without uploading its outputs; it does not publish them.
 
 ## Documentation
 
