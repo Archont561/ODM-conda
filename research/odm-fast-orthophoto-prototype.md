@@ -625,7 +625,9 @@ release or corresponding-source offer**. It attempts the fifteen source-built
 private packages, creates a local channel, and retains a Pixi manifest and lock
 only in a new owner-controlled directory outside the checkout. It checks the
 channel package hashes, lock selection, a relocated locked installation and the
-installed Conda inventory. An optional dataset runs in a temporary copy; derived
+installed Conda inventory. New bundles retain `conda-inventory.json` under the
+same private access control, hash it in the bundle manifest, and compare it on
+replay. Older schema-1 bundles do not include that retained inventory. An optional dataset runs in a temporary copy; derived
 imagery is discarded. Source builds and conda-forge downloads require network
 access; the bundle does **not** retain all sources, conda-forge packages, build
 tools or transitive dependencies and is not an offline or bit-reproducible build.

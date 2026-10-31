@@ -113,3 +113,38 @@ See the [publishing guide](../backlog/docs/guides/doc-7%20-%20Publish-to-the-exi
 [Poisson review](poissonrecon-readiness-review.md), and
 [texturing review](mvs-texturing-license-review.md) for detailed evidence and
 unresolved questions. No release gates are changed by this inventory.
+
+## Proposed scope and source-rights decisions (2026-10-31)
+
+For planning, use the already-tested **linux-64 CPU fast-orthophoto** path,
+with the 15 candidate package families above and the external conda-forge
+stack. This is a proposed minimum scope, not an owner approval or a promise
+of full ODM functionality. The exact package builds and external dependency
+versions are not frozen until an owner-controlled bundle and lock are created
+and reviewed. The Seneca processing result is technical evidence only; it is
+not rights clearance or proof of geographic accuracy.
+
+The private bundle builder now retains a `conda-inventory.json` alongside its
+manifest, lock and channel, covered by the bundle manifest. A relocated replay
+compares installed identity, version, build, SHA256 and sanitized binary URL
+against that inventory. Previous schema-1 bundles without an inventory remain
+replayable but do not receive this additional comparison. Inventory metadata
+is not proof of installed file bytes, complete source, distribution rights, or
+legal obligations. Run the documented build on owner-controlled storage to
+actually retain the lock, inventory and private binaries; the automated GitHub
+workflow intentionally discards them. The updated inventory retention path has
+unit tests but has not yet completed a new full hosted source build.
+
+| Decision | Evidence established | Still needed before release |
+| --- | --- | --- |
+| OpenMVS restricted original archive | A fingerprinted local reduced tree builds and tests without named IBFS/TRWS inputs; the original archive remains required by the current preparation. See [reduced-tree experiment](open-components-license-review.md#reproducible-local-only-reduced-tree-2026-10-29). | A qualified reviewer and, where necessary, rights holders must determine whether the exact original inputs and/or a reduced source distribution may be used and shared, on what terms. If not, select a legally usable alternative and rebuild/revalidate. The reproducible transformation does not itself grant permission. |
+| OpenMVS corresponding source and dependencies | Candidate transformation records retained paths and hashes; build/link and notice evidence are bounded. | Decide the exact distributable source set, obtain its required permissions, verify all patches, build instructions, Boost/CGAL/VCG/Eigen and other required inputs and notices, and test reconstruction from that set. |
+| OpenSfM source and assets | The local scoped candidate removes specified pinned assets and uses runtime guards. | Determine rights for the actual retained code, data and dependencies, including sensor database provenance and vmem terms; confirm the stripped assets are genuinely absent from the final distributed set and that reduced scope meets the product requirements. Removing uncertain assets does not clear remaining material. |
+| OpenSfM corresponding source | Original archive, candidate transformation and some dependency inputs are pinned; the research candidate explicitly is not a source offer. | Review the exact source graph, additional sources, modifications, scripts, runtime guard, build and packaging instructions and required notices; verify a complete, lawful source offer for the actual release binary. |
+| Final stack | Independent research builds and a combined fast-orthophoto trial succeeded. | Freeze the actual release packages and external versions, validate together, and obtain explicit owner approval of each exact candidate's four gates. Existing released component approvals are not approvals of the research variants. |
+
+No rights-holder permission, qualified legal conclusion, source-completeness
+attestation or publication approval is implied by these technical steps. The
+owner must choose how to obtain a durable private destination and independent
+manifest-hash record; GitHub's public repository and research workflow are not
+suitable storage for the restricted private bundle.
