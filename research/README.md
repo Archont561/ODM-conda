@@ -7,6 +7,8 @@ are not registered production components and must not be distributed. See
 [the current readiness review](component-readiness-review.md),
 [Open component license review](open-components-license-review.md) and
 [ODM integration prototype](odm-fast-orthophoto-prototype.md) for current status.
+For the tested package set and release blockers, see the
+[ODM Prefix release-readiness inventory](odm-prefix-release-readiness.md).
 
 The sections below are a historical research record: build numbers, old failures
 and remaining-work statements describe the time they were recorded, not the

@@ -49,6 +49,10 @@ def bundle_files(bundle: Path) -> list[Path]:
     found = {p for p in channel.rglob('*') if p.is_file() or p.is_symlink()}
     if found != set(files[2:]):
         raise ScaffoldError('Unexpected private channel files')
+    inventory_path=bundle/'conda-inventory.json'
+    if inventory_path.exists() or inventory_path.is_symlink():
+        if inventory_path.is_symlink() or not inventory_path.is_file(): raise ScaffoldError('Unsafe Conda inventory')
+        files.append(inventory_path)
     return files
 
 
@@ -56,7 +60,7 @@ def seal(bundle: Path, port: int) -> None:
     if not 1 <= port <= 65535:
         raise ScaffoldError('Invalid loopback port')
     files = bundle_files(bundle)
-    record = {'schema_version': 1, 'port': port, 'scope': 'private-research-only',
+    record = {'schema_version': 2 if (bundle/'conda-inventory.json').is_file() else 1, 'port': port, 'scope': 'private-research-only',
               'files': {p.relative_to(bundle).as_posix(): sha256(p) for p in files}}
     (bundle/'private-bundle.json').write_text(json.dumps(record, sort_keys=True, indent=2)+'\n')
 
@@ -69,9 +73,11 @@ def verify(bundle: Path, *, expected_manifest_sha: str | None = None) -> int:
     if expected_manifest_sha is not None and (not re.fullmatch(r'[a-f0-9]{64}', expected_manifest_sha) or sha256(manifest) != expected_manifest_sha):
         raise ScaffoldError('Private bundle manifest checksum mismatch')
     data = json.loads(manifest.read_text())
-    if data.get('schema_version') != 1 or data.get('scope') != 'private-research-only' or type(data.get('port')) is not int or not 1 <= data['port'] <= 65535 or not isinstance(data.get('files'), dict):
+    if data.get('schema_version') not in (1, 2) or data.get('scope') != 'private-research-only' or type(data.get('port')) is not int or not 1 <= data['port'] <= 65535 or not isinstance(data.get('files'), dict):
         raise ScaffoldError('Invalid private bundle manifest')
     files = bundle_files(bundle)
+    if (data['schema_version'] == 2) != ((bundle/'conda-inventory.json') in files):
+        raise ScaffoldError('Private bundle schema and inventory disagree')
     actual = {p.relative_to(bundle).as_posix(): p for p in files}
     if set(actual) != set(data['files']):
         raise ScaffoldError('Missing or unexpected private bundle files')
@@ -183,8 +189,25 @@ def build_packages(work: Path) -> list[Path]:
     return packages
 
 
+def inventory_identities(data: dict) -> list:
+    packages=data.get('packages') if isinstance(data, dict) else None
+    keys=('name','version','build','sha256','binary_package_url')
+    if not isinstance(packages,list) or not packages or any(not isinstance(p,dict) or any(k not in p for k in keys) for p in packages):
+        raise ScaffoldError('Invalid private Conda inventory')
+    if any(not all(isinstance(p[k],str) and p[k] for k in keys[:3]) for p in packages):
+        raise ScaffoldError('Invalid Conda identity')
+    identities=[tuple(p[k] for k in keys) for p in packages]
+    if len({tuple(p[:3]) for p in identities}) != len(identities): raise ScaffoldError('Duplicate Conda identity')
+    return identities
+
+
 def replay(bundle: Path, *, dataset: Path | None = None, expected_inventory: list | None = None, expected_manifest_sha: str | None = None) -> None:
     port=verify(bundle, expected_manifest_sha=expected_manifest_sha)
+    saved=bundle/'conda-inventory.json'
+    if saved.is_file():
+        retained=inventory_identities(json.loads(saved.read_text()))
+        if expected_inventory is not None and expected_inventory != retained: raise ScaffoldError('Retained Conda inventory differs')
+        expected_inventory=retained
     with tempfile.TemporaryDirectory(prefix='odm-private-replay-') as tmp:
         scratch=Path(tmp); project=scratch/'project'; project.mkdir()
         shutil.copy2(bundle/'pixi.toml',project/'pixi.toml'); shutil.copy2(bundle/'pixi.lock',project/'pixi.lock')
@@ -195,7 +218,7 @@ def replay(bundle: Path, *, dataset: Path | None = None, expected_inventory: lis
             prefix=project/'.pixi/envs/default'
             if expected_inventory is not None:
                 from inventory_conda_environment import inventory
-                observed=[(p['name'],p['version'],p['build'],p['sha256'],p['binary_package_url']) for p in inventory(prefix)['packages']]
+                observed=inventory_identities(inventory(prefix))
                 if observed != expected_inventory: raise ScaffoldError('Replayed Conda inventory differs')
                 print(f'PASS: {len(observed)} matching Conda identities and hashes',flush=True)
             run([str(prefix/'bin/odm-fast-research'),'--fast-orthophoto','--help'])
@@ -234,7 +257,8 @@ def build(destination: Path, port: int, dataset: Path | None) -> None:
             if selected != {item['filename']:item['sha256'] for item in info}: raise ScaffoldError('Lock does not select exactly the private package set')
             from inventory_conda_environment import inventory
             original=inventory(project/'.pixi/envs/default')
-            identities=[(p['name'],p['version'],p['build'],p['sha256'],p['binary_package_url']) for p in original['packages']]
+            identities=inventory_identities(original)
+            (destination/'conda-inventory.json').write_text(json.dumps(original,sort_keys=True,indent=2)+'\n')
             for name in ('pixi.toml','pixi.lock'): shutil.copy2(project/name,destination/name)
             seal(destination,port)
             manifest_sha=sha256(destination/'private-bundle.json')

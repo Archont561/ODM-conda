@@ -73,3 +73,49 @@ def test_pinned_sdist_download_checks_content_and_url(tmp_path, monkeypatch):
         download_sdist(Response.url,'0'*64,tmp_path/'bad.tar.gz')
     with pytest.raises(ScaffoldError, match='Unexpected pinned'):
         download_sdist('https://example.com/archive',digest,tmp_path/'bad-url.tar.gz')
+
+
+def test_inventory_is_sealed_and_legacy_bundle_remains_supported(tmp_path):
+    import json
+    from private_odm_bundle import inventory_identities, seal, verify
+    from common import ScaffoldError
+    bundle=tmp_path/'bundle'; (bundle/'channel/linux-64').mkdir(parents=True); (bundle/'channel/noarch').mkdir()
+    for name in ('pixi.toml','pixi.lock','channel/linux-64/repodata.json','channel/noarch/repodata.json','channel/linux-64/example.conda'):
+        (bundle/name).write_text(name)
+    seal(bundle,48179)
+    assert json.loads((bundle/'private-bundle.json').read_text())['schema_version']==1
+    assert verify(bundle)==48179
+    package={'name':'example','version':'1','build':'research_1','sha256':'a'*64,'binary_package_url':'http://127.0.0.1/linux-64/example.conda'}
+    inv=bundle/'conda-inventory.json'; inv.write_text(json.dumps({'packages':[package]}))
+    seal(bundle,48179)
+    assert json.loads((bundle/'private-bundle.json').read_text())['schema_version']==2
+    assert verify(bundle)==48179
+    assert len(inventory_identities(json.loads(inv.read_text())))==1
+    inv.write_text('{}')
+    with pytest.raises(ScaffoldError,match='checksum'): verify(bundle)
+    with pytest.raises(ScaffoldError,match='Invalid private Conda inventory'): inventory_identities({})
+    with pytest.raises(ScaffoldError,match='Duplicate'): inventory_identities({'packages':[package,package]})
+
+
+def test_replay_compares_retained_inventory_and_refuses_changed_records(tmp_path, monkeypatch):
+    import json
+    from contextlib import contextmanager
+    import inventory_conda_environment
+    import private_odm_bundle as bundle_script
+    from common import ScaffoldError
+    bundle=tmp_path/'bundle'; (bundle/'channel/linux-64').mkdir(parents=True); (bundle/'channel/noarch').mkdir()
+    for name in ('pixi.toml','pixi.lock','channel/linux-64/repodata.json','channel/noarch/repodata.json','channel/linux-64/example.conda'):
+        (bundle/name).write_text(name)
+    package={'name':'example','version':'1','build':'research_1','sha256':'a'*64,'binary_package_url':'http://127.0.0.1/linux-64/example.conda'}
+    (bundle/'conda-inventory.json').write_text(json.dumps({'packages':[package]}))
+    bundle_script.seal(bundle,48179)
+    @contextmanager
+    def loopback(_directory,_port):
+        yield 'http://127.0.0.1:48179'
+    monkeypatch.setattr(bundle_script,'loopback',loopback)
+    monkeypatch.setattr(bundle_script,'run',lambda *_args,**_kwargs: None)
+    monkeypatch.setattr(inventory_conda_environment,'inventory',lambda _prefix: {'packages':[package]})
+    bundle_script.replay(bundle)
+    monkeypatch.setattr(inventory_conda_environment,'inventory',lambda _prefix: {'packages':[package | {'build':'different'}]})
+    with pytest.raises(ScaffoldError,match='inventory differs'):
+        bundle_script.replay(bundle)
