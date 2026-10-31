@@ -630,6 +630,15 @@ imagery is discarded. Source builds and conda-forge downloads require network
 access; the bundle does **not** retain all sources, conda-forge packages, build
 tools or transitive dependencies and is not an offline or bit-reproducible build.
 
+The manually dispatched **Build and test native components** workflow has an
+`odm` checkbox for this private research path. It builds and validates in a
+separate job with the pinned Seneca dataset, but deliberately uploads no
+packages, source, channel, lock, dataset or outputs; the runner discards them.
+Selecting ODM alone skips the normal component artifact job; selecting ODM and
+component checkboxes runs both jobs. With nothing selected, the existing behavior
+of building all native components is unchanged. This workflow does not retain a
+bundle and does not publish or authorize release.
+
 On a trusted linux-64 machine with the repository's Pixi tools and Cargo installed, use:
 
 ```sh

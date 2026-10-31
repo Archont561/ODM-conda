@@ -3,6 +3,10 @@ name: Build and test native components
 on:
   workflow_dispatch:
     inputs:
+      odm:
+        description: "ODM private research build and replay (no artifact upload)"
+        type: boolean
+        default: false
       dem2mesh:
         description: "dem2mesh (leave all unchecked to build all)"
         type: boolean
@@ -45,6 +49,7 @@ concurrency:
 
 jobs:
   build:
+    if: ${{ !inputs.odm || inputs.dem2mesh || inputs.dem2points || inputs.fastrasterfilter || inputs.fpcfilter || inputs.mvs_texturing_odm || inputs.odm_orthophoto || inputs.poissonrecon_odm || inputs.renderdem }}
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
@@ -88,3 +93,22 @@ jobs:
           if-no-files-found: error
           compression-level: 0
           retention-days: 14
+  odm-research:
+    if: ${{ inputs.odm }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 160
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - name: Set up locked Pixi tooling
+        uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default agent-tools
+      - name: Shared local and CI gate
+        run: pixi run check
+      - name: Build and replay private ODM with Seneca (discard outputs)
+        run: pixi run python scripts/run_private_odm_workflow.py
