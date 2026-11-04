@@ -83,8 +83,9 @@ new source, notice and fresh dependency-solve evidence.
   and notice delivery. Earlier exact-artifact review concerned build 0; the
   later build-1 inspection below does not resolve source completeness.
 - **Native validation:** current production build 1 passed the run above;
-  its fixture exercises synthetic PLY and uncompressed LAS. LAZ, broader input
-  coverage and full integration with the final released stack remain unproven.
+  its fixture exercises synthetic PLY and uncompressed LAS. A later bounded
+  compressed LAZ and locked fresh-prefix test is documented in the dedicated
+  review; broader input coverage and final-stack integration remain unproven.
 - **Publishable:** pending all decisions above and a release-candidate-specific
   owner authorization; the prior fastrasterfilter AGPL decision does not apply.
 
@@ -112,7 +113,8 @@ Package metadata requires `libpdal-core >=2.10.0,<2.10.1` and
 constraints, not a locked or fully reviewed resolved closure. The source
 manifest does not list itself or the source README; matching listed hashes does
 not establish corresponding-source completeness, notices or redistribution
-rights. The tests do not establish LAZ support or geographic accuracy. All
+rights. Those original tests did not establish LAZ support or geographic accuracy;
+the subsequent LAZ test is separately described in the dedicated review. All
 four release gates remain false and publication requires separate owner
 approval. The release workflow will rebuild, so these artifact hashes do not
 prove the bytes of a future release build.
