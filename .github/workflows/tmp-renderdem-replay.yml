@@ -1,0 +1,41 @@
+name: Temporary RenderDEM LAZ and replay validation
+on:
+  push:
+    branches: [arena/e0406c94-odm-conda]
+    paths: [.github/workflows/tmp-renderdem-replay.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - name: Set up locked Pixi tooling
+        uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default
+      - name: Download reviewed artifact into temporary storage
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api repos/Archont561/ODM-conda/actions/artifacts/13330320942/zip > "$RUNNER_TEMP/original.zip"
+      - name: Validate LAZ and locked fresh prefix
+        run: pixi run python scripts/tmp_renderdem_laz_replay.py
+      - name: Retain only lightweight research metadata
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: renderdem-replay-metadata
+          path: |
+            ${{ runner.temp }}/review-metadata/pixi.toml
+            ${{ runner.temp }}/review-metadata/pixi.lock
+            ${{ runner.temp }}/review-metadata/conda-inventory.json
+            ${{ runner.temp }}/review-metadata/README.txt
+            ${{ runner.temp }}/review-metadata/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 14
