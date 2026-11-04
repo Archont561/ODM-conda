@@ -1,0 +1,30 @@
+name: Temporary RenderDEM source review
+on:
+  push:
+    branches: [arena/3f04ef83-odm-conda]
+    paths: [.github/workflows/tmp-renderdem-review.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  review:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up locked Pixi tooling
+        uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default
+      - name: Download exact artifact privately
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api repos/Archont561/ODM-conda/actions/artifacts/13330320942/zip > "$RUNNER_TEMP/original.zip"
+      - name: Verify source and notice bytes without uploading
+        run: pixi run python scripts/tmp_renderdem_review.py
