@@ -65,8 +65,40 @@ records, dependency source archives or environment. The previous fresh package
 retest and the recipe's deterministic PLY and uncompressed LAS raster tests
 passed; this new install is a separate solve and did not itself run those
 fixtures. The audit checks ELF RPATH, not movement of the entire prefix. LAZ,
-additional inputs, full ODM-stack integration and geographic accuracy remain
-untested in this release-candidate review.
+additional inputs, full ODM-stack integration and geographic accuracy were not
+tested in that release-candidate review; the later LAZ experiment is below.
+
+## Compressed LAZ and fresh-prefix locked replay (2026-11-04)
+
+[Private validation run 41856233714](https://github.com/Archont561/ODM-conda/actions/runs/41856233714)
+installed the same hash-verified build-1 package plus the separately selected
+PDAL 2.10.0 CLI. It generated the existing synthetic PLY and uncompressed LAS
+fixtures, converted the LAS to compressed LAZ with PDAL, confirmed the LAS
+compression flag, and passed `renderdem` on all three. For LAZ it checked a
+65×65 uncompressed Float32 raster, elevation 42 throughout, and the expected
+geotransform. It repeated the tests after a `--locked` install in a distinct
+project prefix with a fresh HOME and package cache. The locks were byte-identical
+and **196** installed Conda identity/version/build/hash/URL records matched.
+This is a fresh installation at a second path, **not** moving an already
+installed prefix; it does not demonstrate all LAZ variants, full ODM integration,
+geographic accuracy or offline reproducibility. The additional PDAL CLI and its
+dependencies make this solve different from RenderDEM's 66-record runtime-only
+solve above.
+
+The generated lock SHA256 was
+`5d42e36a0cdf959044d3edfb8d9bb9355125b4493a4fd63c8adf9521eb078e40`.
+The [lightweight metadata artifact](https://github.com/Archont561/ODM-conda/actions/runs/41856233714/artifacts/13338760264)
+contains the generated manifest, lock, installed-record inventory, scope note and
+checksums; it expires on 2026-11-18. Its localhost channel URL references the
+discarded package channel, so the metadata alone is **not replayable**. No
+binaries, source archives, fixture inputs or outputs were uploaded. This is a
+research solve, not an approved release lock; the future release rebuild and
+its external dependencies can differ. To repeat the fixture on a trusted Linux
+prefix that has both RenderDEM and the separately installed PDAL CLI:
+
+```sh
+pixi run python scripts/validate_renderdem_laz.py --prefix /path/to/prefix
+```
 
 ## Gate decision: not yet ready to approve
 
@@ -83,7 +115,8 @@ untested in this release-candidate review.
 3. **`native_validation_passed`: open pending owner decision.** Candidate
    builds, audit and isolated tests passed, but the final release rebuild and
    actual dependency solve need verification, and the intended workload and
-   relocation coverage need an explicit decision. The tested package artifact
+   relocation coverage need an explicit decision. The LAZ and fresh-prefix
+   checks above add bounded evidence, not a moved-prefix or full-stack test. The tested package artifact
    expires 2026-11-18; retain appropriate evidence if needed.
 4. **`publishable`: open.** It depends on the preceding exact-candidate
    decisions and explicit owner authorization. No gate change, tag, merge of an
