@@ -10,6 +10,9 @@ jobs:
   relay:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    strategy:
+      matrix:
+        part: [0, 1]
     steps:
       - name: Download and validate lightweight metadata
         env:
@@ -21,24 +24,32 @@ jobs:
           cd "$RUNNER_TEMP/metadata"
           sha256sum -c SHA256SUMS
           test "$(find . -maxdepth 1 -type f | wc -l)" -eq 5
-          tar -czf "$RUNNER_TEMP/metadata.tar.gz" pixi.toml pixi.lock conda-inventory.json private-bundle.json SHA256SUMS
+          tar --sort=name --mtime="UTC 1970-01-01" --owner=0 --group=0 --numeric-owner -czf "$RUNNER_TEMP/metadata.tar.gz" pixi.toml pixi.lock conda-inventory.json private-bundle.json SHA256SUMS
           base64 -w0 "$RUNNER_TEMP/metadata.tar.gz" > "$RUNNER_TEMP/metadata.b64"
           split -b 2500 -d -a 3 "$RUNNER_TEMP/metadata.b64" "$RUNNER_TEMP/chunk-"
           test "$(find "$RUNNER_TEMP" -maxdepth 1 -name 'chunk-*' | wc -l)" -le 72
           echo "archive-sha256=$(sha256sum "$RUNNER_TEMP/metadata.tar.gz" | cut -d' ' -f1)"
       - name: Relay parts 0 to 8
+        if: ${{ matrix.part == 0 }}
         run: for f in "$RUNNER_TEMP"/chunk-00[0-8]; do test ! -f "$f" || echo "::notice::$(basename "$f") $(cat "$f")"; done
       - name: Relay parts 9 to 17
+        if: ${{ matrix.part == 0 }}
         run: for f in "$RUNNER_TEMP"/chunk-00[9] "$RUNNER_TEMP"/chunk-01[0-7]; do test ! -f "$f" || echo "::notice::$(basename "$f") $(cat "$f")"; done
       - name: Relay parts 18 to 26
+        if: ${{ matrix.part == 0 }}
         run: for f in "$RUNNER_TEMP"/chunk-01[8-9] "$RUNNER_TEMP"/chunk-02[0-6]; do test ! -f "$f" || echo "::notice::$(basename "$f") $(cat "$f")"; done
       - name: Relay parts 27 to 35
+        if: ${{ matrix.part == 0 }}
         run: for f in "$RUNNER_TEMP"/chunk-02[7-9] "$RUNNER_TEMP"/chunk-03[0-5]; do test ! -f "$f" || echo "::notice::$(basename "$f") $(cat "$f")"; done
       - name: Relay parts 36 to 44
+        if: ${{ matrix.part == 1 }}
         run: for f in "$RUNNER_TEMP"/chunk-03[6-9] "$RUNNER_TEMP"/chunk-04[0-4]; do test ! -f "$f" || echo "::notice::$(basename "$f") $(cat "$f")"; done
       - name: Relay parts 45 to 53
+        if: ${{ matrix.part == 1 }}
         run: for f in "$RUNNER_TEMP"/chunk-04[5-9] "$RUNNER_TEMP"/chunk-05[0-3]; do test ! -f "$f" || echo "::notice::$(basename "$f") $(cat "$f")"; done
       - name: Relay parts 54 to 62
+        if: ${{ matrix.part == 1 }}
         run: for f in "$RUNNER_TEMP"/chunk-05[4-9] "$RUNNER_TEMP"/chunk-06[0-2]; do test ! -f "$f" || echo "::notice::$(basename "$f") $(cat "$f")"; done
       - name: Relay parts 63 to 71
+        if: ${{ matrix.part == 1 }}
         run: for f in "$RUNNER_TEMP"/chunk-06[3-9] "$RUNNER_TEMP"/chunk-07[0-1]; do test ! -f "$f" || echo "::notice::$(basename "$f") $(cat "$f")"; done
