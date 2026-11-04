@@ -43,6 +43,55 @@ source manifest does not hash itself or `README-SOURCE.txt`. The bundle captures
 the upstream archive and packaging inputs; a reviewer still must decide whether
 it meets the actual source-offer obligations for the final distribution.
 
+## Direct-source provenance follow-up (2026-11-04)
+
+The pinned RenderDEM archive was re-fetched and matched the source SHA256
+above. GitHub's path history for that pinned revision reports the root
+[`LICENSE` was added in the initial commit](https://github.com/OpenDroneMap/RenderDEM/commit/339ca680c9504a6247f83f0b1512cedecbea9ba6)
+on 2023-11-21. Its bytes match the pinned AGPLv3 license file. The initial
+README contained only the project heading; the explicit `AGPLv3` README
+statement was added by [commit 2cd04f1](https://github.com/OpenDroneMap/RenderDEM/commit/2cd04f17393f9122d21372e48a882925a1fae549)
+on 2023-11-27 and matches the statement in the pinned source. The six
+non-vendor C++ source/header files were added after the initial license file,
+in commits [`6d2ea72`](https://github.com/OpenDroneMap/RenderDEM/commit/6d2ea72b14ecfabee23cfe8db676cd1f7c84ebd4),
+[`fb26b89`](https://github.com/OpenDroneMap/RenderDEM/commit/fb26b8995e76080e5c0d7ca8c23e648fcd4f6989)
+and [`c92a397`](https://github.com/OpenDroneMap/RenderDEM/commit/c92a397559886e6cd5802959e0b5e1e21f4b078b).
+This chronology is evidence about repository history, **not** proof that each
+contributor held all rights, that files contain no third-party material, or that
+`AGPL-3.0-only` rather than another expression is definitively established.
+
+The vendored `cxxopts.hpp` declares version 3.1.1 and is unchanged between its
+RenderDEM import `6d2ea72` and the pinned revision (SHA256
+`eca7139d047c5ce06473dccf847ca57dd016b981090831c554ab52a6220b3b58`).
+The upstream [`v3.1.1` tag](https://github.com/jarro2783/cxxopts/tree/eb787304d67ec22f7c3a184ee8b4c481d04357fd)
+resolves to commit `eb787304d67ec22f7c3a184ee8b4c481d04357fd`;
+its `include/cxxopts.hpp` SHA256 is
+`2b1acb0d80ddd9ef1e7b197aaee028a55315bdabe7d4b06db4c3771cfcad2ea3`.
+A byte comparison found exactly one change: ` noexcept` was added to the
+`KeyValue(std::string key_, std::string value_)` constructor. The vendor file
+contains the MIT permission and copyright notice verified in the package above.
+This comparison identifies a close upstream reference and an observable change,
+not the author, provenance, rights or complete obligations of that change.
+
+## Decisions still needed for this exact release
+
+- **License grant:** a qualified reviewer and owner should decide whether the
+  project-level AGPLv3 statement establishes the proposed `AGPL-3.0-only`
+  expression for the included project code, and whether unmarked code and
+  the modified cxxopts header require any further provenance or notices.
+- **Distribution and source:** decide whether the verified source archive plus
+  packaging and scripts, and the intended source location and retention, meet
+  the obligations for the actual binary and any service deployment. The
+  dependency metadata observed in one solve is not the complete source or
+  notice analysis for a future distribution.
+- **Native scope:** decide whether synthetic PLY, LAS and compressed LAZ and a
+  fresh locked install at a second path provide sufficient intended-workload
+  evidence. They do not establish moved-prefix relocation, all LAZ encodings,
+  a final released ODM stack or geographical accuracy.
+- **Owner authorization:** separately decide all four gates for the exact
+  version/build and authorize a release only after the preceding reviews. No
+  affirmative decision is implied by a request for review.
+
 ## Fresh runtime solve and scope
 
 The same [review run](https://github.com/Archont561/ODM-conda/actions/runs/41853735397)
