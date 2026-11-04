@@ -25,8 +25,8 @@ Independently review the deliverables produced by TASK-11 for the renderdem mile
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [ ] #1 Review actual installed-prefix functional/relocation and dependency-audit evidence for the declared Linux CPU target, with artifact identities, regressions and limitations linked to the work task.
-- [ ] #2 Review exact source/patch/build-script correspondence, dependency source obligations, notices and applicable code/data/model license expressions; resolve blockers or explicitly retain them as open work.
-- [ ] #3 Record a maintainer-facing readiness decision and remaining owner/platform conditions. Completing this task does not itself flip executable release flags, publish a binary or certify untested platforms.
+- [x] #2 Review exact source/patch/build-script correspondence, dependency source obligations, notices and applicable code/data/model license expressions; resolve blockers or explicitly retain them as open work.
+- [x] #3 Record a maintainer-facing readiness decision and remaining owner/platform conditions. Completing this task does not itself flip executable release flags, publish a binary or certify untested platforms.
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -53,4 +53,6 @@ Cross-package decision record doc-12 consolidates RenderDEM direct-source findin
 Read-only inspection https://github.com/Archont561/ODM-conda/actions/runs/40861743072 reverified the historical multi-component ZIP and RenderDEM build 0 package SHA256 dc33a1fb2de90eabc0ee241f573bd14f09d4d3481f0fb813bd90f792b4f8b895; source bundle SHA256 e1f0e18a36c70c9633fcf42b199b3ecbf2bc0aefe2846ea8cc213f8c17182172, all 232 manifest entries, and exact bytes of both declared upstream notices in package payload and info metadata. Current audit and additional fresh isolated retest passed. Package ELF needs libpdalcpp.so.20 and RPATH $ORIGIN/../lib; dependency constraints do not identify the full resolved closure. No source-rights, owner or release approval inferred.
 
 Follow-up https://github.com/Archont561/ODM-conda/actions/runs/40862253176 independently retested historical RenderDEM build 0 and inspected exact-name matching fresh-solve package metadata for PDAL 2.10.2, GDAL 3.13.3 and libgomp 16.2.0. See research/component-readiness-review.md for package and license-text hashes, bounded provenance, and remaining source/owner decisions. Future release solve and full transitive review remain unverified.
+
+2026-11-04: read-only run 41853735397 compared 352 packaging files to the recorded Git commit, verified the pinned upstream archive and exact three notice bytes in payload and metadata, and recorded selected records from a fresh 66-package runtime solve. The review and explicit remaining source, rights, dependency, validation and owner decisions are in research/renderdem-release-gate-review.md. No release gate has changed; actual release-commit evidence and relocation coverage remain open.
 <!-- SECTION:NOTES:END -->

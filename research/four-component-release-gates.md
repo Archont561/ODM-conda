@@ -70,6 +70,9 @@ variant as approval of any candidate here.
 
 ### renderdem build 1
 
+See the [dedicated RenderDEM gate review](renderdem-release-gate-review.md) for
+new source, notice and fresh dependency-solve evidence.
+
 - **License:** provisional `AGPL-3.0-only AND MIT`. The pinned 11-file direct
   source tree and cxxopts notice were inventoried, but the precise grant/version,
   unmarked-code provenance, AGPL network-service obligations, dependency and
