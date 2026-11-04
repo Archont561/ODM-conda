@@ -1,0 +1,29 @@
+name: Temporary RenderDEM source reconstruction
+on:
+  push:
+    branches: [arena/d295d114-odm-conda]
+    paths: [.github/workflows/tmp-renderdem-reconstruct.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  reconstruct:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - name: Set up locked Pixi tooling
+        uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default
+      - name: Download exact candidate artifact privately
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api repos/Archont561/ODM-conda/actions/artifacts/13330320942/zip > "$RUNNER_TEMP/original.zip"
+      - name: Rebuild and test from bundled source without uploads
+        run: pixi run python scripts/tmp_renderdem_reconstruct.py
