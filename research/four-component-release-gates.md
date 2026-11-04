@@ -77,13 +77,42 @@ variant as approval of any candidate here.
   [RenderDEM review](component-readiness-review.md#renderdem-direct-source-license-inventory-2026-10-29).
 - **Source completeness:** verify the complete release source and scripts,
   exact resolved PDAL/GDAL and transitive obligations, and actual source-offer
-  and notice delivery. Prior exact-artifact review concerned build 0, not this
-  build 1.
+  and notice delivery. Earlier exact-artifact review concerned build 0; the
+  later build-1 inspection below does not resolve source completeness.
 - **Native validation:** current production build 1 passed the run above;
   its fixture exercises synthetic PLY and uncompressed LAS. LAZ, broader input
   coverage and full integration with the final released stack remain unproven.
 - **Publishable:** pending all decisions above and a release-candidate-specific
   owner authorization; the prior fastrasterfilter AGPL decision does not apply.
+
+#### Owner-dispatched RenderDEM artifact inspection (2026-11-04)
+
+The owner-dispatched [build run 41843213137](https://github.com/Archont561/ODM-conda/actions/runs/41843213137)
+at `8c0619224de35ceef02a4f5863b182a9a4574947` passed build, packaged and
+fresh-environment tests, audit and source bundling. Read-only
+[inspection run 41844146569](https://github.com/Archont561/ODM-conda/actions/runs/41844146569)
+verified the reported artifact ZIP SHA256
+`cd2671e9f6184102887b08b01f843309210c2fddad7825439bb05e8f7bdd2385`
+and confirmed exactly one package, one audit report and one source bundle,
+all for RenderDEM build 1. The package
+`renderdem-1.0-h873e7db_1.conda` SHA256 is
+`a681202611aa3fa25281055825b75a89e1a256260a954ce69bcd5393a834d94c`;
+`source-renderdem-1.0-b1.tar.gz` SHA256 is
+`bf806435fc489b73c059e409b85c159e2b01f3bac7537f996e39d842bd6f8ec1`.
+All 353 entries listed in its source manifest matched, with the expected clean
+packaging commit. The inspector reran the current package audit and a fresh
+isolated package test; no artifact was re-uploaded. The original non-published
+artifact is retention-limited and expires 2026-11-18.
+
+Package metadata requires `libpdal-core >=2.10.0,<2.10.1` and
+`libgdal-core >=3.12.2,<3.12.3` among other runtime dependencies; these are
+constraints, not a locked or fully reviewed resolved closure. The source
+manifest does not list itself or the source README; matching listed hashes does
+not establish corresponding-source completeness, notices or redistribution
+rights. The tests do not establish LAZ support or geographic accuracy. All
+four release gates remain false and publication requires separate owner
+approval. The release workflow will rebuild, so these artifact hashes do not
+prove the bytes of a future release build.
 
 ### poissonrecon-odm build 3
 
