@@ -28,3 +28,5 @@ jobs:
         run: gh api repos/Archont561/ODM-conda/actions/artifacts/13330320942/zip > "$RUNNER_TEMP/original.zip"
       - name: Verify source and notice bytes without uploading
         run: pixi run python scripts/tmp_renderdem_review.py
+      - name: Capture fresh installed dependency identities
+        run: pixi run python scripts/tmp_renderdem_deps.py
