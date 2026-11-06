@@ -43,6 +43,37 @@ source manifest does not hash itself or `README-SOURCE.txt`. The bundle captures
 the upstream archive and packaging inputs; a reviewer still must decide whether
 it meets the actual source-offer obligations for the final distribution.
 
+## Rebuilding from the source bundle (2026-11-04)
+
+Read-only [run 41862738817](https://github.com/Archont561/ODM-conda/actions/runs/41862738817)
+retrieved the owner-dispatched build-1 artifact, verified the artifact, source
+bundle and pinned upstream archive hashes recorded above, and rehashed all 353
+listed source-manifest entries. It staged the **352 packaging files** from the
+bundle, safely unpacked the bundled upstream archive, and rebuilt the package
+using those inputs. The temporary reconstruction changed the staged recipe's
+source declaration from the pinned HTTPS URL and checksum to a local unpacked
+source path; no claim is made that the recipe itself was byte-identical to the
+original. Conda-forge build, host and retest dependencies were solved and
+retrieved online, so this was **not an offline or fully retained-input build**.
+
+The reconstructed package `renderdem-1.0-h873e7db_1.conda` passed its
+packaged tests, a fresh isolated retest and package audit. Its SHA256 was
+`027dbe9ed25b9fd106a0ed94932ff047ca7a8a0f9224682652ac97c5c96dbb4e`,
+which differs from the original candidate's
+`a681202611aa3fa25281055825b75a89e1a256260a954ce69bcd5393a834d94c`.
+The cause of the difference was not determined; the result does not establish
+bit-for-bit reproducibility. The audit reported RPATH `$ORIGIN/../lib` and ELF
+NEEDED entries `libpdalcpp.so.20`, `libgomp.so.1`, `libpthread.so.0`,
+`libstdc++.so.6`, `libgcc_s.so.1`, and `libc.so.6`. These are bounded binary
+evidence, not a complete source, license, ABI or vulnerability review.
+
+This narrows the technical source-reconstruction gap for this candidate: the
+bundle's listed packaging files and upstream archive were sufficient for this
+one build when substituted into a local-path recipe with externally obtained
+dependencies. It does **not** resolve rights, source-offer sufficiency, exact
+release dependency closure, or service obligations. The reconstructed binary
+and staged sources were discarded; no package was uploaded or published.
+
 ## Direct-source provenance follow-up (2026-11-04)
 
 The pinned RenderDEM archive was re-fetched and matched the source SHA256
@@ -159,8 +190,8 @@ pixi run python scripts/validate_renderdem_laz.py --prefix /path/to/prefix
 2. **`source_completeness_reviewed`: open.** Decide and verify the exact
    release's corresponding source, build scripts, modifications, dependencies,
    durable source location, and any service-source obligations. The verified
-   archive and packaging bytes above are useful inputs, not a completeness
-   attestation. The existing release workflow attaches source before the binary.
+   archive and local-path reconstruction above are useful evidence, not a
+   completeness attestation. The existing release workflow attaches source before the binary.
 3. **`native_validation_passed`: open pending owner decision.** Candidate
    builds, audit and isolated tests passed, but the final release rebuild and
    actual dependency solve need verification, and the intended workload and
