@@ -24,7 +24,7 @@ if sys.argv[1]=='prepare':
     assert digest(raw)==expected
     package=root/name;package.write_bytes(raw);create([package],root/'channel')
     project=root/'runtime'; project.mkdir()
-    (project/'pixi.toml').write_text('[workspace]\nname = "renderdem-alt"\nversion = "0.1.0"\nchannels = ["'+(root/'channel').as_uri()+'", "conda-forge"]\nplatforms = ["linux-64"]\n\n[dependencies]\nrenderdem = "==1.0"\nlibspatialite = { version = "==5.1.0", build = "lgpl_*" }\nlibarchive = { version = "==3.8.11", build = "lgpl_*" }\n')
+    (project/'pixi.toml').write_text('[workspace]\nname = "renderdem-alt"\nversion = "0.1.0"\nchannels = ["'+(root/'channel').as_uri()+'", "conda-forge"]\nplatforms = ["linux-64"]\n\n[dependencies]\nrenderdem = "==1.0"\nlibspatialite = { version = "==5.1.0", build = "lgpl_*" }\nlibarchive = { version = "==3.8.11", build = "lgpl_*" }\npdal = "==2.10.0"\n')
 elif sys.argv[1]=='inspect':
     prefix=(root/'runtime/.pixi/envs/default').resolve()
     records=inventory(prefix)['packages']; p={i['name']:i for i in records}
