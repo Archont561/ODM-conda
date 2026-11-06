@@ -1,0 +1,21 @@
+name: Temporary RenderDEM dependency license review
+on:
+  push:
+    branches: [arena/3cbae7e1-odm-conda]
+    paths: [.github/workflows/tmp-renderdem-license-review.yml]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
+        with:
+          pixi-version: v0.82.0
+          locked: true
+      - name: Inspect pinned dependency source and notice metadata
+        run: pixi run python scripts/tmp_renderdem_license_review.py
