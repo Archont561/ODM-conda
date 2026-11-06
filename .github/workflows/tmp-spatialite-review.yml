@@ -21,3 +21,5 @@ jobs:
         run: pixi run python scripts/tmp_spatialite_review.py
 
 # Include non-trilicense source file paths for follow-up.
+
+# Identify build references to grant exceptions.
