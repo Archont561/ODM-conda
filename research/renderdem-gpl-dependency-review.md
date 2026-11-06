@@ -44,6 +44,10 @@ A subsequent [libspatialite assessment](renderdem-spatialite-license-review.md)
 found explicit alternative grants in a sampled header and evidence of GPL-2-or-later
 control-point code in the GPL variant; notice and full source scope remain open.
 
+A separate [alternative-variant assessment](renderdem-alternative-dependency-assessment.md)
+tested a constrained solve without LZO or librttopo. It does not change the
+existing recipe, establish complete compliance, or prove full feature coverage.
+
 ## Recommendation for the intended distribution
 
 - Treat these GPL-covered dependencies as **real review items**, not merely
