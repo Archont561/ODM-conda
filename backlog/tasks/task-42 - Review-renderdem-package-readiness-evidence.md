@@ -67,4 +67,6 @@ Follow-up https://github.com/Archont561/ODM-conda/actions/runs/40862253176 indep
 2026-11-06: owner stated “i confirm licencse grant” following the RenderDEM build-1 recommendation, recorded as confirmation of the proposed AGPL-3.0-only grant choice alongside identified MIT material. This does not assert independent third-party rights or approval of any release gate, source offer, or publication. All four checks remain false. See research/renderdem-license-recommendation.md.
 
 2026-11-06: prepared source-offer instructions and an independently hash-checked RenderDEM bundle reconstruction helper. The release bundle now includes a concrete local-source rebuild procedure. Exact release dependency/source obligations, durable availability and owner/qualified completeness decisions remain open; no publication or gate approval is implied. See research/renderdem-source-offer.md.
+
+2026-11-06: hosted source-offer procedure run 42198851748 generated and staged a trial source bundle and passed its local-source rebuild, fresh retest and audit using online dependencies. The temporary workflow was in the trial bundle; no artifacts were uploaded. This is not the final release source offer.
 <!-- SECTION:NOTES:END -->

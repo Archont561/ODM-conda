@@ -32,6 +32,16 @@ This is a reconstruction aid: it does not verify the authenticity of the
 independently supplied checksum, obtain or freeze the exact Conda dependency
 closure, prove offline/bit-identical reproduction, or decide legal completeness.
 
+## Procedure validation
+
+[Run 42198851748](https://github.com/Archont561/ODM-conda/actions/runs/42198851748)
+at temporary commit `6ef5f5d` generated a new RenderDEM source bundle, extracted
+only its helper and imports, verified and staged it, and built, fresh-retested
+and audited the staged local-source package using online Conda dependencies.
+The temporary workflow was included in that research bundle and no artifacts
+were uploaded. This validates the procedure on that trial, not the exact final
+release source offer or byte identity with the earlier candidate.
+
 ## Release-specific checks still required
 
 1. On the approved release commit, run the owner-dispatched native build and
