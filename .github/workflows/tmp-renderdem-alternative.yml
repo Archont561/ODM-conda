@@ -34,3 +34,5 @@ jobs:
         run: pixi run python scripts/tmp_renderdem_alternative.py inspect
       - name: Exercise generated compressed LAZ
         run: pixi run python scripts/validate_renderdem_laz.py --prefix "$RUNNER_TEMP/runtime/.pixi/envs/default"
+
+# Keep annotation count below the per-step limit.

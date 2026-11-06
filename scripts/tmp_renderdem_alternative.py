@@ -43,8 +43,8 @@ elif sys.argv[1]=='inspect':
         objects[label]={'path':str(file.relative_to(prefix)),'sha256':digest(file.read_bytes()),'needed':re.findall(r'\(NEEDED\).*?\[([^\]]+)\]',out)}
     assert 'liblzo2.so.2' not in objects['archive']['needed']
     assert 'librttopo.so.1' not in objects['spatialite']['needed']
-    raw=json.dumps({'candidate_sha256':expected,'inventory':records,'objects':objects,'tests':'Candidate installed-prefix ldd and generated PLY/LAS tests passed. Not LAZ or full ODM validation.','scope':'Experimental runtime variant constraints; not an approved release lock, compatibility guarantee, complete license or corresponding source review.'},sort_keys=True,indent=2).encode()
-    encoded=base64.b64encode(gzip.compress(raw,mtime=0)).decode();chunks=[encoded[i:i+2700] for i in range(0,len(encoded),2700)];assert len(chunks)<40
+    raw=json.dumps({'candidate_sha256':expected,'inventory':[{k:r[k] for k in ('name','version','build','sha256','license')} for r in records],'objects':objects,'tests':'Candidate installed-prefix ldd and generated PLY/LAS tests passed. Not LAZ or full ODM validation.','scope':'Experimental runtime variant constraints; not an approved release lock, compatibility guarantee, complete license or corresponding source review.'},sort_keys=True,indent=2).encode()
+    encoded=base64.b64encode(gzip.compress(raw,mtime=0)).decode();chunks=[encoded[i:i+2700] for i in range(0,len(encoded),2700)];assert len(chunks)<=9
     print(f'::notice::ALT-INFO chunks={len(chunks)} sha256={digest(raw)} records={len(records)}',flush=True)
     for i,chunk in enumerate(chunks):print(f'::notice::ALT-CHUNK-{i:02d} {chunk}',flush=True)
 else: raise ValueError('unknown operation')
