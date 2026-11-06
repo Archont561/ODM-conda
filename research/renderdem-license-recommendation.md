@@ -1,15 +1,28 @@
 # RenderDEM 1.0 build 1: proposed license and source decisions
 
-This is a **recommendation**, not legal advice, a rights-holder representation,
-owner approval or publication authorization. It concerns the standalone
+This record contains a recommendation and the owner's limited grant confirmation;
+it is not legal advice, a rights-holder representation, release-gate approval
+or publication authorization. It concerns the standalone
 linux-64 `renderdem` 1.0 build 1 candidate, not the whole ODM distribution.
 The configured release checks remain false. The detailed technical evidence and
 limitations are in [the RenderDEM gate review](renderdem-release-gate-review.md).
 
+## Owner confirmation (2026-11-06)
+
+Following the recommendation below, the owner stated: “i confirm licencse
+grant”. This is recorded as confirmation of the proposed RenderDEM grant
+choice for this standalone 1.0 build 1 review: `AGPL-3.0-only` for the
+project, alongside the identified MIT material. It is not an independent
+rights-holder attestation or a confirmation of every dependency, notice,
+source-offer or network-service obligation. The statement did not explicitly
+approve `license_reviewed` or the other release gates, or authorize publication;
+all four checks remain false.
+
 ## Recommended package-level license decision
 
 **Retain `AGPL-3.0-only AND MIT` as the conservative proposed package
-expression**, subject to owner and qualified review of the exact candidate.
+expression**, with the owner grant confirmation above; other rights and obligations still
+require appropriate review for the exact candidate.
 
 - The pinned RenderDEM source contains the AGPL version 3 license text and its
   README says `AGPLv3`; the reviewed project files do not provide an observed
@@ -32,9 +45,9 @@ expression**, subject to owner and qualified review of the exact candidate.
   distribution arrangement and applicable terms for the final release.
 
 This recommendation leaves the SPDX expression unchanged and does **not** set
-`license_reviewed`. In particular, owner/qualified review must decide the exact
-grant/version, rights for unmarked project code and the modified vendored
-header, and whether the notices cover the intended distribution.
+`license_reviewed`. In particular, the owner confirmation does not independently
+establish rights for unmarked project code or the modified vendored header, or
+whether the notices cover the intended distribution.
 
 ## Recommended corresponding-source approach
 
@@ -68,7 +81,7 @@ in a service automatically triggers a particular source-delivery duty.
 
 | Item | Recommendation | Still required |
 | --- | --- | --- |
-| Package expression | Keep `AGPL-3.0-only AND MIT` provisionally. | Owner/qualified review of grants, provenance and actual distribution. |
+| Package expression | Keep `AGPL-3.0-only AND MIT`; owner confirmed the grant choice. | Appropriate review of provenance and actual distribution; explicit gate decision. |
 | Direct notices | Retain the three already verified notices and modified cxxopts source. | Confirm coverage and any additional applicable obligations. |
 | Source delivery | Attach the reviewed corresponding source before Prefix upload and retain it at the release-specific URL. | Confirm the exact source set, instructions, availability, dependency and service obligations. |
 | Native scope | Use the successful build, retests and bounded PLY/LAS/LAZ and fresh-prefix evidence as inputs. | Decide whether coverage is sufficient and verify the final release build; a fresh install is not a moved-prefix test. |
