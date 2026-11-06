@@ -36,3 +36,5 @@ jobs:
         run: pixi run python scripts/validate_renderdem_laz.py --prefix "$RUNNER_TEMP/runtime/.pixi/envs/default"
 
 # Keep annotation count below the per-step limit.
+
+# Inspect alternate spatialite dynamic symbols.

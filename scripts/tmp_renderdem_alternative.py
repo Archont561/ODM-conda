@@ -41,6 +41,10 @@ elif sys.argv[1]=='inspect':
         file=real.pop();assert file.is_relative_to(prefix)
         out=subprocess.check_output(['readelf','-d',str(file)],text=True)
         objects[label]={'path':str(file.relative_to(prefix)),'sha256':digest(file.read_bytes()),'needed':re.findall(r'\(NEEDED\).*?\[([^\]]+)\]',out)}
+        if label == 'spatialite':
+            symbols=subprocess.check_output(['nm','-D','--defined-only',str(file)],text=True)
+            objects[label]['control_point_symbols']=[line.split()[-1] for line in symbols.splitlines() if 'ControlPoint' in line]
+            assert not objects[label]['control_point_symbols']
     assert 'liblzo2.so.2' not in objects['archive']['needed']
     assert 'librttopo.so.1' not in objects['spatialite']['needed']
     raw=json.dumps({'candidate_sha256':expected,'inventory':[{k:r[k] for k in ('name','version','build','sha256','license')} for r in records],'objects':objects,'tests':'Candidate installed-prefix ldd and generated PLY/LAS tests passed. Not LAZ or full ODM validation.','scope':'Experimental runtime variant constraints; not an approved release lock, compatibility guarantee, complete license or corresponding source review.'},sort_keys=True,indent=2).encode()
