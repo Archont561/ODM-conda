@@ -105,6 +105,9 @@ A [targeted LZO and librttopo review](renderdem-gpl-dependency-review.md)
 checks their recorded source archives and sampled grant wording, and sets out
 remaining distribution and source decisions.
 
+See the subsequent [libspatialite assessment](renderdem-spatialite-license-review.md)
+for sampled alternative grants, GPL control-point evidence and notice limitations.
+
 ## Build and host trial (2026-11-06)
 
 [Run 42227178797](https://github.com/Archont561/ODM-conda/actions/runs/42227178797)
