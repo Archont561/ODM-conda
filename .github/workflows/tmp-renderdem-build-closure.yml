@@ -34,3 +34,5 @@ jobs:
           grep -Eq '^[0-9a-f]{64}  build-host-inventory[.]json$' SHA256SUMS
           sha256sum --strict --check SHA256SUMS
           python3 -c 'import glob,hashlib,json; x=json.load(open("build-host-inventory.json")); p=glob.glob("renderdem-*.conda"); assert len(p)==1 and x["package"]==p[0] and x["package_sha256"]==hashlib.sha256(open(p[0],"rb").read()).hexdigest() and all(x["environments"][v]["packages"] for v in ("build","host")); print("::notice::Staged build/host inventory matches trial package; checksums passed; no artifacts uploaded.")'
+      - name: Inspect exact selected build package metadata
+        run: pixi run python scripts/tmp_inspect_build_packages.py
