@@ -40,7 +40,7 @@ for name,url in wanted.items():
     expected=inv['reviewed_dependency_metadata'][name]['recipe_source']['sha256']
     assert digest(source)==expected
     item['source_archive_sha256']=digest(source)
-    hits=[]; copying=[]; count=0
+    hits=[]; copying=[]; count=0; samples=[]
     with tarfile.open(fileobj=io.BytesIO(source),mode='r:gz') as tar:
         for m in tar:
             if not m.isfile(): continue
@@ -52,11 +52,14 @@ for name,url in wanted.items():
             if filename in ('copying','license','license.txt'):
                 copying.append({'file':m.name,'sha256':digest(raw),'same_as_package_notice':raw==notice})
             text=raw.decode('utf-8',errors='replace')
+            if re.search(r'GNU (?:Lesser )?General Public License',text,re.I) and len(samples)<12:
+                match=re.search(r'GNU (?:Lesser )?General Public License',text,re.I)
+                samples.append({'file':m.name,'excerpt':text[max(0,match.start()-140):match.start()+320]})
             if re.search(r'(?is)(?:version\s+2|version\s+two).{0,100}(?:or\s+(?:at\s+your\s+option\s+)?any\s+later\s+version)', text):
                 if len(hits)<12:
                     lines=text.splitlines(); matching=[l.strip() for l in lines if re.search(r'version\s+2|any\s+later\s+version',l,re.I)][:4]
                     hits.append({'file':m.name,'lines':matching})
-    item.update(source_regular_files=count,license_files=copying,version_2_or_later_examples=hits)
+    item.update(source_regular_files=count,license_files=copying,version_2_or_later_examples=hits,license_samples=samples)
     result[name]=item
 raw=json.dumps(result,indent=2,sort_keys=True).encode(); encoded=base64.b64encode(gzip.compress(raw,mtime=0)).decode();chunks=[encoded[i:i+2700] for i in range(0,len(encoded),2700)]
 assert len(chunks)<=40
