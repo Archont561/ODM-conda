@@ -25,3 +25,5 @@ jobs:
 # Identify build references to grant exceptions.
 
 # Review actual package recipe and control point grants.
+
+# Inspect defined control-point symbols and package payload notices.
