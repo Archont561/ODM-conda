@@ -74,3 +74,32 @@ that equivalent code is absent or that no other dynamic or static path exists.
 
 The alternative is technically promising for the tested narrow workloads, but
 adoption is a scope and distribution decision, not an automatic legal fix.
+
+## Private ODM integration trial
+
+[Run 42237636247](https://github.com/Archont561/ODM-conda/actions/runs/42237636247),
+job `127959326245`, tested commit `bb3890b` on linux-64. It freshly built the
+15-package private research stack, constrained the runtime solve to
+`libspatialite ==5.1.0 lgpl_*` and `libarchive ==3.8.11 lgpl_*`, and checked
+that neither `lzo` nor `librttopo` was installed. The 438-record solve selected:
+
+| Package | Version and build | Installed-record SHA256 |
+| --- | --- | --- |
+| libspatialite | `5.1.0 lgpl_h6633a9c_19` | `2919611dcd23ff43fb9d0e6cb9b12beb8ef5933ebe963308eb327f572ba05fd4` |
+| libarchive | `3.8.11 lgpl_hee3b6c9_0` | `ef86dba72bcad4a7c522bb9d8974d7b85ed6d886c5ff6c41ee27a2661d4fd626` |
+| libgdal-core | `3.12.2 he63569f_2` | `564d9e27f9cb3eae53a945a70c25b92f22f74a27b450dc166a255964623b4383` |
+| libpdal-core | `2.10.0 h9d23c72_0` | `c43a137e3b537f8842b3c850e9a319b9cae0ab59143b4fc7358495892e61d279` |
+| renderdem | `1.0 research_873e7db_1` | `eb26cc1559310afa996b8e8ccebec56164095686b392707b0305f8360fe4b929` |
+| odm-fast-research | `3.6.2 hb0f4dca_3` | `73ad8037c8a6cab16edb340d39f20fb30405ce2fc2898d43590a1a0cd9618d59` |
+
+The relocated bundle's locked replay and the Seneca fast-orthophoto pipeline
+(`--skip-3dmodel`), including raster sanity and nonempty report checks, passed
+with dataset commit `9220acfdca75cc5e2dd6d27fe48550c5ae0877f2`. The job
+reported success and uploaded no artifacts; private inputs, binaries, lock and
+outputs were discarded. Only the six identities above were preserved in its
+annotation, not the complete 438-record inventory. Package hashes are recorded
+metadata, not independent archive verification. Build/host environments were
+solved separately and were not constrained to these variants. This freshly
+built research RenderDEM is not the retained candidate tested above, and this
+single dataset does not validate RTTOPO, GCP, LZO, other datasets, all ODM
+features or production distribution. No release gates were changed.
