@@ -1,0 +1,217 @@
+{
+  "candidate_sha256": "a681202611aa3fa25281055825b75a89e1a256260a954ce69bcd5393a834d94c",
+  "objects": {
+    "archive": {
+      "needed": [
+        "libcrypto.so.3",
+        "liblzo2.so.2",
+        "libzstd.so.1",
+        "liblz4.so.1",
+        "libbz2.so.1.0",
+        "libz.so.1",
+        "liblzma.so.5",
+        "libxml2.so.16",
+        "libc.so.6"
+      ],
+      "path": "lib/libarchive.so.13.8.11",
+      "rpath": [
+        "$ORIGIN/."
+      ],
+      "sha256": "c9f9bf07a1d3e982701df5622b7fd7edde0028082a29fa33f26e5538952aaa36",
+      "soname": [
+        "libarchive.so.13"
+      ]
+    },
+    "gdal": {
+      "needed": [
+        "libz.so.1",
+        "libdl.so.2",
+        "libarchive.so.13",
+        "libcurl.so.4",
+        "libxml2.so.16",
+        "libcrypto.so.3",
+        "libzstd.so.1",
+        "liblzma.so.5",
+        "libdeflate.so.0",
+        "liblz4.so.1",
+        "libblosc.so.1",
+        "libjpeg.so.8",
+        "libwebp.so.7",
+        "libLerc.so.4",
+        "libxerces-c-3.3.so",
+        "libjxl.so.0.11",
+        "libmuparser.so.2",
+        "libpng16.so.16",
+        "libgif.so.7",
+        "libsqlite3.so.0",
+        "libjxl_threads.so.0.11",
+        "libkmlbase.so.1",
+        "libkmldom.so.1",
+        "libkmlengine.so.1",
+        "libpcre2-8.so.0",
+        "libspatialite.so.8",
+        "libexpat.so.1",
+        "libgeos_c.so.1",
+        "libproj.so.25",
+        "libjson-c.so.5",
+        "libiconv.so.2",
+        "libpthread.so.0",
+        "libm.so.6",
+        "libstdc++.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "ld-linux-x86-64.so.2"
+      ],
+      "path": "lib/libgdal.so.38.3.12.2",
+      "rpath": [
+        "$ORIGIN/."
+      ],
+      "sha256": "6161da034509048a9f7940a7732403a854ae0d24d7833e340606df6f35ad34db",
+      "soname": [
+        "libgdal.so.38"
+      ]
+    },
+    "geos": {
+      "needed": [
+        "libgeos.so.3.14.1",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6"
+      ],
+      "path": "lib/libgeos_c.so.1.20.5",
+      "rpath": [
+        "$ORIGIN/."
+      ],
+      "sha256": "2166c0a874b92aba2836bdd84b7dbc92fbf6111ca57913e8f1e9129b3636ec93",
+      "soname": [
+        "libgeos_c.so.1"
+      ]
+    },
+    "gomp": {
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "path": "lib/libgomp.so.1.0.0",
+      "rpath": [
+        "$ORIGIN/."
+      ],
+      "sha256": "34324e0835be6e103844d7c416bec42834cf803d3ba8d9519df15ced19914dfe",
+      "soname": [
+        "libgomp.so.1"
+      ]
+    },
+    "lzo": {
+      "needed": [
+        "libc.so.6"
+      ],
+      "path": "lib/liblzo2.so.2.0.0",
+      "rpath": [
+        "$ORIGIN/"
+      ],
+      "sha256": "8bbff4d4e62c43470b5e9e65b2961321fb2bf6b224650cd2c4a00ee379c84dd4",
+      "soname": [
+        "liblzo2.so.2"
+      ]
+    },
+    "pdal": {
+      "needed": [
+        "libpthread.so.0",
+        "libdl.so.2",
+        "libgdal.so.38",
+        "libproj.so.25",
+        "libgeotiff.so.5",
+        "libz.so.1",
+        "libxml2.so.16",
+        "libcurl.so.4",
+        "libcrypto.so.3",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "ld-linux-x86-64.so.2"
+      ],
+      "path": "lib/libpdalcpp.so.20.0.0",
+      "rpath": [
+        "$ORIGIN/."
+      ],
+      "sha256": "78a1e5c15b7132784e4d1bbac0cef1d9c6bc96b2974aa1b5704d4780c50e6f12",
+      "soname": [
+        "libpdalcpp.so.20"
+      ]
+    },
+    "readline": {
+      "needed": [
+        "libtinfo.so.6",
+        "libc.so.6"
+      ],
+      "path": "lib/libreadline.so.8.3",
+      "rpath": [
+        "$ORIGIN/."
+      ],
+      "sha256": "3c1830a4ce87a037ddc676dc53856bc6f6dc8091b12998a964f19431f07cf831",
+      "soname": [
+        "libreadline.so.8"
+      ]
+    },
+    "renderdem": {
+      "needed": [
+        "libpdalcpp.so.20",
+        "libgomp.so.1",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6"
+      ],
+      "path": "bin/renderdem",
+      "rpath": [
+        "$ORIGIN/../lib"
+      ],
+      "sha256": "9174843cc432e247671c32885311ad22a778379f203d716cb3b322a5671e24dc",
+      "soname": []
+    },
+    "rttopo": {
+      "needed": [
+        "libm.so.6",
+        "libgeos_c.so.1",
+        "libc.so.6"
+      ],
+      "path": "lib/librttopo.so.1.1.0",
+      "rpath": [
+        "$ORIGIN/."
+      ],
+      "sha256": "36a50799f9354fbf58575a7fd489fd4b1f95d77f1a32f4a613336609f3152f28",
+      "soname": [
+        "librttopo.so.1"
+      ]
+    },
+    "spatialite": {
+      "needed": [
+        "libxml2.so.16",
+        "libsqlite3.so.0",
+        "libpthread.so.0",
+        "libdl.so.2",
+        "libm.so.6",
+        "librttopo.so.1",
+        "libfreexl.so.1",
+        "libcharset.so.1",
+        "libproj.so.25",
+        "libz.so.1",
+        "libgeos_c.so.1",
+        "libc.so.6"
+      ],
+      "path": "lib/libspatialite.so.8.1.0",
+      "rpath": [
+        "$ORIGIN/."
+      ],
+      "sha256": "030cd425434ebf429c28a697ccfe377f1ca90f7e359bbb947134a879cdaad3e4",
+      "soname": [
+        "libspatialite.so.8"
+      ]
+    }
+  },
+  "runtime_identity_match": true,
+  "scope": "readelf dynamic sections for selected files in one fresh runtime prefix; no general runtime loading, static link, plugins, legal or final-release conclusion"
+}

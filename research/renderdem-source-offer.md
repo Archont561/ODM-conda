@@ -44,6 +44,9 @@ release source offer or byte identity with the earlier candidate.
 
 A fresh install of the retained candidate and targeted dependency-package
 inspection are recorded in the [runtime closure review](renderdem-runtime-closure-review.md).
+A subsequent candidate `readelf` review observed dynamic dependency names
+connecting RenderDEM through PDAL and GDAL to libarchive/LZO and
+libspatialite/librttopo; this is not a legal or actual-loader conclusion.
 They do not identify the final release build/host/runtime closures. The release
 workflow captures the actual RenderDEM build and host records for inspection
 before approval; the consumer runtime solve remains separate.
