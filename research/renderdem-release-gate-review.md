@@ -106,13 +106,18 @@ not the author, provenance, rights or complete obligations of that change.
 
 ## Decisions still needed for this exact release
 
+On 2026-11-06 the owner confirmed the proposed RenderDEM license grant.
+This limited confirmation does not establish third-party rights or cover the
+remaining distribution, source-completeness, native-validation or publication
+decisions; no release checks have been changed.
+
 See the [license and source-delivery recommendation](renderdem-license-recommendation.md)
 for the proposed package expression and explicit owner/qualified-review boundaries.
 
-- **License grant:** a qualified reviewer and owner should decide whether the
-  project-level AGPLv3 statement establishes the proposed `AGPL-3.0-only`
-  expression for the included project code, and whether unmarked code and
-  the modified cxxopts header require any further provenance or notices.
+- **License grant:** the owner has confirmed the proposed `AGPL-3.0-only`
+  grant choice for the included project code. Qualified review should still
+  consider whether unmarked code and the modified cxxopts header require
+  further provenance or notices.
 - **Distribution and source:** decide whether the verified source archive plus
   packaging and scripts, and the intended source location and retention, meet
   the obligations for the actual binary and any service deployment. The
@@ -186,7 +191,7 @@ pixi run python scripts/validate_renderdem_laz.py --prefix /path/to/prefix
 ## Gate decision: not yet ready to approve
 
 1. **`license_reviewed`: open.** Qualified reviewer and owner need to decide
-   the applicable AGPL version/grant, unmarked-code provenance, cxxopts terms,
+   unmarked-code provenance, cxxopts terms,
    service/network obligations where relevant, and the applicable terms and
    notices of the actual distributed dependency set. Installed metadata is not
    a legal conclusion; another component's AGPL approval does not transfer.
