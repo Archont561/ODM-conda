@@ -106,6 +106,9 @@ not the author, provenance, rights or complete obligations of that change.
 
 ## Decisions still needed for this exact release
 
+See the [license and source-delivery recommendation](renderdem-license-recommendation.md)
+for the proposed package expression and explicit owner/qualified-review boundaries.
+
 - **License grant:** a qualified reviewer and owner should decide whether the
   project-level AGPLv3 statement establishes the proposed `AGPL-3.0-only`
   expression for the included project code, and whether unmarked code and
