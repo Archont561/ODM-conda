@@ -32,3 +32,5 @@ jobs:
           pixi install
       - name: Export sanitized metadata through annotations only
         run: pixi run python scripts/tmp_renderdem_closure.py report
+
+# Inspect selected exact Conda package metadata as well.
