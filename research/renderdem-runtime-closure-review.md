@@ -68,6 +68,39 @@ unexpanded templates, and the referenced files were not downloaded here.
   package records. This inspection could not recover the original complete
   build or host closures, and the final release build has not happened.
 
+## Candidate dynamic-link follow-up (2026-11-06)
+
+[Read-only run 42228944416](https://github.com/Archont561/ODM-conda/actions/runs/42228944416)
+verified the retained original package and installed it in a fresh prefix. All
+66 Conda name/version/build/recorded-SHA256 identities matched the previously
+recorded runtime inventory. It ran `readelf -d` on the executable and nine
+selected installed shared objects, and independently hashed those files. The
+[sanitized observations](renderdem-runtime-link-review-2026-11-06.json) have
+SHA256 `9bae091a18176490330013bfef8ec9f0db5f4de57ff88bf55ba700fc799daf44`.
+No package or source archive was uploaded.
+
+For this prefix, the observed **DT_NEEDED names** form these relevant chains:
+
+- `renderdem` → `libpdalcpp.so.20` → `libgdal.so.38`.
+- The inspected GDAL object needs `libarchive.so.13`, `libspatialite.so.8`
+  and `libgeos_c.so.1`.
+- The inspected libarchive object needs `liblzo2.so.2`; the inspected
+  libspatialite object needs `librttopo.so.1` and `libgeos_c.so.1`.
+- The executable also needs `libgomp.so.1`, `libstdc++.so.6` and
+  `libgcc_s.so.1`. The separately inspected readline library is installed in
+  the prefix; this limited observation does not establish its reachability
+  from RenderDEM.
+
+The names and SONAMEs of the inspected prefix objects correspond to these
+edges. This is stronger evidence than package dependency constraints alone,
+but `readelf` is a static inspection of dynamic sections: it does **not**
+trace actual loader resolution, establish which code executes for a workload,
+exclude static or dynamically loaded code, inspect all plugins or system
+libraries, or establish license compatibility. Review the GPL/LGPL-related
+objects and GCC runtime exceptions identified above for the intended
+separately distributed Conda packages and deployment; do not infer a legal
+conclusion from these links. The future release and consumer solve can differ.
+
 ## Build and host trial (2026-11-06)
 
 [Run 42227178797](https://github.com/Archont561/ODM-conda/actions/runs/42227178797)
