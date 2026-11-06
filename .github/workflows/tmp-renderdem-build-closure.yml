@@ -1,0 +1,23 @@
+name: Temporary RenderDEM build closure inspection
+on:
+  push:
+    branches: [arena/3be03caa-odm-conda]
+    paths: [.github/workflows/tmp-renderdem-build-closure.yml]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
+        with:
+          pixi-version: v0.82.0
+          locked: true
+      - name: Build with retained isolated environments
+        run: pixi run rattler-build build --recipe recipes/renderdem/recipe.yaml --target-platform linux-64 --variant-config recipes/variants.yaml --channel conda-forge --channel-priority strict --output-dir "$RUNNER_TEMP/renderdem-output" --log-style plain --keep-build
+      - name: Inspect retained environment paths
+        run: pixi run python scripts/tmp_renderdem_build_closure.py
