@@ -40,6 +40,10 @@ observed `renderdem → PDAL → GDAL → libarchive → LZO` and
 `DT_NEEDED`/SONAME names in one installed prefix. It did not observe actual
 loader resolution, plugins, all code paths or all licenses in those works.
 
+A subsequent [libspatialite assessment](renderdem-spatialite-license-review.md)
+found explicit alternative grants in a sampled header and evidence of GPL-2-or-later
+control-point code in the GPL variant; notice and full source scope remain open.
+
 ## Recommendation for the intended distribution
 
 - Treat these GPL-covered dependencies as **real review items**, not merely
