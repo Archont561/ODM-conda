@@ -69,4 +69,6 @@ Follow-up https://github.com/Archont561/ODM-conda/actions/runs/40862253176 indep
 2026-11-06: prepared source-offer instructions and an independently hash-checked RenderDEM bundle reconstruction helper. The release bundle now includes a concrete local-source rebuild procedure. Exact release dependency/source obligations, durable availability and owner/qualified completeness decisions remain open; no publication or gate approval is implied. See research/renderdem-source-offer.md.
 
 2026-11-06: hosted source-offer procedure run 42198851748 generated and staged a trial source bundle and passed its local-source rebuild, fresh retest and audit using online dependencies. The temporary workflow was in the trial bundle; no artifacts were uploaded. This is not the final release source offer.
+
+2026-11-06: run 42225313740 hash-verified the retained build-1 package, captured a fresh 66-record runtime solve and independently hashed 11 selected dependency packages, recording their metadata, declared source references and info/license hashes. The sanitized inventory and bounded review identify GPL/LGPL and runtime-exception follow-ups; the original and final release build/host closures and final live runtime solve remain unknown. No legal or gate decision was inferred. See research/renderdem-runtime-closure-review.md.
 <!-- SECTION:NOTES:END -->

@@ -42,6 +42,10 @@ The temporary workflow was included in that research bundle and no artifacts
 were uploaded. This validates the procedure on that trial, not the exact final
 release source offer or byte identity with the earlier candidate.
 
+A fresh install of the retained candidate and targeted dependency-package
+inspection are recorded in the [runtime closure review](renderdem-runtime-closure-review.md).
+They do not identify the final release build/host/runtime closures.
+
 ## Release-specific checks still required
 
 1. On the approved release commit, run the owner-dispatched native build and
