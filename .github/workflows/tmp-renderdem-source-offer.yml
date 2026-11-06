@@ -1,0 +1,38 @@
+name: Temporary RenderDEM source offer test
+on: [push]
+permissions:
+  contents: read
+jobs:
+  reconstruct:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94 # v0.11.2
+        with:
+          pixi-version: v0.82.0
+          locked: true
+      - name: Generate and verify source bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          pixi run sources --component renderdem --output-dir "$RUNNER_TEMP/bundles"
+          bundle="$RUNNER_TEMP/bundles/source-renderdem-1.0-b1.tar.gz"
+          hash="$(sha256sum "$bundle" | cut -d' ' -f1)"
+          mkdir "$RUNNER_TEMP/bootstrap"
+          cd "$RUNNER_TEMP/bootstrap"
+          tar -xzf "$bundle" -- packaging/scripts/prepare_renderdem_source_rebuild.py packaging/scripts/common.py packaging/scripts/source_graph.py
+          python3 packaging/scripts/prepare_renderdem_source_rebuild.py --bundle "$bundle" --sha256 "$hash" --destination "$RUNNER_TEMP/staged"
+      - name: Build, retest and audit staged package
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/staged/packaging"
+          pixi install --locked
+          pixi run rattler-build build --recipe recipes/renderdem/recipe.yaml --target-platform linux-64 --variant-config recipes/variants.yaml --channel conda-forge --channel-priority strict --output-dir "$RUNNER_TEMP/output" --log-style plain
+          shopt -s nullglob
+          packages=("$RUNNER_TEMP"/output/linux-64/renderdem-1.0-*.conda)
+          test "${#packages[@]}" -eq 1
+          pixi run rattler-build test --package-file "${packages[0]}" --channel conda-forge --channel-priority strict --output-dir "$RUNNER_TEMP/retest" --log-style plain
+          pixi run python scripts/audit_package.py --component renderdem --output-dir "$RUNNER_TEMP/output" --reports-dir "$RUNNER_TEMP/reports"
+          echo "::notice::Staged local-source build, fresh retest, and audit passed; no artifacts uploaded."
