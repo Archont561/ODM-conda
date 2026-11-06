@@ -21,3 +21,5 @@ jobs:
         run: pixi run rattler-build build --recipe recipes/renderdem/recipe.yaml --target-platform linux-64 --variant-config recipes/variants.yaml --channel conda-forge --channel-priority strict --output-dir "$RUNNER_TEMP/renderdem-output" --log-style plain --keep-build
       - name: Inspect retained environment paths
         run: pixi run python scripts/tmp_renderdem_build_closure.py
+
+# Capture sanitized build and host records.
