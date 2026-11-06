@@ -47,7 +47,10 @@ inspection are recorded in the [runtime closure review](renderdem-runtime-closur
 A subsequent candidate `readelf` review observed dynamic dependency names
 connecting RenderDEM through PDAL and GDAL to libarchive/LZO and
 libspatialite/librttopo; this is not a legal or actual-loader conclusion.
-They do not identify the final release build/host/runtime closures. The release
+The [GPL dependency review](renderdem-gpl-dependency-review.md) adds
+source-archive and sampled grant evidence, but does not complete the source
+offer or establish full compatibility.
+These observations do not identify the final release build/host/runtime closures. The release
 workflow captures the actual RenderDEM build and host records for inspection
 before approval; the consumer runtime solve remains separate.
 
