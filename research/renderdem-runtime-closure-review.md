@@ -68,6 +68,39 @@ unexpanded templates, and the referenced files were not downloaded here.
   package records. This inspection could not recover the original complete
   build or host closures, and the final release build has not happened.
 
+## Build and host trial (2026-11-06)
+
+[Run 42227178797](https://github.com/Archont561/ODM-conda/actions/runs/42227178797)
+built RenderDEM from the recipe with retained isolated build environments. The
+trial package `renderdem-1.0-h873e7db_1.conda` SHA256 was
+`abf6d1793dc8a5e60b163ba27fcb414b39bef36f7119f09e25c879b465362a92`,
+not the retained owner-dispatched candidate. The [sanitized build/host
+inventory](renderdem-build-host-closure-2026-11-06.json) is recovered from
+annotations and verified against SHA256
+`7f642968890083314afcd578ba7fda63ae3feaed6671812b4367277a80e59725`.
+It contains **46 build** and **65 host** Conda records, all with recorded
+SHA256 metadata. Build tools include GCC/G++ `14.4.0`, binutils `2.46.1`,
+and sysroot `2.28`. GPL, LGPL, GCC-exception and sysroot metadata are review
+leads, not a conclusion about any particular distribution obligation.
+
+The 65 host identities (name, version, build and recorded SHA256) matched the
+65 non-RenderDEM records of the earlier fresh candidate runtime solve. That
+agreement is between two separate live solves, not a build/host lock, proof of
+installed package bytes, or evidence for the final release. The metadata
+lists binary URLs and some installed notice paths, not corresponding sources.
+The temporary workflow was part of the trial checkout; no binary or source
+archives were uploaded. The earlier original build/host environment was not
+recovered.
+
+The release workflow now retains the RenderDEM build environments long enough
+to stage a sanitized build/host inventory, associated with the built package's
+SHA256 and included in the checksums. For RenderDEM it fails closed if that
+inventory is missing and attaches it before Prefix upload. The build artifact
+is available at the protected environment review point; review the actual
+metadata there and reject the approval if it is inadequate. This mechanism does
+not lock dependencies, enumerate consumer runtime solves, verify dependency
+source availability or approve license/source obligations.
+
 ## What remains before source-completeness approval
 
 Capture the **final release build's** actual build, host and runtime closures,

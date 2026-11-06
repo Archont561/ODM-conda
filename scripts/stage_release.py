@@ -17,6 +17,7 @@ def main() -> None:
     parser.add_argument("--component", required=True)
     parser.add_argument("--output-dir", type=Path, default=ROOT / "output")
     parser.add_argument("--destination", type=Path, default=ROOT / "release-artifacts")
+    parser.add_argument("--capture-renderdem-inventory", action="store_true", help="Require and stage retained RenderDEM build/host metadata")
     parser.add_argument("--cache", type=Path, default=ROOT / ".cache" / "sources")
     options = parser.parse_args()
     selected = select_components(options.component)
@@ -28,10 +29,16 @@ def main() -> None:
     name, component = next(iter(selected.items()))
     package = find_package(name, component, options.output_dir)
     report = audit(name, component, package)
+    build_inventory = None
+    if options.capture_renderdem_inventory and name == "renderdem":
+        from capture_renderdem_build_inventory import capture
+        build_inventory = capture(options.output_dir, component)
     # Source construction failure leaves no published binary: this command only stages.
     make_bundle(name, component, options.destination, options.cache)
     shutil.copy2(package, options.destination / package.name)
     (options.destination / "audit.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    if build_inventory is not None:
+        (options.destination / "build-host-inventory.json").write_text(json.dumps(build_inventory, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     files = sorted(path for path in options.destination.iterdir() if path.is_file())
     (options.destination / "SHA256SUMS").write_text("".join(f"{sha256(path)}  {path.name}\n" for path in files), encoding="ascii")
     print(f"Staged {name} in {options.destination}; publication has NOT occurred")

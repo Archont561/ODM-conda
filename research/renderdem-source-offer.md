@@ -44,7 +44,9 @@ release source offer or byte identity with the earlier candidate.
 
 A fresh install of the retained candidate and targeted dependency-package
 inspection are recorded in the [runtime closure review](renderdem-runtime-closure-review.md).
-They do not identify the final release build/host/runtime closures.
+They do not identify the final release build/host/runtime closures. The release
+workflow captures the actual RenderDEM build and host records for inspection
+before approval; the consumer runtime solve remains separate.
 
 ## Release-specific checks still required
 

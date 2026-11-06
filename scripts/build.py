@@ -15,6 +15,7 @@ def main() -> None:
     selection = parser.add_mutually_exclusive_group()
     selection.add_argument("--component", default="all", help="Comma-separated implemented component names, or all (default)")
     selection.add_argument("--workflow-checkboxes", action="store_true", help="Select components from workflow checkbox environment")
+    parser.add_argument("--keep-renderdem-build", action="store_true", help="Retain RenderDEM build/host prefixes for release metadata inventory")
     parser.add_argument("--render-only", action="store_true", help="Validate rendered recipes without solving/building")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "output")
     options = parser.parse_args()
@@ -53,6 +54,8 @@ def main() -> None:
                    "--output-dir", str(options.output_dir.resolve()), "--log-style", "plain"]
         if options.render_only:
             command.append("--render-only")
+        elif options.keep_renderdem_build and name == "renderdem":
+            command.append("--keep-build")
         print(f"\n{'Render' if options.render_only else 'Build'}: {name}", flush=True)
         run(command)
 
