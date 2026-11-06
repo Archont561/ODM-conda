@@ -24,14 +24,16 @@ with zipfile.ZipFile(io.BytesIO(pkg)) as z:
     info=[n for n in z.namelist() if n.startswith('info-') and n.endswith('.tar.zst')]; assert len(info)==1
     with z.open(info[0]) as fp, zstandard.ZstdDecompressor().stream_reader(fp) as stream:
         with tarfile.open(fileobj=stream,mode='r|') as t:
-            notice=None
+            notice=None; recipe_files={}
             for m in t:
+                if m.isfile() and m.name.startswith('info/recipe/') and (m.name.endswith('.sh') or m.name.endswith('.patch')) and m.size < 1000000:
+                    recipe_files[m.name]=t.extractfile(m).read().decode('utf-8',errors='replace')
                 if m.name=='info/licenses/COPYING':
                     assert m.isfile() and m.size < 1000000
                     notice=t.extractfile(m).read()
 assert notice and digest(notice)==metadata['license_files']['info/licenses/COPYING']
 source=fetch(metadata['recipe_source']['url']); assert digest(source)==metadata['recipe_source']['sha256']
-counts=collections.Counter(); examples={}; root_notices=[]; total=0; groups=collections.defaultdict(list); build_mentions=[]
+counts=collections.Counter(); examples={}; root_notices=[]; total=0; groups=collections.defaultdict(list); build_mentions=[]; target_files={}; gpl_excerpts={}
 with tarfile.open(fileobj=io.BytesIO(source),mode='r:gz') as tar:
     for m in tar:
         if not m.isfile(): continue
@@ -41,6 +43,8 @@ with tarfile.open(fileobj=io.BytesIO(source),mode='r:gz') as tar:
         if name in ('copying','license','license.txt','readme','readme.md','readme.txt') and len(path.split('/'))==2:
             raw=tar.extractfile(m).read()
             root_notices.append({'path':path,'sha256':digest(raw),'same_as_package_notice':raw==notice,'excerpt':raw[:800].decode('utf-8',errors='replace')})
+        if path.endswith(('/src/Makefile.am','/src/control_points/Makefile.am')):
+            target_files[path]=tar.extractfile(m).read().decode('utf-8',errors='replace')
         if name in ('makefile.am', 'configure.ac', 'cmakelists.txt'):
             content=tar.extractfile(m).read().decode('utf-8',errors='replace')
             lines=content.splitlines()
@@ -53,10 +57,13 @@ with tarfile.open(fileobj=io.BytesIO(source),mode='r:gz') as tar:
         if re.search(r'(?<!lesser )(?<!library )gnu general public license',text,re.I):terms.append('GPL')
         if re.search(r'gnu (?:lesser|library) general public license',text,re.I):terms.append('LGPL')
         k='+'.join(terms) if terms else 'no-marker-in-first-12000-bytes';counts[k]+=1;groups[k].append(path)
+        if k == 'GPL' and '/src/control_points/' in path:
+            match=re.search(r'gnu general public license',text,re.I)
+            gpl_excerpts[path]=text[max(0,match.start()-150):match.start()+400]
         if terms and k not in examples:
             match=re.search(r'mozilla public license|gnu (?:lesser |library )?general public license',text,re.I)
             examples[k]={'path':path,'excerpt':text[max(0,match.start()-200):match.start()+1800]}
-result={'binary_sha256':digest(pkg),'source_sha256':digest(source),'package_license':record['license'],'package_copying_sha256':digest(notice),'total_regular_files':total,'source_scan_counts':dict(counts),'examples':examples,'selected_paths':{k:v[:80] for k,v in groups.items() if k != 'MPL+GPL+LGPL'},'build_mentions':build_mentions,'root_notices':root_notices,'warning':'Filename/header token scan is not a full source, license, provenance or compilation audit.'}
+result={'binary_sha256':digest(pkg),'source_sha256':digest(source),'package_license':record['license'],'package_copying_sha256':digest(notice),'total_regular_files':total,'source_scan_counts':dict(counts),'examples':examples,'selected_paths':{k:v[:80] for k,v in groups.items() if k != 'MPL+GPL+LGPL'},'build_mentions':build_mentions,'target_makefiles':target_files,'gpl_control_point_excerpts':gpl_excerpts,'package_recipe_files':recipe_files,'root_notices':root_notices,'warning':'Filename/header token scan is not a full source, license, provenance or compilation audit.'}
 raw=json.dumps(result,sort_keys=True,indent=2).encode();enc=base64.b64encode(gzip.compress(raw,mtime=0)).decode();chunks=[enc[i:i+2700] for i in range(0,len(enc),2700)];assert len(chunks)<=40
 print(f'::notice::SPATIALITE-INFO chunks={len(chunks)} sha256={digest(raw)}',flush=True)
 for i,chunk in enumerate(chunks):print(f'::notice::SPATIALITE-CHUNK-{i:02d} {chunk}',flush=True)

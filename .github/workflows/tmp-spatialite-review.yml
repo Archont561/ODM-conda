@@ -23,3 +23,5 @@ jobs:
 # Include non-trilicense source file paths for follow-up.
 
 # Identify build references to grant exceptions.
+
+# Review actual package recipe and control point grants.
