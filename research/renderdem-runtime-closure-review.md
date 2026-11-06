@@ -101,6 +101,10 @@ objects and GCC runtime exceptions identified above for the intended
 separately distributed Conda packages and deployment; do not infer a legal
 conclusion from these links. The future release and consumer solve can differ.
 
+A [targeted LZO and librttopo review](renderdem-gpl-dependency-review.md)
+checks their recorded source archives and sampled grant wording, and sets out
+remaining distribution and source decisions.
+
 ## Build and host trial (2026-11-06)
 
 [Run 42227178797](https://github.com/Archont561/ODM-conda/actions/runs/42227178797)
