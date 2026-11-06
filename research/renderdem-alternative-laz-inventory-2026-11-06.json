@@ -1,0 +1,1399 @@
+{
+  "candidate_sha256": "a681202611aa3fa25281055825b75a89e1a256260a954ce69bcd5393a834d94c",
+  "inventory": [
+    {
+      "build": "20_gnu",
+      "license": "BSD-3-Clause",
+      "name": "_openmp_mutex",
+      "sha256": "1dd3fffd892081df9726d7eb7e0dea6198962ba775bd88842135a4ddb4deb3c9",
+      "version": "4.5"
+    },
+    {
+      "build": "h2d2dd48_2",
+      "license": "Apache-2.0",
+      "name": "aws-c-auth",
+      "sha256": "292aa18fe6ab5351710e6416fbd683eaef3aa5b1b7396da9350ff08efc660e4f",
+      "version": "0.10.1"
+    },
+    {
+      "build": "h2c9d079_1",
+      "license": "Apache-2.0",
+      "name": "aws-c-cal",
+      "sha256": "f21d648349a318f4ae457ea5403d542ba6c0e0343b8642038523dd612b2a5064",
+      "version": "0.9.13"
+    },
+    {
+      "build": "hb03c661_0",
+      "license": "Apache-2.0",
+      "name": "aws-c-common",
+      "sha256": "926a5b9de0a586e88669d81de717c8dd3218c51ce55658e8a16af7e7fe87c833",
+      "version": "0.12.6"
+    },
+    {
+      "build": "h8b1a151_0",
+      "license": "Apache-2.0",
+      "name": "aws-c-compression",
+      "sha256": "1838bdc077b77168416801f4715335b65e9223f83641a2c28644f8acd8f9db0e",
+      "version": "0.3.2"
+    },
+    {
+      "build": "h9b893ba_1",
+      "license": "Apache-2.0",
+      "name": "aws-c-event-stream",
+      "sha256": "4a1a060ab40cb4fa39d24418758ca9faa1f51df6918f05143118e79bb11b4350",
+      "version": "0.6.0"
+    },
+    {
+      "build": "h4bacb7b_2",
+      "license": "Apache-2.0",
+      "name": "aws-c-http",
+      "sha256": "8f69463e15bc857716ef0bf0444547d6eca96f5a82b73ab3fefec2f2fd7960ab",
+      "version": "0.10.12"
+    },
+    {
+      "build": "hb18f61d_2",
+      "license": "Apache-2.0",
+      "name": "aws-c-io",
+      "sha256": "eee7f7aa2c5b9e0a31edba7b81482036fbe751c40bc6697fd057fbd2c656406b",
+      "version": "0.26.3"
+    },
+    {
+      "build": "he9ea9c5_1",
+      "license": "Apache-2.0",
+      "name": "aws-c-mqtt",
+      "sha256": "3fc68793c0ca2c36524ae67abac696ce6b066a8be6b2b980cbdc40ae1310041a",
+      "version": "0.15.2"
+    },
+    {
+      "build": "h6d69fc9_5",
+      "license": "Apache-2.0",
+      "name": "aws-c-s3",
+      "sha256": "c15869656f5fbebe27cc5aa58b23831f75d85502d324fedd7ee7e552c79b495d",
+      "version": "0.11.5"
+    },
+    {
+      "build": "h8b1a151_4",
+      "license": "Apache-2.0",
+      "name": "aws-c-sdkutils",
+      "sha256": "9d62c5029f6f8219368a8665f0a549da572dc777f52413b7d75609cacdbc02cc",
+      "version": "0.2.4"
+    },
+    {
+      "build": "h8b1a151_0",
+      "license": "Apache-2.0",
+      "name": "aws-checksums",
+      "sha256": "09472dd5fa4473cffd44741ee4c1112f2c76d7168d1343de53c2ad283dc1efa6",
+      "version": "0.2.10"
+    },
+    {
+      "build": "h4c8aef7_3",
+      "license": "Apache-2.0",
+      "name": "aws-crt-cpp",
+      "sha256": "b82d0bc6d4b716347e1aefb0acc6e4bff04b3f807537ada9b458a7e467beb2a0",
+      "version": "0.37.4"
+    },
+    {
+      "build": "hc3785e1_3",
+      "license": "Apache-2.0",
+      "name": "aws-sdk-cpp",
+      "sha256": "62b7e565852fa061a26281b2890e432853fabefa8ea3dc22d00d39295a030805",
+      "version": "1.11.747"
+    },
+    {
+      "build": "h206d751_0",
+      "license": "MIT",
+      "name": "azure-core-cpp",
+      "sha256": "321d1070905e467b6bc6f5067b97c1868d7345c272add82b82e08a0224e326f0",
+      "version": "1.16.2"
+    },
+    {
+      "build": "hed0cdb0_1",
+      "license": "MIT",
+      "name": "azure-identity-cpp",
+      "sha256": "2beb6ae8406f946b8963a67e72fe74453e1411c5ae7e992978340de6c512d13c",
+      "version": "1.13.3"
+    },
+    {
+      "build": "hdd73cc9_1",
+      "license": "MIT",
+      "name": "azure-storage-blobs-cpp",
+      "sha256": "cef75b91bdd5a65c560b501df78905437cc2090a64b4c5ecd7da9e08e9e9af7c",
+      "version": "12.16.0"
+    },
+    {
+      "build": "ha7a2c86_1",
+      "license": "MIT",
+      "name": "azure-storage-common-cpp",
+      "sha256": "ef7d1cae36910b21385d0816f8524a84dee1513e0306927e41a6bd32b5b9a0d0",
+      "version": "12.12.0"
+    },
+    {
+      "build": "h52c5a47_1",
+      "license": "MIT",
+      "name": "azure-storage-files-datalake-cpp",
+      "sha256": "55aa8ad5217d358e0ccf4a715bd1f9bafef3cd1c2ea4021f0e916f174c20f8e3",
+      "version": "12.14.0"
+    },
+    {
+      "build": "h3f4a69f_0",
+      "license": "BSD-3-Clause",
+      "name": "blosc",
+      "sha256": "9f8cfddb118238da49936cab81e8364937619f46f9936a48cbe77131469fe55f",
+      "version": "1.21.7"
+    },
+    {
+      "build": "hda65f42_10",
+      "license": "bzip2-1.0.6",
+      "name": "bzip2",
+      "sha256": "1a0d382c515ebf55f8ee1f38c8b81bc95af5c2acc42ad53b66bc5df932032f96",
+      "version": "1.0.8"
+    },
+    {
+      "build": "hebe6cf0_0",
+      "license": "MIT",
+      "name": "c-ares",
+      "sha256": "bd95dd25b80b5c4faf5349542377bf89b2794e23d0f7aa7f1c431e4f3b633f3c",
+      "version": "1.34.9"
+    },
+    {
+      "build": "hc31b594_0",
+      "license": "BSD-3-Clause",
+      "name": "c-blosc2",
+      "sha256": "f02a289837c31d43405915b6efbe64f925dfb23e4ca2949f604fa0ab8a9094cc",
+      "version": "3.0.3"
+    },
+    {
+      "build": "hbd8a1cb_0",
+      "license": "ISC",
+      "name": "ca-certificates",
+      "sha256": "95619b9c1184be7175392eeb0ee7eeb5ccf25d280951f4225f2d62e725790be3",
+      "version": "2026.10.23"
+    },
+    {
+      "build": "h791c776_0",
+      "license": "MIT",
+      "name": "capnproto",
+      "sha256": "3c70cb2b6133315bc3dfc155a3b744114ff3aed4ba3b6d16675cb29c2e464ad8",
+      "version": "1.4.0"
+    },
+    {
+      "build": "cpugplhc142d66_210",
+      "license": "BSD-3-Clause",
+      "name": "ceres-solver",
+      "sha256": "2881e9545dc9ac93290a53265b0cc71282aaf79d608e14f177af7fa4eae0c811",
+      "version": "2.2.0"
+    },
+    {
+      "build": "h434a139_2",
+      "license": "GPL-2.0-or-later",
+      "name": "cpd",
+      "sha256": "f8dcdac7e17d64e389ebb15bc2bed5f854981aadb82671913b4de7468ece161c",
+      "version": "0.5.5"
+    },
+    {
+      "build": "hac629b4_1",
+      "license": "BSD-3-Clause-Attribution",
+      "name": "cyrus-sasl",
+      "sha256": "7684da83306bb69686c0506fb09aa7074e1a55ade50c3a879e4e5df6eebb1009",
+      "version": "2.1.28"
+    },
+    {
+      "build": "h00ab1b0_0",
+      "license": "Apache-2.0",
+      "name": "draco",
+      "sha256": "97722216c26379b2d9fe9ceed783074d6f84b2594ebc2fc0b0cad084ca50aa3d",
+      "version": "1.5.7"
+    },
+    {
+      "build": "h54a6638_2",
+      "license": "MPL-2.0",
+      "name": "eigen",
+      "sha256": "a627704a4dc57459dbcdec8296c3f7f1801e53d441b7cadb56a2caa57920a5b3",
+      "version": "3.4.0"
+    },
+    {
+      "build": "h3bcb7cf_2",
+      "license": "MPL-2.0",
+      "name": "eigen-abi",
+      "sha256": "6060ac3c240bfd079946aa4ba9b4749b4ffecbdc734b14910a44eb9d2ec84d6f",
+      "version": "3.4.0.100"
+    },
+    {
+      "build": "h87365c0_1",
+      "license": "LGPL-2.0-or-later",
+      "name": "fgt",
+      "sha256": "9d85b3952ea29acaf4b9d9fadbd67e74ca0381e768cc3aba195491f6dd4c4dc9",
+      "version": "0.4.11"
+    },
+    {
+      "build": "h76c4fd7_1",
+      "license": "MIT",
+      "name": "fmt",
+      "sha256": "25d14a197601fdd616f2e501431b52887e69b31e7defbc1679381d718357ceb7",
+      "version": "12.1.0"
+    },
+    {
+      "build": "h1f12c17_3",
+      "license": "MPL-1.1",
+      "name": "freexl",
+      "sha256": "2be93e21acabadd6f32a830f328d23e4c6369898df0f69396c2c37be6ef0d15e",
+      "version": "2.0.0"
+    },
+    {
+      "build": "h55b0958_0",
+      "license": "LGPL-2.1-only",
+      "name": "geos",
+      "sha256": "dc9f03bef913c8b3c94e93a61318b7437bd5e4f7136ef841e68df8de082405d5",
+      "version": "3.14.1"
+    },
+    {
+      "build": "heb69356_6",
+      "license": "MIT",
+      "name": "geotiff",
+      "sha256": "6c2e2da96c08cd5459336feb7680fc6e63d3f4d2abf369da74c4163b77e15517",
+      "version": "1.7.4"
+    },
+    {
+      "build": "h5888daf_1005",
+      "license": "BSD-3-Clause",
+      "name": "gflags",
+      "sha256": "6c33bf0c4d8f418546ba9c250db4e4221040936aef8956353bc764d4877bc39a",
+      "version": "2.2.2"
+    },
+    {
+      "build": "ha257d8a_1",
+      "license": "MIT",
+      "name": "giflib",
+      "sha256": "3611c5d605cd56017704e6c01c7bd849e74a656a546d4c49d655fde49ddfeecc",
+      "version": "5.2.2"
+    },
+    {
+      "build": "hbabe93e_0",
+      "license": "BSD-3-Clause",
+      "name": "glog",
+      "sha256": "dc824dc1d0aa358e28da2ecbbb9f03d932d976c8dca11214aa1dcdfcbd054ba2",
+      "version": "0.7.1"
+    },
+    {
+      "build": "hfd2156b_3",
+      "license": "GPL-2.0-or-later OR LGPL-3.0-or-later",
+      "name": "gmp",
+      "sha256": "f36c336efc874f346a53a9011f67e997f9faac505562cc18c13b6d399cfe61c7",
+      "version": "6.3.0"
+    },
+    {
+      "build": "nompi_h19486de_110",
+      "license": "BSD-3-Clause",
+      "name": "hdf5",
+      "sha256": "ac57ce3abbda2a82d6192bc36fbd7fe96e867d84c999ef81a3da034dfd01a995",
+      "version": "1.14.6"
+    },
+    {
+      "build": "py310h44b86e0_2",
+      "license": "MIT",
+      "name": "icu",
+      "sha256": "9f07834f0c546ab14d885ce0366285f61f44e326c0edd1fc63b8294e113ae432",
+      "version": "78.3"
+    },
+    {
+      "build": "hebe6cf0_2",
+      "license": "MIT",
+      "name": "json-c",
+      "sha256": "78ec5a672acc8a6bf9c74268b88a72230809517aebe75a11acf959d3f9a63fe0",
+      "version": "0.18"
+    },
+    {
+      "build": "h7cc23a3_1",
+      "license": "LGPL-2.1-or-later",
+      "name": "keyutils",
+      "sha256": "dd053c96dcb0dcfd59422aefea9d2fe937a190167f34fba7893ec1e10a7e8963",
+      "version": "1.6.3"
+    },
+    {
+      "build": "hbc21106_2",
+      "license": "MIT",
+      "name": "krb5",
+      "sha256": "2a5c38c85e63df84c4e69ee71439841ce570d259ae3060627bb9a49a938d66f4",
+      "version": "1.22.2"
+    },
+    {
+      "build": "default_hbd61a6d_103",
+      "license": "GPL-3.0-only",
+      "name": "ld_impl_linux-64",
+      "sha256": "901649b1edbe841fd4ee7e2d491a05184ed540eb01cdae506872f344babc1d28",
+      "version": "2.46.1"
+    },
+    {
+      "build": "he78707d_0",
+      "license": "Apache-2.0",
+      "name": "lerc",
+      "sha256": "467aa52e9ba7a438f17944909e1904399eab863778ab501cf271e30cfa4bc6f3",
+      "version": "4.3.0"
+    },
+    {
+      "build": "cxx17_h7b12aa8_0",
+      "license": "Apache-2.0",
+      "name": "libabseil",
+      "sha256": "a7a4481a4d217a3eadea0ec489826a69070fcc3153f00443aa491ed21527d239",
+      "version": "20260107.1"
+    },
+    {
+      "build": "h659bb9a_0",
+      "license": "BSD-2-Clause",
+      "name": "libaec",
+      "sha256": "8433f928a66158f08e7007ee3d8c6bb65af587532a1681409bafc8d3cc16c8fa",
+      "version": "1.1.7"
+    },
+    {
+      "build": "h456b2da_7100101",
+      "license": "BSD-3-Clause",
+      "name": "libamd",
+      "sha256": "5fc32a5497c9919ffde729a604b0acfa97c403ce5b2b27b28ca261cf0c4643aa",
+      "version": "3.3.3"
+    },
+    {
+      "build": "lgpl_hee3b6c9_0",
+      "license": "BSD-2-Clause",
+      "name": "libarchive",
+      "sha256": "ef86dba72bcad4a7c522bb9d8974d7b85ed6d886c5ff6c41ee27a2661d4fd626",
+      "version": "3.8.11"
+    },
+    {
+      "build": "hcf3e2a1_44_cpu",
+      "license": "Apache-2.0",
+      "name": "libarrow",
+      "sha256": "66dc0eee9d6e139d4503efa3d05407c37db8116c9f16f4b4ce7ea5c3ac7a6a29",
+      "version": "20.0.0"
+    },
+    {
+      "build": "h635bf11_44_cpu",
+      "license": "Apache-2.0",
+      "name": "libarrow-acero",
+      "sha256": "fc4697985d697cd44d2e52732dd27bbfa870d5070d7c19607196da60978cfe72",
+      "version": "20.0.0"
+    },
+    {
+      "build": "h635bf11_44_cpu",
+      "license": "Apache-2.0",
+      "name": "libarrow-dataset",
+      "sha256": "38cd5aeb8785ec6e587bcc0574c1bc452e0a33d600c2c94b0235c4098427737c",
+      "version": "20.0.0"
+    },
+    {
+      "build": "12_h4a7cf45_openblas",
+      "license": "BSD-3-Clause",
+      "name": "libblas",
+      "sha256": "6a6263c3d4a484dbac4ae7a8191be5f868c0574bbc7faa42b258bb59dc6d5fa2",
+      "version": "3.11.0"
+    },
+    {
+      "build": "h39a168f_0",
+      "license": "MIT",
+      "name": "libbrotlicommon",
+      "sha256": "8eccfbfdb8ecba32eabfb6ee92f70e818e5f3a35a01c507f7b6bd56e00e4c617",
+      "version": "1.2.1"
+    },
+    {
+      "build": "ha411449_0",
+      "license": "MIT",
+      "name": "libbrotlidec",
+      "sha256": "4b4bda6f70ad511bdff95fdd958dca74b6e0534ae335ddcb1d8c6569774d2429",
+      "version": "1.2.1"
+    },
+    {
+      "build": "h018ffa1_0",
+      "license": "MIT",
+      "name": "libbrotlienc",
+      "sha256": "61974cf9bb07115ed6725dacf83d0d985443d78dd123cc4f2758856fda5376ec",
+      "version": "1.2.1"
+    },
+    {
+      "build": "hf02c80a_7100101",
+      "license": "LGPL-2.1-or-later",
+      "name": "libbtf",
+      "sha256": "fe36f414f48ab87251f02aeef1fcbb6f3929322316842dada0f8142db2710264",
+      "version": "2.3.2"
+    },
+    {
+      "build": "hf02c80a_7100101",
+      "license": "BSD-3-Clause",
+      "name": "libcamd",
+      "sha256": "16e9ae4e173a8606b0b8be118dbdcf4e03c9dd9777eea6bf9dff4397133d0d06",
+      "version": "3.3.3"
+    },
+    {
+      "build": "h084b8d7_1",
+      "license": "BSD-3-Clause",
+      "name": "libcap",
+      "sha256": "8cb25174d6b6fac95d31e86cfe41faffc8ee9dacbf2bfd22e6c23377e8f338c1",
+      "version": "2.78"
+    },
+    {
+      "build": "12_h0358290_openblas",
+      "license": "BSD-3-Clause",
+      "name": "libcblas",
+      "sha256": "8ea7d98b71e1200e2e4141c1813d6950e6acc917d220bbf54058390d252460f8",
+      "version": "3.11.0"
+    },
+    {
+      "build": "hf02c80a_7100101",
+      "license": "BSD-3-Clause",
+      "name": "libccolamd",
+      "sha256": "cc90aa5e0ad1f7ae9a29d9a42aacd7f7f02aba0bf5467513bfda7e6b18a4cbc8",
+      "version": "3.3.4"
+    },
+    {
+      "build": "h9cf07ce_7100101",
+      "license": "LGPL-2.1-or-later AND GPL-2.0-or-later AND Apache-2.0",
+      "name": "libcholmod",
+      "sha256": "69540315b4b8de93b383243334151ed19e98968baaa59440ba645a3bff68d765",
+      "version": "5.3.1"
+    },
+    {
+      "build": "hf02c80a_7100101",
+      "license": "BSD-3-Clause",
+      "name": "libcolamd",
+      "sha256": "00d1b976b914f0c20ae6f81f4e4713fa87717542eba8757b9a3c9e8abcc29858",
+      "version": "3.3.4"
+    },
+    {
+      "build": "h9c3ff4c_0",
+      "license": "BSD-3-Clause",
+      "name": "libcrc32c",
+      "sha256": "fd1d153962764433fe6233f34a72cdeed5dcf8a883a85769e8295ce940b5b0c5",
+      "version": "1.1.2"
+    },
+    {
+      "build": "ha042cf0_0",
+      "license": "curl",
+      "name": "libcurl",
+      "sha256": "d2db14d80efb4f2e76e76561c633f1767f7543987f2bcb54a067a9d264d432ab",
+      "version": "8.23.0"
+    },
+    {
+      "build": "hf02c80a_7100101",
+      "license": "LGPL-2.1-or-later",
+      "name": "libcxsparse",
+      "sha256": "ab40fc8a4662f550d053576a56db896247bc81eb291eff3811f24c231829e3dd",
+      "version": "4.4.1"
+    },
+    {
+      "build": "hd45a770_1",
+      "license": "MIT",
+      "name": "libdeflate",
+      "sha256": "82e134c8a08b1eed9a2ed8ab578b89aa1730dcde3dea8dd87645ed0637878e54",
+      "version": "1.25"
+    },
+    {
+      "build": "pl5321h373387f_0",
+      "license": "BSD-2-Clause",
+      "name": "libedit",
+      "sha256": "45301f14f4eb66da57cfaf2d265f3eeee73f8b07e99614ee3afc5b26eea91126",
+      "version": "3.1.20260512"
+    },
+    {
+      "build": "h280c20c_3",
+      "license": "BSD-2-Clause OR GPL-2.0-or-later",
+      "name": "libev",
+      "sha256": "e4418f68d01a6307c4431b585c71b584f40189877364e542ee87deb777f5e85b",
+      "version": "4.33"
+    },
+    {
+      "build": "h5348a74_2",
+      "license": "BSD-3-Clause",
+      "name": "libevent",
+      "sha256": "f874779772878f3b509c607de9089c282f71232fde4cac876fc660d29670f28d",
+      "version": "2.1.12"
+    },
+    {
+      "build": "hd2095e1_0",
+      "license": "MIT",
+      "name": "libexpat",
+      "sha256": "7b930a8b6bc6553cb754b4977a11f9c862c719a652fc2d128d89270992ce8beb",
+      "version": "2.9.0"
+    },
+    {
+      "build": "ha770c72_0",
+      "license": "BSD-2-Clause OR GPL-2.0-only",
+      "name": "libfabric",
+      "sha256": "25ba6ec589b09f1e74132fef73d47de81e8c719796c75d8d8749ba6df923781f",
+      "version": "2.7.0"
+    },
+    {
+      "build": "hf0f7150_0",
+      "license": "BSD-2-Clause OR GPL-2.0-only",
+      "name": "libfabric1",
+      "sha256": "e5337e9e6f0a795c0c4f82ed9f4e737415315998bb1a95ebba0d4288763b980b",
+      "version": "2.7.0"
+    },
+    {
+      "build": "h81df57d_1",
+      "license": "MIT",
+      "name": "libffi",
+      "sha256": "c8c7583ef063bc3c430f1d48298e5ad24f796a35c22ed5b14183325825a61106",
+      "version": "3.7.0"
+    },
+    {
+      "build": "ha9f2e26_7",
+      "license": "GPL-3.0-only WITH GCC-exception-3.1",
+      "name": "libgcc",
+      "sha256": "e031634c3a928f9594eba868bc46ef5230d6571a364a0c63215b06c4563bfcea",
+      "version": "16.2.0"
+    },
+    {
+      "build": "h69a702a_7",
+      "license": "GPL-3.0-only WITH GCC-exception-3.1",
+      "name": "libgcc-ng",
+      "sha256": "03b54d7008de080a17cc2174b0e4acd6d06e1c981b2eb19846f46d8f59966034",
+      "version": "16.2.0"
+    },
+    {
+      "build": "h906a347_3",
+      "license": "MIT",
+      "name": "libgdal-arrow-parquet",
+      "sha256": "a3c156f5ccb873005fcabf3d22b1f8b7f3a97ce97b1199282e31e7dedc810f9b",
+      "version": "3.12.2"
+    },
+    {
+      "build": "h4f65170_3",
+      "license": "MIT",
+      "name": "libgdal-core",
+      "sha256": "7ea31130adc61b2cda72c02f51086deec699bb30ec6f51b37b6c67d02c93d061",
+      "version": "3.12.2"
+    },
+    {
+      "build": "hcaab353_3",
+      "license": "MIT",
+      "name": "libgdal-hdf5",
+      "sha256": "0bd3cb1dd17cb380d1d3bd4b1fea0cbbd29df5e9400f72463d9cd0d9941c267c",
+      "version": "3.12.2"
+    },
+    {
+      "build": "h65699a6_3",
+      "license": "MIT",
+      "name": "libgdal-pg",
+      "sha256": "6c2c2e13953ff64472bc3b8f8ae76e35c68629e1d75156e7ba99effeaacd149b",
+      "version": "3.12.2"
+    },
+    {
+      "build": "hc533288_3",
+      "license": "MIT",
+      "name": "libgdal-tiledb",
+      "sha256": "bf9a37ed4350c77c2b3b95b4d1eb1808b7ae1daeccab1b924f1178b19e9d7892",
+      "version": "3.12.2"
+    },
+    {
+      "build": "h69a702a_7",
+      "license": "GPL-3.0-only WITH GCC-exception-3.1",
+      "name": "libgfortran",
+      "sha256": "9682ae4dd11487e10b904b3cb3ab6379cad25233d45fdfdf90d54349df244494",
+      "version": "16.2.0"
+    },
+    {
+      "build": "h6b99dfc_7",
+      "license": "GPL-3.0-only WITH GCC-exception-3.1",
+      "name": "libgfortran5",
+      "sha256": "04dbab12c925b92977bb835dd2f5eda413607afa79f95a554e5a04b07a380322",
+      "version": "16.2.0"
+    },
+    {
+      "build": "he0feb66_7",
+      "license": "GPL-3.0-only WITH GCC-exception-3.1",
+      "name": "libgomp",
+      "sha256": "92a0bb350c7be6a4eedcb4e111c60aefd176018e6b1c009a6e025dbe9bbcd758",
+      "version": "16.2.0"
+    },
+    {
+      "build": "h25dbb67_1",
+      "license": "Apache-2.0",
+      "name": "libgoogle-cloud",
+      "sha256": "17ea802cef3942b0a850b8e33b03fc575f79734f3c829cdd6a4e56e2dae60791",
+      "version": "3.3.0"
+    },
+    {
+      "build": "hdbdcf42_1",
+      "license": "Apache-2.0",
+      "name": "libgoogle-cloud-storage",
+      "sha256": "838b6798962039e7f1ed97be85c3a36ceacfd4611bdf76e7cc0b6cd8741edf57",
+      "version": "3.3.0"
+    },
+    {
+      "build": "hc7adcc0_0",
+      "license": "Apache-2.0",
+      "name": "libgrpc",
+      "sha256": "1b10885f610df8f6c69847e49b445b702cbf5a5baff916c71c69bf756d0eb108",
+      "version": "1.78.2"
+    },
+    {
+      "build": "default_he001693_1000",
+      "license": "BSD-3-Clause",
+      "name": "libhwloc",
+      "sha256": "5041d295813dfb84652557839825880aae296222ab725972285c5abe3b6e4288",
+      "version": "2.13.0"
+    },
+    {
+      "build": "h57c4cff_2",
+      "license": "Apache-2.0 OR BSD-3-Clause",
+      "name": "libhwy",
+      "sha256": "06ab9eb5db305b29f0f671dced4a43eca4b0c1990351bad963d25341057f74d4",
+      "version": "1.4.0"
+    },
+    {
+      "build": "h0cb94f2_3",
+      "license": "LGPL-2.1-only",
+      "name": "libiconv",
+      "sha256": "f943117edb9cd4d9c61cc972eee5a34291dc55ea7a6e9e38da104995841cbcb6",
+      "version": "1.18"
+    },
+    {
+      "build": "h7cc23a3_0",
+      "license": "IJG AND BSD-3-Clause AND Zlib",
+      "name": "libjpeg-turbo",
+      "sha256": "2f7d092a3212884825c43814575225fde8a9190611bc0e38c55e0dae45e329ac",
+      "version": "3.2.1"
+    },
+    {
+      "build": "h174a0a3_1",
+      "license": "BSD-3-Clause",
+      "name": "libjxl",
+      "sha256": "0c8a78c6a42a6e4c6de3a5e82d692f60400d43f4cc80591745f28b37daad9c70",
+      "version": "0.11.2"
+    },
+    {
+      "build": "h95ff59c_7100101",
+      "license": "LGPL-2.1-or-later",
+      "name": "libklu",
+      "sha256": "6b4d462642c240dc3671af74f7705b23f34eea0f71e0d9dbcf14b4ed008311ff",
+      "version": "2.3.5"
+    },
+    {
+      "build": "haa4a5bd_1023",
+      "license": "BSD-3-Clause",
+      "name": "libkml",
+      "sha256": "f6348ac9cebbc03f765ea6d2da88d57d19531585c8f3a963b98635b208e8bef1",
+      "version": "1.3.0"
+    },
+    {
+      "build": "12_h47877c9_openblas",
+      "license": "BSD-3-Clause",
+      "name": "liblapack",
+      "sha256": "f048e68a22fbdd927b8a7e007c3da19c6f1d2c08a9e4f6065af68f463c369f19",
+      "version": "3.11.0"
+    },
+    {
+      "build": "hf02c80a_7100101",
+      "license": "LGPL-2.1-or-later",
+      "name": "libldl",
+      "sha256": "590232cd302047023ab31b80458833a71b10aeabee7474304dc65db322b5cd70",
+      "version": "3.3.2"
+    },
+    {
+      "build": "hb03c661_1",
+      "license": "0BSD",
+      "name": "liblzma",
+      "sha256": "9787df8c22a59c9a70d3e5a10db9ad663485e75e9ccc3f09bd092cb7b95e0dab",
+      "version": "5.8.3"
+    },
+    {
+      "build": "hb03c661_2",
+      "license": "BSD-2-Clause",
+      "name": "libmpdec",
+      "sha256": "46820b4a835e175940ae20bec00fdddaff804cda27a1408ab1b95e77a2196437",
+      "version": "4.0.0"
+    },
+    {
+      "build": "hc5e5977_0",
+      "license": "MIT",
+      "name": "libnghttp2",
+      "sha256": "a4386712ad6d5bc18943b198407c39e2f8ae2fa9c6418bb37bba96f1d382f109",
+      "version": "1.71.0"
+    },
+    {
+      "build": "hb03c661_1",
+      "license": "LGPL-2.1-or-later",
+      "name": "libnl",
+      "sha256": "d0f2fd77aad83641c11bc3686bac677e99869f1d62b99e5064c9d99af8bfde6a",
+      "version": "3.11.0"
+    },
+    {
+      "build": "hb9d3cd8_1",
+      "license": "LGPL-2.1-only",
+      "name": "libnsl",
+      "sha256": "927fe72b054277cde6cb82597d0fcf6baf127dcbce2e0a9d8925a68f1265eef5",
+      "version": "2.0.1"
+    },
+    {
+      "build": "hb9d3cd8_0",
+      "license": "LGPL-2.1-or-later",
+      "name": "libntlm",
+      "sha256": "3b3f19ced060013c2dd99d9d46403be6d319d4601814c772a3472fe2955612b0",
+      "version": "1.8"
+    },
+    {
+      "build": "pthreads_hf13c14d_2",
+      "license": "BSD-3-Clause",
+      "name": "libopenblas",
+      "sha256": "69a722751e14eab2eb3bfdcb9acb1187afbd962b0c49b48d829341e0f6787f60",
+      "version": "0.3.34"
+    },
+    {
+      "build": "h9692893_0",
+      "license": "Apache-2.0",
+      "name": "libopentelemetry-cpp",
+      "sha256": "5126b75e7733de31e261aa275c0a1fd38b25fdfff23e7d7056ebd6ca76d11532",
+      "version": "1.26.0"
+    },
+    {
+      "build": "ha770c72_0",
+      "license": "Apache-2.0",
+      "name": "libopentelemetry-cpp-headers",
+      "sha256": "fec2ba047f7000c213ca7ace5452435197c79fbcb1690da7ce85e99312245984",
+      "version": "1.26.0"
+    },
+    {
+      "build": "h7376487_44_cpu",
+      "license": "Apache-2.0",
+      "name": "libparquet",
+      "sha256": "297cea96d2f98c11a0dbfa8827ab2db3e36f14d8c7c25f843d3826651d065ddd",
+      "version": "20.0.0"
+    },
+    {
+      "build": "hc6afc67_7100101",
+      "license": "GPL-3.0-or-later",
+      "name": "libparu",
+      "sha256": "50144e87b95d1309d2043aa5bf02035b948b1ae9ec6ec44ee97b7aec1cccd70a",
+      "version": "1.0.0"
+    },
+    {
+      "build": "h2736c85_1",
+      "license": "BSD-3-Clause",
+      "name": "libpdal",
+      "sha256": "d5154628d9ec8cdb39974f2668f8228cba7a73e4bf34585f5b2d17c4198a1dfb",
+      "version": "2.10.0"
+    },
+    {
+      "build": "h3320918_1",
+      "license": "BSD-3-Clause",
+      "name": "libpdal-arrow",
+      "sha256": "56b7d6d941d6f41bae45417733a513b531f475b0805771fe8f41cf4b21e1e140",
+      "version": "2.10.0"
+    },
+    {
+      "build": "he93afd0_1",
+      "license": "BSD-3-Clause",
+      "name": "libpdal-core",
+      "sha256": "42ac62b4fa340b33c33c3110917ec520ccd8ddc3f7b06b5174054f56ec605c68",
+      "version": "2.10.0"
+    },
+    {
+      "build": "h95a4fe6_1",
+      "license": "BSD-3-Clause",
+      "name": "libpdal-cpd",
+      "sha256": "883cf9a2bdd174a4d15ece0789198c35b9c671e74aae37d564f4bb38a9940d9b",
+      "version": "2.10.0"
+    },
+    {
+      "build": "h95a4fe6_1",
+      "license": "BSD-3-Clause",
+      "name": "libpdal-draco",
+      "sha256": "424e8f34b1a3d1e4f1ccc35aed70ee60994183849683490b31fe39de257234e1",
+      "version": "2.10.0"
+    },
+    {
+      "build": "hd29e177_1",
+      "license": "BSD-3-Clause",
+      "name": "libpdal-e57",
+      "sha256": "fdb24dece9b86dfd0c66956d2d2788da85e0a39b6b475122cc91ffa99f45dfcb",
+      "version": "2.10.0"
+    },
+    {
+      "build": "h14bb71e_1",
+      "license": "BSD-3-Clause",
+      "name": "libpdal-hdf",
+      "sha256": "f9a6271766763b35ca6bdd478a5d0e6c9491550a2897117a7d05a9385a2c1aa1",
+      "version": "2.10.0"
+    },
+    {
+      "build": "h14bb71e_1",
+      "license": "BSD-3-Clause",
+      "name": "libpdal-icebridge",
+      "sha256": "e09be847d68e27bf19110e159cd2bc714e6cebd940c3c286ee1080f3ef2dd821",
+      "version": "2.10.0"
+    },
+    {
+      "build": "h1552d38_1",
+      "license": "BSD-3-Clause",
+      "name": "libpdal-nitf",
+      "sha256": "cb0d6e90436cbd139540793554f898b9c7f90360fd6e306e6c774b0956975e24",
+      "version": "2.10.0"
+    },
+    {
+      "build": "hfed96fc_1",
+      "license": "BSD-3-Clause",
+      "name": "libpdal-pgpointcloud",
+      "sha256": "7e1181127d1623dbd58c9ee1656474d398d05a30011dfbbbf7a9f7a6c1332923",
+      "version": "2.10.0"
+    },
+    {
+      "build": "hb6c91a0_1",
+      "license": "BSD-3-Clause",
+      "name": "libpdal-tiledb",
+      "sha256": "59b57013e338b6f5062767f6ab437774944d18d9bad8e4f44703c95c0f748d1f",
+      "version": "2.10.0"
+    },
+    {
+      "build": "hb4c3cf3_1",
+      "license": "BSD-3-Clause",
+      "name": "libpdal-trajectory",
+      "sha256": "a444741e7e756c1bd6d82ac84a2f03ec351c0da85b7bd5e3602dadbc201932d8",
+      "version": "2.10.0"
+    },
+    {
+      "build": "h31fc519_4",
+      "license": "BSD-3-Clause",
+      "name": "libpmix",
+      "sha256": "2837759fb832ab8587622602531f8e4b5d5e5ec12ea9b3936be06f384b933800",
+      "version": "5.0.8"
+    },
+    {
+      "build": "h922cc85_0",
+      "license": "zlib-acknowledgement",
+      "name": "libpng",
+      "sha256": "c7381be8ef713501f6cd2f5ad473e401f2edeaec3c46788296b8dbf0de165e15",
+      "version": "1.6.59"
+    },
+    {
+      "build": "h3883810_3",
+      "license": "PostgreSQL",
+      "name": "libpq",
+      "sha256": "60fa3b973f6f68a367171336382d801404ee7b38c987c3b6a55c207086f736de",
+      "version": "18.6"
+    },
+    {
+      "build": "h538a264_2",
+      "license": "BSD-3-Clause",
+      "name": "libprotobuf",
+      "sha256": "eb296398f05e3c1d0df2b616e7dd58b1d764540b5241ecf796480cdf82b29d2a",
+      "version": "6.33.5"
+    },
+    {
+      "build": "hd9e3e90_1",
+      "license": "MIT",
+      "name": "libpsl",
+      "sha256": "09e8effdc89bc5d021349318d32b85594f5b8d8e3ab8f90a85b81f8fe695a566",
+      "version": "0.23.1"
+    },
+    {
+      "build": "hd51c5da_100_cp314",
+      "license": "Python-2.0",
+      "name": "libpython",
+      "sha256": "3b9f11f136074f81db3ca56f2f514f466456dbab1189e68b3681b53387043daa",
+      "version": "3.14.10"
+    },
+    {
+      "build": "hf02c80a_7100101",
+      "license": "GPL-2.0-or-later",
+      "name": "librbio",
+      "sha256": "c502b4203cc0d38f49005994b5c80c89660bcd40ff170c529cda90827ec6b1f4",
+      "version": "4.3.4"
+    },
+    {
+      "build": "h0dc7533_1",
+      "license": "BSD-3-Clause",
+      "name": "libre2-11",
+      "sha256": "138fc85321a8c0731c1715688b38e2be4fb71db349c9ab25f685315095ae70ff",
+      "version": "2025.11.05"
+    },
+    {
+      "build": "lgpl_hb565e3a_21",
+      "license": "MPL-1.1",
+      "name": "libspatialite",
+      "sha256": "db58425ae8969c2b1a3027d1c82c5bbfa5163c966f59c9ab7fc1b390a0bc50f4",
+      "version": "5.1.0"
+    },
+    {
+      "build": "h9226d62_7100101",
+      "license": "LGPL-2.0-or-later",
+      "name": "libspex",
+      "sha256": "24dffff614943c547ba094f8eb03b412a18cc4654663202f1aab9158bfa875ba",
+      "version": "3.2.3"
+    },
+    {
+      "build": "h23b7119_7100101",
+      "license": "GPL-2.0-or-later",
+      "name": "libspqr",
+      "sha256": "52851575496122f9088c9f5a4283da7fbb277d9a877b5ce60a939554df542f3c",
+      "version": "4.3.4"
+    },
+    {
+      "build": "h13e7031_0",
+      "license": "blessing",
+      "name": "libsqlite",
+      "sha256": "07b3c98282022f05781122d073f84e944bfb4299946e8457ece3ce6c384ff78e",
+      "version": "3.54.1"
+    },
+    {
+      "build": "h6154650_1",
+      "license": "BSD-3-Clause",
+      "name": "libssh2",
+      "sha256": "7e463000fa1cba3f3a6597b776f6ab301d425a96e3bc20d0d9d76a3b9f237aa3",
+      "version": "1.11.1"
+    },
+    {
+      "build": "h934c35e_7",
+      "license": "GPL-3.0-only WITH GCC-exception-3.1",
+      "name": "libstdcxx",
+      "sha256": "fa7018298629fc429971fffd6ecba3d27a7b02e4e890d6a93ea01ffebe8cb745",
+      "version": "16.2.0"
+    },
+    {
+      "build": "hdf11a46_7",
+      "license": "GPL-3.0-only WITH GCC-exception-3.1",
+      "name": "libstdcxx-ng",
+      "sha256": "337f481db36cc357884f05f404ccd1b3a7e0fc1ee48ec5c884e4281d213bc863",
+      "version": "16.2.0"
+    },
+    {
+      "build": "h901830b_7100101",
+      "license": "BSD-3-Clause",
+      "name": "libsuitesparseconfig",
+      "sha256": "d8f32a0b0ee17fbace7af4bd34ad554cc855b9c18e0aeccf8395e1478c161f37",
+      "version": "7.10.1"
+    },
+    {
+      "build": "h26e0ef7_0",
+      "license": "LGPL-2.1-or-later",
+      "name": "libsystemd0",
+      "sha256": "43f8af098fd2191c2eb1c6f215f22730d2c0069275c0724679e301ec9d1a48cd",
+      "version": "262.2"
+    },
+    {
+      "build": "h64ffe93_3",
+      "license": "Apache-2.0",
+      "name": "libthrift",
+      "sha256": "5a9bec9875b62398cb4049317dd89c2454d0eec39865a2970f8af07bf7ce89d6",
+      "version": "0.22.0"
+    },
+    {
+      "build": "hcc2c06a_1",
+      "license": "HPND",
+      "name": "libtiff",
+      "sha256": "10e125da82ca93e09191e66e5a94d566b2cf8d4024e2a0db3a9114297447e0d9",
+      "version": "4.7.2"
+    },
+    {
+      "build": "h26e0ef7_0",
+      "license": "LGPL-2.1-or-later",
+      "name": "libudev1",
+      "sha256": "2bf94e7255850be56f967e17b71652479c3b35b55ecaa6d633f82ca877d3b3d2",
+      "version": "262.2"
+    },
+    {
+      "build": "h873dde6_7100101",
+      "license": "GPL-2.0-or-later",
+      "name": "libumfpack",
+      "sha256": "9a2c0049210c0223084c29b39404ad6da6538e7a4d1ed74ee8423212998fd686",
+      "version": "6.3.5"
+    },
+    {
+      "build": "h4dbf13b_1",
+      "license": "MIT",
+      "name": "liburing",
+      "sha256": "ae813e53b6e7bc8f06ae5a8c00be69b44e842366557641f91bf363db46322b5f",
+      "version": "2.14"
+    },
+    {
+      "build": "hfe17d71_0",
+      "license": "MIT",
+      "name": "libutf8proc",
+      "sha256": "ecbf4b7520296ed580498dc66a72508b8a79da5126e1d6dc650a7087171288f9",
+      "version": "2.11.3"
+    },
+    {
+      "build": "hcfc3c73_1",
+      "license": "BSD-3-Clause",
+      "name": "libuuid",
+      "sha256": "0e2e8f2daa9306e67f046e31092d637431d8cf0a26c407ab22401d108c2d4631",
+      "version": "2.42.4"
+    },
+    {
+      "build": "hd42ef1d_1",
+      "license": "BSD-3-Clause",
+      "name": "libwebp-base",
+      "sha256": "8415001414f488c85b72b9d8cc2071dfb3981a47bc3c8eb56ef91a57d12eae7f",
+      "version": "1.6.0"
+    },
+    {
+      "build": "h280c20c_0",
+      "license": "LGPL-2.1-or-later",
+      "name": "libxcrypt",
+      "sha256": "f7e9292dd219a6435bbb1223da9586c3e70d66d169c5a92f08db3f2127df04e9",
+      "version": "4.4.38"
+    },
+    {
+      "build": "h7df9aa5_1",
+      "license": "MIT",
+      "name": "libxml2",
+      "sha256": "8c32be9e8720bc413d2b4267517459d7d71fad4a5f398a2aa8319b6d7b8a00e6",
+      "version": "2.15.4"
+    },
+    {
+      "build": "hf3af7cc_1",
+      "license": "MIT",
+      "name": "libxml2-16",
+      "sha256": "d1906463070c21f3215cd5de93164f31c44d5bac6ae9b5d8f5adf42b1e304039",
+      "version": "2.15.4"
+    },
+    {
+      "build": "h7df9aa5_1",
+      "license": "MIT",
+      "name": "libxml2-devel",
+      "sha256": "0475554ae72a9c28e86c7f461a120c8a237df6811dcfbdf1aa5e9ce5cfd15d63",
+      "version": "2.15.4"
+    },
+    {
+      "build": "h8e12856_1",
+      "license": "MIT",
+      "name": "libxslt",
+      "sha256": "3beb51b5ce8d2e0690b8517d3d955972d502cfbe2899279cbb9cbb6ff134d360",
+      "version": "1.1.45"
+    },
+    {
+      "build": "h25fd6f3_3",
+      "license": "Zlib",
+      "name": "libzlib",
+      "sha256": "eb8a0db0aa570124f7d2a93d7c7f596e3390df5e047818d873baad32985fc736",
+      "version": "1.3.2"
+    },
+    {
+      "build": "hee9eb32_2",
+      "license": "BSD-2-Clause",
+      "name": "lz4-c",
+      "sha256": "b8c0e930183e6b7f83cd35ace102f2b8c2f0faae41dc05255dc72f247dfc556a",
+      "version": "1.10.0"
+    },
+    {
+      "build": "h86e3903_1008",
+      "license": "Apache-2.0",
+      "name": "metis",
+      "sha256": "c845827efbac5eaf722260493dbf06a520c89bf0d59c46605af72cb47c3f75e9",
+      "version": "5.1.0"
+    },
+    {
+      "build": "haac24f3_1",
+      "license": "Zlib",
+      "name": "minizip",
+      "sha256": "75384c7e6ea3cd72969c0163ec52ddaed08590bb292e959d1afd2a6ffcc237a6",
+      "version": "4.2.2"
+    },
+    {
+      "build": "ha2cb11d_1",
+      "license": "LGPL-3.0-only",
+      "name": "mpfr",
+      "sha256": "0be79ef2ee536e0c5d3ddb4a52bbae9f26d08560623299f33db2f4c4a17c525a",
+      "version": "4.2.2"
+    },
+    {
+      "build": "openmpi",
+      "license": "BSD-3-Clause",
+      "name": "mpi",
+      "sha256": "e1698675ec83a2139c0b02165f47eaf0701bcab043443d9008fc0f8867b07798",
+      "version": "1.0.1"
+    },
+    {
+      "build": "hee9eb32_1",
+      "license": "MIT",
+      "name": "muparser",
+      "sha256": "c9322797c769560e96025d294f0daacbcf7ed95ae68903dd2e398ffb87fa2c73",
+      "version": "2.3.5"
+    },
+    {
+      "build": "hdb14827_1",
+      "license": "X11 AND BSD-3-Clause",
+      "name": "ncurses",
+      "sha256": "5d46557214ed184381dafe835b7c94a474a1c3b307a08a250b1ea4779b44ffb3",
+      "version": "6.6"
+    },
+    {
+      "build": "h59595ed_0",
+      "license": "LGPL-3.0-or-later",
+      "name": "nitro",
+      "sha256": "80b125f82b1553ed00550a642dcaefb5f046d69f6d1eefa9ee3ac8d5b273e029",
+      "version": "2.7.dev8"
+    },
+    {
+      "build": "h54a6638_2",
+      "license": "MIT",
+      "name": "nlohmann_json",
+      "sha256": "8f8b554c74b032b3e63a8828fb0ecc7ae4f5c5a6bd0afcf75423d5ff79290cb0",
+      "version": "3.12.0"
+    },
+    {
+      "build": "py314hd3a7d6b_0",
+      "license": "BSD-3-Clause",
+      "name": "numpy",
+      "sha256": "7533361a15ff1d4c1e7069b9410d32a602a6a9350d717a43731b07e3565a6689",
+      "version": "2.5.4"
+    },
+    {
+      "build": "hbde042b_0",
+      "license": "OLDAP-2.8",
+      "name": "openldap",
+      "sha256": "21c4f6c7f41dc9bec2ea2f9c80440d9a4d45a6f2ac13243e658f10dcf1044146",
+      "version": "2.6.13"
+    },
+    {
+      "build": "hee33aa4_0",
+      "license": "BSD-3-Clause",
+      "name": "openmpi",
+      "sha256": "14b0aac9c9253586558fdede5e0ccfaf3a359dd5c702514af642b96e1f3322f0",
+      "version": "5.0.11"
+    },
+    {
+      "build": "h781a0a9_0",
+      "license": "Apache-2.0",
+      "name": "openssl",
+      "sha256": "9c1533f1cf784f0e250919c0c9762d0b0e6bc727a79290ffb7cea1ceca1d038c",
+      "version": "3.6.5"
+    },
+    {
+      "build": "h21090e2_0",
+      "license": "Apache-2.0",
+      "name": "orc",
+      "sha256": "a60c2578c8422e0c67206d269767feb4d3e627511558b6866e5daf2231d5214d",
+      "version": "2.3.0"
+    },
+    {
+      "build": "h8b3dc9c_1",
+      "license": "BSD-3-Clause",
+      "name": "pcre2",
+      "sha256": "9ebb10a4eb3be51ae67d85c679f5a7a50cb040ed25c783e6331a225ea09991d4",
+      "version": "10.47"
+    },
+    {
+      "build": "hc364b38_1",
+      "license": "BSD-3-Clause",
+      "name": "pdal",
+      "sha256": "3100b7875fbfca3d9f7875e221033422ac62168ddfda586614218f4a2b9dd51e",
+      "version": "2.10.0"
+    },
+    {
+      "build": "hcb5e64f_3",
+      "license": "PostgreSQL",
+      "name": "postgresql",
+      "sha256": "e764d45ed304b00810b66aed3dda1cabfe81e724455ad91217fcb83fc3f9f5c5",
+      "version": "18.6"
+    },
+    {
+      "build": "he0df7b0_0",
+      "license": "MIT",
+      "name": "proj",
+      "sha256": "dff6f355025b9a510d9093e29fd970fa1091e758b848c9dec814d96ae63a09ba",
+      "version": "9.8.1"
+    },
+    {
+      "build": "h26ae035_1",
+      "license": "MIT",
+      "name": "prometheus-cpp",
+      "sha256": "a8114acfa58fe3c3f7d7c5cc5212db82d013aa1037ecf6fd28a76ed51d0e5841",
+      "version": "1.3.0"
+    },
+    {
+      "build": "hcd007b5_100_cp314",
+      "license": "Python-2.0",
+      "name": "python",
+      "sha256": "bb457298c776d0edd30d727d96629e57df63e9a4ba2dd11553019267b61ef5f4",
+      "version": "3.14.10"
+    },
+    {
+      "build": "np2py314haa575a6_4",
+      "license": "BSD-3-Clause",
+      "name": "python-pdal",
+      "sha256": "fb83bc1f72bb31fc0b545e752be5eb8e59ef96e405d2a3882af35ec4155701ee",
+      "version": "3.5.3"
+    },
+    {
+      "build": "9_cp314",
+      "license": "BSD-3-Clause",
+      "name": "python_abi",
+      "sha256": "e7f8e965bbfb98e08feb2365cacdad8bb218fa5b5a0a2752f747287f425f213c",
+      "version": "3.14"
+    },
+    {
+      "build": "h7b4f2e6_0",
+      "license": "Linux-OpenIB",
+      "name": "rdma-core",
+      "sha256": "2da73957fc57eb46efc0d42bb8d73fa3bf36ea98c02a31ce17de06a40d2a1884",
+      "version": "65.0"
+    },
+    {
+      "build": "h5301d42_1",
+      "license": "BSD-3-Clause",
+      "name": "re2",
+      "sha256": "3fc684b81631348540e9a42f6768b871dfeab532d3f47d5c341f1f83e2a2b2b2",
+      "version": "2025.11.05"
+    },
+    {
+      "build": "hd6e31c0_1",
+      "license": "GPL-3.0-only",
+      "name": "readline",
+      "sha256": "01b3fe073a66e321970d09e04b388708f8cbdca5cdfbfcb7c9eeb470ad10383d",
+      "version": "8.3"
+    },
+    {
+      "build": "h873e7db_1",
+      "license": "AGPL-3.0-only AND MIT",
+      "name": "renderdem",
+      "sha256": "a681202611aa3fa25281055825b75a89e1a256260a954ce69bcd5393a834d94c",
+      "version": "1.0"
+    },
+    {
+      "build": "hc5a330e_0",
+      "license": "Apache-2.0",
+      "name": "s2n",
+      "sha256": "150a0a5254e8b15ad737549721c7d13406cd96432f3f446e07073dbd98bb2491",
+      "version": "1.7.3"
+    },
+    {
+      "build": "h34e00bb_2",
+      "license": "BSD-3-Clause",
+      "name": "snappy",
+      "sha256": "8635d10c7f127808b09c0c8e77b21a255829e0934e49326548c949f7e0551f09",
+      "version": "1.2.2"
+    },
+    {
+      "build": "hb6aa676_2",
+      "license": "MIT",
+      "name": "spdlog",
+      "sha256": "5fca627690d56c6f87a9dabafceee54cb75d7da392309bb080333948c048365a",
+      "version": "1.17.0"
+    },
+    {
+      "build": "h9ffa6c4_0",
+      "license": "blessing",
+      "name": "sqlite",
+      "sha256": "75d479f5eef99880e81f4502376ace68b6920c02b28212e318f1b5c017c71f1a",
+      "version": "3.54.1"
+    },
+    {
+      "build": "h5b2951e_7100101",
+      "license": "LGPL-2.1-or-later AND BSD-3-Clause AND GPL-2.0-or-later AND Apache-2.0",
+      "name": "suitesparse",
+      "sha256": "7c1c5bd2ba8385202ac3cb4c9c7f9bb87a2e677e977afd72c910314c014b28be",
+      "version": "7.10.1"
+    },
+    {
+      "build": "hd503402_6",
+      "license": "MIT",
+      "name": "tiledb",
+      "sha256": "b944523f99c1989b8b03c628ac8caabc93c1e4588c724e8e34bfccd876561a21",
+      "version": "2.30.1"
+    },
+    {
+      "build": "noxft_h1df4ec4_4",
+      "license": "TCL",
+      "name": "tk",
+      "sha256": "a1a241d172c1ccab067ba245206dd048bc3c2d1b84504b53c9468e99adfc16a1",
+      "version": "8.6.13"
+    },
+    {
+      "build": "hebe6cf0_0",
+      "license": "BSD-3-Clause",
+      "name": "tzcode",
+      "sha256": "6e17f0f65ee110f1dbb4375021901daf3ef9d908e9c07a3e9fcbdb3d723a848a",
+      "version": "2026f"
+    },
+    {
+      "build": "h5d301ff_0",
+      "license": "LicenseRef-Public-Domain",
+      "name": "tzdata",
+      "sha256": "2b7ca858879f183ce2dcc65b300f48a0133d5430550f35b23d80d405a0788dbf",
+      "version": "2026e"
+    },
+    {
+      "build": "h539fd1b_2",
+      "license": "BSD-3-Clause",
+      "name": "ucc",
+      "sha256": "073f75becf0aade3d7a6606609630dd0fef1aa37a9a73a34c8c7ced6b75c5b2e",
+      "version": "1.8.0"
+    },
+    {
+      "build": "h6cc3e34_1",
+      "license": "BSD-3-Clause",
+      "name": "ucx",
+      "sha256": "e8fb16ed2033c66bc81fb36003e8bc0a21db9232aa5fec8f3a7ae5bd97e5085c",
+      "version": "1.22.0"
+    },
+    {
+      "build": "hac33072_0",
+      "license": "BSD-3-Clause",
+      "name": "uriparser",
+      "sha256": "2aad2aeff7c69a2d7eecd7b662eef756b27d6a6b96f3e2c2a7071340ce14543e",
+      "version": "0.9.8"
+    },
+    {
+      "build": "h78fed68_2",
+      "license": "Apache-2.0",
+      "name": "xerces-c",
+      "sha256": "1acbd62b33b6efc985f70e0b9f0013ca18fcef2df5a18edb1c81a6b63ad20dc0",
+      "version": "3.3.0"
+    },
+    {
+      "build": "h25fd6f3_3",
+      "license": "Zlib",
+      "name": "zlib",
+      "sha256": "16080a1c7724f7d25727cdc23c7658e0cec2db52448c1dc0c33467ee2c6e1c62",
+      "version": "1.3.2"
+    },
+    {
+      "build": "hce19668_1",
+      "license": "Zlib",
+      "name": "zlib-ng",
+      "sha256": "8b786bb4380fa69a718b08a400040b865bc9207eda337e0a1955717c3c3a9403",
+      "version": "2.3.3"
+    },
+    {
+      "build": "hb78ec9c_7",
+      "license": "BSD-3-Clause",
+      "name": "zstd",
+      "sha256": "47d682b9f6d6ec9eb1a6e6c3e75ea6273e899e78fb7fc59f81d39745009fbc60",
+      "version": "1.5.7"
+    }
+  ],
+  "objects": {
+    "archive": {
+      "needed": [
+        "libcrypto.so.3",
+        "libzstd.so.1",
+        "liblz4.so.1",
+        "libbz2.so.1.0",
+        "libz.so.1",
+        "liblzma.so.5",
+        "libxml2.so.16",
+        "libc.so.6"
+      ],
+      "path": "lib/libarchive.so.13.8.11",
+      "sha256": "6a4a4a5d76c44fc3b61b2857cf54cf0a7160b49bdd88009fda70a4b5407b9620"
+    },
+    "spatialite": {
+      "control_point_symbols": [],
+      "needed": [
+        "libxml2.so.16",
+        "libsqlite3.so.0",
+        "libpthread.so.0",
+        "libdl.so.2",
+        "libm.so.6",
+        "libfreexl.so.1",
+        "libcharset.so.1",
+        "libproj.so.25",
+        "libz.so.1",
+        "libgeos_c.so.1",
+        "libc.so.6"
+      ],
+      "path": "lib/libspatialite.so.8.1.0",
+      "sha256": "e3995453da5292d29a04f2fd4cdfea467ed1715bcb27eb9c1c118427196bb41b"
+    }
+  },
+  "scope": "Experimental runtime variant constraints; not an approved release lock, compatibility guarantee, complete license or corresponding source review.",
+  "tests": "Candidate installed-prefix ldd and generated PLY/LAS tests passed. Not LAZ or full ODM validation."
+}

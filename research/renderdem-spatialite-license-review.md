@@ -60,6 +60,10 @@ source bundle. Determine how the actual dependency is distributed and obtain
 qualified review rather than assuming the package's MPL-only metadata fully
 describes its GPL-enabled build.
 
+A separate [alternative-variant assessment](renderdem-alternative-dependency-assessment.md)
+shows a bounded PLY/LAS/LAZ test path without the selected GPL libspatialite
+and libarchive variants; it is not a complete legal or feature review.
+
 ## Recommended disposition
 
 Do not declare this dependency chain cleared based solely on the MPL package
