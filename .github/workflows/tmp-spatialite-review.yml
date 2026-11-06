@@ -19,3 +19,5 @@ jobs:
           locked: true
       - name: Inspect exact source and package license metadata
         run: pixi run python scripts/tmp_spatialite_review.py
+
+# Include non-trilicense source file paths for follow-up.

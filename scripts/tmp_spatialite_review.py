@@ -31,7 +31,7 @@ with zipfile.ZipFile(io.BytesIO(pkg)) as z:
                     notice=t.extractfile(m).read()
 assert notice and digest(notice)==metadata['license_files']['info/licenses/COPYING']
 source=fetch(metadata['recipe_source']['url']); assert digest(source)==metadata['recipe_source']['sha256']
-counts=collections.Counter(); examples={}; root_notices=[]; total=0
+counts=collections.Counter(); examples={}; root_notices=[]; total=0; groups=collections.defaultdict(list)
 with tarfile.open(fileobj=io.BytesIO(source),mode='r:gz') as tar:
     for m in tar:
         if not m.isfile(): continue
@@ -47,11 +47,11 @@ with tarfile.open(fileobj=io.BytesIO(source),mode='r:gz') as tar:
         if re.search(r'mozilla public license|mpl\s*(?:version\s*)?1[.]1',text,re.I): terms.append('MPL')
         if re.search(r'(?<!lesser )(?<!library )gnu general public license',text,re.I):terms.append('GPL')
         if re.search(r'gnu (?:lesser|library) general public license',text,re.I):terms.append('LGPL')
-        k='+'.join(terms) if terms else 'no-marker-in-first-12000-bytes';counts[k]+=1
+        k='+'.join(terms) if terms else 'no-marker-in-first-12000-bytes';counts[k]+=1;groups[k].append(path)
         if terms and k not in examples:
             match=re.search(r'mozilla public license|gnu (?:lesser |library )?general public license',text,re.I)
-            examples[k]={'path':path,'excerpt':text[max(0,match.start()-200):match.start()+800]}
-result={'binary_sha256':digest(pkg),'source_sha256':digest(source),'package_license':record['license'],'package_copying_sha256':digest(notice),'total_regular_files':total,'source_scan_counts':dict(counts),'examples':examples,'root_notices':root_notices,'warning':'Filename/header token scan is not a full source, license, provenance or compilation audit.'}
+            examples[k]={'path':path,'excerpt':text[max(0,match.start()-200):match.start()+1800]}
+result={'binary_sha256':digest(pkg),'source_sha256':digest(source),'package_license':record['license'],'package_copying_sha256':digest(notice),'total_regular_files':total,'source_scan_counts':dict(counts),'examples':examples,'selected_paths':{k:v[:80] for k,v in groups.items() if k != 'MPL+GPL+LGPL'},'root_notices':root_notices,'warning':'Filename/header token scan is not a full source, license, provenance or compilation audit.'}
 raw=json.dumps(result,sort_keys=True,indent=2).encode();enc=base64.b64encode(gzip.compress(raw,mtime=0)).decode();chunks=[enc[i:i+2700] for i in range(0,len(enc),2700)];assert len(chunks)<=40
 print(f'::notice::SPATIALITE-INFO chunks={len(chunks)} sha256={digest(raw)}',flush=True)
 for i,chunk in enumerate(chunks):print(f'::notice::SPATIALITE-CHUNK-{i:02d} {chunk}',flush=True)
