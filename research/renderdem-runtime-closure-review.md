@@ -92,6 +92,22 @@ The temporary workflow was part of the trial checkout; no binary or source
 archives were uploaded. The earlier original build/host environment was not
 recovered.
 
+In [run 42227651152](https://github.com/Archont561/ODM-conda/actions/runs/42227651152),
+the release-style build, fresh retest, audit, source staging and inventory
+checksum verification passed without uploading artifacts. The run additionally
+downloaded and hash-verified eight selected Conda build packages: GCC, G++,
+binutils, sysroot, kernel headers, CMake, Ninja and Python. Their sanitized
+[embedded metadata](renderdem-build-input-metadata-2026-11-06.json) has SHA256
+`c658a19aa8c440c124f3765d0c73fff7d705423a1fcb73af7f008e86490d8271`;
+all eight identities matched the earlier build inventory. It records declared
+licenses, recipe source references and hashes of `info/licenses` files, not
+verified source or a legal conclusion. In particular, the sysroot and kernel
+header recipe references include **binary RPM inputs**, which are not a
+corresponding-source offer. GCC and binutils recipes identify patches, but this
+inspection did not retrieve those patches or assess whether their sources must
+be offered for the intended distribution. Determine the applicable obligations
+rather than treating every build tool as automatically distributed or exempt.
+
 The release workflow now retains the RenderDEM build environments long enough
 to stage a sanitized build/host inventory, associated with the built package's
 SHA256 and included in the checksums. For RenderDEM it fails closed if that
