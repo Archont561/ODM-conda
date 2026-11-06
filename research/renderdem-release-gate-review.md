@@ -131,6 +131,10 @@ for the proposed package expression and explicit owner/qualified-review boundari
   version/build and authorize a release only after the preceding reviews. No
   affirmative decision is implied by a request for review.
 
+The subsequent [runtime closure review](renderdem-runtime-closure-review.md)
+retains a complete 66-record candidate solve and examines selected dependency
+package metadata; it is not the final release closure.
+
 ## Fresh runtime solve and scope
 
 The same [review run](https://github.com/Archont561/ODM-conda/actions/runs/41853735397)
