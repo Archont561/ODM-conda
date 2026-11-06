@@ -188,6 +188,10 @@ prefix that has both RenderDEM and the separately installed PDAL CLI:
 pixi run python scripts/validate_renderdem_laz.py --prefix /path/to/prefix
 ```
 
+For source delivery and a local-source rebuild procedure, see the
+[RenderDEM source-offer preparation](renderdem-source-offer.md). It is not a
+legal completeness attestation or a public source offer.
+
 ## Gate decision: not yet ready to approve
 
 1. **`license_reviewed`: open.** Qualified reviewer and owner need to decide
