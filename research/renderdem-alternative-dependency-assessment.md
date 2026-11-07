@@ -186,3 +186,45 @@ because vocabulary assets are omitted. The retry explicitly selected FLANN;
 the guard was not relaxed. Both results are bounded to research builds,
 selected dataset and flags, and do not establish support for arbitrary ODM
 features or a final distribution.
+
+## Topology, control-point and LZO operations
+
+[Run 42400910492](https://github.com/Archont561/ODM-conda/actions/runs/42400910492)
+(job `128488236720` reduced; `128488237069` full; commit `dc1ca56`) used
+isolated linux-64 environments with the following exact package identities.
+Hashes are installed-record metadata, not independently verified archives:
+
+| Package | Reduced version / build / SHA256 | Full version / build / SHA256 |
+| --- | --- | --- |
+| libspatialite | `5.1.0 lgpl_h6633a9c_19` / `2919611dcd23ff43fb9d0e6cb9b12beb8ef5933ebe963308eb327f572ba05fd4` | `5.1.0 gpl_h2988700_122` / `d4e6bb1a10f4f97d60ce534a3313d268f50ba1fd7772d35121043dc166596305` |
+| libarchive | `3.8.11 lgpl_hee3b6c9_0` / `ef86dba72bcad4a7c522bb9d8974d7b85ed6d886c5ff6c41ee27a2661d4fd626` | `3.8.11 gpl_h3152399_100` / `0b13f801fa48194d18819b0dc1aac182ea88089f81b87af2d3bacd69d3ff5cc5` |
+
+The reduced versions match the earlier COPR/Seneca ODM solves, but these
+operations were performed in separate minimal solves, not inside those ODM
+prefixes. The full solve also installed `librttopo 1.1.0 h55b0958_21` and
+`lzo 2.10 hebe6cf0_1003`; the reduced solve installed neither.
+
+- In an in-memory spatial database the full variant created an SRID 4326
+  topology, inserted an isolated node, and returned one row from its node
+  table. The reduced variant returned `no such function: CreateTopology`.
+- The full library exposed the SpatiaLite control-point container API and
+  successfully added three synthetic 2D points; the reduced library did not
+  expose `gaiaCreateControlPoints`. No polynomial fitting or transformation
+  accuracy was tested. This API is distinct from ODM's GCP processing.
+- A synthetic tar archive compressed by the runner's `lzop` was read through
+  libarchive and its file content checked. With a deliberately empty `PATH`,
+  the full variant succeeded; the reduced variant failed with libarchive
+  status -30 and `Child process exited with status 254`. With the runner's
+  `/usr/bin` lzop helper on `PATH`, the reduced variant successfully read the
+  same kind of fixture. This demonstrates a dependency on an external helper
+  for this tested fallback, not built-in LZO support. It does not test writing
+  archives, other LZO formats, helper availability in a deployed environment,
+  or the helper's own distribution and licensing obligations.
+
+These bounded comparisons confirm that the reduced variants are unsuitable
+for consumers requiring the tested topology or SpatiaLite control-point APIs;
+the LZO fallback requires a separately supplied, reviewed helper. Do not infer
+that ODM needs these features or that a helper makes the distribution GPL-free.
+The final consumer scope, exact lock, complete dependency/source review and
+owner-controlled release gates remain open. The synthetic fixtures and
+installation environments were discarded, and no artifacts were uploaded.
