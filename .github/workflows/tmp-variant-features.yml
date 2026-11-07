@@ -1,0 +1,35 @@
+name: Temporary variant feature probe
+on:
+  push:
+    branches: [arena/b398199b-odm-conda]
+    paths: [.github/workflows/tmp-variant-features.yml]
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        family: [lgpl, gpl]
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+      - name: Probe isolated feature support
+        env:
+          FAMILY: ${{ matrix.family }}
+        run: |
+          set -euo pipefail
+          d=$(mktemp -d)
+          trap 'rm -rf "$d"' EXIT
+          pixi init --format pixi --channel conda-forge --platform linux-64 "$d"
+          cat >> "$d/pixi.toml" <<END
+          python = "3.12.*"
+          libspatialite = { version = "==5.1.0", build = "${FAMILY}_*" }
+          libarchive = { version = "==3.8.11", build = "${FAMILY}_*" }
+          END
+          pixi install --manifest-path "$d/pixi.toml"
+          pixi run --manifest-path "$d/pixi.toml" python "$GITHUB_WORKSPACE/scripts/tmp_variant_features.py"
