@@ -86,6 +86,20 @@ else:
     assert topology['rc'] != 0 and 'no such function' in (topology['error'] or ''), topology
 sql.sqlite3_close(db)
 sp.spatialite_cleanup_ex(cache)
+control = {'api_available': hasattr(sp, 'gaiaCreateControlPoints')}
+if family == 'full':
+    assert control['api_available']
+    sp.gaiaCreateControlPoints.argtypes = [c.c_int, c.c_int, c.c_int, c.c_int]
+    sp.gaiaCreateControlPoints.restype = c.c_void_p
+    sp.gaiaAddControlPoint2D.argtypes = [c.c_void_p, c.c_double, c.c_double, c.c_double, c.c_double]
+    sp.gaiaFreeControlPoints.argtypes = [c.c_void_p]
+    handle = sp.gaiaCreateControlPoints(8, 0, 1, 0)
+    assert handle
+    control['added'] = [sp.gaiaAddControlPoint2D(handle, *point) for point in [(0., 0., 10., 20.), (1., 0., 11., 20.), (0., 1., 10., 21.)]]
+    assert all(control['added']), control
+    sp.gaiaFreeControlPoints(handle)
+else:
+    assert not control['api_available']
 
 def run_read(path):
     env = os.environ.copy(); env['PATH'] = path
@@ -99,4 +113,4 @@ if family == 'full':
     assert without['rc'] == 0 and without['value'] == expected, without
 else:
     assert without['rc'] != 0, without
-print('::notice::OPERATION-TEST '+json.dumps({'family':family,'records':records,'topology':topology,'node':node,'lzop_without_helper':without,'lzop_with_helper':with_helper},separators=(',',':'),sort_keys=True),flush=True)
+print('::notice::OPERATION-TEST '+json.dumps({'family':family,'records':records,'topology':topology,'node':node,'control_points':control,'lzop_without_helper':without,'lzop_with_helper':with_helper},separators=(',',':'),sort_keys=True),flush=True)

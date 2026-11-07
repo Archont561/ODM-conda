@@ -1,4 +1,4 @@
-name: Temporary dependency operation tests
+name: Temporary dependency operation and control point tests
 on:
   push:
     branches: [arena/b398199b-odm-conda]
