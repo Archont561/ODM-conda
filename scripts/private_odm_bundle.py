@@ -238,9 +238,40 @@ def replay(bundle: Path, *, dataset: Path | None = None, expected_inventory: lis
         print('PASS: locked private replay and launcher; no release approval',flush=True)
 
 
-def build(destination: Path, port: int, dataset: Path | None) -> None:
+def configure_runtime_profile(manifest: Path, profile: str) -> None:
+    """Constrain the consumer solve without changing component recipes."""
+    if profile == 'default':
+        return
+    if profile != 'reduced':
+        raise ScaffoldError('Unknown runtime profile')
+    text = manifest.read_text()
+    marker = '[dependencies]\n'
+    if text.count(marker) != 1:
+        raise ScaffoldError('Unexpected Pixi manifest dependencies')
+    manifest.write_text(text.replace(marker, marker +
+        'libspatialite = { version = "==5.1.0", build = "lgpl_*" }\n'
+        'libarchive = { version = "==3.8.11", build = "lgpl_*" }\n'))
+
+
+def validate_runtime_profile(inventory: dict, profile: str) -> None:
+    if profile == 'default':
+        return
+    if profile != 'reduced':
+        raise ScaffoldError('Unknown runtime profile')
+    packages = inventory.get('packages', [])
+    records = {record['name']: record for record in packages}
+    for name, version in (('libspatialite', '5.1.0'), ('libarchive', '3.8.11')):
+        record = records.get(name, {})
+        if record.get('version') != version or not record.get('build', '').startswith('lgpl_'):
+            raise ScaffoldError(f'Reduced runtime variant not selected: {name}')
+    if 'lzo' in records or 'librttopo' in records:
+        raise ScaffoldError('Reduced runtime contains LZO or librttopo')
+
+
+def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile: str = 'default') -> None:
     if platform.system() != 'Linux' or platform.machine().lower() not in ('x86_64','amd64'): raise ScaffoldError('Private build requires linux-64')
     validate_destination(destination)
+    if runtime_profile not in ('default', 'reduced'): raise ScaffoldError('Unknown runtime profile')
     if not 1 <= port <= 65535: raise ScaffoldError('Invalid loopback port')
     destination.mkdir(mode=0o700)
     try:
@@ -250,6 +281,7 @@ def build(destination: Path, port: int, dataset: Path | None) -> None:
             project=work/'project'
             with loopback(destination/'channel',port) as channel:
                 run(['pixi','init','--format','pixi','--scm','github','--channel',channel,'--channel','conda-forge','--platform','linux-64',str(project)])
+                configure_runtime_profile(project/'pixi.toml', runtime_profile)
                 run(['pixi','add','--manifest-path',str(project/'pixi.toml'),'odm-fast-research'])
             lock=yaml.safe_load((project/'pixi.lock').read_text())
             if any('pypi' in item for item in lock['packages']): raise ScaffoldError('Unexpected PyPI lock entry')
@@ -257,6 +289,7 @@ def build(destination: Path, port: int, dataset: Path | None) -> None:
             if selected != {item['filename']:item['sha256'] for item in info}: raise ScaffoldError('Lock does not select exactly the private package set')
             from inventory_conda_environment import inventory
             original=inventory(project/'.pixi/envs/default')
+            validate_runtime_profile(original, runtime_profile)
             identities=inventory_identities(original)
             (destination/'conda-inventory.json').write_text(json.dumps(original,sort_keys=True,indent=2)+'\n')
             for name in ('pixi.toml','pixi.lock'): shutil.copy2(project/name,destination/name)
@@ -273,10 +306,10 @@ def build(destination: Path, port: int, dataset: Path | None) -> None:
 
 def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__); sub=parser.add_subparsers(dest='action',required=True)
-    create=sub.add_parser('build'); create.add_argument('--destination',required=True,type=Path); create.add_argument('--port',type=int,default=PORT); create.add_argument('--dataset',type=Path)
+    create=sub.add_parser('build'); create.add_argument('--destination',required=True,type=Path); create.add_argument('--port',type=int,default=PORT); create.add_argument('--dataset',type=Path); create.add_argument('--runtime-profile', choices=('default','reduced'), default='default', help='Use reduced libspatialite/libarchive runtime variants')
     test=sub.add_parser('replay'); test.add_argument('--bundle',required=True,type=Path); test.add_argument('--dataset',type=Path); test.add_argument('--manifest-sha256',help='Independently recorded SHA256 of private-bundle.json')
     args=parser.parse_args()
-    if args.action == 'build': build(args.destination,args.port,args.dataset)
+    if args.action == 'build': build(args.destination,args.port,args.dataset,runtime_profile=args.runtime_profile)
     else: replay(args.bundle,dataset=args.dataset,expected_manifest_sha=args.manifest_sha256)
 
 

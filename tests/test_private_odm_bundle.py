@@ -119,3 +119,33 @@ def test_replay_compares_retained_inventory_and_refuses_changed_records(tmp_path
     monkeypatch.setattr(inventory_conda_environment,'inventory',lambda _prefix: {'packages':[package | {'build':'different'}]})
     with pytest.raises(ScaffoldError,match='inventory differs'):
         bundle_script.replay(bundle)
+
+
+def test_reduced_profile_constraints_and_validation(tmp_path):
+    from common import ScaffoldError
+    from private_odm_bundle import configure_runtime_profile, validate_runtime_profile
+    manifest = tmp_path/'pixi.toml'
+    manifest.write_text('[workspace]\nname = "trial"\n[dependencies]\n')
+    configure_runtime_profile(manifest, 'reduced')
+    text = manifest.read_text()
+    assert 'libspatialite = { version = "==5.1.0", build = "lgpl_*" }' in text
+    assert 'libarchive = { version = "==3.8.11", build = "lgpl_*" }' in text
+    records = {'packages': [
+        {'name': 'libspatialite', 'version': '5.1.0', 'build': 'lgpl_x_19'},
+        {'name': 'libarchive', 'version': '3.8.11', 'build': 'lgpl_x_0'},
+    ]}
+    validate_runtime_profile(records, 'reduced')
+    for bad in (
+        {'packages': records['packages'] + [{'name': 'lzo'}]},
+        {'packages': records['packages'] + [{'name': 'librttopo'}]},
+        {'packages': [records['packages'][0] | {'build': 'gpl_x'}, records['packages'][1]]},
+        {'packages': [records['packages'][0], records['packages'][1] | {'version': '3.8.10'}]},
+        {'packages': []},
+    ):
+        with pytest.raises(ScaffoldError):
+            validate_runtime_profile(bad, 'reduced')
+    with pytest.raises(ScaffoldError):
+        configure_runtime_profile(manifest, 'unknown')
+    malformed = tmp_path/'bad.toml'; malformed.write_text('[workspace]\n')
+    with pytest.raises(ScaffoldError, match='manifest'):
+        configure_runtime_profile(malformed, 'reduced')

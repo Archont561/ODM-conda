@@ -649,6 +649,15 @@ pixi run python scripts/private_odm_bundle.py build --destination /private/path/
 pixi run python scripts/private_odm_bundle.py replay --bundle /private/path/odm-bundle --manifest-sha256 <independently-recorded-sha256>
 ```
 
+For the scoped reduced-feature runtime decision, add `--runtime-profile reduced`
+to the **build** command. It constrains libspatialite 5.1.0 and libarchive
+3.8.11 to `lgpl_*` and fails if LZO or librttopo appears in the installed
+runtime. It does not constrain build/host solves or enable the excluded
+features. This option has local unit coverage but has not yet completed an
+owner-retained build; earlier hosted trials used an equivalent temporary
+experiment and discarded their bundles. A fresh build is a new candidate, not a
+reconstruction of the discarded earlier binaries.
+
 The destination must not exist, its parent must already exist, and it must be
 outside this repository. The directory is created private to the invoking user;
 keep it on access-controlled storage. Record the printed manifest SHA256 through
