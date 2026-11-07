@@ -1,0 +1,27 @@
+{
+  "files": {
+    "channel/linux-64/dem2points-0.0.0.dev20220721-research_873e7db_2.conda": "1abd2377614213c0e26ff7306fa1266236854f0d95f890298a67c8101018ffac",
+    "channel/linux-64/fastrasterfilter-1.0-research_873e7db_2.conda": "4cf94f9f786c42a587a92beefa2a8f2a0541cb54fd0ce60aa9d0ec4dfa01e1b8",
+    "channel/linux-64/fpcfilter-0.2-research_873e7db_1.conda": "b049295117da72031899b96d45987dd99db801e6cc581712b68eb7e2e1224e90",
+    "channel/linux-64/mvs-texturing-odm-0.0.0.dev20250818-research_873e7db_2.conda": "aefddf5d5defb47c3754f5313d416dcfee103427aabcd75cd1ade672ab5e8833",
+    "channel/linux-64/odm-fast-research-3.6.2-hb0f4dca_3.conda": "73a03fdc69bc8f721449b096e815cb2bc6a9d28ef6ad3c7cf39952ed398811c5",
+    "channel/linux-64/odm-orthophoto-0.0.0.dev20250225-research_873e7db_2.conda": "50ff2c2d844fa90a7e18151c1ce46e6ca1c3a617ba526f97dc64ca52f59a4578",
+    "channel/linux-64/odm-research-codem-0.26.1-research_b0f4dca_1.conda": "7097e03c18cb3ecbc4328c0aabc9aa3c05c93a469dd96e802c57ab6c7eef2699",
+    "channel/linux-64/odm-research-pillow-jxl-plugin-1.3.4-research_873e7db_1.conda": "fe439c2f30bf6da6afefe243645cecea9eed722c363a74f22a20e90189cd5eaf",
+    "channel/linux-64/odm-research-pygltflib-1.16.5-research_b0f4dca_1.conda": "2b91349deb3712ec466521b6112caa7ffd792d4feba6355aa2f1ae578ec30158",
+    "channel/linux-64/odm-research-pyodm-1.5.12-research_b0f4dca_1.conda": "2fa909df5b338c7314785453ad34d63e46d98ab25385ba8090cb12060fa589eb",
+    "channel/linux-64/odm-research-pysolar-0.13-research_b0f4dca_1.conda": "f96be297ebd00761dfdd9fc02dd7ae596fc083eb2a29e63f398f848d1cea547e",
+    "channel/linux-64/openmvs-odm-0.0.0.dev20260516-research_873e7db_4.conda": "f1cfe52f7be7f45a90c4a536e2b1621328179ad0d7c322acd1159e0569d781e1",
+    "channel/linux-64/opensfm-scoped-odm-0.5.2-research_873e7db_0.conda": "094fa854bdee9d72b34278350d6968337a34e61a0620817a0db52f2d9d81f2e1",
+    "channel/linux-64/poissonrecon-odm-13.8-research_873e7db_3.conda": "378fae03f2c8e55f04b36892398b6512e1e73633283886641092bb26d0cbb9d7",
+    "channel/linux-64/renderdem-1.0-research_873e7db_1.conda": "08a5ceb092daae0d6ff0bfb7bbfc9eba8c6cba791b39386503c64833050b7fd3",
+    "channel/linux-64/repodata.json": "50221e0b907f1d6c14c0107415a3b67cb8e969f50bfd920098a9d6d87fa3a0aa",
+    "channel/noarch/repodata.json": "f24a3b76691c928646223b8b6096bc095afe545a2acc266880d21cfc837bbb1f",
+    "conda-inventory.json": "e8ee20876239a989f1445f5ff3f7b4be6748292267ae904d5a7520986689c7df",
+    "pixi.lock": "564066b2f3dff5666bf01df17644424748acded594b3b8d4d89704c0f04f660d",
+    "pixi.toml": "50f3168a68f13936032bb1e7e066ed5f518da4df408188dce5134f128eb69f7a"
+  },
+  "port": 48179,
+  "schema_version": 2,
+  "scope": "private-research-only"
+}
