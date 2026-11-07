@@ -1,4 +1,4 @@
-name: Temporary COPR GCP alternate-variant validation
+name: Temporary COPR GCP FLANN alternate-variant validation
 on:
   push:
     branches: [arena/b398199b-odm-conda]

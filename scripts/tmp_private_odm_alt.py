@@ -227,7 +227,7 @@ def replay(bundle: Path, *, dataset: Path | None = None, expected_inventory: lis
                 if not dataset.is_dir() or dataset.is_relative_to(ROOT): raise ScaffoldError('Dataset must be a directory outside the repository')
                 if any(p.is_symlink() for p in dataset.rglob('*')): raise ScaffoldError('Dataset must not contain symlinks')
                 projects=scratch/'projects'; projects.mkdir(); shutil.copytree(dataset,projects/'dataset',symlinks=False)
-                run([str(prefix/'bin/odm-fast-research'),'--fast-orthophoto','--skip-3dmodel','--gcp',str(projects/'dataset/gcp_list.txt'),'--project-path',str(projects),'dataset'])
+                run([str(prefix/'bin/odm-fast-research'),'--fast-orthophoto','--skip-3dmodel','--matcher-type','flann','--gcp',str(projects/'dataset/gcp_list.txt'),'--project-path',str(projects),'dataset'])
                 gcp_output=projects/'dataset/odm_georeferencing/ground_control_points.geojson'
                 if not gcp_output.is_file(): raise ScaffoldError('GCP export missing')
                 gcp_data=json.loads(gcp_output.read_text()); features=gcp_data.get('features',[])
