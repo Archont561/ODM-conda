@@ -653,9 +653,10 @@ For the scoped reduced-feature runtime decision, add `--runtime-profile reduced`
 to the **build** command. It constrains libspatialite 5.1.0 and libarchive
 3.8.11 to `lgpl_*` and fails if LZO or librttopo appears in the installed
 runtime. It does not constrain build/host solves or enable the excluded
-features. This option has local unit coverage but has not yet completed an
-owner-retained build; earlier hosted trials used an equivalent temporary
-experiment and discarded their bundles. A fresh build is a new candidate, not a
+features. [Hosted run 42407639838](https://github.com/Archont561/ODM-conda/actions/runs/42407639838)
+validated this option with a private source build, relocated replay and Seneca
+pipeline, then discarded the bundle without uploading artifacts. It has not
+completed an owner-retained build. A fresh build is a new candidate, not a
 reconstruction of the discarded earlier binaries.
 
 The destination must not exist, its parent must already exist, and it must be

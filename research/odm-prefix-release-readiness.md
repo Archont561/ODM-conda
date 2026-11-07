@@ -58,6 +58,10 @@ the tested fast-orthophoto recipe. Do not add it to this release scope merely
 because it is an ODM component. Broader ODM support may require it or further
 packages and tests.
 
+A [bounded review of the five Python source inputs and fresh private package
+builds](python-research-source-review-2026-11-07.md) identifies additional
+license, source and image-rights questions; it does not approve any candidate.
+
 ## External runtime and build dependencies
 
 The recipe directly requests Python, PDAL, python-pdal, GDAL, ExifTool,

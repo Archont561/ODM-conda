@@ -1,0 +1,140 @@
+{
+  "packages": [
+    {
+      "depends": [
+        "python >=3.12,<3.13",
+        "typing-extensions",
+        "pyyaml",
+        "rich",
+        "python-json-logger",
+        "websocket-client",
+        "py-opencv",
+        "numpy",
+        "matplotlib",
+        "python-pdal",
+        "pdal",
+        "pyproj",
+        "rasterio",
+        "trimesh",
+        "scipy",
+        "scikit-image",
+        "pandas",
+        "pyshp",
+        "setuptools",
+        "python_abi 3.12.* *_cp312"
+      ],
+      "job_id": 128517897212,
+      "license": "LicenseRef-Unreviewed",
+      "name": "codem",
+      "notice_files": {
+        "lib/python3.12/site-packages/codem-0.26.1.dist-info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+      },
+      "package": "odm-research-codem-0.26.1-research_b0f4dca_1.conda",
+      "payload_count": 53,
+      "python_metadata": {
+        "lib/python3.12/site-packages/codem-0.26.1.dist-info/METADATA": "f1e371af3ae7bb7a8d0fed433b73a89ec7e2ac4ab300d9856657f3e48f00dd8d",
+        "lib/python3.12/site-packages/codem-0.26.1.dist-info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+      },
+      "sha256": "3220ded192815ea4105705e82e6b4990c659d2f7223e182d3c1b011d99831ade"
+    },
+    {
+      "depends": [
+        "python >=3.12,<3.13",
+        "packaging",
+        "pillow",
+        "libjxl >=0.11,<0.12",
+        "libhwy",
+        "libbrotlidec",
+        "libbrotlienc",
+        "libbrotlicommon",
+        "libgcc >=14",
+        "__glibc >=2.28,<3.0.a0",
+        "libstdcxx >=14",
+        "libbrotlienc >=1.2.1,<1.3.0a0",
+        "libhwy >=1.4.0,<1.5.0a0",
+        "python_abi 3.12.* *_cp312",
+        "libbrotlicommon >=1.2.1,<1.3.0a0",
+        "libbrotlidec >=1.2.1,<1.3.0a0",
+        "libjxl >=0.11,<1.0a0"
+      ],
+      "job_id": 128517897130,
+      "license": "LicenseRef-Unreviewed",
+      "name": "pillow-jxl-plugin",
+      "notice_files": {
+        "lib/python3.12/site-packages/pillow_jxl_plugin-1.3.4.dist-info/licenses/LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+      },
+      "package": "odm-research-pillow-jxl-plugin-1.3.4-research_873e7db_1.conda",
+      "payload_count": 15,
+      "python_metadata": {
+        "lib/python3.12/site-packages/pillow_jxl_plugin-1.3.4.dist-info/METADATA": "9b09d2feb5a742165864e517791542bbee98a9628216a02aa3d610714d68ed84",
+        "lib/python3.12/site-packages/pillow_jxl_plugin-1.3.4.dist-info/licenses/LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+      },
+      "sha256": "5ac4d91b6d423d1b9f4e419d0ed4b0fee809a93e8ff97979326e863057ad3d80"
+    },
+    {
+      "depends": [
+        "python >=3.12,<3.13",
+        "dataclasses-json",
+        "deprecated",
+        "python_abi 3.12.* *_cp312"
+      ],
+      "job_id": 128517897232,
+      "license": "LicenseRef-Unreviewed",
+      "name": "pygltflib",
+      "notice_files": {
+        "lib/python3.12/site-packages/pygltflib-1.16.5.dist-info/licenses/LICENSE": "d8559cc854e956ee3e134756a93ba49c2fe8c2c9e5960d798ee2fdc4b8d33abc"
+      },
+      "package": "odm-research-pygltflib-1.16.5-research_b0f4dca_1.conda",
+      "payload_count": 14,
+      "python_metadata": {
+        "lib/python3.12/site-packages/pygltflib-1.16.5.dist-info/METADATA": "e867e781ff4caf96d9ea7fe0fa61764d45a22ffb187e7b5dd3ccc1abdf4d74a3",
+        "lib/python3.12/site-packages/pygltflib-1.16.5.dist-info/licenses/LICENSE": "d8559cc854e956ee3e134756a93ba49c2fe8c2c9e5960d798ee2fdc4b8d33abc"
+      },
+      "sha256": "e87bec439d0a3de4123eff94736b6ea7b818114549fcd68026ef774d18a47c3d"
+    },
+    {
+      "depends": [
+        "python >=3.12,<3.13",
+        "requests",
+        "requests-toolbelt",
+        "urllib3",
+        "python_abi 3.12.* *_cp312"
+      ],
+      "job_id": 128517897153,
+      "license": "LicenseRef-Unreviewed",
+      "name": "pyodm",
+      "notice_files": {
+        "lib/python3.12/site-packages/pyodm-1.5.12.dist-info/licenses/LICENSE": "11dc23c3ed6a92475c80c466dada7b876cf44835272452dc2a0855fa173ac384"
+      },
+      "package": "odm-research-pyodm-1.5.12-research_b0f4dca_1.conda",
+      "payload_count": 18,
+      "python_metadata": {
+        "lib/python3.12/site-packages/pyodm-1.5.12.dist-info/METADATA": "b9100096185909aaa10c90aac3c3570e7361d10c175e174c70d9b9c2566262bb",
+        "lib/python3.12/site-packages/pyodm-1.5.12.dist-info/licenses/LICENSE": "11dc23c3ed6a92475c80c466dada7b876cf44835272452dc2a0855fa173ac384"
+      },
+      "sha256": "e13a620f860a508a659e477974dd7cad215dfd8d222cd4101fc928faf8138c85"
+    },
+    {
+      "depends": [
+        "python >=3.12,<3.13",
+        "numpy",
+        "python_abi 3.12.* *_cp312"
+      ],
+      "job_id": 128517896940,
+      "license": "LicenseRef-Unreviewed",
+      "name": "pysolar",
+      "notice_files": {
+        "lib/python3.12/site-packages/pysolar-0.13.dist-info/licenses/COPYING": "864f2c1e94e559ef49f403abe8457ef8b5d7526766018b478ec796e020c5eb36"
+      },
+      "package": "odm-research-pysolar-0.13-research_b0f4dca_1.conda",
+      "payload_count": 38,
+      "python_metadata": {
+        "lib/python3.12/site-packages/pysolar-0.13.dist-info/METADATA": "84664179709ea22fecf352af11f6fa4dea87eeb931462c44db6b150aee67774c",
+        "lib/python3.12/site-packages/pysolar-0.13.dist-info/licenses/COPYING": "864f2c1e94e559ef49f403abe8457ef8b5d7526766018b478ec796e020c5eb36"
+      },
+      "sha256": "a6602c3c91c51aed07a3883894f0b26f9f7faec47c68df9d794dcb1c9236412c"
+    }
+  ],
+  "run": 42410670648,
+  "scope": "Fresh temporary research builds, not prior locked candidate or production artifacts; hashes independently calculated on package archives; no upload. Build/retest, notice filename and metadata inspection only."
+}
