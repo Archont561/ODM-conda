@@ -1,0 +1,30 @@
+{
+  "dataset_commits": {
+    "copr": "97cd18478ca1885f5713a11bf98d4bf96308b399",
+    "seneca": "9220acfdca75cc5e2dd6d27fe48550c5ae0877f2"
+  },
+  "external_archives": {
+    "libarchive": {
+      "bytes": 871793,
+      "sha256": "ef86dba72bcad4a7c522bb9d8974d7b85ed6d886c5ff6c41ee27a2661d4fd626",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libarchive-3.8.11-lgpl_hee3b6c9_0.conda"
+    },
+    "libgdal-core": {
+      "bytes": 12954415,
+      "sha256": "564d9e27f9cb3eae53a945a70c25b92f22f74a27b450dc166a255964623b4383",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libgdal-core-3.12.2-he63569f_2.conda"
+    },
+    "libpdal-core": {
+      "bytes": 3823992,
+      "sha256": "c43a137e3b537f8842b3c850e9a319b9cae0ab59143b4fc7358495892e61d279",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libpdal-core-2.10.0-h9d23c72_0.conda"
+    },
+    "libspatialite": {
+      "bytes": 3030119,
+      "sha256": "2919611dcd23ff43fb9d0e6cb9b12beb8ef5933ebe963308eb327f572ba05fd4",
+      "url": "https://conda.anaconda.org/conda-forge/linux-64/libspatialite-5.1.0-lgpl_h6633a9c_19.conda"
+    }
+  },
+  "private_archive_count": 15,
+  "scope": "Fresh research candidate; four external dependency archive bytes independently hashed; private channel archive hashes validated by bundle seal and compared with lock. Other external archive hashes are installed-record metadata only. Build/host environments separately solved and not inventoried here."
+}
