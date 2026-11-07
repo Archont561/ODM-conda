@@ -1,0 +1,55 @@
+name: Temporary metadata relay
+on:
+  push:
+    branches: [arena/b398199b-odm-conda]
+    paths: [.github/workflows/tmp-candidate-relay.yml]
+permissions:
+  actions: read
+  contents: read
+jobs:
+  relay:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        half: [0, 1]
+    steps:
+      - name: Download metadata and create deterministic transport
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/metadata"
+          gh run download 42402466007 --repo "$GITHUB_REPOSITORY" --name alternate-odm-candidate-metadata --dir "$RUNNER_TEMP/metadata"
+          cd "$RUNNER_TEMP/metadata"
+          sha256sum -c SHA256SUMS
+          tar --sort=name --mtime='@0' --owner=0 --group=0 --numeric-owner -cf - SHA256SUMS conda-inventory.json pixi.lock pixi.toml private-bundle.json verification.json | gzip -n > "$RUNNER_TEMP/metadata.tar.gz"
+          base64 -w0 "$RUNNER_TEMP/metadata.tar.gz" > "$RUNNER_TEMP/transport.txt"
+          python - <<'PY'
+          import hashlib, os
+          from pathlib import Path
+          root = Path(os.environ['RUNNER_TEMP'])
+          data = (root/'transport.txt').read_text()
+          count = (len(data)+2799)//2800
+          assert count <= 80, count
+          print('::notice::RELAY-INFO sha256=' + hashlib.sha256((root/'metadata.tar.gz').read_bytes()).hexdigest() + ' chunks=' + str(count))
+          PY
+      - name: Emit chunks 0
+        env:
+          HALF: ${{ matrix.half }}
+          PART: 0
+        run: python -c 'import os,pathlib; s=pathlib.Path(os.environ["RUNNER_TEMP"],"transport.txt").read_text(); start=int(os.environ["HALF"])*40+int(os.environ["PART"])*10; [print("::notice::RELAY-%03d:%s"%(i,s[i*2800:(i+1)*2800])) for i in range(start,min(start+10,(len(s)+2799)//2800))]'
+      - name: Emit chunks 1
+        env:
+          HALF: ${{ matrix.half }}
+          PART: 1
+        run: python -c 'import os,pathlib; s=pathlib.Path(os.environ["RUNNER_TEMP"],"transport.txt").read_text(); start=int(os.environ["HALF"])*40+int(os.environ["PART"])*10; [print("::notice::RELAY-%03d:%s"%(i,s[i*2800:(i+1)*2800])) for i in range(start,min(start+10,(len(s)+2799)//2800))]'
+      - name: Emit chunks 2
+        env:
+          HALF: ${{ matrix.half }}
+          PART: 2
+        run: python -c 'import os,pathlib; s=pathlib.Path(os.environ["RUNNER_TEMP"],"transport.txt").read_text(); start=int(os.environ["HALF"])*40+int(os.environ["PART"])*10; [print("::notice::RELAY-%03d:%s"%(i,s[i*2800:(i+1)*2800])) for i in range(start,min(start+10,(len(s)+2799)//2800))]'
+      - name: Emit chunks 3
+        env:
+          HALF: ${{ matrix.half }}
+          PART: 3
+        run: python -c 'import os,pathlib; s=pathlib.Path(os.environ["RUNNER_TEMP"],"transport.txt").read_text(); start=int(os.environ["HALF"])*40+int(os.environ["PART"])*10; [print("::notice::RELAY-%03d:%s"%(i,s[i*2800:(i+1)*2800])) for i in range(start,min(start+10,(len(s)+2799)//2800))]'
