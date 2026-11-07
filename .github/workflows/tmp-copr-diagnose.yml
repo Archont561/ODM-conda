@@ -20,7 +20,10 @@ jobs:
           import os
           from pathlib import Path
           lines = Path(os.environ['RUNNER_TEMP'], 'failed.log').read_text(errors='replace').splitlines()
-          for line in lines[-35:]:
+          for line in lines[-23:]:
               text = line.split('\t', 2)[-1].replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
-              print('::notice::COPR-TAIL ' + text[:1500])
+              print('COPR-TAIL ' + text[:1500])
+          import json
+          tail = '\n'.join(line.split('\t', 2)[-1] for line in lines[-23:])
+          print('::notice::COPR-ERROR ' + json.dumps(tail)[1:-1][:3000])
           PY
