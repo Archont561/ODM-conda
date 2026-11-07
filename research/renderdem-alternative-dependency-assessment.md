@@ -228,3 +228,25 @@ that ODM needs these features or that a helper makes the distribution GPL-free.
 The final consumer scope, exact lock, complete dependency/source review and
 owner-controlled release gates remain open. The synthetic fixtures and
 installation environments were discarded, and no artifacts were uploaded.
+
+## Technical scope decision
+
+For the next **linux-64 CPU fast-orthophoto research candidate**, select the
+reduced `libspatialite 5.1.0 lgpl_*` and `libarchive 3.8.11 lgpl_*` runtime
+families in the consumer environment, and explicitly exclude SpatiaLite
+RTTOPO topology, its control-point API, and LZO-compressed archive support from
+the supported scope. Do not add an `lzop` helper to this candidate merely to
+recover the latter feature. ODM's own GCP path remains in scope only for the
+bounded COPR/FLANN trial above, not as a general accuracy or coverage claim.
+
+This choice is based on two successful ODM datasets and the operation tests,
+not evidence that every future user or workflow can do without those features.
+Consumers needing any excluded functionality should use a separately reviewed
+and tested full-featured environment; this decision does not change or
+constrain the generic RenderDEM recipe. The existing integration locks and
+private binaries were discarded, so the next candidate must generate and
+retain its own exact, independently verified lock and inventories and repeat
+its workload checks. This is a technical research-scope decision, not owner
+approval of licenses, source completeness, component gates, publication or a
+production release. A qualified review of the actual release closure and
+source offer remains required.
