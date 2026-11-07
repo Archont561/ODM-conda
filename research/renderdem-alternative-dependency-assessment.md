@@ -101,5 +101,88 @@ annotation, not the complete 438-record inventory. Package hashes are recorded
 metadata, not independent archive verification. Build/host environments were
 solved separately and were not constrained to these variants. This freshly
 built research RenderDEM is not the retained candidate tested above, and this
-single dataset does not validate RTTOPO, GCP, LZO, other datasets, all ODM
-features or production distribution. No release gates were changed.
+Seneca run alone does not validate RTTOPO, ground-control points, LZO, other
+datasets, all ODM features or production distribution. See the later COPR trial below. No release gates were changed.
+
+## Feature probes and dependency-policy review
+
+[Run 42395378785](https://github.com/Archont561/ODM-conda/actions/runs/42395378785)
+compared two **isolated** linux-64 solves, not the ODM solve. The reduced solve
+selected `libspatialite 5.1.0 lgpl_hc01a4aa_22` (installed-record SHA256
+`e77c0550ff161b972d1664490cbda95cd12e6c6cc3fa606c0f424742e6b7b559`)
+and `libarchive 3.8.11 lgpl_hee3b6c9_0` (SHA256
+`ef86dba72bcad4a7c522bb9d8974d7b85ed6d886c5ff6c41ee27a2661d4fd626`).
+SpatiaLite's `HasRtTopo()` returned 0 and `nm -D --defined-only` found no
+`ControlPoint` symbols. `archive_read_support_filter_lzop` returned -20
+(`ARCHIVE_WARN`), reporting that an external `lzop` program would be used for
+decompression; an actual archive and availability of that program were not
+tested. The solve contained neither LZO nor librttopo.
+
+The comparison solve used `libspatialite 5.1.0 gpl_h2988700_122` (SHA256
+`d4e6bb1a10f4f97d60ce534a3313d268f50ba1fd7772d35121043dc166596305`)
+and `libarchive 3.8.11 gpl_h3152399_100` (SHA256
+`0b13f801fa48194d18819b0dc1aac182ea88089f81b87af2d3bacd69d3ff5cc5`),
+with LZO and librttopo installed. `HasRtTopo()` returned 1, the four
+`gaia*ControlPoint*` symbols listed in the spatialite review were present,
+and registering the libarchive lzop reader returned 0. This is a capability
+probe, not a topology operation, control-point transformation, compressed-file
+roundtrip or license determination. These are different builds from the ODM
+integration and earlier exact-candidate solves; package SHA256s are installed
+record metadata. No source or binary artifacts were uploaded.
+
+**Policy recommendation, not a release decision:** for the narrowly tested
+fast-orthophoto product, prefer a reviewed *consumer lock* explicitly selecting
+these variant families, rather than assuming an unconstrained RenderDEM
+package will enforce them. Retain the final exact lock, complete sanitized
+inventory, package hashes and channel provenance with the proposed distribution;
+independently verify archive bytes and repeat replay and workload tests against
+those exact binaries. Decide separately whether all consumers should have
+package-level constraints: such a constraint changes the dependency contract
+and can exclude legitimate topology, SpatiaLite control-point or LZO users.
+An alternative solve has different ABI and features and cannot inherit an
+approval for another build. A variant family wildcard alone does not freeze an
+identity, and independent build/host solves need their own inventory and review.
+
+The absence of SpatiaLite's control-point implementation should not be confused
+with ODM's own ground-control-point processing. Neither `lgpl` labels nor these
+probes establish a GPL-free stack, sufficient notices or corresponding source.
+A qualified reviewer and owner must assess the final actual source and runtime
+closure, provenance, obligations and source delivery; OpenMVS and OpenSfM
+research-source restrictions remain separate blockers. A release needs its own
+validated binaries, supported dataset/feature scope, gate decisions and
+separate publication authorization. No gates have changed here.
+
+## COPR ground-control-point integration
+
+[Run 42397256516](https://github.com/Archont561/ODM-conda/actions/runs/42397256516)
+(job `128477188727`, commit `52129ed`) repeated the private 15-package
+source build and relocated locked replay on linux-64 with the same alternate
+variant family constraints. The 438-record solve again selected
+`libspatialite 5.1.0 lgpl_h6633a9c_19` and `libarchive 3.8.11
+lgpl_hee3b6c9_0`, and excluded `lzo` and `librttopo`. The selected
+`libgdal-core` and `libpdal-core` identities and installed-record hashes match
+the Seneca trial above; freshly built `renderdem 1.0 research_873e7db_1` had
+SHA256 `9f388f60644cc3af71d475ea6fab7f4f76b21202b1850466fd9b02c5048e665b`,
+and `odm-fast-research 3.6.2 hb0f4dca_3` had SHA256
+`8ebd9017d0acb68227422a8e1940cebb53b49ca83d37009b3b0c7144edb535e9`.
+Only those six identities were preserved; hashes are installed-record metadata.
+
+The [COPR dataset](https://github.com/OpenDroneMap/odm_data_copr/tree/97cd18478ca1885f5713a11bf98d4bf96308b399)
+at commit `97cd18478ca1885f5713a11bf98d4bf96308b399` was processed with
+`--fast-orthophoto --skip-3dmodel --matcher-type flann --gcp` pointing to
+its `gcp_list.txt`. It passed raster sanity and the nonempty report check,
+and exported eight ground control points, at least one with observations. This
+is evidence of ODM's own GCP pipeline, not a test of SpatiaLite's disabled
+control-point functionality or an independent geospatial accuracy assessment.
+The dataset declares CC BY-SA 4.0 and credits Michele M. Tobias and Alex
+Mandel; the run discarded dataset, private inputs, binaries and outputs, and
+uploaded no artifacts. Attribution and license declaration are not an
+independent rights verification.
+
+The [first attempt 42395352751](https://github.com/Archont561/ODM-conda/actions/runs/42395352751)
+failed before reconstruction: with no GPS metadata, ODM defaulted to
+BoW/WORDS matching, which the scoped OpenSfM guard intentionally rejects
+because vocabulary assets are omitted. The retry explicitly selected FLANN;
+the guard was not relaxed. Both results are bounded to research builds,
+selected dataset and flags, and do not establish support for arbitrary ODM
+features or a final distribution.
