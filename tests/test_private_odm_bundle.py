@@ -231,3 +231,32 @@ def test_tetraflow_variant_has_distinct_private_identity_and_exact_dependency(tm
         configure_odm_research_recipe(malformed, openmvs_variant='tetraflow')
     with pytest.raises(ScaffoldError, match='variant'):
         configure_odm_research_recipe(malformed, openmvs_variant='unknown')
+
+
+def test_tetraflow_replay_checks_linkage_and_rejects_missing_library(tmp_path, monkeypatch):
+    import json
+    from contextlib import contextmanager
+    from types import SimpleNamespace
+    import inventory_conda_environment
+    import private_odm_bundle as mod
+    from common import ScaffoldError
+
+    bundle=tmp_path/'bundle'; (bundle/'channel/linux-64').mkdir(parents=True); (bundle/'channel/noarch').mkdir()
+    for name in ('pixi.toml','pixi.lock','channel/linux-64/repodata.json','channel/noarch/repodata.json','channel/linux-64/example.conda'):
+        (bundle/name).write_text(name)
+    package={'name':'openmvs-tetraflow-research','version':'1','build':'research_1','sha256':'a'*64,'binary_package_url':'http://127.0.0.1/linux-64/example.conda'}
+    (bundle/'conda-inventory.json').write_text(json.dumps({'packages':[package]}))
+    mod.seal(bundle,48179)
+    @contextmanager
+    def loopback(_directory,_port):
+        yield 'http://127.0.0.1:48179'
+    monkeypatch.setattr(mod,'loopback',loopback)
+    monkeypatch.setattr(mod,'run',lambda *_args,**_kwargs: None)
+    monkeypatch.setattr(inventory_conda_environment,'inventory',lambda _prefix: {'packages':[package]})
+    observed=[]
+    monkeypatch.setattr(mod.subprocess,'run',lambda args,**kwargs: (observed.append(args) or SimpleNamespace(stdout='all resolved',stderr='')))
+    mod.replay(bundle)
+    assert len(observed)==1 and observed[0][0]=='ldd' and observed[0][1].endswith('/bin/ReconstructMesh')
+    monkeypatch.setattr(mod.subprocess,'run',lambda *_args,**_kwargs: SimpleNamespace(stdout='libjxl.so => not found',stderr=''))
+    with pytest.raises(ScaffoldError,match='Unresolved TetraFlow'):
+        mod.replay(bundle)
