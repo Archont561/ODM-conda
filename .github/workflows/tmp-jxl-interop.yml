@@ -36,3 +36,4 @@ jobs:
 
 
 # Exercise decoder in the package test prefix.
+# Run decoder using its default decode command.
