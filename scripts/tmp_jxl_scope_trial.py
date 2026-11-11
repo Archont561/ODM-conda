@@ -26,6 +26,7 @@ with tempfile.TemporaryDirectory(prefix='jxl-vendor-scope-') as tmp:
           "        ns['run'](__import__('pathlib').Path('/tmp/jxl-oxide-build/target/release/jxl-oxide'))\n"
           "    requirements:\n      run:\n        - python >=3.12,<3.13\n")
     recipe.write_text(text.replace('about:\n',test+'about:\n'))
+    print('::notice::JXL-CARGO-META '+json.dumps(json.loads((prepared/'source/vendor/jpegxl-src-0.11.2/.cargo-checksum.json').read_text()) | {'files': 'omitted'},separators=(',',':')),flush=True)
     first=transform(prepared,crate,root/'first'); second=transform(prepared,crate,root/'second'); assert first==second
     a=root/'first.tar.gz'; b=root/'second.tar.gz'; archive(root/'first',a); archive(root/'second',b)
     assert sha256(a)==sha256(b); archive_hash=sha256(a)
