@@ -1,4 +1,5 @@
 import json
+import shutil
 import tempfile
 import urllib.request
 from pathlib import Path
@@ -14,5 +15,6 @@ with tempfile.TemporaryDirectory(prefix='jxl-native-rebuild-') as tmp:
     assert sha256(original)==record['sha256']
     output=root/'output'; run([rattler(),'rebuild','--package-file',str(original),'--output-dir',str(output),'--log-style','plain'])
     packages=list(output.glob('libjxl-*.conda')); assert len(packages)==1,packages
-    run([rattler(),'test','--package-file',str(packages[0]),'--channel','conda-forge','--channel-priority','strict','--output-dir',str(root/'retest'),'--log-style','plain'])
+    test_package=root/'libjxl-0.11.2-h174a0a3_1.conda'; shutil.copy2(packages[0],test_package)
+    run([rattler(),'test','--package-file',str(test_package),'--channel','conda-forge','--channel-priority','strict','--output-dir',str(root/'retest'),'--log-style','plain'])
     print('::notice::JXL-NATIVE-REBUILD '+json.dumps({'original_sha256':record['sha256'],'package':packages[0].name,'sha256':sha256(packages[0])},separators=(',',':')),flush=True)
