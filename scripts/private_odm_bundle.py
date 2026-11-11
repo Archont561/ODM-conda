@@ -364,9 +364,10 @@ def main() -> None:
     jxl.add_argument('--reduced-jxl', action='store_true', help='Use image-excluded JPEG XL research build; not release approved')
     jxl.add_argument('--vendor-scope-crate', type=Path, help='Use scoped JPEG XL with a verified local jpegxl-src crate; research only')
     test=sub.add_parser('replay'); test.add_argument('--bundle',required=True,type=Path); test.add_argument('--dataset',type=Path); test.add_argument('--manifest-sha256',help='Independently recorded SHA256 of private-bundle.json')
+    test.add_argument('--test-jxl', action='store_true', help='Run the installed synthetic JPEG XL fixture on replay')
     args=parser.parse_args()
     if args.action == 'build': build(args.destination,args.port,args.dataset,runtime_profile=args.runtime_profile,reduced_jxl=args.reduced_jxl or args.vendor_scope_crate is not None,vendor_scope_crate=args.vendor_scope_crate,openmvs_variant=args.openmvs_variant)
-    else: replay(args.bundle,dataset=args.dataset,expected_manifest_sha=args.manifest_sha256)
+    else: replay(args.bundle,dataset=args.dataset,expected_manifest_sha=args.manifest_sha256,test_jxl=args.test_jxl)
 
 
 if __name__ == '__main__': fail_cli(main)

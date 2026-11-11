@@ -80,3 +80,46 @@ destination and relocated verifier bytecode behavior.
   bundle and final lock; review OpenSfM, JPEG XL and other unresolved sources.
 - Only after decisions and validation, prepare/register production recipes and
   obtain the owner's distinct gates and publication authorization.
+
+## Private ODM bundle option (not a release)
+
+The private bundle builder accepts `--openmvs-variant tetraflow`, selecting the
+new research-only package and a distinct ODM build string. It retains the
+existing audits for other components and performs an additional **bounded**
+TetraFlow package identity, exact payload/fixture, five selected metadata
+notice hashes and ELF RPATH check. The build also retains its source-file and
+named-link-map guards. These checks do not prove provenance, rights, complete
+notices, complete sources or all linked inputs. They do not replace a release
+audit. A relocated replay with the TetraFlow package checks runtime linkage.
+The previous `historical` default remains unchanged and still fetches the
+historical source archive with restricted material; it is not cleared.
+
+For a suitably access-controlled, private owner host with locked Pixi tools,
+network access to Conda and pinned sources, and the verified original
+`jpegxl-src` crate already available:
+
+```sh
+pixi run python scripts/private_odm_bundle.py build \
+  --destination /private/new-odm-bundle --openmvs-variant tetraflow \
+  --runtime-profile reduced --vendor-scope-crate /private/jpegxl-src-0.11.2.crate \
+  --dataset /private/suitable-local-dataset
+# Independently record the printed private-bundle.json SHA256, then:
+pixi run python scripts/private_odm_bundle.py replay \
+  --bundle /private/new-odm-bundle --manifest-sha256 <independently-recorded-sha256> \
+  --dataset /private/suitable-local-dataset --test-jxl
+```
+
+The dataset argument is optional; without it there is no end-to-end dataset
+validation. The owner must establish appropriate authority to use any dataset.
+The destination must be new, outside the checkout, and kept private. The bundle
+contains local research binaries and its lock and Conda installation inventory;
+external Conda packages may be fetched during replay, and source archives,
+compiler/build/host closure, full source obligations and legal permissions are
+not captured. Do not describe it as a final or offline release bundle. Record
+the manifest digest through a separate trusted channel. No owner storage was
+provided for this task, so no owner-retained bundle was produced here.
+
+A hosted trial of the new integrated builder was started as
+[43116155321](https://github.com/Archont561/ODM-conda/actions/runs/43116155321);
+its result was pending when this section was written. It discards binaries,
+sources, the lock and dataset outputs rather than uploading them.
