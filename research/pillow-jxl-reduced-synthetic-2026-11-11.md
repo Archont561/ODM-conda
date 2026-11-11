@@ -56,3 +56,11 @@ build `hb0f4dca_4` SHA-256 was
 `cada655f265113b31212bb303ea18f34aa4b0c57d7dbdad2a9e08366c2899478`.
 This run predates the added explicit synthetic test in the replayed prefix; the
 separate package test above is the observed codec evidence for that run.
+
+Follow-up hosted run [43057210094](https://github.com/Archont561/ODM-conda/actions/runs/43057210094)
+passed the same private build, relocated 438-record replay, explicit synthetic
+codec test in the replayed prefix, and Seneca raster/report checks. No artifacts
+were uploaded. Its JPEG XL build 2 SHA-256 was
+`cdea0ce005054071d01d4e5ef5a5ac11d75ac4bda1489151379516412e171603`; ODM build
+4 SHA-256 was `7b6ca1e101ad7fbab4dc9af0229e2bef10fc46156ba8aecc8c0e0750f16fc1dd`.
+Different single-build hashes do not demonstrate bit-for-bit reproducibility.
