@@ -133,6 +133,23 @@ def private_identity(recipe: Path, build_number: int) -> None:
     recipe.write_text(text.replace(marker, marker+f'  string: research_${{{{ hash }}}}_{build_number}\n'))
 
 
+def configure_odm_research_recipe(recipe: Path, *, reduced_jxl: bool = False) -> None:
+    text = recipe.read_text()
+    for name in BASE:
+        pattern = rf'^(    - {re.escape(name)} ==[^\n ]+)$'
+        text, count = re.subn(pattern, r'\1 research_*', text, flags=re.MULTILINE)
+        if count != 1: raise ScaffoldError(f'Unexpected ODM dependency for {name}')
+    if reduced_jxl:
+        before = '    - odm-research-pillow-jxl-plugin ==1.3.4 research_*_1'
+        after = '    - odm-research-pillow-jxl-plugin ==1.3.4 research_reduced_*_2'
+        if text.count(before) != 1: raise ScaffoldError('Unexpected ODM JPEG XL dependency')
+        text = text.replace(before, after)
+    marker = 'build:\n  number: 2\n'
+    if text.count(marker) != 1: raise ScaffoldError('Unexpected ODM build identity')
+    odm_number = 4 if reduced_jxl else 3
+    recipe.write_text(text.replace(marker, f'build:\n  number: {odm_number}\n'))
+
+
 def build_packages(work: Path, *, reduced_jxl: bool = False) -> list[Path]:
     from prepare_opencv413_research import prepare
     from source_bundle import graph_archives
@@ -181,20 +198,8 @@ def build_packages(work: Path, *, reduced_jxl: bool = False) -> list[Path]:
                 jxl_prepare(source,work/'jxl-prepared')
             recipe=work/'jxl-prepared/recipe/recipe.yaml'
         packages.append(build_recipe(recipe,'odm-research-'+name,work/('python-'+name)))
-    recipe=staged/'research/recipes/odm-fast-research/recipe.yaml'; text=recipe.read_text()
-    for name in BASE:
-        pattern=rf'^(    - {re.escape(name)} ==[^\n ]+)$'
-        text,n=re.subn(pattern,r'\1 research_*',text,flags=re.MULTILINE)
-        if n != 1: raise ScaffoldError(f'Unexpected ODM dependency for {name}')
-    if reduced_jxl:
-        before = '    - odm-research-pillow-jxl-plugin ==1.3.4 research_*_1'
-        after = '    - odm-research-pillow-jxl-plugin ==1.3.4 research_reduced_*_2'
-        if text.count(before) != 1: raise ScaffoldError('Unexpected ODM JPEG XL dependency')
-        text = text.replace(before, after)
-    marker='build:\n  number: 2\n'
-    if text.count(marker) != 1: raise ScaffoldError('Unexpected ODM build identity')
-    odm_number = 4 if reduced_jxl else 3
-    recipe.write_text(text.replace(marker, f'build:\n  number: {odm_number}\n'))
+    recipe=staged/'research/recipes/odm-fast-research/recipe.yaml'
+    configure_odm_research_recipe(recipe, reduced_jxl=reduced_jxl)
     packages.append(build_recipe(recipe,'odm-fast-research',work/'odm',skip_tests=True))
     if len(packages) != 15: raise ScaffoldError('Unexpected private package count')
     return packages
@@ -212,7 +217,7 @@ def inventory_identities(data: dict) -> list:
     return identities
 
 
-def replay(bundle: Path, *, dataset: Path | None = None, expected_inventory: list | None = None, expected_manifest_sha: str | None = None) -> None:
+def replay(bundle: Path, *, dataset: Path | None = None, expected_inventory: list | None = None, expected_manifest_sha: str | None = None, test_jxl: bool = False) -> None:
     port=verify(bundle, expected_manifest_sha=expected_manifest_sha)
     saved=bundle/'conda-inventory.json'
     if saved.is_file():
@@ -233,6 +238,10 @@ def replay(bundle: Path, *, dataset: Path | None = None, expected_inventory: lis
                 if observed != expected_inventory: raise ScaffoldError('Replayed Conda inventory differs')
                 print(f'PASS: {len(observed)} matching Conda identities and hashes',flush=True)
             run([str(prefix/'bin/odm-fast-research'),'--fast-orthophoto','--help'])
+            if test_jxl:
+                test_env = env.copy(); test_env.pop('PYTHONPATH', None); test_env.pop('PYTHONHOME', None)
+                test_env['PATH'] = str(prefix/'bin') + os.pathsep + os.defpath
+                run([str(prefix/'bin/python'),str(ROOT/'scripts/jxl_synthetic_fixture.py')],env=test_env)
             if dataset is not None:
                 dataset=Path(dataset).resolve()
                 if not dataset.is_dir() or dataset.is_relative_to(ROOT): raise ScaffoldError('Dataset must be a directory outside the repository')
@@ -307,7 +316,7 @@ def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile
             seal(destination,port)
             manifest_sha=sha256(destination/'private-bundle.json')
             relocated=work/'relocated-bundle'; shutil.copytree(destination,relocated)
-            replay(relocated,dataset=dataset,expected_inventory=identities,expected_manifest_sha=manifest_sha)
+            replay(relocated,dataset=dataset,expected_inventory=identities,expected_manifest_sha=manifest_sha,test_jxl=reduced_jxl)
             print(f'PASS: private bundle retained at {destination}; lock SHA256 {sha256(destination/"pixi.lock")}',flush=True)
             print(f'Record this manifest SHA256 separately for verified replay: {manifest_sha}',flush=True)
     except Exception:
