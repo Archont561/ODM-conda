@@ -20,8 +20,10 @@ including ODM-specific changes and upstream changes. It is not a drop-in
 replacement merely because the graph solver changed. In particular, this
 upstream `ReconstructMesh` lacks the previously developed explicit visibility
 validation; its point-cloud reader differs from the hardened ODM research
-patch. Do not use it with untrusted or malformed PLY inputs. The existing
-negative and separate-cloud fixture suite has **not** been run against it.
+patch. A research patch now ports bounded visibility, list-schema, byte-order
+and allocation checks, including matching view-weight counts. Its complete
+fixture run has not yet been verified. Do not use it with untrusted or malformed
+PLY inputs; the patch is not a comprehensive parser security review.
 
 ## Experiment
 
@@ -39,7 +41,8 @@ passed, including reconstruction of the repository's generated two-camera
 scene. Package SHA-256 was
 `2b4de6a38722d9a2e1ccb7ecf0217beb164243722dfdae9ff7702e0a62b60f85`.
 The research sources and binary were discarded with the job; only the hash
-was retained. This does not test ODM integration, all command-line options,
+was retained. That run predates the visibility patch and extended fixtures.
+This does not test ODM integration, all command-line options,
 mesh quality, separate PLY loading, real-world scenes, or full OpenMVS.
 Conda dependencies were solved online, not against a retained final lock.
 
@@ -53,10 +56,16 @@ never upload its output or source without approval.
 ## Remaining work before a production candidate
 
 1. Independently review the exact source archive, TetraFlow authorship and all
-   included third-party sources/notices; owner decides rights and policy.
-2. Port or redesign the existing strict PLY/visibility checks for this changed
-   implementation. Run the entire generated positive and negative fixture
-   suite, and verify ODM-required command-line options, formats and behavior.
+   included third-party sources/notices; owner decides rights and policy. The
+   upstream commit metadata identifies cDc as author, while the header claims
+   independent authorship; neither establishes the complete chain of rights.
+   The upstream `COPYRIGHT.md` lists AGPL for OpenMVS and multiple third-party
+   licenses, including CGAL, Eigen, LMFit and Boost; it is not a verified BOM.
+   Its design notes explicitly discuss research-only IBFS alternatives, which
+   is contextual commentary, not proof about every file in the archive.
+2. Validate and review the new research PLY/visibility patch. Run the complete
+   generated positive and negative fixture suite, including weighted PLY cases,
+   and verify ODM-required command-line options, formats and behavior.
 3. Test with scoped OpenSfM and ODM end-to-end on suitably cleared data, and
    assess functionality/quality relative to the historical fork. Review all
    other ODM-specific changes lost across the diverged histories.
