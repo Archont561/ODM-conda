@@ -70,7 +70,11 @@ def make_candidate(source: Path, destination: Path) -> dict:
                     'excluded_files': {'test/images/'+k:v for k,v in EXCLUDED.items()}, 'files': retained,
                     'warning': 'Not corresponding source; original sdist, test rights, crate sources and distribution obligations remain unresolved.'}
         try:
-            with os.fdopen(os.open(destination, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600), 'wb') as output, gzip.GzipFile(filename='', mode='wb', fileobj=output, mtime=0) as compressed:
+            fd = os.open(destination, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        except FileExistsError as error:
+            raise ScaffoldError('Unsafe or existing destination') from error
+        try:
+            with os.fdopen(fd, 'wb') as output, gzip.GzipFile(filename='', mode='wb', fileobj=output, mtime=0) as compressed:
                 with tarfile.open(fileobj=compressed, mode='w', format=tarfile.PAX_FORMAT) as archive:
                     for name, info in retained.items():
                         add_bytes(archive, 'source/'+name, (tree/name).read_bytes(), int(info['mode'], 8))
