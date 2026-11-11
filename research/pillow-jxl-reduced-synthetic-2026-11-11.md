@@ -16,11 +16,12 @@ sources and is not a complete corresponding-source offer.
 The generated recipe tests use deterministic, generated L, LA, RGB and RGBA
 pixels, lossless and lossy decoding, EXIF and ICC metadata, JPEG reconstruction,
 and malformed-input rejection. They do not replace the full upstream fixture
-suite or establish independent codec interoperability. The test image pixels
-are generated; the box parser in the synthetic script is adapted from James
-Frost's MIT-licensed `jxl_decode` (revision
-`902cd5d479f89f93df6105a22dc92f297ab77541`), with attribution in the script
-and the license retained at `research/notices/pillow-jxl/fraetor-LICENCE.md`.
+suite or establish independent codec interoperability. The current synthetic
+script generates its test pixels and contains no box parser. An earlier review
+incorrectly described such a parser and attribution as present in that script;
+the retained `research/notices/pillow-jxl/fraetor-LICENCE.md` is not evidence
+that the current script contains that parser. See the separate
+[independent decoder trial](pillow-jxl-independent-decode-2026-11-11.md).
 
 Hosted run [43052674361](https://github.com/Archont561/ODM-conda/actions/runs/43052674361)
 built and retested the scoped package without uploading artifacts. Its private

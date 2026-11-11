@@ -187,3 +187,28 @@ def test_optional_jxl_replay_uses_the_installed_prefix(tmp_path, monkeypatch):
     jxl=[(command,kwargs) for command,kwargs in calls if command[-1].endswith('jxl_synthetic_fixture.py')]
     assert len(jxl)==1 and jxl[0][0][0].endswith('/.pixi/envs/default/bin/python')
     assert 'PYTHONPATH' not in jxl[0][1]['env']
+
+
+def test_vendor_scope_pins_distinct_jxl_and_odm_identities(tmp_path):
+    from pathlib import Path
+    from common import ScaffoldError
+    from private_odm_bundle import configure_odm_research_recipe
+    original = Path(__file__).resolve().parents[1]/'research/recipes/odm-fast-research/recipe.yaml'
+    recipe=tmp_path/'recipe.yaml'; recipe.write_text(original.read_text())
+    with pytest.raises(ScaffoldError, match='requires'):
+        configure_odm_research_recipe(recipe, vendor_scope=True)
+    configure_odm_research_recipe(recipe, reduced_jxl=True, vendor_scope=True)
+    assert 'build:\n  number: 5\n' in recipe.read_text()
+    assert 'odm-research-pillow-jxl-plugin ==1.3.4 research_vendor_scope_*_3' in recipe.read_text()
+
+
+def test_vendor_scope_requires_verified_crate_before_build(tmp_path):
+    from common import ScaffoldError
+    from private_odm_bundle import build, PORT
+    bad=tmp_path/'bad.crate'; bad.write_bytes(b'not a crate')
+    dest=tmp_path/'bundle'
+    with pytest.raises(ScaffoldError, match='requires'):
+        build(dest, PORT, None, vendor_scope_crate=bad)
+    with pytest.raises(ScaffoldError, match='archive'):
+        build(dest, PORT, None, reduced_jxl=True, vendor_scope_crate=bad)
+    assert not dest.exists()
