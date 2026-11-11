@@ -26,6 +26,13 @@ jobs:
           test "$(git -C /tmp/jxl-oxide-build rev-parse HEAD)" = f8ae722ef2d6b782941c89517d19cfbf605c4a9d
           cargo build --locked --release --no-default-features -p jxl-oxide-cli --manifest-path /tmp/jxl-oxide-build/Cargo.toml
       - name: Build and test research package with independent decoder
-        run: pixi run python scripts/tmp_jxl_interop.py
+        run: |
+          set -o pipefail
+          pixi run python scripts/tmp_jxl_interop.py 2>&1 | tee /tmp/interop.log
+      - name: Failure diagnostics
+        if: failure()
+        run: |
+          tail -40 /tmp/interop.log | python -c 'import sys; s=sys.stdin.read(); print("::notice::"+s[-3000:].replace("%", "%25").replace("\n", "%0A"))'
+
 
 # Exercise decoder in the package test prefix.
