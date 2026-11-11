@@ -133,7 +133,7 @@ def private_identity(recipe: Path, build_number: int) -> None:
     recipe.write_text(text.replace(marker, marker+f'  string: research_${{{{ hash }}}}_{build_number}\n'))
 
 
-def build_packages(work: Path) -> list[Path]:
+def build_packages(work: Path, *, reduced_jxl: bool = False) -> list[Path]:
     from prepare_opencv413_research import prepare
     from source_bundle import graph_archives
     from common import fetch_pinned_archive
@@ -174,16 +174,27 @@ def build_packages(work: Path) -> list[Path]:
         if name == 'pillow-jxl-plugin':
             info=yaml.safe_load(template.read_text())['source']
             source=work/'pillow-jxl-plugin.tar.gz'; download_sdist(info['url'],info['sha256'],source)
-            jxl_prepare(source,work/'jxl-prepared'); recipe=work/'jxl-prepared/recipe/recipe.yaml'
+            if reduced_jxl:
+                from prepare_jxl_reduced_research import prepare as jxl_prepare_reduced
+                jxl_prepare_reduced(source,work/'jxl-prepared')
+            else:
+                jxl_prepare(source,work/'jxl-prepared')
+            recipe=work/'jxl-prepared/recipe/recipe.yaml'
         packages.append(build_recipe(recipe,'odm-research-'+name,work/('python-'+name)))
     recipe=staged/'research/recipes/odm-fast-research/recipe.yaml'; text=recipe.read_text()
     for name in BASE:
         pattern=rf'^(    - {re.escape(name)} ==[^\n ]+)$'
         text,n=re.subn(pattern,r'\1 research_*',text,flags=re.MULTILINE)
         if n != 1: raise ScaffoldError(f'Unexpected ODM dependency for {name}')
+    if reduced_jxl:
+        before = '    - odm-research-pillow-jxl-plugin ==1.3.4 research_*_1'
+        after = '    - odm-research-pillow-jxl-plugin ==1.3.4 research_reduced_*_2'
+        if text.count(before) != 1: raise ScaffoldError('Unexpected ODM JPEG XL dependency')
+        text = text.replace(before, after)
     marker='build:\n  number: 2\n'
     if text.count(marker) != 1: raise ScaffoldError('Unexpected ODM build identity')
-    recipe.write_text(text.replace(marker,'build:\n  number: 3\n'))
+    odm_number = 4 if reduced_jxl else 3
+    recipe.write_text(text.replace(marker, f'build:\n  number: {odm_number}\n'))
     packages.append(build_recipe(recipe,'odm-fast-research',work/'odm',skip_tests=True))
     if len(packages) != 15: raise ScaffoldError('Unexpected private package count')
     return packages
@@ -268,7 +279,7 @@ def validate_runtime_profile(inventory: dict, profile: str) -> None:
         raise ScaffoldError('Reduced runtime contains LZO or librttopo')
 
 
-def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile: str = 'default') -> None:
+def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile: str = 'default', reduced_jxl: bool = False) -> None:
     if platform.system() != 'Linux' or platform.machine().lower() not in ('x86_64','amd64'): raise ScaffoldError('Private build requires linux-64')
     validate_destination(destination)
     if runtime_profile not in ('default', 'reduced'): raise ScaffoldError('Unknown runtime profile')
@@ -276,7 +287,7 @@ def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile
     destination.mkdir(mode=0o700)
     try:
         with tempfile.TemporaryDirectory(prefix='odm-private-build-') as tmp:
-            work=Path(tmp); packages=build_packages(work)
+            work=Path(tmp); packages=build_packages(work, reduced_jxl=reduced_jxl)
             info=create_channel(packages,destination/'channel')
             project=work/'project'
             with loopback(destination/'channel',port) as channel:
@@ -307,9 +318,10 @@ def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile
 def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__); sub=parser.add_subparsers(dest='action',required=True)
     create=sub.add_parser('build'); create.add_argument('--destination',required=True,type=Path); create.add_argument('--port',type=int,default=PORT); create.add_argument('--dataset',type=Path); create.add_argument('--runtime-profile', choices=('default','reduced'), default='default', help='Use reduced libspatialite/libarchive runtime variants')
+    create.add_argument('--reduced-jxl', action='store_true', help='Use image-excluded JPEG XL research build; not release approved')
     test=sub.add_parser('replay'); test.add_argument('--bundle',required=True,type=Path); test.add_argument('--dataset',type=Path); test.add_argument('--manifest-sha256',help='Independently recorded SHA256 of private-bundle.json')
     args=parser.parse_args()
-    if args.action == 'build': build(args.destination,args.port,args.dataset,runtime_profile=args.runtime_profile)
+    if args.action == 'build': build(args.destination,args.port,args.dataset,runtime_profile=args.runtime_profile,reduced_jxl=args.reduced_jxl)
     else: replay(args.bundle,dataset=args.dataset,expected_manifest_sha=args.manifest_sha256)
 
 
