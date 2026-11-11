@@ -68,7 +68,7 @@ def main() -> None:
     print(f'PASS: alternative link-map named input checks, SHA256 {digest}; no rights conclusion',flush=True)
     bindir=prefix/'bin'; bindir.mkdir(parents=True,exist_ok=True); shutil.copy2(build/'bin/ReconstructMesh',bindir/'ReconstructMesh')
     share=prefix/'share/odm-conda/openmvs-tetraflow-research'; share.mkdir(parents=True,exist_ok=True)
-    for name in ('openmvs_synthetic_fixture.py','openmvs_pointcloud_fixture.py','openmvs_fixture.py','texrecon_fixture.py'):
+    for name in ('openmvs_synthetic_fixture.py','openmvs_pointcloud_fixture.py','openmvs_fixture.py','texrecon_fixture.py','openmvs_tetraflow_weights_fixture.py'):
         shutil.copy2(ROOT/'scripts'/name,share/name)
     (share/'SOURCE.txt').write_text('PRIVATE RESEARCH ONLY: rights and ODM compatibility unreviewed.\n')
 
