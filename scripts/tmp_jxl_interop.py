@@ -17,8 +17,8 @@ with tempfile.TemporaryDirectory(prefix='jxl-interop-') as tmp:
     assert decoder.is_file()
     code=base64.b64encode(fixture).decode('ascii')
     test=("  - script:\n      interpreter: python\n      content: |\n"
-          f"        exec(__import__('base64').b64decode('{code}'), {{'__name__': 'jxl_interop'}})\n"
-          f"        run(__import__('pathlib').Path({str(decoder)!r}))\n"
+          f"        ns = {{'__name__': 'jxl_interop'}}; exec(__import__('base64').b64decode('{code}'), ns)\n"
+          f"        ns['run'](__import__('pathlib').Path({str(decoder)!r}))\n"
           "    requirements:\n      run:\n        - python >=3.12,<3.13\n")
     assert text.count('about:\n') == 1
     recipe.write_text(text.replace('about:\n',test+'about:\n'))

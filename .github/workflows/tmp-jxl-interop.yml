@@ -27,3 +27,5 @@ jobs:
           cargo build --locked --release --no-default-features -p jxl-oxide-cli --manifest-path /tmp/jxl-oxide-build/Cargo.toml
       - name: Build and test research package with independent decoder
         run: pixi run python scripts/tmp_jxl_interop.py
+
+# Exercise decoder in the package test prefix.
