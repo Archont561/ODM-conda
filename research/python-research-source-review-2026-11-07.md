@@ -16,6 +16,9 @@ the recipe SHA256 values and examined locally; they were not committed.
 | pysolar 0.13 | `05913740694e4bb2af8412de3fa278c0435b3b15b2975c8e38625fc4eed1fd6c` | Root COPYING is GPL v3 text; multiple source headers including `pysolar/solar.py` explicitly say GPL version 3 **or later**. | Determine terms of all retained files and compatibility, provide required source/notices, review origin and runtime NumPy. A generic GPL metadata label is not a precise whole-package grant. |
 | pillow-jxl-plugin 1.3.4 | `8ea589fc559ea7c5dfccb42af4d8148f5db508f5f4d4518328bab5a31fcb268e` | `pyproject.toml` refers to root LICENSE, which contains GPL v3 text; the sampled project files did not establish an explicit only/or-later grant. The sdist has `Cargo.lock` with 40 registry crates, not vendored crate sources. | Establish exact grant and provenance; review 40 crate sources, native libraries, static/dynamic linkage and all applicable terms. The sdist also contains test images with separate declared terms (below). |
 
+The later [JPEG XL crate and native review](pillow-jxl-release-review-2026-11-11.md)
+adds verified locked-source and linkage evidence; the decision remains open.
+
 ### JPEG XL input and sample rights
 
 The sdist `test/images/README.md` states that most sample images are copied
