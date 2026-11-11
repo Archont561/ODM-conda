@@ -149,3 +149,41 @@ def test_reduced_profile_constraints_and_validation(tmp_path):
     malformed = tmp_path/'bad.toml'; malformed.write_text('[workspace]\n')
     with pytest.raises(ScaffoldError, match='manifest'):
         configure_runtime_profile(malformed, 'reduced')
+
+
+def test_reduced_jxl_selects_distinct_odm_and_dependency_identities(tmp_path):
+    from pathlib import Path
+    from common import ScaffoldError
+    from private_odm_bundle import configure_odm_research_recipe
+    original = Path(__file__).resolve().parents[1]/'research/recipes/odm-fast-research/recipe.yaml'
+    default=tmp_path/'default.yaml'; default.write_text(original.read_text())
+    reduced=tmp_path/'reduced.yaml'; reduced.write_text(original.read_text())
+    configure_odm_research_recipe(default)
+    configure_odm_research_recipe(reduced, reduced_jxl=True)
+    assert 'build:\n  number: 3\n' in default.read_text()
+    assert 'odm-research-pillow-jxl-plugin ==1.3.4 research_*_1' in default.read_text()
+    assert 'build:\n  number: 4\n' in reduced.read_text()
+    assert 'odm-research-pillow-jxl-plugin ==1.3.4 research_reduced_*_2' in reduced.read_text()
+    altered=tmp_path/'altered.yaml'; altered.write_text(original.read_text().replace('research_*_1', 'research_*_9'))
+    with pytest.raises(ScaffoldError,match='JPEG XL'):
+        configure_odm_research_recipe(altered, reduced_jxl=True)
+
+
+def test_optional_jxl_replay_uses_the_installed_prefix(tmp_path, monkeypatch):
+    from contextlib import contextmanager
+    import private_odm_bundle as mod
+    bundle=tmp_path/'bundle'; (bundle/'channel/linux-64').mkdir(parents=True); (bundle/'channel/noarch').mkdir()
+    for name in ('pixi.toml','pixi.lock','channel/linux-64/repodata.json','channel/noarch/repodata.json','channel/linux-64/example.conda'):
+        (bundle/name).write_text(name)
+    mod.seal(bundle,48179)
+    @contextmanager
+    def loopback(_directory,_port):
+        yield 'http://127.0.0.1:48179'
+    calls=[]
+    monkeypatch.setattr(mod,'loopback',loopback)
+    monkeypatch.setattr(mod,'run',lambda command,**kwargs: calls.append((command,kwargs)))
+    monkeypatch.setenv('PYTHONPATH','/unexpected')
+    mod.replay(bundle,test_jxl=True)
+    jxl=[(command,kwargs) for command,kwargs in calls if command[-1].endswith('jxl_synthetic_fixture.py')]
+    assert len(jxl)==1 and jxl[0][0][0].endswith('/.pixi/envs/default/bin/python')
+    assert 'PYTHONPATH' not in jxl[0][1]['env']
