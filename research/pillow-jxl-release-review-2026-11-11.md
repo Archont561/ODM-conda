@@ -88,3 +88,6 @@ which Rust and native notices must accompany the actual artifact, and test the
 final source offer. The research package's `LicenseRef-Unreviewed` metadata and
 all relevant release gates remain unchanged. No package, source or fixture was
 uploaded in either run.
+
+The later [test-image and reduced-source trial](pillow-jxl-source-offer-preparation-2026-11-11.md)
+provides additional provenance and bounded build evidence; it is not a source offer.

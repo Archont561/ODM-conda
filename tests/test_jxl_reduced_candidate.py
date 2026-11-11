@@ -71,3 +71,32 @@ def test_candidate_rejects_untrusted_archive_and_repo_destination(tmp_path, monk
     source.write_bytes(b'changed')
     with pytest.raises(mod.ScaffoldError,match='source archive'):
         mod.make_candidate(source,tmp_path/'result.tar.gz')
+
+
+def test_candidate_preserves_output_created_during_race(tmp_path, monkeypatch):
+    import os
+    source=tmp_path/'source.tar.gz'; make_source(source); mod=pin(monkeypatch,source)
+    destination=tmp_path/'result.tar.gz'
+    original_open=os.open
+
+    def race_open(path, flags, mode=0o777, **kwargs):
+        if str(path) == str(destination):
+            destination.write_bytes(b'other owner')
+        return original_open(path, flags, mode, **kwargs)
+
+    monkeypatch.setattr(mod.os, 'open', race_open)
+    with pytest.raises(mod.ScaffoldError,match='existing'):
+        mod.make_candidate(source,destination)
+    assert destination.read_bytes() == b'other owner'
+
+
+def test_pinned_image_inventory_matches_exclusion_list():
+    from pathlib import Path
+    import jxl_reduced_candidate as mod
+    evidence = Path(__file__).resolve().parents[1]/'research/pillow-jxl-test-image-inventory-2026-11-11.json'
+    raw = evidence.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == '6f23a9c2a71327b39215236a863667b6b77cb64048b2be7eece03e0b90c9ea4e'
+    data = json.loads(raw)
+    assert data['sdist_sha256'] == mod.SOURCE_SHA256
+    files = {item['path'].removeprefix('test/images/'): item['sha256'] for item in data['files']}
+    assert files == mod.EXCLUDED | {'README.md': mod.README_SHA256}
