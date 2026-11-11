@@ -29,3 +29,13 @@ def test_alternative_source_rejects_named_restricted_directories(tmp_path,monkey
     (tmp_path/'libs/Math/IBFS').mkdir(parents=True)
     with pytest.raises(ScaffoldError,match='Restricted directory present'):
         mod.prepare_source(tmp_path)
+
+
+def test_jxl_abi_is_constrained_for_build_and_runtime():
+    import yaml
+    from common import ROOT
+
+    recipe = yaml.safe_load((ROOT / 'research/recipes/openmvs-tetraflow-research/recipe.yaml').read_text())
+    for environment in ('host', 'run'):
+        assert 'libjxl >=0.11,<0.12' in recipe['requirements'][environment]
+    assert any('ldd' in item.get('script', {}).get('content', '') for item in recipe['tests'])
