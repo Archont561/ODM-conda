@@ -34,3 +34,5 @@ jobs:
 # Limit metadata output to one annotation per package.
       - name: Inspect additional PyO3 nested notices
         run: pixi run python scripts/tmp_jxl_pyo3_notices.py
+
+# Validate the private notice draft on scoped vendor source.

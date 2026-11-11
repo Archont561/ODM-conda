@@ -1,0 +1,304 @@
+{
+  "input_inventory": "research/odm-alternate-candidate-2026-11-07/conda-inventory.json",
+  "job": 130751164476,
+  "packages": [
+    {
+      "build": "h39a168f_0",
+      "depends": [
+        "__glibc >=2.17,<3.0.a0",
+        "libgcc >=15"
+      ],
+      "elf_needed": {
+        "lib/libbrotlicommon.so.1.2.1": [
+          "libc.so.6"
+        ]
+      },
+      "license": "MIT",
+      "name": "libbrotlicommon",
+      "notices": {
+        "info/licenses/LICENSE": "3d180008e36922a4e8daec11c34c7af264fed5962d07924aea928c38e8663c94"
+      },
+      "payload_notices": {},
+      "recipe_count": 11,
+      "recipe_inventory_sha256": "e0611e4fbace653aee7003e5bd4682e54a7e14e584fcce18a043bb4e848471ae",
+      "selected_recipes": {},
+      "sha256": "8eccfbfdb8ecba32eabfb6ee92f70e818e5f3a35a01c507f7b6bd56e00e4c617",
+      "source": {
+        "fn": "brotli-1.2.1.tar.gz",
+        "sha256": "98d35d11a78dc453aebb7d10c3748f3f73ff78c8267c0dc697b8631f67bf7e8f",
+        "url": "https://github.com/google/brotli/archive/v1.2.1.tar.gz"
+      },
+      "version": "1.2.1"
+    },
+    {
+      "build": "ha411449_0",
+      "depends": [
+        "__glibc >=2.17,<3.0.a0",
+        "libbrotlicommon 1.2.1 h39a168f_0",
+        "libgcc >=15"
+      ],
+      "elf_needed": {
+        "lib/libbrotlidec.so.1.2.1": [
+          "libbrotlicommon.so.1",
+          "libc.so.6"
+        ]
+      },
+      "license": "MIT",
+      "name": "libbrotlidec",
+      "notices": {
+        "info/licenses/LICENSE": "3d180008e36922a4e8daec11c34c7af264fed5962d07924aea928c38e8663c94"
+      },
+      "payload_notices": {},
+      "recipe_count": 11,
+      "recipe_inventory_sha256": "64ebe13f99f6206132b59c2f6efabe733d63dc4507a7c564c288173431c1b8c5",
+      "selected_recipes": {},
+      "sha256": "4b4bda6f70ad511bdff95fdd958dca74b6e0534ae335ddcb1d8c6569774d2429",
+      "source": {
+        "fn": "brotli-1.2.1.tar.gz",
+        "sha256": "98d35d11a78dc453aebb7d10c3748f3f73ff78c8267c0dc697b8631f67bf7e8f",
+        "url": "https://github.com/google/brotli/archive/v1.2.1.tar.gz"
+      },
+      "version": "1.2.1"
+    },
+    {
+      "build": "h018ffa1_0",
+      "depends": [
+        "__glibc >=2.17,<3.0.a0",
+        "libbrotlicommon 1.2.1 h39a168f_0",
+        "libgcc >=15"
+      ],
+      "elf_needed": {
+        "lib/libbrotlienc.so.1.2.1": [
+          "libm.so.6",
+          "libbrotlicommon.so.1",
+          "libc.so.6"
+        ]
+      },
+      "license": "MIT",
+      "name": "libbrotlienc",
+      "notices": {
+        "info/licenses/LICENSE": "3d180008e36922a4e8daec11c34c7af264fed5962d07924aea928c38e8663c94"
+      },
+      "payload_notices": {},
+      "recipe_count": 11,
+      "recipe_inventory_sha256": "226a675016377a62f988ecc1a580d51ddab086c72e58dec490e844e0716bd68c",
+      "selected_recipes": {},
+      "sha256": "61974cf9bb07115ed6725dacf83d0d985443d78dd123cc4f2758856fda5376ec",
+      "source": {
+        "fn": "brotli-1.2.1.tar.gz",
+        "sha256": "98d35d11a78dc453aebb7d10c3748f3f73ff78c8267c0dc697b8631f67bf7e8f",
+        "url": "https://github.com/google/brotli/archive/v1.2.1.tar.gz"
+      },
+      "version": "1.2.1"
+    },
+    {
+      "build": "ha9f2e26_7",
+      "depends": [
+        "__glibc >=2.17,<3.0.a0",
+        "_openmp_mutex >=4.5"
+      ],
+      "elf_needed": {},
+      "license": "GPL-3.0-only WITH GCC-exception-3.1",
+      "name": "libgcc",
+      "notices": {},
+      "payload_notices": {
+        "share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+      },
+      "recipe_count": 48,
+      "recipe_inventory_sha256": "6d749fbd5685338e391d454f42a31cf84085dc07198626ae894b2701e480e837",
+      "selected_recipes": {},
+      "sha256": "e031634c3a928f9594eba868bc46ef5230d6571a364a0c63215b06c4563bfcea",
+      "source": [
+        {
+          "patches": [
+            "patches/0001-allow-commands-in-main-specfile.patch",
+            "patches/0002-patch-zoneinfo_dir_override-to-point-to-our-tzdata.patch",
+            "patches/0003-add-ldl-to-libstdc___la_LDFLAGS.patch",
+            "patches/0004-Hardcode-HAVE_ALIGNED_ALLOC-1-in-libstdc-v3-configur.patch"
+          ],
+          "sha256": "071d00a097579e5ef7ce97fc4a9e58e73fd3503c0a013c765c970370a5a53b9b",
+          "url": [
+            "https://ftp.gnu.org/gnu/gcc/gcc-16.2.0/gcc-16.2.0.tar.gz",
+            "https://mirrors.ocf.berkeley.edu/gnu/gcc/gcc-16.2.0/gcc-16.2.0.tar.gz"
+          ]
+        },
+        {
+          "folder": "zlib2",
+          "sha256": "9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23",
+          "url": "https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz"
+        }
+      ],
+      "version": "16.2.0"
+    },
+    {
+      "build": "h57c4cff_2",
+      "depends": [
+        "__glibc >=2.17,<3.0.a0",
+        "libgcc >=15",
+        "libstdcxx >=15"
+      ],
+      "elf_needed": {
+        "lib/libhwy.so.1.4.0": [
+          "libstdc++.so.6",
+          "libm.so.6",
+          "libgcc_s.so.1",
+          "libc.so.6"
+        ],
+        "lib/libhwy_contrib.so.1.4.0": [
+          "libhwy.so.1",
+          "libpthread.so.0",
+          "libstdc++.so.6",
+          "libgcc_s.so.1",
+          "libc.so.6",
+          "ld-linux-x86-64.so.2"
+        ],
+        "lib/libhwy_test.so.1.4.0": [
+          "libhwy.so.1",
+          "libgcc_s.so.1",
+          "libc.so.6"
+        ]
+      },
+      "license": "Apache-2.0 OR BSD-3-Clause",
+      "name": "libhwy",
+      "notices": {
+        "info/licenses/LICENSE": "e340270d4f64384569a91d546acb5b094d69ce47f0c015db77abb74dc6f815af"
+      },
+      "payload_notices": {},
+      "recipe_count": 8,
+      "recipe_inventory_sha256": "eb49536ba48c03d65f29ca49c33a5f281cdb838db3276a576cbf8db0e2c0447b",
+      "selected_recipes": {
+        "info/recipe/0001-add-missing-stats-to-cmake.patch": "ee6a85ea74933ded0b8ee1932f65a2c5781efb484f109ddd381be1fc826f6185",
+        "info/recipe/0002-add-missing-dllexport-to-stats.patch": "fc750d180a57d38cf31cab64485308ff89decc18349a2c6f4db26d6911fb98d7",
+        "info/recipe/meta.yaml": "6e3fdec1db02294cce636005efed3a530abdabbbc27b45d073486211a3068717"
+      },
+      "sha256": "06ab9eb5db305b29f0f671dced4a43eca4b0c1990351bad963d25341057f74d4",
+      "source": {
+        "patches": [
+          "0001-add-missing-stats-to-cmake.patch",
+          "0002-add-missing-dllexport-to-stats.patch"
+        ],
+        "sha256": "e72241ac9524bb653ae52ced768b508045d4438726a303f10181a38f764a453c",
+        "url": "https://github.com/google/highway/archive/refs/tags/1.4.0.tar.gz"
+      },
+      "version": "1.4.0"
+    },
+    {
+      "build": "h174a0a3_1",
+      "depends": [
+        "__glibc >=2.17,<3.0.a0",
+        "libgcc >=14",
+        "libstdcxx >=14",
+        "libhwy >=1.4.0,<1.5.0a0",
+        "libbrotlienc >=1.2.0,<1.3.0a0",
+        "libbrotlidec >=1.2.0,<1.3.0a0"
+      ],
+      "elf_needed": {
+        "lib/libjxl.so.0.11.2": [
+          "libjxl_cms.so.0.11",
+          "libhwy.so.1",
+          "libbrotlidec.so.1",
+          "libbrotlienc.so.1",
+          "libstdc++.so.6",
+          "libm.so.6",
+          "libgcc_s.so.1",
+          "libpthread.so.0",
+          "libc.so.6"
+        ],
+        "lib/libjxl_cms.so.0.11.2": [
+          "libhwy.so.1",
+          "libstdc++.so.6",
+          "libm.so.6",
+          "libc.so.6"
+        ],
+        "lib/libjxl_threads.so.0.11.2": [
+          "libstdc++.so.6",
+          "libpthread.so.0",
+          "libc.so.6"
+        ]
+      },
+      "license": "BSD-3-Clause",
+      "name": "libjxl",
+      "notices": {
+        "info/licenses/LICENSE": "8405932022a556380c2d8c272eff154a923feb197233f348ce5f7334fb0a5ede",
+        "info/licenses/third_party/skcms/LICENSE": "e59bb5c5c6ba426a9ac4ba9fe667ad14c5166b12aa25be8af1d122b14fbe2e36"
+      },
+      "payload_notices": {},
+      "recipe_count": 13,
+      "recipe_inventory_sha256": "b22e111e653b7a7fa2c043a61fbabb115cf256a4cc7e7f5758fe3fa50fe637ae",
+      "selected_recipes": {
+        "info/recipe/install.sh": "cd270b4cf1b6149dc475bfd486a5384d043cb6401f18a2782fff7b56bd8cff46",
+        "info/recipe/patches/0001-CHECK_EXCLUDE_LIBS.patch": "edd1550ae96333ad1750020921484aa2a3b469736d8e081e6faa87405372ee37",
+        "info/recipe/patches/0002-BACKPORT_FIX_LM_PKGCONFIG_LIBJXL_CMAKE.patch": "e43dd062b560008ea71c845da78cf769a67d7e2f1b5638f9879e4955ad7e4bc3",
+        "info/recipe/patches/0003-FIX_LM_PKGCONFIG_LIBJXL_CMS_CMAKE.patch": "5fdb35c57401378718329f9f29ee6196d2321ba96312044aa5417baf9e3facfc",
+        "info/recipe/patches/0004-FIX_LM_PKGCONFIG_LIBJXL_THREADS_CMAKE.patch": "f2e5cf1156aaa862577c797b8146a0e59c04ce8f9f9dde72c39dc93d12e45842",
+        "info/recipe/recipe.yaml": "13130409ac2222a3fd00c6d0a787a16a130310d1706ff32e41d74e47fb3d7c12",
+        "info/recipe/rendered_recipe.yaml": "df99dc540db1af5ae816c31e6cbcb2222684f4df488555fabcaec8b5b77d8dfa"
+      },
+      "sha256": "0c8a78c6a42a6e4c6de3a5e82d692f60400d43f4cc80591745f28b37daad9c70",
+      "source": [
+        {
+          "patches": [
+            "patches/0001-CHECK_EXCLUDE_LIBS.patch",
+            "patches/0002-BACKPORT_FIX_LM_PKGCONFIG_LIBJXL_CMAKE.patch",
+            "patches/0003-FIX_LM_PKGCONFIG_LIBJXL_CMS_CMAKE.patch",
+            "patches/0004-FIX_LM_PKGCONFIG_LIBJXL_THREADS_CMAKE.patch"
+          ],
+          "sha256": "ab38928f7f6248e2a98cc184956021acb927b16a0dee71b4d260dc040a4320ea",
+          "url": "https://github.com/libjxl/libjxl/archive/v0.11.2.tar.gz"
+        },
+        {
+          "sha256": "96e274f403135c19ad4e7f9272f03a64c0aa5615591b087457e7fd0a5f14af23",
+          "target_directory": "third_party/skcms",
+          "url": "https://github.com/google/skcms/archive/b2e692629c1fb19342517d7fb61f1cf83d075492.tar.gz"
+        },
+        {
+          "sha256": "ed729127097af5000bfeddc6b3e679c4363bb1618ebfc07efb6b47f576471b4b",
+          "target_directory": "third_party/libjpeg-turbo",
+          "url": "https://github.com/libjpeg-turbo/libjpeg-turbo/archive/8ecba3647edb6dd940463fedf38ca33a8e2a73d1.tar.gz"
+        }
+      ],
+      "version": "0.11.2"
+    },
+    {
+      "build": "h934c35e_7",
+      "depends": [
+        "__glibc >=2.17,<3.0.a0",
+        "libgcc 16.2.0 ha9f2e26_7"
+      ],
+      "elf_needed": {},
+      "license": "GPL-3.0-only WITH GCC-exception-3.1",
+      "name": "libstdcxx",
+      "notices": {},
+      "payload_notices": {
+        "share/licenses/libstdc++/RUNTIME.LIBRARY.EXCEPTION": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+      },
+      "recipe_count": 48,
+      "recipe_inventory_sha256": "21fc818eb63885b0547b451d7079f6e371d3279a67cc3e7114a9d75f248f738e",
+      "selected_recipes": {},
+      "sha256": "fa7018298629fc429971fffd6ecba3d27a7b02e4e890d6a93ea01ffebe8cb745",
+      "source": [
+        {
+          "patches": [
+            "patches/0001-allow-commands-in-main-specfile.patch",
+            "patches/0002-patch-zoneinfo_dir_override-to-point-to-our-tzdata.patch",
+            "patches/0003-add-ldl-to-libstdc___la_LDFLAGS.patch",
+            "patches/0004-Hardcode-HAVE_ALIGNED_ALLOC-1-in-libstdc-v3-configur.patch"
+          ],
+          "sha256": "071d00a097579e5ef7ce97fc4a9e58e73fd3503c0a013c765c970370a5a53b9b",
+          "url": [
+            "https://ftp.gnu.org/gnu/gcc/gcc-16.2.0/gcc-16.2.0.tar.gz",
+            "https://mirrors.ocf.berkeley.edu/gnu/gcc/gcc-16.2.0/gcc-16.2.0.tar.gz"
+          ]
+        },
+        {
+          "folder": "zlib2",
+          "sha256": "9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23",
+          "url": "https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz"
+        }
+      ],
+      "version": "16.2.0"
+    }
+  ],
+  "run": 43086211426,
+  "scope": "historical linux-64 metadata-only research; not a source or license approval"
+}
