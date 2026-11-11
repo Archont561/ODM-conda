@@ -212,3 +212,22 @@ def test_vendor_scope_requires_verified_crate_before_build(tmp_path):
     with pytest.raises(ScaffoldError, match='archive'):
         build(dest, PORT, None, reduced_jxl=True, vendor_scope_crate=bad)
     assert not dest.exists()
+
+
+def test_tetraflow_variant_has_distinct_private_identity_and_exact_dependency(tmp_path):
+    from pathlib import Path
+    from common import ScaffoldError
+    from private_odm_bundle import configure_odm_research_recipe
+    source = Path(__file__).resolve().parents[1]/'research/recipes/odm-fast-research/recipe.yaml'
+    recipe = tmp_path/'recipe.yaml'; recipe.write_text(source.read_text())
+    configure_odm_research_recipe(recipe, reduced_jxl=True, vendor_scope=True, openmvs_variant='tetraflow')
+    text = recipe.read_text()
+    assert 'openmvs-tetraflow-research ==0.0.0.dev20260827 research_*_1' in text
+    assert 'openmvs-odm ==0.0.0.dev20260516' not in text
+    assert 'string: research_tetraflow_${{ hash }}_5' in text
+    assert 'odm-research-pillow-jxl-plugin ==1.3.4 research_vendor_scope_*_3' in text
+    malformed = tmp_path/'bad.yaml'; malformed.write_text(source.read_text().replace('openmvs-odm ==0.0.0.dev20260516', 'openmvs-odm ==0'))
+    with pytest.raises(ScaffoldError, match='OpenMVS dependency'):
+        configure_odm_research_recipe(malformed, openmvs_variant='tetraflow')
+    with pytest.raises(ScaffoldError, match='variant'):
+        configure_odm_research_recipe(malformed, openmvs_variant='unknown')

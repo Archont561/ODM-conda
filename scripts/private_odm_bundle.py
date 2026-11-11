@@ -133,9 +133,15 @@ def private_identity(recipe: Path, build_number: int) -> None:
     recipe.write_text(text.replace(marker, marker+f'  string: research_${{{{ hash }}}}_{build_number}\n'))
 
 
-def configure_odm_research_recipe(recipe: Path, *, reduced_jxl: bool = False, vendor_scope: bool = False) -> None:
+def configure_odm_research_recipe(recipe: Path, *, reduced_jxl: bool = False, vendor_scope: bool = False, openmvs_variant: str = 'historical') -> None:
     if vendor_scope and not reduced_jxl: raise ScaffoldError('Vendor scope requires reduced JPEG XL')
+    if openmvs_variant not in ('historical', 'tetraflow'): raise ScaffoldError('Unknown OpenMVS research variant')
     text = recipe.read_text()
+    if openmvs_variant == 'tetraflow':
+        before = '    - openmvs-odm ==0.0.0.dev20260516 research_*'
+        after = '    - openmvs-tetraflow-research ==0.0.0.dev20260827 research_*_1'
+        if text.count(before) != 1: raise ScaffoldError('Unexpected ODM OpenMVS dependency')
+        text = text.replace(before, after)
     for name in BASE:
         pattern = rf'^(    - {re.escape(name)} ==[^\n ]+)$'
         text, count = re.subn(pattern, r'\1 research_*', text, flags=re.MULTILINE)
@@ -149,11 +155,14 @@ def configure_odm_research_recipe(recipe: Path, *, reduced_jxl: bool = False, ve
     marker = 'build:\n  number: 2\n'
     if text.count(marker) != 1: raise ScaffoldError('Unexpected ODM build identity')
     odm_number = 5 if vendor_scope else (4 if reduced_jxl else 3)
-    recipe.write_text(text.replace(marker, f'build:\n  number: {odm_number}\n'))
+    identity = f'build:\n  number: {odm_number}\n'
+    if openmvs_variant == 'tetraflow': identity += f'  string: research_tetraflow_${{{{ hash }}}}_{odm_number}\n'
+    recipe.write_text(text.replace(marker, identity))
 
 
-def build_packages(work: Path, *, reduced_jxl: bool = False, vendor_scope_crate: Path | None = None) -> list[Path]:
+def build_packages(work: Path, *, reduced_jxl: bool = False, vendor_scope_crate: Path | None = None, openmvs_variant: str = 'historical') -> list[Path]:
     if vendor_scope_crate is not None and not reduced_jxl: raise ScaffoldError('Vendor scope requires reduced JPEG XL')
+    if openmvs_variant not in ('historical', 'tetraflow'): raise ScaffoldError('Unknown OpenMVS research variant')
     from prepare_opencv413_research import prepare
     from source_bundle import graph_archives
     from common import fetch_pinned_archive
@@ -186,9 +195,14 @@ def build_packages(work: Path, *, reduced_jxl: bool = False, vendor_scope_crate:
     prepared=work/'opensfm-prepared'; opensfm_prepare(original,candidate,prepared,root=staged)
     package=build_recipe(prepared/'packaging/research/recipes/opensfm-scoped-odm/recipe.yaml','opensfm-scoped-odm',work/'opensfm')
     run([sys.executable,str(ROOT/'scripts/audit_open_research.py'),'opensfm-scoped-odm',str(package)]); packages.append(package)
-    run([sys.executable,str(ROOT/'scripts/check_open_research_sources.py'),'openmvs','--cache',str(work/'source-cache')])
-    package=build_recipe(staged/'research/recipes/openmvs-odm/reduced.yaml','openmvs-odm',work/'openmvs')
-    run([sys.executable,str(ROOT/'scripts/audit_open_research.py'),'openmvs-odm',str(package)]); packages.append(package)
+    if openmvs_variant == 'historical':
+        run([sys.executable,str(ROOT/'scripts/check_open_research_sources.py'),'openmvs','--cache',str(work/'source-cache')])
+        package=build_recipe(staged/'research/recipes/openmvs-odm/reduced.yaml','openmvs-odm',work/'openmvs')
+        run([sys.executable,str(ROOT/'scripts/audit_open_research.py'),'openmvs-odm',str(package)])
+    else:
+        package=build_recipe(staged/'research/recipes/openmvs-tetraflow-research/recipe.yaml','openmvs-tetraflow-research',work/'openmvs-tetraflow')
+        run([sys.executable,str(ROOT/'scripts/audit_tetraflow_research.py'),str(package)])
+    packages.append(package)
     for template in sorted((staged/'research/recipes/python-source-research').glob('*.yaml')):
         name=template.stem; recipe=template
         if name == 'pillow-jxl-plugin':
@@ -206,7 +220,7 @@ def build_packages(work: Path, *, reduced_jxl: bool = False, vendor_scope_crate:
                 recipe=work/'jxl-scoped/recipe/recipe.yaml'
         packages.append(build_recipe(recipe,'odm-research-'+name,work/('python-'+name)))
     recipe=staged/'research/recipes/odm-fast-research/recipe.yaml'
-    configure_odm_research_recipe(recipe, reduced_jxl=reduced_jxl, vendor_scope=vendor_scope_crate is not None)
+    configure_odm_research_recipe(recipe, reduced_jxl=reduced_jxl, vendor_scope=vendor_scope_crate is not None, openmvs_variant=openmvs_variant)
     packages.append(build_recipe(recipe,'odm-fast-research',work/'odm',skip_tests=True))
     if len(packages) != 15: raise ScaffoldError('Unexpected private package count')
     return packages
@@ -244,6 +258,10 @@ def replay(bundle: Path, *, dataset: Path | None = None, expected_inventory: lis
                 observed=inventory_identities(inventory(prefix))
                 if observed != expected_inventory: raise ScaffoldError('Replayed Conda inventory differs')
                 print(f'PASS: {len(observed)} matching Conda identities and hashes',flush=True)
+            if expected_inventory is not None and any(record[0] == 'openmvs-tetraflow-research' for record in expected_inventory):
+                linkage=subprocess.run(['ldd',str(prefix/'bin/ReconstructMesh')],text=True,capture_output=True,check=True)
+                if 'not found' in linkage.stdout + linkage.stderr: raise ScaffoldError('Unresolved TetraFlow runtime library')
+                print('PASS: TetraFlow relocated runtime linkage',flush=True)
             run([str(prefix/'bin/odm-fast-research'),'--fast-orthophoto','--help'])
             if test_jxl:
                 test_env = env.copy(); test_env.pop('PYTHONPATH', None); test_env.pop('PYTHONHOME', None)
@@ -295,7 +313,7 @@ def validate_runtime_profile(inventory: dict, profile: str) -> None:
         raise ScaffoldError('Reduced runtime contains LZO or librttopo')
 
 
-def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile: str = 'default', reduced_jxl: bool = False, vendor_scope_crate: Path | None = None) -> None:
+def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile: str = 'default', reduced_jxl: bool = False, vendor_scope_crate: Path | None = None, openmvs_variant: str = 'historical') -> None:
     if platform.system() != 'Linux' or platform.machine().lower() not in ('x86_64','amd64'): raise ScaffoldError('Private build requires linux-64')
     validate_destination(destination)
     if vendor_scope_crate is not None:
@@ -305,11 +323,12 @@ def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile
         if vendor_scope_crate.is_symlink() or not vendor_scope_crate.is_file() or sha256(vendor_scope_crate) != CRATE_SHA256:
             raise ScaffoldError('Unexpected original jpegxl-src crate archive')
     if runtime_profile not in ('default', 'reduced'): raise ScaffoldError('Unknown runtime profile')
+    if openmvs_variant not in ('historical', 'tetraflow'): raise ScaffoldError('Unknown OpenMVS research variant')
     if not 1 <= port <= 65535: raise ScaffoldError('Invalid loopback port')
     destination.mkdir(mode=0o700)
     try:
         with tempfile.TemporaryDirectory(prefix='odm-private-build-') as tmp:
-            work=Path(tmp); packages=build_packages(work, reduced_jxl=reduced_jxl, vendor_scope_crate=vendor_scope_crate)
+            work=Path(tmp); packages=build_packages(work, reduced_jxl=reduced_jxl, vendor_scope_crate=vendor_scope_crate, openmvs_variant=openmvs_variant)
             info=create_channel(packages,destination/'channel')
             project=work/'project'
             with loopback(destination/'channel',port) as channel:
@@ -340,12 +359,13 @@ def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile
 def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__); sub=parser.add_subparsers(dest='action',required=True)
     create=sub.add_parser('build'); create.add_argument('--destination',required=True,type=Path); create.add_argument('--port',type=int,default=PORT); create.add_argument('--dataset',type=Path); create.add_argument('--runtime-profile', choices=('default','reduced'), default='default', help='Use reduced libspatialite/libarchive runtime variants')
+    create.add_argument('--openmvs-variant', choices=('historical', 'tetraflow'), default='historical', help='Select a private research-only OpenMVS variant')
     jxl = create.add_mutually_exclusive_group()
     jxl.add_argument('--reduced-jxl', action='store_true', help='Use image-excluded JPEG XL research build; not release approved')
     jxl.add_argument('--vendor-scope-crate', type=Path, help='Use scoped JPEG XL with a verified local jpegxl-src crate; research only')
     test=sub.add_parser('replay'); test.add_argument('--bundle',required=True,type=Path); test.add_argument('--dataset',type=Path); test.add_argument('--manifest-sha256',help='Independently recorded SHA256 of private-bundle.json')
     args=parser.parse_args()
-    if args.action == 'build': build(args.destination,args.port,args.dataset,runtime_profile=args.runtime_profile,reduced_jxl=args.reduced_jxl or args.vendor_scope_crate is not None,vendor_scope_crate=args.vendor_scope_crate)
+    if args.action == 'build': build(args.destination,args.port,args.dataset,runtime_profile=args.runtime_profile,reduced_jxl=args.reduced_jxl or args.vendor_scope_crate is not None,vendor_scope_crate=args.vendor_scope_crate,openmvs_variant=args.openmvs_variant)
     else: replay(args.bundle,dataset=args.dataset,expected_manifest_sha=args.manifest_sha256)
 
 
