@@ -2,6 +2,7 @@ import hashlib
 import json
 import shutil
 import tempfile
+from collections import Counter
 from pathlib import Path
 import yaml
 
@@ -31,6 +32,14 @@ with tempfile.TemporaryDirectory(prefix='jxl-source-review-') as temp:
         names.append(item['name'])
     assert len(names)==40
     print('::notice::JXL-NOTICE '+json.dumps({'crates':len(names),'checked_vendor_files':counts,'nested_notice_candidates':len(nested),'nested_sample':nested[:12]},separators=(',',':')),flush=True)
+    src=source/'vendor/jpegxl-src-0.11.2'
+    extensions=Counter(f.suffix.lower() for f in src.rglob('*') if f.is_file() and not f.is_symlink())
+    interesting={k: v for k,v in sorted(extensions.items()) if k in ('.jpg','.jpeg','.png','.jxl','.gif','.ppm','.webp','.icc','.pdf','.zip','.tar','.gz')}
+    selected={}
+    for name in ('unicode-ident-1.0.18/LICENSE-UNICODE','target-lexicon-0.13.2/LICENSE','jpegxl-rs-0.11.2+libjxl-0.11.1/LICENSE','jpegxl-sys-0.11.2+libjxl-0.11.1/LICENSE'):
+        data=(source/'vendor'/name).read_text(errors='replace')
+        selected[name]=[line.strip() for line in data.splitlines() if 'copyright' in line.lower() or 'version 3' in line.lower() or 'later version' in line.lower()][:4]
+    print('::notice::JXL-DETAIL '+json.dumps({'jpegxl_src_asset_extensions':interesting,'nested_notice_candidates':nested,'selected_lines':selected},separators=(',',':')),flush=True)
     # Private source handoff: copy the prepared source tree and recipe, remove the originals,
     # rewrite only the generated recipe's absolute source path, then build with Cargo offline.
     moved=root/'relocated'; shutil.copytree(prepared,moved); shutil.rmtree(prepared); original.unlink()
