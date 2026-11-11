@@ -119,7 +119,15 @@ not captured. Do not describe it as a final or offline release bundle. Record
 the manifest digest through a separate trusted channel. No owner storage was
 provided for this task, so no owner-retained bundle was produced here.
 
-A hosted trial of the new integrated builder was started as
-[43116155321](https://github.com/Archont561/ODM-conda/actions/runs/43116155321);
-its result was pending when this section was written. It discards binaries,
-sources, the lock and dataset outputs rather than uploading them.
+The first new builder trial [43116155321](https://github.com/Archont561/ODM-conda/actions/runs/43116155321)
+built and tested the alternate but the new audit rejected its additional,
+compatible libjxl run-export constraint. After accounting for multiple
+constraints, [43119210985](https://github.com/Archont561/ODM-conda/actions/runs/43119210985)
+exposed a transcription error in the pinned Eigen MPL2 hash. The hash was
+corrected to the archive's value; the independent package build, retest and
+bounded audit passed in [43119773206](https://github.com/Archont561/ODM-conda/actions/runs/43119773206).
+
+A complete repeat using the new builder was started as
+[43120174240](https://github.com/Archont561/ODM-conda/actions/runs/43120174240);
+its result was pending when this section was written. These hosted trials
+discard binaries, sources, locks and dataset outputs rather than uploading them.
