@@ -2,6 +2,7 @@ import hashlib
 import json
 import shutil
 import tempfile
+import zipfile
 from collections import Counter
 from pathlib import Path
 import yaml
@@ -45,6 +46,11 @@ with tempfile.TemporaryDirectory(prefix='jxl-source-review-') as temp:
         if f.is_file() and f.suffix.lower() in interesting:
             assets.append({'path':str(f.relative_to(src)),'size':f.stat().st_size,'sha256':sha256(f)})
     print('::notice::JXL-ASSETS '+json.dumps(assets,separators=(',',':')),flush=True)
+    zips={}
+    for f in sorted(src.rglob('*.zip')):
+        with zipfile.ZipFile(f) as z:
+            zips[str(f.relative_to(src))]=[{'name':i.filename,'size':i.file_size} for i in z.infolist()]
+    print('::notice::JXL-ZIPS '+json.dumps(zips,separators=(',',':')),flush=True)
     # Private source handoff: copy the prepared source tree and recipe, remove the originals,
     # rewrite only the generated recipe's absolute source path, then build with Cargo offline.
     moved=root/'relocated'; shutil.copytree(prepared,moved); shutil.rmtree(prepared); original.unlink()
