@@ -28,7 +28,7 @@ def main() -> None:
         if path.is_symlink() or not path.is_file() or sha256(path) != expected:
             raise ScaffoldError(f'Unexpected source input: {name}')
     original = (root / 'apps/Tests/TestsMath.cpp').read_text()
-    expected_includes = ('#include "../../libs/Math/TetraFlow.h"', '#include "Tests.h"',
+    expected_includes = ('#include "../../libs/Math/Common.h"', '#include "../../libs/Math/TetraFlow.h"', '#include "Tests.h"',
                          '#include "TestsMath.h"', '#include <random>')
     for include in expected_includes:
         if original.count(include) != 1:
