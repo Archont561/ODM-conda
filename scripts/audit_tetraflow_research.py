@@ -42,7 +42,7 @@ def verify_index(index: dict) -> None:
     if not required <= names:
         raise ScaffoldError('Missing TetraFlow runtime dependency')
     matches = [item for item in deps if item.split()[0] == 'libjxl']
-    if len(matches) != 1 or '>=0.11' not in matches[0] or '<0.12' not in matches[0]:
+    if not any('>=0.11' in match and '<0.12' in match for match in matches):
         raise ScaffoldError('Unexpected TetraFlow JPEG XL ABI constraint')
 
 

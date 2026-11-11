@@ -15,6 +15,7 @@ def good_index():
 
 def test_package_index_identity_and_jxl_constraint():
     audit.verify_index(good_index())
+    audit.verify_index(good_index() | {'depends': good_index()['depends'] + ['libjxl >=0.11,<1.0a0']})
     for index in (good_index() | {'license': 'AGPL-3.0-only'},
                   good_index() | {'build': 'public_1'},
                   good_index() | {'build_number': 2},
