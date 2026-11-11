@@ -21,9 +21,10 @@ replacement merely because the graph solver changed. In particular, this
 upstream `ReconstructMesh` lacks the previously developed explicit visibility
 validation; its point-cloud reader differs from the hardened ODM research
 patch. A research patch now ports bounded visibility, list-schema, byte-order
-and allocation checks, including matching view-weight counts. Its complete
-fixture run has not yet been verified. Do not use it with untrusted or malformed
-PLY inputs; the patch is not a comprehensive parser security review.
+and allocation checks, including matching view-weight counts. The generated
+positive and negative fixtures passed in the private trial below. Do not use it
+with untrusted or malformed PLY inputs; the patch is not a comprehensive parser
+security review.
 
 ## Experiment
 
@@ -63,9 +64,8 @@ never upload its output or source without approval.
    licenses, including CGAL, Eigen, LMFit and Boost; it is not a verified BOM.
    Its design notes explicitly discuss research-only IBFS alternatives, which
    is contextual commentary, not proof about every file in the archive.
-2. Validate and review the new research PLY/visibility patch. Run the complete
-   generated positive and negative fixture suite, including weighted PLY cases,
-   and verify ODM-required command-line options, formats and behavior.
+2. Independently review the research PLY/visibility patch, and test further
+   malformed and realistic inputs. Verify ODM-required formats and behavior.
 3. Test with scoped OpenSfM and ODM end-to-end on suitably cleared data, and
    assess functionality/quality relative to the historical fork. Review all
    other ODM-specific changes lost across the diverged histories.
@@ -102,8 +102,21 @@ The private package test now includes generated-cube probes for both exact
 command shapes (`scripts/openmvs_odm_cleanup_fixture.py`), in addition to the
 previous positive/negative reconstruction and weighted PLY checks. The
 hosted trial [43099422521](https://github.com/Archont561/ODM-conda/actions/runs/43099422521)
-was queued when this note was written; **its result is unknown**. The local
-fixture unit tests use a stub executable and test the harness, not OpenMVS.
+passed the patched build, package tests and independent retest, including
+these command probes and the generated positive/negative reconstruction and
+weighted PLY checks. Its private package SHA-256 was
+`53f7d1989f60f1b10c2a08e44dc1a11357f6692d285743d9c04b95e9f0c315ce`.
+Sources and binaries were discarded. The local fixture unit tests use a stub
+executable and test the harness, not OpenMVS.
 Neither these probes nor the earlier synthetic scene test run ODM itself.
 A full private ODM/Scoped OpenSfM build and end-to-end dataset replay remain
 necessary after the patched candidate passes its own tests.
+
+A disposable full-stack attempt using the TetraFlow package instead of the
+historical OpenMVS package was started in
+[43100369839](https://github.com/Archont561/ODM-conda/actions/runs/43100369839).
+It requests the reduced runtime and scoped JPEG XL, then a relocated locked
+replay and Seneca run. Its result was **not yet available** when recorded.
+The alternate has source fingerprint and named link-map checks; the historical
+OpenMVS audit is not applicable to this different package and was not claimed.
+No resulting source, package, dataset or output is uploaded by the trial.
