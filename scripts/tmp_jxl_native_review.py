@@ -54,6 +54,10 @@ with tempfile.TemporaryDirectory(prefix='jxl-native-review-') as temp:
                 try:
                     parsed=yaml.safe_load(info[key]); parsed=parsed.get('recipe',parsed) if isinstance(parsed,dict) else {}; source=parsed.get('source',{}) if isinstance(parsed,dict) else {}; break
                 except Exception as ex: source={'parse_error':type(ex).__name__}
-        record={'name':p['name'],'version':p['version'],'build':p['build'],'sha256':digest,'license':about.get('license',index.get('license')),'depends':index.get('depends'), 'notices':notices,'payload_notices':payload_notices,'recipes':recipes,'source':source,'elf_needed':elf}
+        recipe_inventory_hash=hashlib.sha256(json.dumps(recipes,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+        relevant={k:v for k,v in recipes.items() if p['name'] in {'libjxl','libhwy'} and ('patch' in k or k.endswith(('recipe.yaml','meta.yaml','install.sh')))}
+        record={'name':p['name'],'version':p['version'],'build':p['build'],'sha256':digest,'license':about.get('license',index.get('license')),'depends':index.get('depends'), 'notices':notices,'payload_notices':payload_notices,'recipe_inventory_sha256':recipe_inventory_hash,'recipe_count':len(recipes),'selected_recipes':relevant,'source':source,'elf_needed':elf}
+
         text=json.dumps(record,separators=(',',':'),sort_keys=True)
-        for i in range(0,len(text),2400): print(f'::notice::NATIVE-{p["name"]}-{i//2400} '+text[i:i+2400],flush=True)
+        assert len(text)<3000, (p['name'],len(text))
+        print(f'::notice::NATIVE-{p["name"]} '+text,flush=True)

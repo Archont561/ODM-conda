@@ -30,3 +30,5 @@ jobs:
 # Inspect rendered recipe metadata.
 
 # Inspect recipe patches, runtime notices, and libstdc++.
+
+# Limit metadata output to one annotation per package.
