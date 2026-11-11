@@ -102,3 +102,51 @@ inputs; the previous 438-record ODM lock is evidence for that particular
 runtime, not proof of this trial's complete build/host closure. A separately
 received source bundle should be verified and rebuilt, and the resulting exact
 release package's notices and linkage audited before owner gate approval.
+
+## Which vendored materials were needed in a bounded trial?
+
+In [run 43075503011](https://github.com/Archont561/ODM-conda/actions/runs/43075503011)
+(job `130714126821`), the fully vendored tree passed `cargo metadata --locked
+--offline` with an empty Cargo home. The six crates absent from the earlier
+linux-64 normal/build tree were then removed **one at a time** and restored.
+For each of `cc`, `cmake`, `crunchy`, `jpegxl-src`, `portable-atomic` and
+`shlex`, offline metadata failed with “no matching package named” that crate.
+Thus the current unmodified lock and vendored resolution setup needs at least
+something providing each package's metadata even when the tested dynamic
+build does not compile that crate. This is a Cargo-resolution observation,
+not proof the whole content of any particular crate is needed, nor proof of a
+legal obligation to supply or omit it.
+
+A second experiment retained the `jpegxl-src` crate wrapper, its root license,
+manifest and other files, but deleted its entire bundled `libjxl/` directory
+(1,488 paths listed in the generated per-file checksum map; eight entries
+remained), and rewrote `.cargo-checksum.json` to remove those paths. On this
+same host, `cargo metadata --locked --offline` then succeeded; a distinct
+private build `research_vendor_scope_873e7db_3` built and passed the existing
+synthetic recipe test and separate retest. Its package SHA-256 was
+`ade61cc40177f36644486d711a4b44677a2b448adfc7122e0faf701c3afb06e1`.
+No source, fixture or binary artifacts were uploaded. The trim removed the
+previously identified `jpegxl-src` nested image, PDF, ZIP and notice files
+along with the rest of that `libjxl` subtree; the experiment did not establish
+the status of other files anywhere else in the source tree.
+
+This is **not** the original checksum-verified crate: its local vendor checksum
+metadata was intentionally changed and its original package checksum alone
+cannot authenticate the transformed contents. The trial did not produce a
+deterministic, independently verified transformation or an independently
+received corresponding-source bundle. `--offline` applies to Cargo; Conda
+build and test dependencies still came from channels. The result is limited
+to the selected linux-64 dynamic feature set and synthetic tests, not the
+vendored feature, other targets, full upstream suite, exact published package,
+interoperability or ODM integration. It does not establish which materials a
+license requires for any distribution. Native shared `libjxl` remains a
+separate input; removing the bundled source subtree does not eliminate its
+source and notice obligations.
+
+**Next research step:** if this direction is pursued, implement a fail-closed,
+hash-pinned transformation with a distinct research identity, explicit retained
+and removed file manifest and original/modified checksum provenance; verify the
+remaining notices, reproduce the private build from an independently received
+source set, and rerun interoperability and ODM integration. Obtain a qualified
+rights/source review and owner approval before any distribution. Do not use
+this ad-hoc modified vendor tree as a release source offer.
