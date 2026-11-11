@@ -32,7 +32,7 @@ jobs:
       - name: Failure diagnostics
         if: failure()
         run: |
-          tail -40 /tmp/interop.log | python -c 'import sys; s=sys.stdin.read(); print("::notice::"+s[-3000:].replace("%", "%25").replace("\n", "%0A"))'
+          grep -E -C 7 'Traceback|AssertionError|Error:|error:|PASS: independent' /tmp/interop.log | tail -80 | python -c 'import sys; s=sys.stdin.read(); print("::notice::"+s[:3000].replace("%", "%25").replace("\n", "%0A"))'
 
 
 # Exercise decoder in the package test prefix.
