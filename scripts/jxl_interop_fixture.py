@@ -23,6 +23,8 @@ def pixels(mode: str, width: int, height: int) -> list:
 
 
 def decode(decoder: Path, source: Path, output: Path, *, jpeg: bool = False) -> None:
+    if output.exists() or output.is_symlink():
+        raise ValueError('Decoder output must not already exist')
     command = [str(decoder), '--quiet', str(source), '--output', str(output),
                '--output-format', 'jpeg' if jpeg else 'png8']
     subprocess.run(command, check=True, timeout=60)
