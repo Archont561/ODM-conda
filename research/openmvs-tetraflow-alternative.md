@@ -74,3 +74,15 @@ never upload its output or source without approval.
 5. Build and retain the final exact packages, source materials, inventory and
    replay lock in owner-controlled storage; replay and audit them. Owner must
    approve gates and dispatch the release workflow before publication.
+
+## Standalone upstream solver test
+
+With GCC 12.2 on linux-64, `python scripts/test_tetraflow_reference.py
+<extracted-pinned-source>` compiled the exact pinned TetraFlow header and the
+upstream `TestsMath.cpp` test body in a temporary standalone harness, with
+assertions enabled. All 400 deterministic randomized graphs matched the
+upstream Edmonds–Karp reference and cut capacity checks. The harness replaces
+only the upstream test includes and logging/assertion macros; input hashes are
+verified first. This is the upstream test, not an independent test design. It
+is not a build or test of the patched ReconstructMesh, ODM integration, rights,
+source completeness, numerical quality on real scenes, or security.
