@@ -1,4 +1,4 @@
-name: Temporary JPEG XL reduced source trial
+name: Temporary JPEG XL reduced source trial (final)
 on:
   push:
     branches: [arena/bb0a9847-odm-conda]
