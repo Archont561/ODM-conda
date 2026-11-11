@@ -40,6 +40,11 @@ with tempfile.TemporaryDirectory(prefix='jxl-source-review-') as temp:
         data=(source/'vendor'/name).read_text(errors='replace')
         selected[name]=[line.strip() for line in data.splitlines() if 'copyright' in line.lower() or 'version 3' in line.lower() or 'later version' in line.lower()][:4]
     print('::notice::JXL-DETAIL '+json.dumps({'jpegxl_src_asset_extensions':interesting,'nested_notice_candidates':nested,'selected_lines':selected},separators=(',',':')),flush=True)
+    assets=[]
+    for f in sorted(src.rglob('*')):
+        if f.is_file() and f.suffix.lower() in interesting:
+            assets.append({'path':str(f.relative_to(src)),'size':f.stat().st_size,'sha256':sha256(f)})
+    print('::notice::JXL-ASSETS '+json.dumps(assets,separators=(',',':')),flush=True)
     # Private source handoff: copy the prepared source tree and recipe, remove the originals,
     # rewrite only the generated recipe's absolute source path, then build with Cargo offline.
     moved=root/'relocated'; shutil.copytree(prepared,moved); shutil.rmtree(prepared); original.unlink()
