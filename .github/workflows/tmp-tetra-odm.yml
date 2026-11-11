@@ -1,0 +1,30 @@
+name: Temporary TetraFlow ODM integration
+on:
+  push:
+    branches: [arena/8cb0d117-odm-conda]
+    paths: [.github/workflows/tmp-tetra-odm.yml]
+permissions:
+  contents: read
+jobs:
+  private-trial:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default agent-tools
+      - name: Obtain pinned crate
+        run: curl -fsSL https://static.crates.io/crates/jpegxl-src/jpegxl-src-0.11.2.crate -o /tmp/jpegxl-src-0.11.2.crate
+      - name: Private integration
+        run: |
+          set -o pipefail
+          pixi run python scripts/tmp_tetra_odm_integration.py 2>&1 | tee /tmp/tetra-odm.log
+      - name: Failure diagnostic
+        if: failure()
+        run: |
+          tail -80 /tmp/tetra-odm.log | python -c 'import sys; print("::notice::"+sys.stdin.read()[-3000:].replace("%", "%25").replace("\n", "%0A"))'

@@ -10,8 +10,8 @@ source:
     sha256: a14492af4d1451a686caadbfd5047ca1216b8c66e71f0e8385afc4bb3ecdc7a3
     target_directory: _external/eigen
 build:
-  number: 0
-  string: research_${{ hash }}_0
+  number: 1
+  string: research_${{ hash }}_1
   skip: target_platform != "linux-64"
   script:
     file: ../../../scripts/build_openmvs_tetraflow_research.py
@@ -30,6 +30,7 @@ requirements:
     - cgal-cpp
     - nanoflann
     - libopencv >=4.13,<4.14
+    - libjxl >=0.11,<0.12
     - tbb-devel >=2023.1,<2024
     - mpfr
     - gmp
@@ -38,6 +39,7 @@ requirements:
   run:
     - libboost >=1.90,<1.91
     - libopencv >=4.13,<4.14
+    - libjxl >=0.11,<0.12
     - tbb >=2023.1,<2024
     - mpfr
     - gmp
@@ -51,10 +53,12 @@ tests:
   - script:
       interpreter: python
       content: |
-        import runpy, sys
+        import runpy, subprocess, sys
         from pathlib import Path
         fixture = Path(sys.prefix) / 'share/odm-conda/openmvs-tetraflow-research'
         sys.path.insert(0, str(fixture))
+        linkage = subprocess.run(['ldd', str(Path(sys.prefix) / 'bin/ReconstructMesh')], capture_output=True, text=True, check=True)
+        assert 'not found' not in linkage.stdout, linkage.stdout
         sys.argv = [str(fixture / 'openmvs_synthetic_fixture.py'), '--executable', str(Path(sys.prefix) / 'bin/ReconstructMesh')]
         runpy.run_path(sys.argv[0], run_name='__main__')
         sys.argv = [str(fixture / 'openmvs_tetraflow_weights_fixture.py'), str(Path(sys.prefix) / 'bin/ReconstructMesh')]
