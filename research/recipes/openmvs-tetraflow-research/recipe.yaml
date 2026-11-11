@@ -59,6 +59,8 @@ tests:
         runpy.run_path(sys.argv[0], run_name='__main__')
         sys.argv = [str(fixture / 'openmvs_tetraflow_weights_fixture.py'), str(Path(sys.prefix) / 'bin/ReconstructMesh')]
         runpy.run_path(sys.argv[0], run_name='__main__')
+        sys.argv = [str(fixture / 'openmvs_odm_cleanup_fixture.py'), str(Path(sys.prefix) / 'bin/ReconstructMesh')]
+        runpy.run_path(sys.argv[0], run_name='__main__')
     requirements:
       run:
         - python >=3.12,<3.13
