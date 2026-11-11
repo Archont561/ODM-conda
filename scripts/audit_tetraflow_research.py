@@ -21,7 +21,7 @@ FIXTURES = ('openmvs_synthetic_fixture.py', 'openmvs_pointcloud_fixture.py', 'op
 NOTICE_HASHES = frozenset({
     '0f072d4a0ef59e7f6864bb45629c37417ccef63025b58f4073109d1c830bc55f',
     'c231e8064c5afb62b99c49969cd0f0b8d5082f754e9950f4ff8dd20ebe7d1062',
-    'fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2d4a49c8e28e798a0',
+    'fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85',
     'c83230b770f17ef1386ea1fd3681271dd98aa93646bdbfb5bff3a1b7050fff9d',
     '09c21b5a8ca469b20e0ce3795f19370affba36f532e480e593c9712c91caf4c4',
 })

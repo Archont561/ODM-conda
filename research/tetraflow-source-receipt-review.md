@@ -20,7 +20,7 @@ path observation, **not** proof no restricted code appears elsewhere.
 | `libs/IO/PLY.cpp` | Header declares Boost 1.0, copyright 2023 cDc. | Review actual file history, modifications and notice obligations. |
 | `libs/Math/LMFit/COPYING` | Contains FreeBSD license and named copyright holders; SHA256 `09c21b5a8ca469b20e0ce3795f19370affba36f532e480e593c9712c91caf4c4`. Build includes LMFit sources. | Determine applicable notices and confirm the exact compiled inputs. |
 | `COPYRIGHT.md` | Upstream names several third-party projects; SHA256 `c231e8064c5afb62b99c49969cd0f0b8d5082f754e9950f4ff8dd20ebe7d1062`. | It is an upstream summary, not a complete or verified bill of materials. |
-| Eigen | `COPYING.README` says primarily MPL2 with some BSD/LGPL files; `COPYING.MPL2` SHA256 `fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2d4a49c8e28e798a0`. The recipe defines `EIGEN_MPL2_ONLY`. | The archive contains additional license files. A compile flag is not a provenance, complete-source or notice determination. |
+| Eigen | `COPYING.README` says primarily MPL2 with some BSD/LGPL files; `COPYING.MPL2` SHA256 `fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85`. The recipe defines `EIGEN_MPL2_ONLY`. | The archive contains additional license files. A compile flag is not a provenance, complete-source or notice determination. |
 
 A filename heuristic found four OpenMVS notice-like paths, including the
 SiftGPU port's separate `LICENSE`, and ten Eigen paths (including a script
