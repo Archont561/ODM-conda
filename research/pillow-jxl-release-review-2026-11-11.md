@@ -29,6 +29,9 @@ license. That history adds project-level context, but neither the generic GPL
 text nor the commit message alone resolves an explicit only-versus-or-later
 grant for every project file or the rights of other contributors. A qualified
 reviewer should resolve the grant and provenance before setting release metadata.
+A later [grant review](pillow-jxl-project-grant-review.md) identifies a
+maintainer-authored `GPL-3.0-or-later` metadata declaration after v1.3.4; it
+does not by itself resolve that earlier release or every contributor grant.
 
 ## Locked Rust source inventory
 
