@@ -115,8 +115,19 @@ necessary after the patched candidate passes its own tests.
 A disposable full-stack attempt using the TetraFlow package instead of the
 historical OpenMVS package was started in
 [43100369839](https://github.com/Archont561/ODM-conda/actions/runs/43100369839).
-It requests the reduced runtime and scoped JPEG XL, then a relocated locked
-replay and Seneca run. Its result was **not yet available** when recorded.
-The alternate has source fingerprint and named link-map checks; the historical
-OpenMVS audit is not applicable to this different package and was not claimed.
-No resulting source, package, dataset or output is uploaded by the trial.
+It used the reduced runtime and scoped JPEG XL, then a relocated locked replay
+and Seneca run. The stack built and replay started, but ODM failed at mesh
+cleanup: `ReconstructMesh` required `libjxl.so.0.12`, while the selected JPEG
+XL runtime was 0.11. The diagnostic was recovered in
+[43106145917](https://github.com/Archont561/ODM-conda/actions/runs/43106145917).
+No source, package, dataset or output was uploaded.
+
+The next private recipe build (build 1) explicitly constrains libjxl to
+`>=0.11,<0.12` in both host and run environments, matching the scoped plugin.
+Package tests check `ldd`, and the new integration trial checks it again in the
+relocated full-stack environment before processing data. The repeat
+[43106234405](https://github.com/Archont561/ODM-conda/actions/runs/43106234405)
+was still running when this note was written; the fix and end-to-end result are
+not yet validated. The alternate has source fingerprint and named link-map
+checks; the historical OpenMVS audit does not apply to this different package
+and is not claimed. These results do not resolve rights or release gates.
