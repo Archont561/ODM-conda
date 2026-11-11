@@ -53,7 +53,9 @@ def prepare(prepared: Path, crate_archive: Path, destination: Path) -> dict:
     if checksum.is_symlink() or not checksum.is_file():
         raise ScaffoldError('Missing Cargo checksum metadata')
     metadata = json.loads(checksum.read_text())
-    if set(metadata) != {'files', 'package'} or metadata['package'] != CRATE_SHA256:
+    if (not isinstance(metadata, dict) or set(metadata) - {'files', 'package', '$comment'}
+            or not isinstance(metadata.get('files'), dict) or metadata.get('package') != CRATE_SHA256
+            or ('$comment' in metadata and not isinstance(metadata['$comment'], str))):
         raise ScaffoldError('Unexpected Cargo package checksum')
     with tempfile.TemporaryDirectory(prefix='jxl-vendor-original-', dir=destination.parent) as temp:
         original = Path(temp)/'crate'; original.mkdir()
@@ -77,7 +79,7 @@ def prepare(prepared: Path, crate_archive: Path, destination: Path) -> dict:
             shutil.copytree(prepared/'recipe', destination/'recipe')
             target = destination/'source/vendor'/CRATE
             shutil.rmtree(target/'libjxl')
-            new_checksum = {'files': retained, 'package': CRATE_SHA256}
+            new_checksum = {**metadata, 'files': retained}
             (target/'.cargo-checksum.json').write_text(json.dumps(new_checksum, sort_keys=True, separators=(',', ':'))+'\n')
             recipe = destination/'recipe/recipe.yaml'; text = recipe.read_text()
             old = 'source:\n  path: '+json.dumps(str(source.resolve()))+'\n'
