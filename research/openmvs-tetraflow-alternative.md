@@ -109,8 +109,8 @@ weighted PLY checks. Its private package SHA-256 was
 Sources and binaries were discarded. The local fixture unit tests use a stub
 executable and test the harness, not OpenMVS.
 Neither these probes nor the earlier synthetic scene test run ODM itself.
-A full private ODM/Scoped OpenSfM build and end-to-end dataset replay remain
-necessary after the patched candidate passes its own tests.
+A full private ODM/Scoped OpenSfM build and end-to-end dataset replay are
+reported below; wider scenarios and independent quality assessment remain open.
 
 A disposable full-stack attempt using the TetraFlow package instead of the
 historical OpenMVS package was started in
@@ -127,7 +127,11 @@ The next private recipe build (build 1) explicitly constrains libjxl to
 Package tests check `ldd`, and the new integration trial checks it again in the
 relocated full-stack environment before processing data. The repeat
 [43106234405](https://github.com/Archont561/ODM-conda/actions/runs/43106234405)
-was still running when this note was written; the fix and end-to-end result are
-not yet validated. The alternate has source fingerprint and named link-map
-checks; the historical OpenMVS audit does not apply to this different package
-and is not claimed. These results do not resolve rights or release gates.
+passed: it rebuilt the private stack with the alternate, checked linkage in
+the relocated replay, exercised the JPEG XL synthetic fixture and completed
+the Seneca fast-orthophoto pipeline and raster sanity checks. All private
+sources, binaries, lock, dataset and outputs were discarded; the trial is not
+a retained final bundle. The alternate has source fingerprint and named
+link-map checks; the historical OpenMVS audit does not apply to this different
+package and is not claimed. This single dataset does not establish accuracy,
+general feature support, rights, source completeness or release approval.
