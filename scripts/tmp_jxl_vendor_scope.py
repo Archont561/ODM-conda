@@ -19,10 +19,13 @@ with tempfile.TemporaryDirectory(prefix='jxl-prune-trial-') as tmp:
     def metadata():
         return subprocess.run(['cargo','metadata','--format-version','1','--locked','--offline'],cwd=source,env=env,text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     baseline=metadata(); assert baseline.returncode==0, baseline.stderr
-    probe=root/'probe-jpegxl-src'; (vendor/'jpegxl-src-0.11.2').rename(probe)
-    missing=metadata(); print('::notice::JXL-MISSING '+json.dumps({'exit':missing.returncode,'stderr':missing.stderr[-1200:]},separators=(',',':')),flush=True)
-    assert missing.returncode!=0
-    probe.rename(vendor/'jpegxl-src-0.11.2')
+    probes={}
+    for name in EXCLUDED:
+        probe=root/'probe'; (vendor/name).rename(probe)
+        missing=metadata(); probe.rename(vendor/name)
+        probes[name]={'exit':missing.returncode,'first_error':next((x for x in missing.stderr.splitlines() if x.startswith('error:')),None)}
+    print('::notice::JXL-REMOVAL-PROBES '+json.dumps(probes,separators=(',',':')),flush=True)
+    assert all(item['exit'] != 0 for item in probes.values())
     crate=vendor/'jpegxl-src-0.11.2'; checksum=crate/'.cargo-checksum.json'
     meta=json.loads(checksum.read_text()); removed=sorted(name for name in meta['files'] if name.startswith('libjxl/'))
     assert removed and (crate/'libjxl').is_dir()
