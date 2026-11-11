@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 from common import ROOT, sha256
 from prepare_jxl_reduced_research import prepare
-from prepare_jxl_vendor_scope import CRATE_SHA256, archive, prepare as transform
+from prepare_jxl_vendor_scope import CRATE_SHA256, archive, files, prepare as transform
 from private_odm_bundle import build_recipe, download_sdist
 from source_graph import unpack_archive
 
@@ -27,6 +27,10 @@ with tempfile.TemporaryDirectory(prefix='jxl-vendor-scope-') as tmp:
           "    requirements:\n      run:\n        - python >=3.12,<3.13\n")
     recipe.write_text(text.replace('about:\n',test+'about:\n'))
     print('::notice::JXL-CARGO-META '+json.dumps(json.loads((prepared/'source/vendor/jpegxl-src-0.11.2/.cargo-checksum.json').read_text()) | {'files': 'omitted'},separators=(',',':')),flush=True)
+    diagnostic=root/'diagnostic'; diagnostic.mkdir(); unpack_archive(crate,diagnostic)
+    original_files=files(diagnostic); vendor_files=files(prepared/'source/vendor/jpegxl-src-0.11.2'); vendor_files.pop('.cargo-checksum.json')
+    map_files=json.loads((prepared/'source/vendor/jpegxl-src-0.11.2/.cargo-checksum.json').read_text())['files']
+    print('::notice::JXL-COMPARE '+json.dumps({'only_archive':sorted(set(original_files)-set(vendor_files))[:20],'only_vendor':sorted(set(vendor_files)-set(original_files))[:20],'changed':[x for x in original_files.keys() & vendor_files.keys() if original_files[x]!=vendor_files[x]][:20],'map_diff':[x for x in vendor_files if map_files.get(x)!=vendor_files[x]][:20]},separators=(',',':')),flush=True)
     first=transform(prepared,crate,root/'first'); second=transform(prepared,crate,root/'second'); assert first==second
     a=root/'first.tar.gz'; b=root/'second.tar.gz'; archive(root/'first',a); archive(root/'second',b)
     assert sha256(a)==sha256(b); archive_hash=sha256(a)

@@ -37,3 +37,5 @@ jobs:
 # Inspect original Cargo checksum metadata.
 
 # Accept Cargo-generated comment metadata.
+
+# Diagnose archive versus Cargo vendor file sets.
