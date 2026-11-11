@@ -21,6 +21,7 @@ requirements:
     - python >=3.12,<3.13
     - cmake >=3.31,<3.32
     - ninja >=1.11,<2
+    - patch
     - ${{ compiler('c') }}
     - ${{ compiler('cxx') }}
     - ${{ stdlib('c') }}
@@ -50,13 +51,12 @@ tests:
   - script:
       interpreter: python
       content: |
-        import sys, tempfile
+        import runpy, sys
         from pathlib import Path
         fixture = Path(sys.prefix) / 'share/odm-conda/openmvs-tetraflow-research'
         sys.path.insert(0, str(fixture))
-        from openmvs_synthetic_fixture import test_reconstruction
-        with tempfile.TemporaryDirectory() as tmp:
-            print('Synthetic scene:', test_reconstruction(Path(sys.prefix) / 'bin/ReconstructMesh', Path(tmp)))
+        sys.argv = [str(fixture / 'openmvs_synthetic_fixture.py'), '--executable', str(Path(sys.prefix) / 'bin/ReconstructMesh')]
+        runpy.run_path(sys.argv[0], run_name='__main__')
     requirements:
       run:
         - python >=3.12,<3.13

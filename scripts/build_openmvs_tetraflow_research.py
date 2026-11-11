@@ -12,6 +12,8 @@ from common import ROOT, ScaffoldError, fail_cli, run, sha256
 from openmvs_link_map import verify_openmvs_link_map
 
 PINNED = {
+    'apps/ReconstructMesh/ReconstructMesh.cpp': 'df9536d2f40eb11910bec63469550b198ec9dd5e73f9756aa7227e743748a410',
+    'libs/MVS/PointCloud.cpp': '20b1bcf9695f83bfd7436728b32a51318b9f880e60410e642ba82c30054a154a',
     'libs/CMakeLists.txt': '1739176780c7cb6d3e1ebba33fb919c2ae094bd540151a4844027749fc379803',
     'apps/CMakeLists.txt': 'be2a6cce0578654ad3461cfced37d68b1cacea15a15dcdf23c80b57abe73b2da',
     'libs/Math/TetraFlow.h': 'dd3376a592b4c52321b8ab2130cfaadb0ed3b03980a0c7608ad9c98f73c2b380',
@@ -48,6 +50,8 @@ def main() -> None:
     prefix, build_prefix, source=(Path(os.environ[k]).resolve() for k in ('PREFIX','BUILD_PREFIX','SRC_DIR'))
     if prefix in (build_prefix,source,ROOT,Path('/')) or source in (ROOT,Path('/')): raise ScaffoldError('Unsafe build paths')
     prepare_source(source)
+    patch = ROOT/'research/recipes/openmvs-tetraflow-research/patches/visibility-ply.patch'
+    run(['patch', '--batch', '--fuzz=0', '-p1', '-i', str(patch)], cwd=source)
     env=os.environ.copy(); env['CONDA_PREFIX']=str(prefix); env['CMAKE_PREFIX_PATH']=str(prefix)
     build=source/'.research-build'; link_map=build/'ReconstructMesh-link.map'
     flags=f"{env.get('LDFLAGS','')} -Wl,-Map={link_map}"
