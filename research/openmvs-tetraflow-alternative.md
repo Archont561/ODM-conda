@@ -86,3 +86,24 @@ only the upstream test includes and logging/assertion macros; input hashes are
 verified first. This is the upstream test, not an independent test design. It
 is not a build or test of the patched ReconstructMesh, ODM integration, rights,
 source completeness, numerical quality on real scenes, or security.
+
+## ODM cleanup compatibility probe (static, not integration)
+
+The SHA-256-verified ODM 3.6.2 source pinned in the research recipe calls
+`ReconstructMesh` in `opendm/mesh.py` for both gridded DEM and Poisson mesh
+cleanup. Both pass `-i`, `-o`, `--archive-type 3`, `--remove-spikes 0`,
+`--smooth 0`, `--target-face-num`, and `-v 0`; the `--remove-spurious` value
+is respectively 0 and 20. The TetraFlow candidate declares those options;
+its `ARCHIVE_TYPE` enum maps 3 to Zstandard binary, although its help text
+only describes types through 2. This static comparison cannot establish
+runtime compatibility or output correctness.
+
+The private package test now includes generated-cube probes for both exact
+command shapes (`scripts/openmvs_odm_cleanup_fixture.py`), in addition to the
+previous positive/negative reconstruction and weighted PLY checks. The
+hosted trial [43099422521](https://github.com/Archont561/ODM-conda/actions/runs/43099422521)
+was queued when this note was written; **its result is unknown**. The local
+fixture unit tests use a stub executable and test the harness, not OpenMVS.
+Neither these probes nor the earlier synthetic scene test run ODM itself.
+A full private ODM/Scoped OpenSfM build and end-to-end dataset replay remain
+necessary after the patched candidate passes its own tests.
