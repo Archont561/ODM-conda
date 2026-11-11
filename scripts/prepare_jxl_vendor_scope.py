@@ -87,6 +87,10 @@ def prepare(prepared: Path, crate_archive: Path, destination: Path) -> dict:
             shutil.copytree(source, destination/'source')
             shutil.copytree(prepared/'recipe', destination/'recipe')
             target = destination/'source/vendor'/CRATE
+            copied = files(target)
+            copied_checksum = copied.pop('.cargo-checksum.json', None)
+            if copied != expected or copied_checksum != original_checksum:
+                raise ScaffoldError('Vendor crate changed during copy')
             shutil.rmtree(target/'libjxl')
             new_checksum = {**metadata, 'files': retained}
             (target/'.cargo-checksum.json').write_text(json.dumps(new_checksum, sort_keys=True, separators=(',', ':'))+'\n')

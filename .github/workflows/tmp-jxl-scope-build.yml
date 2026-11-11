@@ -41,3 +41,5 @@ jobs:
 # Diagnose archive versus Cargo vendor file sets.
 
 # Account for exactly eight pinned Cargo vendor exclusions.
+
+# Verify copied vendor crate before modification.
