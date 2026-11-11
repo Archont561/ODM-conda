@@ -133,7 +133,8 @@ def private_identity(recipe: Path, build_number: int) -> None:
     recipe.write_text(text.replace(marker, marker+f'  string: research_${{{{ hash }}}}_{build_number}\n'))
 
 
-def configure_odm_research_recipe(recipe: Path, *, reduced_jxl: bool = False) -> None:
+def configure_odm_research_recipe(recipe: Path, *, reduced_jxl: bool = False, vendor_scope: bool = False) -> None:
+    if vendor_scope and not reduced_jxl: raise ScaffoldError('Vendor scope requires reduced JPEG XL')
     text = recipe.read_text()
     for name in BASE:
         pattern = rf'^(    - {re.escape(name)} ==[^\n ]+)$'
@@ -141,16 +142,18 @@ def configure_odm_research_recipe(recipe: Path, *, reduced_jxl: bool = False) ->
         if count != 1: raise ScaffoldError(f'Unexpected ODM dependency for {name}')
     if reduced_jxl:
         before = '    - odm-research-pillow-jxl-plugin ==1.3.4 research_*_1'
-        after = '    - odm-research-pillow-jxl-plugin ==1.3.4 research_reduced_*_2'
+        after = ('    - odm-research-pillow-jxl-plugin ==1.3.4 research_vendor_scope_*_3' if vendor_scope
+                 else '    - odm-research-pillow-jxl-plugin ==1.3.4 research_reduced_*_2')
         if text.count(before) != 1: raise ScaffoldError('Unexpected ODM JPEG XL dependency')
         text = text.replace(before, after)
     marker = 'build:\n  number: 2\n'
     if text.count(marker) != 1: raise ScaffoldError('Unexpected ODM build identity')
-    odm_number = 4 if reduced_jxl else 3
+    odm_number = 5 if vendor_scope else (4 if reduced_jxl else 3)
     recipe.write_text(text.replace(marker, f'build:\n  number: {odm_number}\n'))
 
 
-def build_packages(work: Path, *, reduced_jxl: bool = False) -> list[Path]:
+def build_packages(work: Path, *, reduced_jxl: bool = False, vendor_scope_crate: Path | None = None) -> list[Path]:
+    if vendor_scope_crate is not None and not reduced_jxl: raise ScaffoldError('Vendor scope requires reduced JPEG XL')
     from prepare_opencv413_research import prepare
     from source_bundle import graph_archives
     from common import fetch_pinned_archive
@@ -197,9 +200,13 @@ def build_packages(work: Path, *, reduced_jxl: bool = False) -> list[Path]:
             else:
                 jxl_prepare(source,work/'jxl-prepared')
             recipe=work/'jxl-prepared/recipe/recipe.yaml'
+            if vendor_scope_crate is not None:
+                from prepare_jxl_vendor_scope import prepare as scope_prepare
+                scope_prepare(work/'jxl-prepared', vendor_scope_crate, work/'jxl-scoped')
+                recipe=work/'jxl-scoped/recipe/recipe.yaml'
         packages.append(build_recipe(recipe,'odm-research-'+name,work/('python-'+name)))
     recipe=staged/'research/recipes/odm-fast-research/recipe.yaml'
-    configure_odm_research_recipe(recipe, reduced_jxl=reduced_jxl)
+    configure_odm_research_recipe(recipe, reduced_jxl=reduced_jxl, vendor_scope=vendor_scope_crate is not None)
     packages.append(build_recipe(recipe,'odm-fast-research',work/'odm',skip_tests=True))
     if len(packages) != 15: raise ScaffoldError('Unexpected private package count')
     return packages
@@ -288,15 +295,21 @@ def validate_runtime_profile(inventory: dict, profile: str) -> None:
         raise ScaffoldError('Reduced runtime contains LZO or librttopo')
 
 
-def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile: str = 'default', reduced_jxl: bool = False) -> None:
+def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile: str = 'default', reduced_jxl: bool = False, vendor_scope_crate: Path | None = None) -> None:
     if platform.system() != 'Linux' or platform.machine().lower() not in ('x86_64','amd64'): raise ScaffoldError('Private build requires linux-64')
     validate_destination(destination)
+    if vendor_scope_crate is not None:
+        if not reduced_jxl: raise ScaffoldError('Vendor scope requires reduced JPEG XL')
+        from prepare_jxl_vendor_scope import CRATE_SHA256
+        vendor_scope_crate = Path(vendor_scope_crate).resolve() if not Path(vendor_scope_crate).is_symlink() else Path(vendor_scope_crate)
+        if vendor_scope_crate.is_symlink() or not vendor_scope_crate.is_file() or sha256(vendor_scope_crate) != CRATE_SHA256:
+            raise ScaffoldError('Unexpected original jpegxl-src crate archive')
     if runtime_profile not in ('default', 'reduced'): raise ScaffoldError('Unknown runtime profile')
     if not 1 <= port <= 65535: raise ScaffoldError('Invalid loopback port')
     destination.mkdir(mode=0o700)
     try:
         with tempfile.TemporaryDirectory(prefix='odm-private-build-') as tmp:
-            work=Path(tmp); packages=build_packages(work, reduced_jxl=reduced_jxl)
+            work=Path(tmp); packages=build_packages(work, reduced_jxl=reduced_jxl, vendor_scope_crate=vendor_scope_crate)
             info=create_channel(packages,destination/'channel')
             project=work/'project'
             with loopback(destination/'channel',port) as channel:
@@ -327,10 +340,12 @@ def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile
 def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__); sub=parser.add_subparsers(dest='action',required=True)
     create=sub.add_parser('build'); create.add_argument('--destination',required=True,type=Path); create.add_argument('--port',type=int,default=PORT); create.add_argument('--dataset',type=Path); create.add_argument('--runtime-profile', choices=('default','reduced'), default='default', help='Use reduced libspatialite/libarchive runtime variants')
-    create.add_argument('--reduced-jxl', action='store_true', help='Use image-excluded JPEG XL research build; not release approved')
+    jxl = create.add_mutually_exclusive_group()
+    jxl.add_argument('--reduced-jxl', action='store_true', help='Use image-excluded JPEG XL research build; not release approved')
+    jxl.add_argument('--vendor-scope-crate', type=Path, help='Use scoped JPEG XL with a verified local jpegxl-src crate; research only')
     test=sub.add_parser('replay'); test.add_argument('--bundle',required=True,type=Path); test.add_argument('--dataset',type=Path); test.add_argument('--manifest-sha256',help='Independently recorded SHA256 of private-bundle.json')
     args=parser.parse_args()
-    if args.action == 'build': build(args.destination,args.port,args.dataset,runtime_profile=args.runtime_profile,reduced_jxl=args.reduced_jxl)
+    if args.action == 'build': build(args.destination,args.port,args.dataset,runtime_profile=args.runtime_profile,reduced_jxl=args.reduced_jxl or args.vendor_scope_crate is not None,vendor_scope_crate=args.vendor_scope_crate)
     else: replay(args.bundle,dataset=args.dataset,expected_manifest_sha=args.manifest_sha256)
 
 
