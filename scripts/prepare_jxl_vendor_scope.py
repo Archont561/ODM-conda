@@ -24,6 +24,12 @@ CRATE_SHA256 = '96c328aa9d824459bfb9aef47b8b3defa126df1bbd6fd3a1e59e703911d6dd00
 REMOVED_PREFIX = 'libjxl/'
 REMOVED_COUNT = 1488
 RETAINED_COUNT = 8
+CARGO_OMITTED = {
+    'libjxl/.gitignore', 'libjxl/third_party/brotli/.gitattributes',
+    'libjxl/third_party/brotli/.gitignore', 'libjxl/third_party/highway/.gitignore',
+    'libjxl/third_party/highway/docs/.gitignore', 'libjxl/third_party/skcms/.gitignore',
+    'libjxl/third_party/zlib/.gitignore', 'libjxl/tools/fast_lossless/.gitignore',
+}
 
 
 def files(root: Path) -> dict[str, str]:
@@ -60,7 +66,10 @@ def prepare(prepared: Path, crate_archive: Path, destination: Path) -> dict:
     with tempfile.TemporaryDirectory(prefix='jxl-vendor-original-', dir=destination.parent) as temp:
         original = Path(temp)/'crate'; original.mkdir()
         unpack_archive(crate_archive, original)
-        expected = files(original)
+        archived = files(original)
+        if not CARGO_OMITTED <= archived.keys():
+            raise ScaffoldError('Unexpected Cargo-omitted file set')
+        expected = {k:v for k,v in archived.items() if k not in CARGO_OMITTED}
         actual = files(vendor)
         actual.pop('.cargo-checksum.json', None)
         if actual != expected or metadata['files'] != expected:
@@ -94,6 +103,7 @@ def prepare(prepared: Path, crate_archive: Path, destination: Path) -> dict:
                         'original_vendor_checksum_sha256': original_checksum,
                         'modified_vendor_checksum_sha256': sha256(target/'.cargo-checksum.json'),
                         'retained': retained, 'removed': removed,
+                        'cargo_omitted_from_archive': {k: archived[k] for k in sorted(CARGO_OMITTED)},
                         'warning': 'Modified crate is not the original; not a corresponding-source offer or release approval.'}
             (destination/'VENDOR-SCOPE-MANIFEST.json').write_text(json.dumps(manifest, sort_keys=True, indent=2)+'\n')
             return manifest

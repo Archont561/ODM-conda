@@ -20,6 +20,7 @@ def fixture(tmp_path, monkeypatch):
     monkeypatch.setattr(mod, 'CRATE_SHA256', digest)
     monkeypatch.setattr(mod, 'REMOVED_COUNT', 1)
     monkeypatch.setattr(mod, 'RETAINED_COUNT', 2)
+    monkeypatch.setattr(mod, 'CARGO_OMITTED', set())
     tree=tmp_path/'prepared'; vendor=tree/'source/vendor'/mod.CRATE; vendor.mkdir(parents=True)
     hashes={name:hashlib.sha256(data).hexdigest() for name,data in content.items()}
     for name, data in content.items():

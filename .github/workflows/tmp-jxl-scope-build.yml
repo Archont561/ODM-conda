@@ -39,3 +39,5 @@ jobs:
 # Accept Cargo-generated comment metadata.
 
 # Diagnose archive versus Cargo vendor file sets.
+
+# Account for exactly eight pinned Cargo vendor exclusions.
