@@ -23,14 +23,16 @@ with tempfile.TemporaryDirectory(prefix='jxl-prune-trial-') as tmp:
     missing=metadata(); print('::notice::JXL-MISSING '+json.dumps({'exit':missing.returncode,'stderr':missing.stderr[-1200:]},separators=(',',':')),flush=True)
     assert missing.returncode!=0
     probe.rename(vendor/'jpegxl-src-0.11.2')
-    for name in EXCLUDED:
-        crate=vendor/name; meta=json.loads((crate/'.cargo-checksum.json').read_text())
-        manifest=crate/'Cargo.toml'; digest=sha256(manifest); assert meta['files']['Cargo.toml']==digest
-        content=manifest.read_bytes(); package=meta['package']; shutil.rmtree(crate); crate.mkdir(); (crate/'Cargo.toml').write_bytes(content)
-        (crate/'.cargo-checksum.json').write_text(json.dumps({'package':package,'files':{'Cargo.toml':digest}}))
-    reduced=metadata(); print('::notice::JXL-MANIFEST-ONLY '+json.dumps({'exit':reduced.returncode,'stderr':reduced.stderr[-1200:]},separators=(',',':')),flush=True)
+    crate=vendor/'jpegxl-src-0.11.2'; checksum=crate/'.cargo-checksum.json'
+    meta=json.loads(checksum.read_text()); removed=sorted(name for name in meta['files'] if name.startswith('libjxl/'))
+    assert removed and (crate/'libjxl').is_dir()
+    shutil.rmtree(crate/'libjxl')
+    meta['files']={name:digest for name,digest in meta['files'].items() if name not in removed}
+    checksum.write_text(json.dumps(meta))
+    print('::notice::JXL-TRIM '+json.dumps({'removed':len(removed),'removed_path':'jpegxl-src-0.11.2/libjxl','remaining_entries':len(meta['files'])},separators=(',',':')),flush=True)
+    reduced=metadata(); print('::notice::JXL-TRIMMED-METADATA '+json.dumps({'exit':reduced.returncode,'stderr':reduced.stderr[-1200:]},separators=(',',':')),flush=True)
     assert reduced.returncode==0
     recipe=prepared/'recipe/recipe.yaml'; text=recipe.read_text(); marker='number: 2\n  string: research_reduced_${{ hash }}_2'; assert text.count(marker)==1
     recipe.write_text(text.replace(marker,'number: 3\n  string: research_vendor_scope_${{ hash }}_3'))
     package=build_recipe(recipe,'odm-research-pillow-jxl-plugin',root/'build')
-    print('::notice::JXL-SCOPE-RESULT '+json.dumps({'trimmed_crates':EXCLUDED,'package':package.name,'sha256':sha256(package)},separators=(',',':')),flush=True)
+    print('::notice::JXL-SCOPE-RESULT '+json.dumps({'removed':'jpegxl-src-0.11.2/libjxl','package':package.name,'sha256':sha256(package)},separators=(',',':')),flush=True)
