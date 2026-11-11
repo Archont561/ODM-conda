@@ -21,6 +21,8 @@ jobs:
       - name: Rebuild and retest pinned native package privately
         run: |
           set -o pipefail
+          sudo mkdir -p /home/conda/feedstock_root/build_artifacts/bld
+          sudo chown -R "$USER" /home/conda
           pixi run python scripts/tmp_jxl_native_rebuild.py 2>&1 | tee /tmp/jxl-native-rebuild.log
       - name: Failure diagnostic
         if: failure()
