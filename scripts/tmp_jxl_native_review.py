@@ -42,6 +42,9 @@ with tempfile.TemporaryDirectory(prefix='jxl-native-review-') as temp:
                             f=root/'tmp-elf'; f.write_bytes(raw)
                             dynamic=subprocess.run(['readelf','-d',str(f)],text=True,stdout=subprocess.PIPE,check=True).stdout
                             elf[name]=re.findall(r'\(NEEDED\).*?\[(.*?)\]',dynamic)
+        if p['name']=='libjxl':
+            for key in ('info/recipe/recipe.yaml','info/recipe/rendered_recipe.yaml'):
+                if key in info: print('::notice::JXL-RECIPE-'+key.rsplit('/',1)[-1]+' '+info[key].decode()[:2700].replace('%','%25').replace('\n','%0A'),flush=True)
         index=json.loads(info['info/index.json']); about=json.loads(info['info/about.json'])
         notices={k:hashlib.sha256(v).hexdigest() for k,v in info.items() if k.startswith('info/licenses/')}
         recipes={k:hashlib.sha256(v).hexdigest() for k,v in info.items() if k.startswith('info/recipe/')}
