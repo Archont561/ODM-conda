@@ -49,7 +49,7 @@ def verify_index(index: dict) -> None:
 def verify_contents(info: dict[str, bytes], payload: dict[str, bytes]) -> None:
     notice_hashes = {hashlib.sha256(data).hexdigest() for path, data in info.items() if path.startswith('info/licenses/')}
     if not NOTICE_HASHES <= notice_hashes:
-        raise ScaffoldError('Missing or modified research metadata notice')
+        raise ScaffoldError(f'Missing or modified research metadata notice hashes: {sorted(NOTICE_HASHES - notice_hashes)}')
     expected = {'bin/ReconstructMesh', SHARE + 'SOURCE.txt'} | {SHARE + name for name in FIXTURES}
     if set(payload) != expected:
         raise ScaffoldError('Unexpected or missing TetraFlow package payload')
