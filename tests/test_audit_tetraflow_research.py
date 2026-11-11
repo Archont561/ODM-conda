@@ -20,7 +20,8 @@ def test_package_index_identity_and_jxl_constraint():
                   good_index() | {'build': 'public_1'},
                   good_index() | {'build_number': 2},
                   good_index() | {'depends': [x for x in good_index()['depends'] if not x.startswith('libjxl')]},
-                  good_index() | {'depends': [x.replace('>=0.11,<0.12', '>=0.12') for x in good_index()['depends']]}):
+                  good_index() | {'depends': [x.replace('>=0.11,<0.12', '>=0.12') for x in good_index()['depends']]},
+                  good_index() | {'depends': [x.replace('>=0.11,<0.12', '>=0.11,<0.120') for x in good_index()['depends']]}):
         with pytest.raises(ScaffoldError):
             audit.verify_index(index)
 
