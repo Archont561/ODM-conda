@@ -1,0 +1,129 @@
+{
+  "files": [
+    {
+      "bytes": 448,
+      "git_blob_sha1": "fd52e78ab6b73250693521422415d4250f6ce7f0",
+      "matching_libjxl_paths": [],
+      "path": "test/images/README.md",
+      "sha256": "613fefef533c1552bcf0f013768a21625db3d7468126344a8245879964691057"
+    },
+    {
+      "bytes": 1372378,
+      "git_blob_sha1": "9607dd5abe2379f0d0c2412def7cd4ce4b8550f7",
+      "matching_libjxl_paths": [],
+      "path": "test/images/bench.png",
+      "sha256": "a74a88ae0b2036643d1a85182aae3c47bb49f5ee941037e41536237f4053326b"
+    },
+    {
+      "bytes": 106457,
+      "git_blob_sha1": "7cee2df5fb0aea91e1d7b60eba6cce0f51c584bf",
+      "matching_libjxl_paths": [],
+      "path": "test/images/icc_profile/62AHB.jpg",
+      "sha256": "ad27c0fc339b543f9e992024a77e6625d754df9b0687e7f8f03cad03ad070099"
+    },
+    {
+      "bytes": 80683,
+      "git_blob_sha1": "b12e3bacc760578f0f1006465e8c507b9492d8a2",
+      "matching_libjxl_paths": [],
+      "path": "test/images/icc_profile/62AHB.jxl",
+      "sha256": "033d2501abe9e4c16107eb3b74cbe1e7e6f88cb449fa514d9c2968b120d2de08"
+    },
+    {
+      "bytes": 4290,
+      "git_blob_sha1": "c057580dd6b94b42b9e7b60004518a4a273a892b",
+      "matching_libjxl_paths": [
+        "jxl/jpeg_reconstruction/1x1_exif_xmp.jpg"
+      ],
+      "path": "test/images/metadata/1x1_exif_xmp.jpg",
+      "sha256": "c6d30276e37711069950d50b8d8c94c037f5b7a1fdcc36235c6f3f066487bed8"
+    },
+    {
+      "bytes": 1273,
+      "git_blob_sha1": "6d3c0bd22b0819dd669403c991f8fe8175b16c1e",
+      "matching_libjxl_paths": [],
+      "path": "test/images/metadata/1x1_exif_xmp.jpg.jxl",
+      "sha256": "470386429a5af0781337c1b08e345fe2ba44ab50249c076f4f5453377e4eee9f"
+    },
+    {
+      "bytes": 1450,
+      "git_blob_sha1": "2811f160f0e5c25715ab3208867e75734c58b10f",
+      "matching_libjxl_paths": [],
+      "path": "test/images/metadata/1x1_exif_xmp.png",
+      "sha256": "52c778cae7b176e04c5531fcceddc9cb28725891f50b5a99d6bc23c66e6a3958"
+    },
+    {
+      "bytes": 3840,
+      "git_blob_sha1": "11af1bea45a470e6b07120fbd9a7533fbf1682f2",
+      "matching_libjxl_paths": [],
+      "path": "test/images/metadata/1x1_exif_xmp.png.jxl",
+      "sha256": "e74a4f086e95d299cd24df4f8cbe77ba866f229b248e0598a6e18145b512f8c7"
+    },
+    {
+      "bytes": 260,
+      "git_blob_sha1": "0d040a68c50d58b5846f599e7f1e820aaa188846",
+      "matching_libjxl_paths": [],
+      "path": "test/images/metadata/sample.exif",
+      "sha256": "6c85b7a3c972ddac708067f17754d1ff2260432dc36a58f4c34490fce72ab6fc"
+    },
+    {
+      "bytes": 3447,
+      "git_blob_sha1": "0331e0d536a5388e187892b21dda4a93d9907b1c",
+      "matching_libjxl_paths": [],
+      "path": "test/images/metadata/sample.xmp",
+      "sha256": "6647f7dc147d3f05ec79854c2201993da53aa21499c57e1bcb983c3cb9ef8cc0"
+    },
+    {
+      "bytes": 1779,
+      "git_blob_sha1": "27b4af769a11448fc583d629ff0a63bc71219b30",
+      "matching_libjxl_paths": [],
+      "path": "test/images/sample.jpg",
+      "sha256": "d28d532e12cc86acc4a612912b37e78de830aee23ecbf9734b631e46a89444c9"
+    },
+    {
+      "bytes": 3815,
+      "git_blob_sha1": "1595bd7c9ef018fc337aa82706b8e15cebc40bbd",
+      "matching_libjxl_paths": [],
+      "path": "test/images/sample.jxl",
+      "sha256": "2e57ec4687a6dc53c1e3fb9a167a40f753a538647a6ae50cfc59415e9b4a3773"
+    },
+    {
+      "bytes": 4579,
+      "git_blob_sha1": "6bb08a752868cbe6d1de7887f6a6028d738e8294",
+      "matching_libjxl_paths": [],
+      "path": "test/images/sample.png",
+      "sha256": "8d94300d85be24c7e5e743d775cae82ac8ffe69d5a35b461d95b52d923bff349"
+    },
+    {
+      "bytes": 745,
+      "git_blob_sha1": "abc3d94cde084a58bbd9713c7a3ffbd7e9d875d5",
+      "matching_libjxl_paths": [],
+      "path": "test/images/sample_float.jxl",
+      "sha256": "647557c6a5d4e8018a3ff3e54a862b6e930b164b57d7c92ade313878c771fb5e"
+    },
+    {
+      "bytes": 8014,
+      "git_blob_sha1": "88784321c7dc7a8223283b362c8791e7e57d5507",
+      "matching_libjxl_paths": [],
+      "path": "test/images/sample_float.ppm",
+      "sha256": "f264c3d80009b52dcf9e6b2730266a01e1cf7c3b88b24ad00205bb7cef8e3343"
+    },
+    {
+      "bytes": 808,
+      "git_blob_sha1": "c9d8505118485da04d3652b21a1a645ce304b210",
+      "matching_libjxl_paths": [],
+      "path": "test/images/sample_grey.jxl",
+      "sha256": "794908a4ab2c147b96b01d9db726fe051dab5194cc405a3fe8b453449ff9918d"
+    },
+    {
+      "bytes": 3208,
+      "git_blob_sha1": "ebf799781a2303fda23df4ea5d910cd5b1515d71",
+      "matching_libjxl_paths": [],
+      "path": "test/images/sample_grey.png",
+      "sha256": "cb892870b00170f2bb6d202070686f0e88546b7c080df06d2e31d7980661db29"
+    }
+  ],
+  "libjxl_testdata_commit": "73695d303670c90e4d506ea89d9901b081385089",
+  "scope": "File identity and exact Git blob matches only, not rights or provenance proof; no matches does not exclude derivation, another revision or sources.",
+  "sdist_sha256": "8ea589fc559ea7c5dfccb42af4d8148f5db508f5f4d4518328bab5a31fcb268e",
+  "testdata_tree_truncated": false
+}
