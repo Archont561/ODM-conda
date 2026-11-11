@@ -20,3 +20,4 @@ jobs:
           environments: default agent-tools
       - name: Build, replay and validate private stack
         run: pixi run python scripts/tmp_reduced_jxl_odm.py
+# Include fixture testing inside relocated environment.
