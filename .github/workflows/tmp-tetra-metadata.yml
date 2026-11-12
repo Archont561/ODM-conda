@@ -1,0 +1,28 @@
+name: Temporary TetraFlow metadata probe
+on:
+  push:
+    branches: [arena/5a717834-odm-conda]
+    paths: [.github/workflows/tmp-tetra-metadata.yml]
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default agent-tools
+      - name: Build and inspect metadata only
+        run: |
+          set -o pipefail
+          pixi run python scripts/tmp_tetra_metadata_probe.py 2>&1 | tee /tmp/probe.log
+      - name: Failure diagnostic
+        if: failure()
+        run: |
+          tail -60 /tmp/probe.log | python -c 'import sys; print("::notice::"+sys.stdin.read()[-3000:].replace("%", "%25").replace("\n", "%0A"))'

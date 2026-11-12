@@ -1,0 +1,16 @@
+import json
+import tempfile
+from pathlib import Path
+import yaml
+from common import ROOT
+from private_odm_bundle import build_recipe
+from package_archive import read_package
+
+with tempfile.TemporaryDirectory(prefix='tetra-meta-') as temp:
+    package = build_recipe(ROOT/'research/recipes/openmvs-tetraflow-research/recipe.yaml', 'openmvs-tetraflow-research', Path(temp))
+    info, _ = read_package(package)
+    print('::notice::RECIPE-FILES '+repr(sorted(name for name in info if name.startswith('info/recipe/'))), flush=True)
+    for name in sorted(info):
+        if name.endswith('rendered_recipe.yaml'):
+            parsed = yaml.safe_load(info[name]); print('::notice::RENDER-KEYS '+repr(list(parsed)), flush=True)
+            print('::notice::RENDER-REQ '+json.dumps(parsed.get('requirements', {}),sort_keys=True)[:2500], flush=True)
