@@ -136,3 +136,38 @@ the parser change has local negative and positive unit tests. These hosted trial
 discarded binaries, sources, locks and dataset outputs rather than uploading them.
 This success is not an owner-retained bundle or a legal, security, quality,
 source-completeness or release approval.
+
+## Build input metadata (one trial only)
+
+The metadata-only inventory `tetraflow-build-input-inventory.json` records the
+47 build and 207 host records embedded by rattler-build in the output of
+[43200317453](https://github.com/Archont561/ODM-conda/actions/runs/43200317453).
+Its SHA256 is `0e0add60bc04181a165c763fe466b9c1db754cfa0302bdb3af99d36258d7bd6d`;
+the discarded output package SHA256 is
+`1d8344e35dcb362db9012961df8782a319791a5ca08b9122755b63d7022c3217`.
+The extractor can be run on a retained package with
+`pixi run python scripts/conda_build_provenance.py --package /private/package.conda`.
+It reports recorded binary identities, hashes, public URLs and declared license
+metadata, not independently verified installed bytes, source archives, actual
+linkage, a reproducible build, complete obligations or legal approval. It is
+not the dependency closure of earlier runs or of the complete ODM bundle.
+The trial selected GCC/G++ 14.4.0, CGAL 6.2.1, Boost 1.90.0, OpenCV 4.13.0,
+libjxl 0.11.2, nanoflann 2.0.1 and TBB-devel 2023.1.0; TBB-devel's recorded
+license is absent. All declared licenses require independent review.
+
+A separate metadata probe
+[43201060262](https://github.com/Archont561/ODM-conda/actions/runs/43201060262)
+downloaded and SHA256-checked the specific recorded CGAL, libboost-devel and
+nanoflann binaries, and inspected their embedded recipes. They declare,
+respectively: CGAL 6.2.1 source SHA256
+`b6be77c60765a8456335de991eeaf6ffec55256984e4a9ecc6a97c37bbfe85bf`,
+Boost 1.90.0 source SHA256
+`49551aff3b22cbc5c5a9ed3dbc92f0e23ea50a0f7325b0d198b705e8ee3fc305`
+with a recipe patch, and nanoflann 2.0.1 source SHA256
+`bb3991ad924248d3f20953a951c34878196c11ca112d800acc341c3808443896`.
+These are recipe declarations, not source downloads or independent source
+verification. The remaining binaries, recipes, patches, toolchain, transitive
+sources and any corresponding-source or notice obligations remain uncollected
+and unreviewed. A prior probe encountered a link in a libjpeg-turbo package and
+correctly stopped rather than relaxing the starter-package archive guard.
+No source archives, binary packages or datasets were published by these probes.
