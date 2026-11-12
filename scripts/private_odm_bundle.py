@@ -86,6 +86,32 @@ def verify(bundle: Path, *, expected_manifest_sha: str | None = None) -> int:
     return data['port']
 
 
+def candidate_summary(bundle: Path, expected_manifest_sha: str) -> dict:
+    """Summarize an externally anchored private bundle; not a publication gate."""
+    bundle = Path(bundle)
+    if not isinstance(expected_manifest_sha, str) or not re.fullmatch(r'[a-f0-9]{64}', expected_manifest_sha):
+        raise ScaffoldError('Candidate summary requires an independent manifest SHA256')
+    verify(bundle, expected_manifest_sha=expected_manifest_sha)
+    manifest = json.loads((bundle/'private-bundle.json').read_text())
+    if manifest['schema_version'] != 2:
+        raise ScaffoldError('Candidate summary requires a sealed Conda inventory')
+    try:
+        inventory = json.loads((bundle/'conda-inventory.json').read_text())
+    except (OSError, ValueError) as error:
+        raise ScaffoldError('Invalid private Conda inventory') from error
+    identities = inventory_identities(inventory)
+    records = manifest['files']
+    local = [{'filename': Path(name).name, 'sha256': digest}
+             for name, digest in sorted(records.items())
+             if name.startswith('channel/linux-64/') and name.endswith('.conda')]
+    return {'schema_version': 1,
+            'scope': ('private research bundle metadata only; not release selection, '
+                      'installed-byte verification, source completeness, rights or approval'),
+            'manifest_sha256': expected_manifest_sha, 'lock_sha256': records['pixi.lock'],
+            'inventory_sha256': records['conda-inventory.json'],
+            'inventory_package_count': len(identities), 'local_packages': local}
+
+
 @contextmanager
 def loopback(directory: Path, port: int):
     class Server(http.server.ThreadingHTTPServer):
@@ -365,9 +391,13 @@ def main() -> None:
     jxl.add_argument('--vendor-scope-crate', type=Path, help='Use scoped JPEG XL with a verified local jpegxl-src crate; research only')
     test=sub.add_parser('replay'); test.add_argument('--bundle',required=True,type=Path); test.add_argument('--dataset',type=Path); test.add_argument('--manifest-sha256',help='Independently recorded SHA256 of private-bundle.json')
     test.add_argument('--test-jxl', action='store_true', help='Run the installed synthetic JPEG XL fixture on replay')
+    summary=sub.add_parser('summary', help='Summarize an anchored private research bundle')
+    summary.add_argument('--bundle', required=True, type=Path)
+    summary.add_argument('--manifest-sha256', required=True, help='Independently recorded manifest SHA256')
     args=parser.parse_args()
     if args.action == 'build': build(args.destination,args.port,args.dataset,runtime_profile=args.runtime_profile,reduced_jxl=args.reduced_jxl or args.vendor_scope_crate is not None,vendor_scope_crate=args.vendor_scope_crate,openmvs_variant=args.openmvs_variant)
-    else: replay(args.bundle,dataset=args.dataset,expected_manifest_sha=args.manifest_sha256,test_jxl=args.test_jxl)
+    elif args.action == 'replay': replay(args.bundle,dataset=args.dataset,expected_manifest_sha=args.manifest_sha256,test_jxl=args.test_jxl)
+    else: print(json.dumps(candidate_summary(args.bundle,args.manifest_sha256),sort_keys=True,indent=2))
 
 
 if __name__ == '__main__': fail_cli(main)

@@ -315,3 +315,25 @@ No owner-controlled destination or access was provided. The existing private
 bundle commands above can be run by the owner on a suitable host, but that
 bundle is not an offline or source-complete release bundle. Do not publish it
 or infer legal approval from these probes.
+
+### Summarize an owner-retained research candidate
+
+After a private build succeeds and the owner independently records the printed
+manifest digest, a bounded metadata summary can be created without exposing
+local paths or URLs:
+
+```sh
+pixi run python scripts/private_odm_bundle.py summary \
+  --bundle /private/new-odm-bundle --manifest-sha256 <independently-recorded-sha256> \
+  > /private/candidate-summary.json
+```
+
+The command first verifies the anchored manifest and all sealed bundle files,
+requires the sealed inventory, and reports the lock and inventory hashes,
+record count, and local binary filenames and hashes. It does not check
+installed bytes, rebuild, review licenses, freeze a release candidate, or
+retain external Conda packages or sources. Keep both the bundle and summary in
+owner-controlled private storage; independently preserve the manifest digest.
+Re-run the anchored replay and review the exact lock and inputs before any
+release decision. Do not publish this research bundle or its metadata as a
+substitute for the required source and release reviews.
