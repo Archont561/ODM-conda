@@ -13,4 +13,6 @@ with tempfile.TemporaryDirectory(prefix='tetra-meta-') as temp:
     for name in sorted(info):
         if name.endswith('rendered_recipe.yaml'):
             parsed = yaml.safe_load(info[name]); print('::notice::RENDER-KEYS '+repr(list(parsed)), flush=True)
-            print('::notice::RENDER-REQ '+json.dumps(parsed.get('requirements', {}),sort_keys=True)[:2500], flush=True)
+            deps = parsed.get('finalized_dependencies', {}); print('::notice::DEP-KEYS '+repr(list(deps)), flush=True)
+            for key, value in deps.items():
+                print('::notice::DEP-SAMPLE '+key+' '+json.dumps(value, sort_keys=True)[:2000], flush=True)
