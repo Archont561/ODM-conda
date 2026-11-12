@@ -66,4 +66,7 @@ with tempfile.TemporaryDirectory() as tmp:
   except Exception as e: row['error']=str(e)[:250]
   finally: (d/'source.rpm').unlink(missing_ok=True)
   result['source_rpms'].append(row)
- print('::notice::SYSROOT_RESULT '+json.dumps(result,sort_keys=True,separators=(',',':')),flush=True)
+ print('::notice::CONDA '+result['conda_sha256'],flush=True)
+ print('::notice::REPOMD '+json.dumps(result['repo_metadata'],sort_keys=True),flush=True)
+ for row in result['inputs']: print('::notice::INPUT '+json.dumps(row,sort_keys=True),flush=True)
+ for row in result['source_rpms']: print('::notice::SRPM '+json.dumps(row,sort_keys=True),flush=True)
