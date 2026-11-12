@@ -21,3 +21,16 @@ def test_sysroot_evidence_references_trial_and_named_sources():
     assert all(r['declared_sha256'] == r['verified_sha256'] for r in binaries)
     assert all(r['observed_sha256'] == r['repository_sha256'] for r in sources)
     assert {r['rpm_identity'].split('|')[-1] for r in binaries} == {r['filename'] for r in sources}
+
+
+def test_signature_evidence_covers_recorded_rpms():
+    evidence = json.loads((ROOT / 'research/tetraflow-sysroot-rpm-evidence.json').read_text())
+    signatures = json.loads((ROOT / 'research/tetraflow-sysroot-signature-evidence.json').read_text())
+    expected = {r['url'].rsplit('/', 1)[-1]: r['verified_sha256'] for r in evidence['binary_rpm_checks']}
+    expected.update({r['filename']: r['observed_sha256'] for r in evidence['source_rpm_checks']})
+    checks = signatures['rpm_checks']
+    assert len(checks) == len(expected) == 10
+    assert {r['name']: r['sha256'] for r in checks} == expected
+    assert signatures['errors'] == []
+    assert signatures['key']['fingerprints'][0] == '5E9B8F5617B5066CE92057C3488FCF7C3ABB34F8'
+    assert all(any('Signature' in line and 'OK' in line for line in r['signature_lines']) for r in checks)

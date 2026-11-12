@@ -229,3 +229,28 @@ patches satisfy any obligations. The RPMs and repository metadata were
 transient and discarded; no owner-retained source bundle was created. Source
 closure, signature trust, toolchain patch review, linkage and license review
 remain open, and release gates are unchanged.
+
+### RPM signature check and source package listing
+
+A subsequent hosted check
+[43324898928](https://github.com/Archont561/ODM-conda/actions/runs/43324898928)
+downloaded the same two source and eight binary RPMs, matched the recorded
+hashes, and checked their RPM signatures using an isolated RPM database. All
+ten reported header and package RSA/SHA256 signatures `OK` under key ID
+`ced7258b`. The retrieved AlmaLinux public key had primary fingerprint
+`5E9B8F5617B5066CE92057C3488FCF7C3ABB34F8`, matching the primary fingerprint
+published in [AlmaLinux release notes](https://wiki.almalinux.org/release-notes/8.3.html);
+the retrieved key also contains subkey fingerprint
+`BC5EDDCADF502C077F1582882AE81E8ACED7258B`. The key was retrieved over HTTPS;
+the fingerprint comparison is the stated trust anchor, not a complete
+independent chain-of-custody or legal review. The evidence is recorded in
+`tetraflow-sysroot-signature-evidence.json`.
+
+A filename listing (not extraction or content review) reports 873 entries in
+the glibc source RPM, including `glibc.spec` and 863 names ending in `.patch`
+or `.diff`; the kernel source RPM lists 46 entries, including `kernel.spec`
+and three such patch names. These counts do not establish patch applicability,
+completeness or the contents of nested source archives. The RPM payloads,
+patches and build instructions have not been reviewed or retained. Neither the
+signature checks nor the listings verify which files were used, linked or
+shipped in the trial, or authorize publication.
