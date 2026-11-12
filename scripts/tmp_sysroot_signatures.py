@@ -1,4 +1,4 @@
-import hashlib,json,subprocess,tempfile,urllib.request
+import base64,gzip,hashlib,json,subprocess,tempfile,urllib.request
 from pathlib import Path
 
 evidence=json.load(open('research/tetraflow-sysroot-rpm-evidence.json'))
@@ -12,7 +12,7 @@ with tempfile.TemporaryDirectory() as tmp:
  listing=cmd('gpg','--batch','--show-keys','--with-colons',str(key))
  fps=[l.split(':')[9] for l in listing.splitlines() if l.startswith('fpr:')]
  if not fps or fps[0]!=primary or sub not in fps: raise ValueError('key fingerprint mismatch')
- print('::notice::KEY '+json.dumps({'url':key_url,'primary':primary,'subkey':sub,'key_sha256':hashlib.sha256(key.read_bytes()).hexdigest()}),flush=True)
+ result_all={'key':{'url':key_url,'fingerprints':fps,'key_sha256':hashlib.sha256(key.read_bytes()).hexdigest()},'rpm_checks':[],'errors':[]}
  db=d/'rpmdb'; db.mkdir()
  cmd('rpm','--dbpath',str(db),'--initdb'); cmd('rpm','--dbpath',str(db),'--import',str(key))
  for item in evidence['source_rpm_checks']+evidence['binary_rpm_checks']:
@@ -26,10 +26,14 @@ with tempfile.TemporaryDirectory() as tmp:
    if 'NOKEY' in out or 'NOT OK' in out or not any('Signature' in l and 'OK' in l for l in out.splitlines()): raise ValueError('missing verified signature: '+out[-500:])
    result={'name':name,'sha256':digest,'signature_lines':[s.strip() for s in out.splitlines() if 'Signature' in s]}
    if name.endswith('.src.rpm'):
-    files=cmd('rpm','-qpl',str(path)).splitlines()
+    files=cmd('rpm','--dbpath',str(db),'-qpl',str(path)).splitlines()
     result['file_count']=len(files); result['patch_count']=sum(x.lower().endswith(('.patch','.diff')) for x in files)
     result['spec_files']=[x for x in files if x.endswith('.spec')]
     result['first_files']=files[:8]
-   print('::notice::RPMCHECK '+json.dumps(result,sort_keys=True),flush=True)
-  except Exception as e: print('::notice::RPMERROR '+json.dumps({'name':name,'error':str(e)[:300]}),flush=True)
+   result_all['rpm_checks'].append(result)
+  except Exception as e: result_all['errors'].append({'name':name,'error':str(e)[:300]})
   finally: path.unlink(missing_ok=True)
+
+ data=base64.b64encode(gzip.compress(json.dumps(result_all,sort_keys=True).encode(),mtime=0)).decode()
+ for i in range(0,len(data),2000): print('::notice::CHUNK%03d '%(i//2000)+data[i:i+2000],flush=True)
+ if result_all['errors'] or len(result_all['rpm_checks'])!=10: raise ValueError('one or more RPM checks failed')
