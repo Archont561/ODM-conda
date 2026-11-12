@@ -1,0 +1,360 @@
+{
+  "binary_recipe_metadata": {
+    "binutils_impl_linux-64": {
+      "binary_sha256": "98f9ddc6dc5d56a824b7eaea5bab6ad4bb47642288fc70d6b1b4024ac39d5595",
+      "patches": {
+        "info/recipe/parent/patches/0001-fallback-sysroot.diff": "f23ac243af5a71b394499a049fc29b2b7a6b704020674e20e7c794c4c2269369",
+        "info/recipe/parent/patches/bug29435.patch": "1335d57b1b6427395dda4872f29f91ff89fefe9324835a5b0fe60a52412df8e2",
+        "info/recipe/parent/patches/bug30079.patch": "ab2bbf77427419d2405bdc17cf0f18932fa226de3564e1db9645cbbe034ab4cb"
+      },
+      "sources": {
+        "info/recipe/meta.yaml": [
+          {
+            "patches": [
+              "patches/0001-fallback-sysroot.diff"
+            ],
+            "sha256": "324ed40ada2633a28eaa5d104ca5db165fd3cc3162cc1d48a7b7fa9c932da439",
+            "url": [
+              "https://ftp.gnu.org/gnu/binutils/binutils-2.46.1.tar.bz2",
+              "https://mirrors.ocf.berkeley.edu/gnu/binutils/binutils-2.46.1.tar.bz2"
+            ]
+          }
+        ]
+      }
+    },
+    "cgal-cpp": {
+      "binary_sha256": "232ea63938c3582460c5767e118fc205963bc0d8c331885b2020ef1c5d0c83a5",
+      "patches": {},
+      "sources": {
+        "info/recipe/meta.yaml": {
+          "sha256": "b6be77c60765a8456335de991eeaf6ffec55256984e4a9ecc6a97c37bbfe85bf",
+          "url": "https://github.com/CGAL/cgal/releases/download/v6.2.1/CGAL-6.2.1.tar.xz"
+        }
+      }
+    },
+    "gcc_impl_linux-64": {
+      "binary_sha256": "fe3d0c2cbd59755ddd8364c79b8e1a09b3125581d9df07170f102bc150740632",
+      "patches": {
+        "info/recipe/parent/patches/0001-allow-commands-in-main-specfile.patch": "1896281394e6ad3873feefcdd145cb4d6926133e6a19c409d1f0c25730a6d68b",
+        "info/recipe/parent/patches/0002-patch-zoneinfo_dir_override-to-point-to-our-tzdata.patch": "2d9d5886d15bf8aea136daa2967ea4b12fe153b17dc38e1f188fa610ea591902",
+        "info/recipe/parent/patches/0003-add-ldl-to-libstdc___la_LDFLAGS.patch": "aa3b057286d1b1564694b5fd28b65bf27702da1db6d83db4ea450b9aed06aa4c",
+        "info/recipe/parent/patches/0004-Hardcode-HAVE_ALIGNED_ALLOC-1-in-libstdc-v3-configur.patch": "60749c795d25b09cec3865a37b5da4aa1aba1ac1b46f5f11b364da3c0e257bd9"
+      },
+      "sources": {
+        "info/recipe/meta.yaml": [
+          {
+            "patches": [
+              "patches/0001-allow-commands-in-main-specfile.patch",
+              "patches/0002-patch-zoneinfo_dir_override-to-point-to-our-tzdata.patch",
+              "patches/0003-add-ldl-to-libstdc___la_LDFLAGS.patch",
+              "patches/0004-Hardcode-HAVE_ALIGNED_ALLOC-1-in-libstdc-v3-configur.patch"
+            ],
+            "sha256": "f35aa1c7f14e6bbe5a7fab83abcb7813449aa1dc6d38bbf27b74614dee17db5e",
+            "url": [
+              "https://ftp.gnu.org/gnu/gcc/gcc-14.4.0/gcc-14.4.0.tar.gz",
+              "https://mirrors.ocf.berkeley.edu/gnu/gcc/gcc-14.4.0/gcc-14.4.0.tar.gz"
+            ]
+          },
+          {
+            "folder": "zlib2",
+            "sha256": "9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23",
+            "url": "https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz"
+          }
+        ]
+      }
+    },
+    "gxx_impl_linux-64": {
+      "binary_sha256": "8082bf31bf210f55ab3e69bbc301e5131b8fe2986c743b4d4486d469dc737ac3",
+      "patches": {
+        "info/recipe/parent/patches/0001-allow-commands-in-main-specfile.patch": "1896281394e6ad3873feefcdd145cb4d6926133e6a19c409d1f0c25730a6d68b",
+        "info/recipe/parent/patches/0002-patch-zoneinfo_dir_override-to-point-to-our-tzdata.patch": "2d9d5886d15bf8aea136daa2967ea4b12fe153b17dc38e1f188fa610ea591902",
+        "info/recipe/parent/patches/0003-add-ldl-to-libstdc___la_LDFLAGS.patch": "aa3b057286d1b1564694b5fd28b65bf27702da1db6d83db4ea450b9aed06aa4c",
+        "info/recipe/parent/patches/0004-Hardcode-HAVE_ALIGNED_ALLOC-1-in-libstdc-v3-configur.patch": "60749c795d25b09cec3865a37b5da4aa1aba1ac1b46f5f11b364da3c0e257bd9"
+      },
+      "sources": {
+        "info/recipe/meta.yaml": [
+          {
+            "patches": [
+              "patches/0001-allow-commands-in-main-specfile.patch",
+              "patches/0002-patch-zoneinfo_dir_override-to-point-to-our-tzdata.patch",
+              "patches/0003-add-ldl-to-libstdc___la_LDFLAGS.patch",
+              "patches/0004-Hardcode-HAVE_ALIGNED_ALLOC-1-in-libstdc-v3-configur.patch"
+            ],
+            "sha256": "f35aa1c7f14e6bbe5a7fab83abcb7813449aa1dc6d38bbf27b74614dee17db5e",
+            "url": [
+              "https://ftp.gnu.org/gnu/gcc/gcc-14.4.0/gcc-14.4.0.tar.gz",
+              "https://mirrors.ocf.berkeley.edu/gnu/gcc/gcc-14.4.0/gcc-14.4.0.tar.gz"
+            ]
+          },
+          {
+            "folder": "zlib2",
+            "sha256": "9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23",
+            "url": "https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz"
+          }
+        ]
+      }
+    },
+    "kernel-headers_linux-64": {
+      "binary_sha256": "41557eeadf641de6aeae49486cef30d02a6912d8da98585d687894afd65b356a",
+      "patches": {},
+      "sources": {
+        "info/recipe/meta.yaml": [
+          {
+            "folder": "binary-glibc",
+            "sha256": "372270ca0753bd9cf00db5aa854b7e0a6c513edf9cb9d1bceea8cec4796e0bbe",
+            "url": "https://repo.almalinux.org/vault/8.9/BaseOS/x86_64/os/Packages/glibc-2.28-236.el8_9.13.x86_64.rpm"
+          },
+          {
+            "folder": "binary-glibc-all-langpacks",
+            "sha256": "531b421cec19b5e4a2c0589bc45cacec057d6c7d8a8f9f6e4d8023669afbda53",
+            "url": "https://repo.almalinux.org/vault/8.9/BaseOS/x86_64/os/Packages/glibc-all-langpacks-2.28-236.el8_9.13.x86_64.rpm"
+          },
+          {
+            "folder": "binary-glibc-common",
+            "sha256": "62e674f5310262440065d1189d52948dfc327b706c8cafb007526ff3df05df8a",
+            "url": "https://repo.almalinux.org/vault/8.9/BaseOS/x86_64/os/Packages/glibc-common-2.28-236.el8_9.13.x86_64.rpm"
+          },
+          {
+            "folder": "binary-glibc-devel",
+            "sha256": "ba78eb42c3a83dec5efb4d70e23532c526a0820ccff8dee31ee783cfcd995185",
+            "url": "https://repo.almalinux.org/vault/8.9/BaseOS/x86_64/os/Packages/glibc-devel-2.28-236.el8_9.13.x86_64.rpm"
+          },
+          {
+            "folder": "binary-glibc-gconv-extra",
+            "sha256": "d7a88ab0c32573c0e67a7615a8d5684a78459ab8958ef9eccc11e7e0ceb27165",
+            "url": "https://repo.almalinux.org/vault/8.9/BaseOS/x86_64/os/Packages/glibc-gconv-extra-2.28-236.el8_9.13.x86_64.rpm"
+          },
+          {
+            "folder": "binary-glibc-headers",
+            "sha256": "06ca75b82882634be4d21163799b31a74a63328f46e462930cbd0c5f51840680",
+            "url": "https://repo.almalinux.org/vault/8.9/BaseOS/x86_64/os/Packages/glibc-headers-2.28-236.el8_9.13.x86_64.rpm"
+          },
+          {
+            "folder": "binary-glibc-static",
+            "sha256": "e62d95f6222546cc3ecc19fd17a1eb35740ef9d489244635a3f54efa001b9d50",
+            "url": "https://repo.almalinux.org/vault/8.9/PowerTools/x86_64/os/Packages/glibc-static-2.28-236.el8_9.13.x86_64.rpm"
+          },
+          {
+            "folder": "binary-kernel-headers",
+            "sha256": "1da03ae05118d6e42bd26efd5a0770d30362109731cbd5bdaef9e0a4f01a7659",
+            "url": "https://repo.almalinux.org/vault/8.9/BaseOS/x86_64/os/Packages/kernel-headers-4.18.0-513.24.1.el8_9.x86_64.rpm"
+          }
+        ]
+      }
+    },
+    "libgcc": {
+      "binary_sha256": "e031634c3a928f9594eba868bc46ef5230d6571a364a0c63215b06c4563bfcea",
+      "patches": {
+        "info/recipe/parent/patches/0001-allow-commands-in-main-specfile.patch": "1896281394e6ad3873feefcdd145cb4d6926133e6a19c409d1f0c25730a6d68b",
+        "info/recipe/parent/patches/0002-patch-zoneinfo_dir_override-to-point-to-our-tzdata.patch": "2d9d5886d15bf8aea136daa2967ea4b12fe153b17dc38e1f188fa610ea591902",
+        "info/recipe/parent/patches/0003-add-ldl-to-libstdc___la_LDFLAGS.patch": "aa3b057286d1b1564694b5fd28b65bf27702da1db6d83db4ea450b9aed06aa4c",
+        "info/recipe/parent/patches/0004-Hardcode-HAVE_ALIGNED_ALLOC-1-in-libstdc-v3-configur.patch": "60749c795d25b09cec3865a37b5da4aa1aba1ac1b46f5f11b364da3c0e257bd9"
+      },
+      "sources": {
+        "info/recipe/meta.yaml": [
+          {
+            "patches": [
+              "patches/0001-allow-commands-in-main-specfile.patch",
+              "patches/0002-patch-zoneinfo_dir_override-to-point-to-our-tzdata.patch",
+              "patches/0003-add-ldl-to-libstdc___la_LDFLAGS.patch",
+              "patches/0004-Hardcode-HAVE_ALIGNED_ALLOC-1-in-libstdc-v3-configur.patch"
+            ],
+            "sha256": "071d00a097579e5ef7ce97fc4a9e58e73fd3503c0a013c765c970370a5a53b9b",
+            "url": [
+              "https://ftp.gnu.org/gnu/gcc/gcc-16.2.0/gcc-16.2.0.tar.gz",
+              "https://mirrors.ocf.berkeley.edu/gnu/gcc/gcc-16.2.0/gcc-16.2.0.tar.gz"
+            ]
+          },
+          {
+            "folder": "zlib2",
+            "sha256": "9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23",
+            "url": "https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz"
+          }
+        ]
+      }
+    },
+    "libgcc-devel_linux-64": {
+      "binary_sha256": "fb09fdc5d12cc929ff0af73fbd7cf33be7b473a46fe11353a21ec1ffa468c657",
+      "patches": {
+        "info/recipe/parent/patches/0001-allow-commands-in-main-specfile.patch": "1896281394e6ad3873feefcdd145cb4d6926133e6a19c409d1f0c25730a6d68b",
+        "info/recipe/parent/patches/0002-patch-zoneinfo_dir_override-to-point-to-our-tzdata.patch": "2d9d5886d15bf8aea136daa2967ea4b12fe153b17dc38e1f188fa610ea591902",
+        "info/recipe/parent/patches/0003-add-ldl-to-libstdc___la_LDFLAGS.patch": "aa3b057286d1b1564694b5fd28b65bf27702da1db6d83db4ea450b9aed06aa4c",
+        "info/recipe/parent/patches/0004-Hardcode-HAVE_ALIGNED_ALLOC-1-in-libstdc-v3-configur.patch": "60749c795d25b09cec3865a37b5da4aa1aba1ac1b46f5f11b364da3c0e257bd9"
+      },
+      "sources": {
+        "info/recipe/meta.yaml": [
+          {
+            "patches": [
+              "patches/0001-allow-commands-in-main-specfile.patch",
+              "patches/0002-patch-zoneinfo_dir_override-to-point-to-our-tzdata.patch",
+              "patches/0003-add-ldl-to-libstdc___la_LDFLAGS.patch",
+              "patches/0004-Hardcode-HAVE_ALIGNED_ALLOC-1-in-libstdc-v3-configur.patch"
+            ],
+            "sha256": "f35aa1c7f14e6bbe5a7fab83abcb7813449aa1dc6d38bbf27b74614dee17db5e",
+            "url": [
+              "https://ftp.gnu.org/gnu/gcc/gcc-14.4.0/gcc-14.4.0.tar.gz",
+              "https://mirrors.ocf.berkeley.edu/gnu/gcc/gcc-14.4.0/gcc-14.4.0.tar.gz"
+            ]
+          },
+          {
+            "folder": "zlib2",
+            "sha256": "9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23",
+            "url": "https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz"
+          }
+        ]
+      }
+    },
+    "sysroot_linux-64": {
+      "binary_sha256": "c47299fe37aebb0fcf674b3be588e67e4afb86225be4b0d452c7eb75c086b851",
+      "patches": {},
+      "sources": {
+        "info/recipe/meta.yaml": [
+          {
+            "folder": "binary-glibc",
+            "sha256": "372270ca0753bd9cf00db5aa854b7e0a6c513edf9cb9d1bceea8cec4796e0bbe",
+            "url": "https://repo.almalinux.org/vault/8.9/BaseOS/x86_64/os/Packages/glibc-2.28-236.el8_9.13.x86_64.rpm"
+          },
+          {
+            "folder": "binary-glibc-all-langpacks",
+            "sha256": "531b421cec19b5e4a2c0589bc45cacec057d6c7d8a8f9f6e4d8023669afbda53",
+            "url": "https://repo.almalinux.org/vault/8.9/BaseOS/x86_64/os/Packages/glibc-all-langpacks-2.28-236.el8_9.13.x86_64.rpm"
+          },
+          {
+            "folder": "binary-glibc-common",
+            "sha256": "62e674f5310262440065d1189d52948dfc327b706c8cafb007526ff3df05df8a",
+            "url": "https://repo.almalinux.org/vault/8.9/BaseOS/x86_64/os/Packages/glibc-common-2.28-236.el8_9.13.x86_64.rpm"
+          },
+          {
+            "folder": "binary-glibc-devel",
+            "sha256": "ba78eb42c3a83dec5efb4d70e23532c526a0820ccff8dee31ee783cfcd995185",
+            "url": "https://repo.almalinux.org/vault/8.9/BaseOS/x86_64/os/Packages/glibc-devel-2.28-236.el8_9.13.x86_64.rpm"
+          },
+          {
+            "folder": "binary-glibc-gconv-extra",
+            "sha256": "d7a88ab0c32573c0e67a7615a8d5684a78459ab8958ef9eccc11e7e0ceb27165",
+            "url": "https://repo.almalinux.org/vault/8.9/BaseOS/x86_64/os/Packages/glibc-gconv-extra-2.28-236.el8_9.13.x86_64.rpm"
+          },
+          {
+            "folder": "binary-glibc-headers",
+            "sha256": "06ca75b82882634be4d21163799b31a74a63328f46e462930cbd0c5f51840680",
+            "url": "https://repo.almalinux.org/vault/8.9/BaseOS/x86_64/os/Packages/glibc-headers-2.28-236.el8_9.13.x86_64.rpm"
+          },
+          {
+            "folder": "binary-glibc-static",
+            "sha256": "e62d95f6222546cc3ecc19fd17a1eb35740ef9d489244635a3f54efa001b9d50",
+            "url": "https://repo.almalinux.org/vault/8.9/PowerTools/x86_64/os/Packages/glibc-static-2.28-236.el8_9.13.x86_64.rpm"
+          },
+          {
+            "folder": "binary-kernel-headers",
+            "sha256": "1da03ae05118d6e42bd26efd5a0770d30362109731cbd5bdaef9e0a4f01a7659",
+            "url": "https://repo.almalinux.org/vault/8.9/BaseOS/x86_64/os/Packages/kernel-headers-4.18.0-513.24.1.el8_9.x86_64.rpm"
+          }
+        ]
+      }
+    }
+  },
+  "cgal_inventory_run": "https://github.com/Archont561/ODM-conda/actions/runs/43203195735",
+  "cgal_inventory_summary": {
+    "bytes": 135675964,
+    "file_count": 7173,
+    "notice_candidate_count": 12,
+    "top_level_notices": {
+      "LICENSE": {
+        "sha256": "fd3dff464988799c21f65397a314eb48eae8288a69ac512967b161e79b92d89e",
+        "size": 1981
+      },
+      "LICENSE.BSL": {
+        "sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+        "size": 1338
+      },
+      "LICENSE.COMMERCIAL": {
+        "sha256": "efe84ac0bdfb270ca3abf0f5e0e547542da82baf9fec7fa85e2685352def0ef4",
+        "size": 340
+      },
+      "LICENSE.GPL": {
+        "sha256": "416213203479e27015c32d9e8b30f80a287962a46750441b2223706cdd392116",
+        "size": 35155
+      },
+      "LICENSE.LGPL": {
+        "sha256": "374a43f625a1b877f6f13719d1bab4ca8791ede604da3e009c3ceda1f6f85489",
+        "size": 7656
+      },
+      "LICENSE.RFL": {
+        "sha256": "3ceccb3129cdd12f0ccc1a176f44ee3ccaeb6e3daf284f8235f65959f22c088f",
+        "size": 1055
+      }
+    }
+  },
+  "downloaded_archive_checks": {
+    "binutils": {
+      "bytes": 40130150,
+      "counts": {
+        "directories": 0,
+        "files": 29638,
+        "links": 0,
+        "other": 0
+      },
+      "roots": [
+        "binutils-2.46.1"
+      ],
+      "sha256": "324ed40ada2633a28eaa5d104ca5db165fd3cc3162cc1d48a7b7fa9c932da439"
+    },
+    "cgal": {
+      "bytes": 26604900,
+      "counts": {
+        "directories": 642,
+        "files": 7173,
+        "links": 0,
+        "other": 0
+      },
+      "roots": [
+        "CGAL-6.2.1"
+      ],
+      "sha256": "b6be77c60765a8456335de991eeaf6ffec55256984e4a9ecc6a97c37bbfe85bf"
+    },
+    "gcc-14": {
+      "bytes": 155339220,
+      "counts": {
+        "directories": 5583,
+        "files": 136142,
+        "links": 0,
+        "other": 0
+      },
+      "roots": [
+        "gcc-14.4.0"
+      ],
+      "sha256": "f35aa1c7f14e6bbe5a7fab83abcb7813449aa1dc6d38bbf27b74614dee17db5e"
+    },
+    "gcc-16": {
+      "bytes": 193311409,
+      "counts": {
+        "directories": 6094,
+        "files": 158985,
+        "links": 0,
+        "other": 0
+      },
+      "roots": [
+        "gcc-16.2.0"
+      ],
+      "sha256": "071d00a097579e5ef7ce97fc4a9e58e73fd3503c0a013c765c970370a5a53b9b"
+    },
+    "zlib": {
+      "bytes": 1512791,
+      "counts": {
+        "directories": 37,
+        "files": 253,
+        "links": 0,
+        "other": 0
+      },
+      "roots": [
+        "zlib-1.3.1"
+      ],
+      "sha256": "9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23"
+    }
+  },
+  "metadata_run": "https://github.com/Archont561/ODM-conda/actions/runs/43202598113",
+  "schema_version": 1,
+  "scope": "Selected binary embedded recipe metadata and independently downloaded archive hashes only; not source closure, binary/source correspondence, installed-byte verification, rights review, or release approval.",
+  "source_hash_run": "https://github.com/Archont561/ODM-conda/actions/runs/43202682687",
+  "trial_inventory_sha256": "0e0add60bc04181a165c763fe466b9c1db754cfa0302bdb3af99d36258d7bd6d"
+}

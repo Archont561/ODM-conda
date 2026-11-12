@@ -200,3 +200,38 @@ containing links cannot be inventoried by this tool without separate review; do
 not weaken the checks to force them through. Record the output digest separately
 if it will be used as evidence. This is not a source bundle, a closure check or
 release clearance. CGAL, Boost and the other sources remain unverified here.
+
+## Selected CGAL and toolchain source checks
+
+For the same single trial inventory, the metadata-only evidence file
+`tetraflow-cgal-toolchain-evidence.json` records selected binary checksums,
+embedded recipe source declarations and embedded patch hashes. In
+[43202598113](https://github.com/Archont561/ODM-conda/actions/runs/43202598113),
+eight selected binary archives were downloaded and matched their inventory
+SHA256 before reading their recipe metadata. Only their info archives were
+read: payloads and installed bytes were not audited. Patch hashes identify
+embedded recipe files; patch contents were not independently verified, applied,
+or reviewed. The GCC 14.4.0 implementation is not the same version as the
+libgcc 16.2.0 runtime selected in this trial.
+
+[43202682687](https://github.com/Archont561/ODM-conda/actions/runs/43202682687)
+independently downloaded and checked the declared SHA256 for CGAL 6.2.1,
+GCC 14.4.0, GCC 16.2.0, binutils 2.46.1, and zlib 1.3.1. Archive member
+counts are only a structural summary, not a full safety, content or notice
+audit. The separately repeated CGAL inspection
+[43203195735](https://github.com/Archont561/ODM-conda/actions/runs/43203195735)
+used the bounded inspector: 7,173 files totaling 135,675,964 uncompressed
+bytes and 12 filename-based notice candidates. The root includes GPL, LGPL,
+BSL, commercial and RFL named license files; the package metadata declares
+`GPL3/LGPL3`. These labels are not a determination of the license or obligations
+of the actual included CGAL components.
+
+The sysroot/kernel-header recipes declare **binary** AlmaLinux RPM inputs, not
+corresponding source; those RPMs and their source packages have not been
+verified or retained. The GCC archives exceed the 50,000-member bounded source
+inspector limit and were not inventoried with it; increasing that limit is not
+implied by this check. Toolchain wrappers, dependencies, build scripts, actual
+static/dynamic inclusion, redistribution obligations and source closure remain
+open. These observations do not prove the binaries were built from the checked
+archives, grant rights, or approve publication. Hosted outputs were discarded;
+no owner-retained sources or bundle were created.
