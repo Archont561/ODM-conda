@@ -212,3 +212,51 @@ def test_vendor_scope_requires_verified_crate_before_build(tmp_path):
     with pytest.raises(ScaffoldError, match='archive'):
         build(dest, PORT, None, reduced_jxl=True, vendor_scope_crate=bad)
     assert not dest.exists()
+
+
+def test_tetraflow_variant_has_distinct_private_identity_and_exact_dependency(tmp_path):
+    from pathlib import Path
+    from common import ScaffoldError
+    from private_odm_bundle import configure_odm_research_recipe
+    source = Path(__file__).resolve().parents[1]/'research/recipes/odm-fast-research/recipe.yaml'
+    recipe = tmp_path/'recipe.yaml'; recipe.write_text(source.read_text())
+    configure_odm_research_recipe(recipe, reduced_jxl=True, vendor_scope=True, openmvs_variant='tetraflow')
+    text = recipe.read_text()
+    assert 'openmvs-tetraflow-research ==0.0.0.dev20260827 research_*_1' in text
+    assert 'openmvs-odm ==0.0.0.dev20260516' not in text
+    assert 'string: research_tetraflow_${{ hash }}_5' in text
+    assert 'odm-research-pillow-jxl-plugin ==1.3.4 research_vendor_scope_*_3' in text
+    malformed = tmp_path/'bad.yaml'; malformed.write_text(source.read_text().replace('openmvs-odm ==0.0.0.dev20260516', 'openmvs-odm ==0'))
+    with pytest.raises(ScaffoldError, match='OpenMVS dependency'):
+        configure_odm_research_recipe(malformed, openmvs_variant='tetraflow')
+    with pytest.raises(ScaffoldError, match='variant'):
+        configure_odm_research_recipe(malformed, openmvs_variant='unknown')
+
+
+def test_tetraflow_replay_checks_linkage_and_rejects_missing_library(tmp_path, monkeypatch):
+    import json
+    from contextlib import contextmanager
+    from types import SimpleNamespace
+    import inventory_conda_environment
+    import private_odm_bundle as mod
+    from common import ScaffoldError
+
+    bundle=tmp_path/'bundle'; (bundle/'channel/linux-64').mkdir(parents=True); (bundle/'channel/noarch').mkdir()
+    for name in ('pixi.toml','pixi.lock','channel/linux-64/repodata.json','channel/noarch/repodata.json','channel/linux-64/example.conda'):
+        (bundle/name).write_text(name)
+    package={'name':'openmvs-tetraflow-research','version':'1','build':'research_1','sha256':'a'*64,'binary_package_url':'http://127.0.0.1/linux-64/example.conda'}
+    (bundle/'conda-inventory.json').write_text(json.dumps({'packages':[package]}))
+    mod.seal(bundle,48179)
+    @contextmanager
+    def loopback(_directory,_port):
+        yield 'http://127.0.0.1:48179'
+    monkeypatch.setattr(mod,'loopback',loopback)
+    monkeypatch.setattr(mod,'run',lambda *_args,**_kwargs: None)
+    monkeypatch.setattr(inventory_conda_environment,'inventory',lambda _prefix: {'packages':[package]})
+    observed=[]
+    monkeypatch.setattr(mod.subprocess,'run',lambda args,**kwargs: (observed.append(args) or SimpleNamespace(stdout='all resolved',stderr='')))
+    mod.replay(bundle)
+    assert len(observed)==1 and observed[0][0]=='ldd' and observed[0][1].endswith('/bin/ReconstructMesh')
+    monkeypatch.setattr(mod.subprocess,'run',lambda *_args,**_kwargs: SimpleNamespace(stdout='libjxl.so => not found',stderr=''))
+    with pytest.raises(ScaffoldError,match='Unresolved TetraFlow'):
+        mod.replay(bundle)
