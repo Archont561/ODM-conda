@@ -24,3 +24,5 @@ jobs:
 # Bounded output per RPM
 
 # Prioritize source identities in bounded annotations
+
+# Compare kernel headers and sysroot recipe sources

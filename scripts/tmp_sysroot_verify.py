@@ -27,6 +27,16 @@ with tempfile.TemporaryDirectory() as tmp:
     if m.name=='info/recipe/meta.yaml' and m.isfile() and m.size<1024*1024:
      recipe=yaml.safe_load(tar.extractfile(m).read()); break
    else: raise ValueError('missing embedded recipe')
+ kernel_record=next(x for x in inventory['build'] if x['name']=='kernel-headers_linux-64')
+ kernel_package=d/'kernel-headers.conda'; download(kernel_record['binary_package_url'],kernel_package,kernel_record['sha256'])
+ with zipfile.ZipFile(kernel_package) as z:
+  n=next(n for n in z.namelist() if n.startswith('info-') and n.endswith('.tar.zst'))
+  with z.open(n) as f, zstandard.ZstdDecompressor().stream_reader(f) as zf, tarfile.open(fileobj=zf,mode='r|') as tar:
+   for m in tar:
+    if m.name=='info/recipe/meta.yaml' and m.isfile() and m.size<1024*1024:
+     kernel_recipe=yaml.safe_load(tar.extractfile(m).read()); break
+   else: raise ValueError('missing kernel recipe')
+ result['kernel_conda']={'sha256':kernel_record['sha256'],'sources_equal_sysroot':kernel_recipe['source']==recipe['source']}
  for item in recipe['source']:
   row={'url':item['url'],'declared_sha256':item['sha256']}
   try:
@@ -67,6 +77,7 @@ with tempfile.TemporaryDirectory() as tmp:
   finally: (d/'source.rpm').unlink(missing_ok=True)
   result['source_rpms'].append(row)
  print('::notice::CONDA '+result['conda_sha256'],flush=True)
+ print('::notice::KERNEL_CONDA '+json.dumps(result['kernel_conda'],sort_keys=True),flush=True)
  print('::notice::REPOMD '+json.dumps(result['repo_metadata'],sort_keys=True),flush=True)
  for row in result['source_rpms']: print('::notice::SRPM '+json.dumps(row,sort_keys=True),flush=True)
  for row in result['inputs']: print('::notice::INPUT '+json.dumps(row,sort_keys=True),flush=True)
