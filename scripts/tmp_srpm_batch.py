@@ -25,6 +25,13 @@ with tempfile.TemporaryDirectory() as tmp:
    prep=[l.strip() for l in lines if re.match(r'^\s*%(?:prep|setup|autosetup|autopatch|patch\d*)\b',l,re.I)]
    build=[l.strip() for l in lines if re.match(r'^\s*%(?:build|install|check)\b',l,re.I)]
    result={'source_rpm':name,'spec_sha256':record['specs'][specname]['sha256'],'patch_declaration_count':len(patch_decls),'patch_declaration_examples':patch_decls[:4], 'prep_directive_count':len(prep),'prep_examples':prep[:12], 'build_directives':build[:12],'nested_archives':[]}
+   result['patch_samples']=[]
+   for patch_name,patch_meta in sorted(record['sample_patches'].items()):
+    patch_file=d/'patch'; extract(rpm,patch_name,patch_file,patch_meta['sha256'])
+    text_patch=patch_file.read_text(encoding='utf8',errors='replace'); patch_lines=text_patch.splitlines()
+    targets=[l[4:] for l in patch_lines if l.startswith('+++ ')][:20]
+    result['patch_samples'].append({'name':patch_name,'sha256':patch_meta['sha256'],'targets':targets,'added_lines':sum(l.startswith('+') and not l.startswith('+++') for l in patch_lines),'removed_lines':sum(l.startswith('-') and not l.startswith('---') for l in patch_lines),'subject':next((l[:180] for l in patch_lines if l.startswith('Subject:')),None)})
+    patch_file.unlink()
    archive_name=next(k for k in record['archives'] if k.startswith(('glibc-2.28.tar','linux-4.18.0-513.24.1')))
    archive=d/'nested'; extract(rpm,archive_name,archive,record['archives'][archive_name]['sha256'])
    counts={'files':0,'dirs':0,'links':0,'other':0}; roots=set(); notices=[]; unsafe=0
