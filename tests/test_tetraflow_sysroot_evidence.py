@@ -34,3 +34,16 @@ def test_signature_evidence_covers_recorded_rpms():
     assert signatures['errors'] == []
     assert signatures['key']['fingerprints'][0] == '5E9B8F5617B5066CE92057C3488FCF7C3ABB34F8'
     assert all(any('Signature' in line and 'OK' in line for line in r['signature_lines']) for r in checks)
+
+
+def test_payload_evidence_matches_recorded_source_rpms():
+    evidence = json.loads((ROOT / 'research/tetraflow-sysroot-rpm-evidence.json').read_text())
+    signatures = json.loads((ROOT / 'research/tetraflow-sysroot-signature-evidence.json').read_text())
+    payloads = json.loads((ROOT / 'research/tetraflow-srpm-payload-evidence.json').read_text())['source_rpms']
+    expected = {r['filename']: r['observed_sha256'] for r in evidence['source_rpm_checks']}
+    assert {p['source_rpm']: p['source_rpm_sha256'] for p in payloads} == expected
+    listed = {r['name']: r for r in signatures['rpm_checks']}
+    for payload in payloads:
+        assert payload['file_count'] == listed[payload['source_rpm']]['file_count']
+        assert payload['patch_count'] == listed[payload['source_rpm']]['patch_count']
+        assert set(payload['specs']) == set(listed[payload['source_rpm']]['spec_files'])

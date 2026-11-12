@@ -1,0 +1,86 @@
+{
+  "manifest_format": "UTF-8 JSON sorted object of cpio entry names to {\"sha256\": digest, \"size\": byte_count}, sorted keys, separators comma/colon, no whitespace or final newline; patch manifest retains only .patch and .diff names case-insensitively.",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43326206675",
+  "schema_version": 1,
+  "scope": "Selected source RPM payload entry hashes without extraction; nested archives, patch semantics, actual build use, complete source obligations, and legal rights remain unverified.",
+  "source_rpms": [
+    {
+      "archives": {
+        "glibc-2.28.tar.xz": {
+          "sha256": "b1900051afad76f7a4f73e71413df4826dce085ef8ddb785a945b66d7d513082",
+          "size": 16484344
+        }
+      },
+      "file_count": 873,
+      "file_manifest_sha256": "0e319ec7273b67f202be95068595bfbeb128a17ea8643cbb1f486006ea45e91d",
+      "patch_count": 863,
+      "patch_manifest_sha256": "c18d986d2b5ed23272a68d5227a592b124af411756a14f9d20153878e31985e4",
+      "sample_patches": {
+        "glibc-RHEL-21519.patch": {
+          "sha256": "43eb604c5e9c37444c307cba11228a61a224d8c46b5afd87f37dddf25021a897",
+          "size": 5075
+        },
+        "glibc-RHEL-21522-1.patch": {
+          "sha256": "bbffc3af62a151d5e9408c64fb5b38b0669b850ca35e20ff131e948a91adb956",
+          "size": 1091
+        },
+        "glibc-RHEL-21522-2.patch": {
+          "sha256": "abdb8b7e82b0af6ff1fd4974198d2376d47d9b7211c0ecf75ba392c4b669712a",
+          "size": 3866
+        }
+      },
+      "source_rpm": "glibc-2.28-236.el8_9.13.src.rpm",
+      "source_rpm_sha256": "471828a3273bc3ea60ce2d3a67a9bb2ef0921ca9152df3cc15c046dde5bb3263",
+      "specs": {
+        "glibc.spec": {
+          "sha256": "9c70942082093035a35b0af31890310e78966e851e74863eedf06afd418abdf8",
+          "size": 172017
+        }
+      },
+      "uncompressed_bytes": 22966882
+    },
+    {
+      "archives": {
+        "kernel-abi-stablelists-4.18.0-513.tar.bz2": {
+          "sha256": "24e522c06896ada3ea70c77e4742f72358ccf43fa1a2cae323a0d69b067f4edd",
+          "size": 10918
+        },
+        "kernel-kabi-dw-4.18.0-513.tar.bz2": {
+          "sha256": "e92f3e4018be02d1b9d8b89854e35a5551e34bd24e243ab78a58981ffc93bfbf",
+          "size": 1086
+        },
+        "linux-4.18.0-513.24.1.el8_9.tar.xz": {
+          "sha256": "308c32fce191a6dcead573cd56009f2757bc2c8d309b5a2a17460227509a5464",
+          "size": 124321676
+        }
+      },
+      "file_count": 46,
+      "file_manifest_sha256": "cf5017232cb851d0ab61c08e9c8ad3e2486d2f63fa512dcf933d51801b20479f",
+      "patch_count": 3,
+      "patch_manifest_sha256": "012ff1defaf9ea9a048473566df9733e510ae8182c8b2b60f4626387fca6e1b3",
+      "sample_patches": {
+        "debrand-rh-i686-cpu.patch": {
+          "sha256": "fdb0810c940df84e17f19b10f309d9740906104b7562cc7056ac54443b2473a9",
+          "size": 404
+        },
+        "debrand-single-cpu.patch": {
+          "sha256": "cc6f773de9ff3e74883b15482b4d6fa538e9e02fbffc5be3837a23f1f70cf962",
+          "size": 758
+        },
+        "linux-kernel-test.patch": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        }
+      },
+      "source_rpm": "kernel-4.18.0-513.24.1.el8_9.src.rpm",
+      "source_rpm_sha256": "4d0d08fc5ff422ac1b959a9d35414c95db9931c58a86776d167ae95dc626169f",
+      "specs": {
+        "kernel.spec": {
+          "sha256": "490123bf1f89834258293412f8181f77c5099bac5c882cf7fbe560c95e7d8af6",
+          "size": 10651945
+        }
+      },
+      "uncompressed_bytes": 136569559
+    }
+  ]
+}

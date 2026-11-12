@@ -254,3 +254,24 @@ completeness or the contents of nested source archives. The RPM payloads,
 patches and build instructions have not been reviewed or retained. Neither the
 signature checks nor the listings verify which files were used, linked or
 shipped in the trial, or authorize publication.
+
+### Bounded source RPM payload hashing
+
+In [43326206675](https://github.com/Archont561/ODM-conda/actions/runs/43326206675),
+the two source RPMs were downloaded again and matched the previously verified
+RPM hashes. Their cpio payloads were streamed without extraction; the probe
+rejected unsafe paths, duplicate names, links, special files and oversized
+entries, and calculated a SHA256 and size for each regular file. The resulting
+summary, spec hashes, nested archive hashes, selected patch hashes and hashes of
+the full entry and patch manifests are in `tetraflow-srpm-payload-evidence.json`.
+The manifest digest format is documented in that file; the full manifests and
+sources were not retained. Counts match the earlier filename listings: 873
+entries and 863 patch/diff-named files for glibc, 46 entries and three such
+patch files for the kernel. One kernel patch-named file is empty; that alone
+does not determine whether or how it is used.
+
+This is an entry-level integrity inventory, not semantic patch review: nested
+tarballs were hashed but not opened, spec conditionals and build instructions
+were not evaluated, patches were not applied, and actual linkage, corresponding
+source completeness and legal obligations remain unverified. No owner-retained
+source bundle was created and no release approval is implied.
