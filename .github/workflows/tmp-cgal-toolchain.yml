@@ -18,4 +18,4 @@ jobs:
           pixi-version: v0.82.0
           locked: true
           environments: default agent-tools
-      - run: pixi run python scripts/tmp_cgal_toolchain_sources.py
+      - run: pixi run python scripts/tmp_cgal_inspect.py
