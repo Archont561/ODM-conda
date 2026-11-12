@@ -8,7 +8,7 @@ from package_archive import read_package
 
 inventory=json.loads(Path('research/tetraflow-build-input-inventory.json').read_text())
 for item in inventory['host']:
-    if item['name'] not in ('cgal-cpp','nanoflann','libboost-devel','libjpeg-turbo'): continue
+    if item['name'] not in ('cgal-cpp','nanoflann','libboost-devel'): continue
     with tempfile.TemporaryDirectory(prefix='tetra-dep-') as temp:
         target=Path(temp)/item['fn']
         urllib.request.urlretrieve(item['binary_package_url'],target)

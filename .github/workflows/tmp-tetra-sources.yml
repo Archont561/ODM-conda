@@ -28,3 +28,5 @@ jobs:
           tail -40 /tmp/probe-sources.log | python -c 'import sys; print("::notice::"+sys.stdin.read()[-3000:].replace("%", "%25").replace("\n", "%0A"))'
 
 # Probe legacy recipe metadata
+
+# Avoid link-containing payload in bounded reader
