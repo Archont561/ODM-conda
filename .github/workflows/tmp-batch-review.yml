@@ -1,0 +1,33 @@
+name: Temporary sysroot review and linkage probe
+on:
+  push:
+    branches: [arena/870d0657-odm-conda]
+    paths: [.github/workflows/tmp-batch-review.yml]
+permissions:
+  contents: read
+jobs:
+  specs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq rpm2cpio cpio
+      - run: python3 scripts/tmp_srpm_batch.py
+  linkage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default agent-tools
+      - name: Build private research package
+        run: pixi run rattler-build build --recipe research/recipes/openmvs-tetraflow-research/recipe.yaml --target-platform linux-64 --variant-config recipes/variants.yaml --channel conda-forge --channel-priority strict --output-dir /tmp/odm-tetra-link
+      - name: Inspect ELF metadata
+        run: pixi run python scripts/tmp_linkage_batch.py
