@@ -14,8 +14,14 @@ for item in inventory['host']:
         urllib.request.urlretrieve(item['binary_package_url'],target)
         assert hashlib.sha256(target.read_bytes()).hexdigest()==item['sha256']
         info,_=read_package(target)
-        recipe=yaml.safe_load(info['info/recipe/rendered_recipe.yaml'])
-        keys = ['finalized_sources','recipe']
-        source={key:recipe.get(key) for key in keys}
-        if isinstance(source.get('recipe'),dict): source['recipe']={'source':source['recipe'].get('source')}
-        print('::notice::SOURCE-'+item['name']+' '+json.dumps(source,sort_keys=True)[:2800],flush=True)
+        names=sorted(n for n in info if n.startswith('info/recipe/'))
+        print('::notice::RECIPEFILES-'+item['name']+' '+repr(names)[:2700], flush=True)
+        for filename in ('info/recipe/rendered_recipe.yaml','info/recipe/recipe.yaml','info/recipe/meta.yaml'):
+            if filename not in info: continue
+            try:
+                recipe=yaml.safe_load(info[filename])
+                if isinstance(recipe,dict):
+                    val={'source':recipe.get('source'),'finalized_sources':recipe.get('finalized_sources')}
+                    if 'recipe' in recipe and isinstance(recipe['recipe'],dict): val['recipe_source']=recipe['recipe'].get('source')
+                    print('::notice::SOURCE-'+item['name']+' '+json.dumps(val,sort_keys=True)[:2700],flush=True)
+            except Exception as error: print('::notice::PARSE-'+item['name']+' '+str(error)[:400],flush=True)
