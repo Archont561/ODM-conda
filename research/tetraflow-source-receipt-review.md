@@ -165,9 +165,38 @@ Boost 1.90.0 source SHA256
 `49551aff3b22cbc5c5a9ed3dbc92f0e23ea50a0f7325b0d198b705e8ee3fc305`
 with a recipe patch, and nanoflann 2.0.1 source SHA256
 `bb3991ad924248d3f20953a951c34878196c11ca112d800acc341c3808443896`.
-These are recipe declarations, not source downloads or independent source
-verification. The remaining binaries, recipes, patches, toolchain, transitive
+Those probe results are recipe declarations, not source downloads or independent
+source verification. The remaining binaries, recipes, patches, toolchain, transitive
 sources and any corresponding-source or notice obligations remain uncollected
 and unreviewed. A prior probe encountered a link in a libjpeg-turbo package and
 correctly stopped rather than relaxing the starter-package archive guard.
 No source archives, binary packages or datasets were published by these probes.
+
+## Independent nanoflann archive check
+
+For the trial's host `nanoflann 2.0.1` package, the source declaration above
+matches the SHA256 of the separately downloaded
+[upstream tag archive](https://codeload.github.com/jlblancoc/nanoflann/tar.gz/refs/tags/2.0.1).
+The archive was inventoried without extraction: 131 regular files, 2,293,071
+bytes, no links or special entries accepted. The filename heuristic identified
+`COPYING` (SHA256 `12e2e0baacf7fa6291e6058a7cd0e680d9b7c1e29df791ac2695e3cb9517b9d7`)
+and `.circleci/clang_git_format/LICENSE`; this is not a complete notice review.
+The archive and full file inventory were temporary and were not published or
+retained by the owner. A matching source declaration does not prove the binary
+was built from it, that its contents were linked or shipped, or that any legal
+obligations are fulfilled.
+
+For another caller-supplied source archive and independently recorded digest:
+
+```sh
+pixi run python scripts/inspect_dependency_source.py \
+  --archive /private/source.tar.gz --sha256 <expected-sha256> --root <archive-root> \
+  > /private/source-inventory.json
+```
+
+The bounded inspector also accepts bzip2 and xz tar archives, rejects links,
+special files and unsafe paths, and does not extract or retain source. Archives
+containing links cannot be inventoried by this tool without separate review; do
+not weaken the checks to force them through. Record the output digest separately
+if it will be used as evidence. This is not a source bundle, a closure check or
+release clearance. CGAL, Boost and the other sources remain unverified here.
