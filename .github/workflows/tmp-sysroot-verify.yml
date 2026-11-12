@@ -19,4 +19,4 @@ jobs:
           locked: true
           environments: default agent-tools
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq rpm
-      - run: pixi run python scripts/tmp_sysroot_paths.py
+      - run: pixi run python scripts/tmp_sysroot_verify.py

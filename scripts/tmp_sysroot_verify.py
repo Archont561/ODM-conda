@@ -1,4 +1,4 @@
-import hashlib, json, subprocess, tarfile, tempfile, urllib.request, zipfile
+import hashlib, json, subprocess, tarfile, tempfile, urllib.request, zipfile, gzip, bz2, lzma, xml.etree.ElementTree as ET
 from pathlib import Path
 import yaml, zstandard
 
@@ -35,14 +35,34 @@ with tempfile.TemporaryDirectory() as tmp:
   except Exception as e: row['error']=str(e)[:250]
   finally: (d/'binary.rpm').unlink(missing_ok=True)
   result['inputs'].append(row)
+ repobase='https://repo.almalinux.org/vault/8.9/BaseOS/Source/'
+ metadata={}
+ try:
+  repomd=urllib.request.urlopen(repobase+'repodata/repomd.xml',timeout=90).read()
+  xml=ET.fromstring(repomd); ns={'r':'http://linux.duke.edu/metadata/repo'}
+  primary=xml.find("r:data[@type='primary']",ns)
+  primary_location=primary.find('r:location',ns).attrib['href']
+  expected=primary.find('r:checksum',ns).text
+  raw=urllib.request.urlopen(repobase+primary_location,timeout=90).read()
+  if hashlib.sha256(raw).hexdigest()!=expected: raise ValueError('primary metadata hash mismatch')
+  if primary_location.endswith('.gz'): raw=gzip.decompress(raw)
+  elif primary_location.endswith('.bz2'): raw=bz2.decompress(raw)
+  elif primary_location.endswith('.xz'): raw=lzma.decompress(raw)
+  else: raise ValueError('unknown primary compression')
+  root=ET.fromstring(raw); c={'c':'http://linux.duke.edu/metadata/common'}
+  for package in root.findall('c:package',c):
+   location=package.find('c:location',c).attrib['href']; check=package.find('c:checksum',c)
+   if check.attrib.get('type')=='sha256': metadata[location.rsplit('/',1)[-1]]=check.text
+  result['repo_metadata']={'repomd_observed_sha256':hashlib.sha256(repomd).hexdigest(),'primary_sha256':expected,'primary_location':primary_location}
+ except Exception as e: result['repo_metadata']={'error':str(e)[:250]}
  source_names=sorted({x['rpm_identity'].split('|')[-1] for x in result['inputs'] if 'rpm_identity' in x})
  for name in source_names:
   row={'filename':name}
   try:
    if '/' in name or not name.endswith('.src.rpm'): raise ValueError('unexpected source RPM name')
-   url='https://repo.almalinux.org/vault/8.9/BaseOS/Source/SPackages/'+name
-   path=d/'source.rpm'; digest,size=download(url,path)
-   row.update({'url':url,'observed_sha256':digest,'bytes':size,'rpm_identity':rpmquery(path)})
+   url='https://repo.almalinux.org/vault/8.9/BaseOS/Source/Packages/'+name
+   path=d/'source.rpm'; expected=metadata.get(name); digest,size=download(url,path,expected)
+   row.update({'url':url,'observed_sha256':digest,'repository_sha256':expected,'bytes':size,'rpm_identity':rpmquery(path)})
   except Exception as e: row['error']=str(e)[:250]
   finally: (d/'source.rpm').unlink(missing_ok=True)
   result['source_rpms'].append(row)
