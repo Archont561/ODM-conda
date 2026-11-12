@@ -127,7 +127,12 @@ exposed a transcription error in the pinned Eigen MPL2 hash. The hash was
 corrected to the archive's value; the independent package build, retest and
 bounded audit passed in [43119773206](https://github.com/Archont561/ODM-conda/actions/runs/43119773206).
 
-A complete repeat using the new builder was started as
-[43120174240](https://github.com/Archont561/ODM-conda/actions/runs/43120174240);
-its result was pending when this section was written. These hosted trials
-discard binaries, sources, locks and dataset outputs rather than uploading them.
+The complete repeat using the new builder
+[43120174240](https://github.com/Archont561/ODM-conda/actions/runs/43120174240)
+passed the package builds and selected research audits, relocated locked replay,
+linkage and JPEG XL checks, Seneca fast-orthophoto processing and raster sanity.
+The full run used the audit before its subsequent stricter exact constraint parser;
+the parser change has local negative and positive unit tests. These hosted trials
+discarded binaries, sources, locks and dataset outputs rather than uploading them.
+This success is not an owner-retained bundle or a legal, security, quality,
+source-completeness or release approval.
