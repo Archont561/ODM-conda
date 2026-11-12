@@ -45,7 +45,7 @@ def inspect_archive(path: Path, expected_digest: str, root_name: str) -> dict:
     seen = set()
     total = 0
     try:
-        with tarfile.open(path, 'r:gz') as archive:
+        with tarfile.open(path, 'r:*') as archive:
             for member in archive:
                 name = member.name
                 parts = PurePosixPath(name).parts
