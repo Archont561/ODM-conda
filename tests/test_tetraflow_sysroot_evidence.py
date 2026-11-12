@@ -47,3 +47,19 @@ def test_payload_evidence_matches_recorded_source_rpms():
         assert payload['file_count'] == listed[payload['source_rpm']]['file_count']
         assert payload['patch_count'] == listed[payload['source_rpm']]['patch_count']
         assert set(payload['specs']) == set(listed[payload['source_rpm']]['spec_files'])
+
+
+def test_batch_review_references_prior_payload_and_trial():
+    payloads = json.loads((ROOT / 'research/tetraflow-srpm-payload-evidence.json').read_text())['source_rpms']
+    batch = json.loads((ROOT / 'research/tetraflow-batch-review-evidence.json').read_text())
+    by_name = {p['source_rpm']: p for p in payloads}
+    assert len(batch['specs']) == 2
+    for spec in batch['specs']:
+        source = by_name[spec['source_rpm']]
+        assert spec['spec_sha256'] in {s['sha256'] for s in source['specs'].values()}
+        for patch in spec['patch_samples']:
+            assert patch['sha256'] == source['sample_patches'][patch['name']]['sha256']
+        for archive in spec['nested_archives']:
+            assert archive['sha256'] == source['archives'][archive['name']]['sha256']
+    assert batch['linkage']['selected_binary_inputs'] == batch['linkage']['previous_trial_selected_inputs']
+    assert 'libc.so.6' in batch['linkage']['needed']

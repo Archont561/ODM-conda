@@ -1,0 +1,204 @@
+{
+  "linkage": {
+    "glibc_version_names": [
+      "GLIBC_2.14",
+      "GLIBC_2.2.5",
+      "GLIBC_2.27",
+      "GLIBC_2.3",
+      "GLIBC_2.4"
+    ],
+    "needed": [
+      "libgomp.so.1",
+      "libpthread.so.0",
+      "libboost_iostreams.so.1.90.0",
+      "libboost_program_options.so.1.90.0",
+      "libboost_serialization.so.1.90.0",
+      "libopencv_imgcodecs.so.413",
+      "libopencv_imgproc.so.413",
+      "libopencv_core.so.413",
+      "libpng16.so.16",
+      "libjpeg.so.8",
+      "libjxl.so.0.11",
+      "libtiff.so.6",
+      "libgmp.so.10",
+      "libstdc++.so.6",
+      "libm.so.6",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "ld-linux-x86-64.so.2"
+    ],
+    "package": {
+      "build": "research_873e7db_1",
+      "name": "openmvs-tetraflow-research",
+      "sha256": "ead14ee57f72f6dc85dc8b56aab898f59178302aa5baa61243fec043b5cfe095",
+      "subdir": "linux-64",
+      "version": "0.0.0.dev20260827"
+    },
+    "previous_trial_selected_inputs": {
+      "cgal-cpp": "232ea63938c3582460c5767e118fc205963bc0d8c331885b2020ef1c5d0c83a5",
+      "gcc_impl_linux-64": "fe3d0c2cbd59755ddd8364c79b8e1a09b3125581d9df07170f102bc150740632",
+      "kernel-headers_linux-64": "41557eeadf641de6aeae49486cef30d02a6912d8da98585d687894afd65b356a",
+      "libgcc": "e031634c3a928f9594eba868bc46ef5230d6571a364a0c63215b06c4563bfcea",
+      "sysroot_linux-64": "c47299fe37aebb0fcf674b3be588e67e4afb86225be4b0d452c7eb75c086b851"
+    },
+    "scope": "one fresh research output; ELF metadata, not full runtime dependency or static linkage proof",
+    "selected_binary_inputs": {
+      "cgal-cpp": "232ea63938c3582460c5767e118fc205963bc0d8c331885b2020ef1c5d0c83a5",
+      "gcc_impl_linux-64": "fe3d0c2cbd59755ddd8364c79b8e1a09b3125581d9df07170f102bc150740632",
+      "kernel-headers_linux-64": "41557eeadf641de6aeae49486cef30d02a6912d8da98585d687894afd65b356a",
+      "libgcc": "e031634c3a928f9594eba868bc46ef5230d6571a364a0c63215b06c4563bfcea",
+      "sysroot_linux-64": "c47299fe37aebb0fcf674b3be588e67e4afb86225be4b0d452c7eb75c086b851"
+    }
+  },
+  "linkage_run": "https://github.com/Archont561/ODM-conda/actions/runs/43326802574",
+  "schema_version": 1,
+  "scope": "Bounded static metadata observations; not semantic patch review, source completeness, executable provenance, full linkage or distribution approval.",
+  "spec_review_run": "https://github.com/Archont561/ODM-conda/actions/runs/43327384541",
+  "specs": [
+    {
+      "build_directives": [
+        "%build",
+        "%install",
+        "%check"
+      ],
+      "nested_archives": [
+        {
+          "counts": {
+            "dirs": 679,
+            "files": 16881,
+            "links": 1,
+            "other": 0
+          },
+          "name": "glibc-2.28.tar.xz",
+          "root_notice_candidates": [
+            "glibc-2.28/COPYING",
+            "glibc-2.28/COPYING.LIB",
+            "glibc-2.28/LICENSES"
+          ],
+          "roots": [
+            "glibc-2.28"
+          ],
+          "sha256": "b1900051afad76f7a4f73e71413df4826dce085ef8ddb785a945b66d7d513082",
+          "unsafe_path_count": 0
+        }
+      ],
+      "patch_declaration_count": 863,
+      "patch_declaration_examples": [
+        "Patch2: glibc-fedora-nscd.patch",
+        "Patch3: glibc-rh697421.patch",
+        "Patch4: glibc-fedora-linux-tcsetattr.patch",
+        "Patch5: glibc-rh741105.patch"
+      ],
+      "patch_samples": [
+        {
+          "added_lines": 29,
+          "name": "glibc-RHEL-21519.patch",
+          "removed_lines": 13,
+          "sha256": "43eb604c5e9c37444c307cba11228a61a224d8c46b5afd87f37dddf25021a897",
+          "subject": null,
+          "targets": [
+            "b/elf/dl-close.c",
+            "b/elf/dl-sort-maps.c",
+            "b/elf/dso-sort-tests-1.def"
+          ]
+        },
+        {
+          "added_lines": 3,
+          "name": "glibc-RHEL-21522-1.patch",
+          "removed_lines": 3,
+          "sha256": "bbffc3af62a151d5e9408c64fb5b38b0669b850ca35e20ff131e948a91adb956",
+          "subject": null,
+          "targets": [
+            "b/elf/dl-reloc.c"
+          ]
+        },
+        {
+          "added_lines": 47,
+          "name": "glibc-RHEL-21522-2.patch",
+          "removed_lines": 39,
+          "sha256": "abdb8b7e82b0af6ff1fd4974198d2376d47d9b7211c0ecf75ba392c4b669712a",
+          "subject": null,
+          "targets": [
+            "b/elf/dl-open.c"
+          ]
+        }
+      ],
+      "prep_directive_count": 2,
+      "prep_examples": [
+        "%prep",
+        "%autosetup -n %{glibcsrcdir} -p1"
+      ],
+      "source_rpm": "glibc-2.28-236.el8_9.13.src.rpm",
+      "spec_sha256": "9c70942082093035a35b0af31890310e78966e851e74863eedf06afd418abdf8"
+    },
+    {
+      "build_directives": [
+        "%build",
+        "%install"
+      ],
+      "nested_archives": [
+        {
+          "counts": {
+            "dirs": 4478,
+            "files": 68250,
+            "links": 36,
+            "other": 0
+          },
+          "name": "linux-4.18.0-513.24.1.el8_9.tar.xz",
+          "root_notice_candidates": [
+            "linux-4.18.0-513.24.1.el8_9/COPYING",
+            "linux-4.18.0-513.24.1.el8_9/LICENSES"
+          ],
+          "roots": [
+            "linux-4.18.0-513.24.1.el8_9"
+          ],
+          "sha256": "308c32fce191a6dcead573cd56009f2757bc2c8d309b5a2a17460227509a5464",
+          "unsafe_path_count": 0
+        }
+      ],
+      "patch_declaration_count": 3,
+      "patch_declaration_examples": [
+        "Patch999999: linux-kernel-test.patch",
+        "Patch1000: debrand-single-cpu.patch",
+        "Patch1002: debrand-rh-i686-cpu.patch"
+      ],
+      "patch_samples": [
+        {
+          "added_lines": 1,
+          "name": "debrand-rh-i686-cpu.patch",
+          "removed_lines": 1,
+          "sha256": "fdb0810c940df84e17f19b10f309d9740906104b7562cc7056ac54443b2473a9",
+          "subject": null,
+          "targets": [
+            "b/arch/x86/boot/main.c\t2019-05-25 14:31:21.043272496 -0700"
+          ]
+        },
+        {
+          "added_lines": 1,
+          "name": "debrand-single-cpu.patch",
+          "removed_lines": 1,
+          "sha256": "cc6f773de9ff3e74883b15482b4d6fa538e9e02fbffc5be3837a23f1f70cf962",
+          "subject": null,
+          "targets": [
+            "b/arch/x86/kernel/setup.c\t2019-05-27 08:35:54.580595314 -0700"
+          ]
+        },
+        {
+          "added_lines": 0,
+          "name": "linux-kernel-test.patch",
+          "removed_lines": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "subject": null,
+          "targets": []
+        }
+      ],
+      "prep_directive_count": 2,
+      "prep_examples": [
+        "%prep",
+        "%setup -q -n %{name}-%{specversion}-%{pkgrelease} -c"
+      ],
+      "source_rpm": "kernel-4.18.0-513.24.1.el8_9.src.rpm",
+      "spec_sha256": "490123bf1f89834258293412f8181f77c5099bac5c882cf7fbe560c95e7d8af6"
+    }
+  ]
+}

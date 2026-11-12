@@ -275,3 +275,43 @@ tarballs were hashed but not opened, spec conditionals and build instructions
 were not evaluated, patches were not applied, and actual linkage, corresponding
 source completeness and legal obligations remain unverified. No owner-retained
 source bundle was created and no release approval is implied.
+
+## Batch spec, source-archive and executable observations
+
+The bounded metadata in `tetraflow-batch-review-evidence.json` combines two
+hosted probes. In
+[43327384541](https://github.com/Archont561/ODM-conda/actions/runs/43327384541),
+the checked source RPM spec files and six already-hashed sample patch files
+were read without running the spec or applying patches. The glibc spec has 863
+literal `Patch` declarations and a `%autosetup` directive; the kernel spec has
+three literal patch declarations and a `%setup` directive. The samples record
+diff target names and line counts, not semantic approval or proof that any
+specific conditional patch was applied. All other glibc patches and spec
+conditions still need substantive review.
+
+The nested glibc and kernel tarballs were hash-matched to the earlier RPM-entry
+inventory and listed, not extracted. The listing found respectively 16,881 and
+68,250 regular entries, and one and 36 link entries. No member path contained
+an absolute path, `..`, or backslash; link **targets**, duplicate paths and file
+contents were not audited, and filename-based notice candidates are not a
+complete license inventory. Do not extract these archives as trusted inputs on
+the strength of this observation.
+
+A fresh research build in
+[43326802574](https://github.com/Archont561/ODM-conda/actions/runs/43326802574)
+passed its recipe tests, including the recipe's `ldd` missing-library check
+and synthetic fixtures. `readelf` on that output recorded direct `NEEDED`
+entries including `libc.so.6`, `libgcc_s.so.1`, `libstdc++.so.6`, OpenCV,
+Boost and `libjxl.so.0.11`; its GLIBC symbol-version names range up to
+`GLIBC_2.27`. The five selected compiler, CGAL and sysroot binary package hashes
+matched the earlier trial's recorded inputs, not necessarily the entire solve.
+The new output package hash is
+`ead14ee57f72f6dc85dc8b56aab898f59178302aa5baa61243fec043b5cfe095`;
+it was discarded. Direct ELF entries and a test-environment `ldd` do not prove
+transitive runtime contents, statically linked source inclusion, deployment on
+all target systems, or complete corresponding-source obligations.
+
+No owner-controlled destination or access was provided. The existing private
+bundle commands above can be run by the owner on a suitable host, but that
+bundle is not an offline or source-complete release bundle. Do not publish it
+or infer legal approval from these probes.
