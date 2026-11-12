@@ -22,3 +22,5 @@ jobs:
       - run: pixi run python scripts/tmp_sysroot_verify.py
 
 # Bounded output per RPM
+
+# Prioritize source identities in bounded annotations
