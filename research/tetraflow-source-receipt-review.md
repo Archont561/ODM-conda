@@ -200,3 +200,32 @@ containing links cannot be inventoried by this tool without separate review; do
 not weaken the checks to force them through. Record the output digest separately
 if it will be used as evidence. This is not a source bundle, a closure check or
 release clearance. CGAL, Boost and the other sources remain unverified here.
+
+## Selected sysroot and kernel-header RPM checks
+
+The metadata-only `tetraflow-sysroot-rpm-evidence.json` covers the sysroot and
+kernel-header packages in the single recorded trial inventory, not every
+machine or every build. In hosted runs
+[43323781520](https://github.com/Archont561/ODM-conda/actions/runs/43323781520)
+and [43323995567](https://github.com/Archont561/ODM-conda/actions/runs/43323995567),
+the two selected Conda package archives matched the recorded package hashes;
+their embedded recipes declare the same eight binary AlmaLinux RPM inputs.
+Those eight downloaded binary RPMs matched their respective recipe SHA256 values.
+Their RPM headers name two source RPMs:
+
+| Source RPM named by binary headers | Downloaded SHA256 |
+| --- | --- |
+| glibc-2.28-236.el8_9.13.src.rpm | `471828a3273bc3ea60ce2d3a67a9bb2ef0921ca9152df3cc15c046dde5bb3263` |
+| kernel-4.18.0-513.24.1.el8_9.src.rpm | `4d0d08fc5ff422ac1b959a9d35414c95db9931c58a86776d167ae95dc626169f` |
+
+Both downloaded source RPM hashes matched their entries in the AlmaLinux vault
+primary repository metadata; that primary metadata matched the checksum in the
+retrieved repomd. This is a same-repository consistency check, **not an
+independently authenticated checksum or signature verification**. The RPM
+headers were queried, not their payloads extracted or audited. Their claimed
+source-RPM names do not prove how the binary RPMs or Conda packages were built,
+what sysroot files were used or shipped, or whether the source RPM payloads and
+patches satisfy any obligations. The RPMs and repository metadata were
+transient and discarded; no owner-retained source bundle was created. Source
+closure, signature trust, toolchain patch review, linkage and license review
+remain open, and release gates are unchanged.
