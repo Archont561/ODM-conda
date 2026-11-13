@@ -252,3 +252,41 @@ previous standalone trial. The new binary, lock, dataset and outputs were also
 discarded. Package metadata matching is not installed-file byte verification,
 and this result does not replace a retained final candidate, corresponding-source
 bundle, rights review, final release solve or owner approval.
+
+### Owner-controlled candidate and source-input handoff
+
+`pixi run python scripts/private_orthophoto_candidate.py --destination /private/new-candidate`
+creates a mode-0700 directory **outside the checkout**, builds and fresh-tests
+the OpenCV 4.13 candidate, audits it, and retains the exact binary, a source-input
+archive assembled from the same staged recipe, and a SHA256 receipt. A failed
+build removes the new directory. Keep the directory under owner control, record
+the receipt hashes independently, and do not upload it through public CI.
+The source archive includes the pinned upstream archive and staged packaging;
+it is not a complete dependency-source offer, legal clearance, or proof that
+its future SOURCE.txt URL exists. Build inputs are fetched separately and a new
+solve can differ. The generic source-bundle README describes the maintained
+build path; the staged candidate is research-only and its gates are closed.
+
+To test *those exact retained package bytes* in the research stack, run
+`pixi run python scripts/private_odm_bundle.py build` with a fresh private
+`--destination`, `--openmvs-variant tetraflow`, `--runtime-profile reduced`, a
+verified `--vendor-scope-crate`, `--dataset` pointing to the pinned Seneca copy,
+`--orthophoto-candidate`, `--orthophoto-package` pointing at the retained
+package, and `--orthophoto-sha256` set to its independently recorded digest.
+The builder checks the identity and digest, retests and audits the supplied
+package, then verifies its lock selection and performs the relocated replay. It
+retains the resulting private bundle at the destination; record its printed
+manifest hash separately. It does not automatically copy the source archive
+into that bundle; retain the handoff directory alongside it. Existing code does
+not verify all installed file bytes or all third-party source and rights.
+
+The hosted [handoff rehearsal 43467653475](https://github.com/Archont561/ODM-conda/actions/runs/43467653475)
+verified the source manifest against 443 archive entries. A second
+[trial 43467930205](https://github.com/Archont561/ODM-conda/actions/runs/43467930205)
+assembled another candidate and source archive, checked all 444 manifest entries,
+then used the exact candidate package hash in the private TetraFlow build,
+package retest, locked relocated replay, JPEG XL fixture and Seneca pipeline.
+The resulting 432-record inventory matched on replay. Bounded trial metadata is
+in [`odm-orthophoto-handoff-integration.json`](odm-orthophoto-handoff-integration.json).
+Both hosted trials discarded their inputs and outputs. Their hashes cannot
+reconstruct those files and neither trial is a final retained release candidate.

@@ -348,3 +348,27 @@ def test_external_candidate_validates_digest_before_archive_read(tmp_path):
     with pytest.raises(ScaffoldError, match='digest'):
         stage_orthophoto_candidate(package, '0'*64, tmp_path/'work')
     assert not (tmp_path/'work').exists()
+
+
+def test_external_candidate_stages_exact_bytes_and_checks_metadata(tmp_path, monkeypatch):
+    import json
+    import package_archive
+    import private_odm_bundle as module
+    from common import ScaffoldError, sha256
+    package = tmp_path/'odm-orthophoto-0.0.0.dev20250225-candidate_opencv413_ab12_3.conda'
+    package.write_bytes(b'candidate')
+    index = {'name': 'odm-orthophoto', 'version': '0.0.0.dev20250225', 'build_number': 3,
+             'build': 'candidate_opencv413_ab12_3', 'depends': ['libopencv >=4.13,<4.14']}
+    monkeypatch.setattr(package_archive, 'read_package', lambda _: ({'info/index.json': json.dumps(index)}, {}))
+    monkeypatch.setattr(module, 'rattler', lambda: 'rattler-build')
+    calls = []
+    monkeypatch.setattr(module, 'run', lambda cmd: calls.append(cmd))
+    result = module.stage_orthophoto_candidate(package, sha256(package), tmp_path/'work')
+    assert result.read_bytes() == package.read_bytes() and len(calls) == 1
+    assert calls[0][1] == 'test'
+    index['depends'] = ['libopencv >=4.12,<4.13']
+    with pytest.raises(ScaffoldError, match='identity or OpenCV'):
+        module.stage_orthophoto_candidate(package, sha256(package), tmp_path/'other')
+    link = tmp_path/'linked.conda'; link.symlink_to(package)
+    with pytest.raises(ScaffoldError, match='regular file'):
+        module.stage_orthophoto_candidate(link, sha256(package), tmp_path/'third')
