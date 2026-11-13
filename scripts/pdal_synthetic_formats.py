@@ -22,6 +22,7 @@ def run_pipeline(pdal: Path, stages: list, directory: Path) -> None:
     env = os.environ.copy()
     for key in ('PYTHONPATH', 'PYTHONHOME', 'LD_LIBRARY_PATH', 'DYLD_LIBRARY_PATH'):
         env.pop(key, None)
+    env['PROJ_DATA'] = env['PROJ_LIB'] = str(pdal.parent.parent / 'share' / 'proj')
     subprocess.run([str(pdal), 'pipeline', str(pipeline)], cwd=directory, env=env, check=True)
 
 

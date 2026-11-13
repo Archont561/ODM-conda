@@ -32,3 +32,5 @@ jobs:
         if: failure()
         run: |
           python3 -c 'import base64;from pathlib import Path;p=Path("/tmp/pdal-smoke.log");print("::notice::FAILURE64 "+base64.b64encode(p.read_bytes()[-3000:] if p.exists() else b"no log").decode())'
+
+# Use the tested prefix PROJ database
