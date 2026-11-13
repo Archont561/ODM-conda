@@ -159,7 +159,8 @@ def private_identity(recipe: Path, build_number: int) -> None:
     recipe.write_text(text.replace(marker, marker+f'  string: research_${{{{ hash }}}}_{build_number}\n'))
 
 
-def configure_odm_research_recipe(recipe: Path, *, reduced_jxl: bool = False, vendor_scope: bool = False, openmvs_variant: str = 'historical') -> None:
+def configure_odm_research_recipe(recipe: Path, *, reduced_jxl: bool = False, vendor_scope: bool = False, openmvs_variant: str = 'historical', orthophoto_candidate: bool = False) -> None:
+    if orthophoto_candidate and openmvs_variant != 'tetraflow': raise ScaffoldError('Orthophoto candidate requires TetraFlow')
     if vendor_scope and not reduced_jxl: raise ScaffoldError('Vendor scope requires reduced JPEG XL')
     if openmvs_variant not in ('historical', 'tetraflow'): raise ScaffoldError('Unknown OpenMVS research variant')
     text = recipe.read_text()
@@ -167,6 +168,11 @@ def configure_odm_research_recipe(recipe: Path, *, reduced_jxl: bool = False, ve
         before = '    - openmvs-odm ==0.0.0.dev20260516 research_*'
         after = '    - openmvs-tetraflow-research ==0.0.0.dev20260827 research_*_1'
         if text.count(before) != 1: raise ScaffoldError('Unexpected ODM OpenMVS dependency')
+        text = text.replace(before, after)
+    if orthophoto_candidate:
+        before = '    - odm-orthophoto ==0.0.0.dev20250225 research_*'
+        after = '    - odm-orthophoto ==0.0.0.dev20250225 candidate_opencv413_*_3'
+        if text.count(before) != 1: raise ScaffoldError('Unexpected ODM orthophoto dependency')
         text = text.replace(before, after)
     for name in BASE:
         pattern = rf'^(    - {re.escape(name)} ==[^\n ]+)$'
@@ -182,14 +188,44 @@ def configure_odm_research_recipe(recipe: Path, *, reduced_jxl: bool = False, ve
     if text.count(marker) != 1: raise ScaffoldError('Unexpected ODM build identity')
     odm_number = 5 if vendor_scope else (4 if reduced_jxl else 3)
     identity = f'build:\n  number: {odm_number}\n'
-    if openmvs_variant == 'tetraflow': identity += f'  string: research_tetraflow_${{{{ hash }}}}_{odm_number}\n'
+    if openmvs_variant == 'tetraflow':
+        label = 'research_tetraflow_orthocandidate' if orthophoto_candidate else 'research_tetraflow'
+        identity += f'  string: {label}_${{{{ hash }}}}_{odm_number}\n'
     recipe.write_text(text.replace(marker, identity))
 
 
-def build_packages(work: Path, *, reduced_jxl: bool = False, vendor_scope_crate: Path | None = None, openmvs_variant: str = 'historical') -> list[Path]:
+def stage_orthophoto_candidate(package: Path, expected_sha256: str, work: Path) -> Path:
+    """Anchor and retest an owner-supplied private candidate without trusting its filename."""
+    from package_archive import read_package
+    package = Path(package)
+    if package.is_symlink() or not package.is_file() or package.resolve().is_relative_to(ROOT):
+        raise ScaffoldError('Candidate must be a regular file outside the repository')
+    if not re.fullmatch(r'[0-9a-f]{64}', expected_sha256 or '') or sha256(package) != expected_sha256:
+        raise ScaffoldError('Candidate digest does not match independently supplied SHA256')
+    info, _ = read_package(package)
+    index = json.loads(info['info/index.json'])
+    if (index.get('name') != 'odm-orthophoto' or index.get('version') != '0.0.0.dev20250225'
+            or index.get('build_number') != 3 or not re.fullmatch(r'candidate_opencv413_[a-z0-9]+_3', index.get('build', ''))
+            or package.name != f"odm-orthophoto-{index['version']}-{index['build']}.conda"
+            or 'libopencv >=4.13,<4.14' not in index.get('depends', [])):
+        raise ScaffoldError('Unexpected orthophoto candidate identity or OpenCV constraint')
+    target = work/'output/linux-64'/package.name
+    target.parent.mkdir(parents=True)
+    shutil.copyfile(package, target)
+    if sha256(target) != expected_sha256: raise ScaffoldError('Candidate changed while staging')
+    run([rattler(), 'test', '--package-file', str(target), '--channel', 'conda-forge', '--channel-priority', 'strict', '--output-dir', str(work/'retest'), '--log-style', 'plain'])
+    return target
+
+
+def build_packages(work: Path, *, reduced_jxl: bool = False, vendor_scope_crate: Path | None = None, openmvs_variant: str = 'historical', orthophoto_candidate: bool = False, orthophoto_package: Path | None = None, orthophoto_sha256: str | None = None) -> list[Path]:
     if vendor_scope_crate is not None and not reduced_jxl: raise ScaffoldError('Vendor scope requires reduced JPEG XL')
     if openmvs_variant not in ('historical', 'tetraflow'): raise ScaffoldError('Unknown OpenMVS research variant')
-    from prepare_opencv413_research import prepare
+    if orthophoto_candidate and openmvs_variant != 'tetraflow': raise ScaffoldError('Orthophoto candidate requires TetraFlow')
+    if (orthophoto_package is None) != (orthophoto_sha256 is None) or (orthophoto_package is not None and not orthophoto_candidate): raise ScaffoldError('Anchored candidate requires package, SHA256 and candidate mode')
+    if orthophoto_candidate:
+        from prepare_orthophoto_opencv413_candidate import prepare
+    else:
+        from prepare_opencv413_research import prepare
     from source_bundle import graph_archives
     from common import fetch_pinned_archive
     from opensfm_graph_policy import PRIMARY
@@ -209,8 +245,9 @@ def build_packages(work: Path, *, reduced_jxl: bool = False, vendor_scope_crate:
         package=build_recipe(recipe,name,work/('base-'+name))
         run([sys.executable, str(ROOT/'scripts/audit_package.py'), '--component', name, '--output-dir', str(package.parent.parent), '--reports-dir', str(work/'reports')])
         packages.append(package)
-    orth=build_recipe(staged/'recipes/odm-orthophoto/recipe.yaml','odm-orthophoto',work/'orthophoto')
-    run([sys.executable,str(ROOT/'scripts/audit_package.py'),'--component','odm-orthophoto','--output-dir',str(orth.parent.parent),'--reports-dir',str(work/'reports')]); packages.append(orth)
+    orth=(stage_orthophoto_candidate(orthophoto_package, orthophoto_sha256, work/'orthophoto') if orthophoto_package is not None
+          else build_recipe(staged/'recipes/odm-orthophoto/recipe.yaml','odm-orthophoto',work/'orthophoto'))
+    run([sys.executable,str((staged if orthophoto_candidate else ROOT)/'scripts/audit_package.py'),'--component','odm-orthophoto','--output-dir',str(orth.parent.parent),'--reports-dir',str(work/'reports')]); packages.append(orth)
     original=fetch_pinned_archive('poissonrecon',components['poissonrecon-odm']['source'],work/'source-cache')
     candidate=work/'poisson-candidate.tar.gz'; poisson_candidate(original,candidate,root=staged)
     prepared=work/'poisson-prepared'; poisson_prepare(candidate,prepared,original,root=staged)
@@ -246,7 +283,7 @@ def build_packages(work: Path, *, reduced_jxl: bool = False, vendor_scope_crate:
                 recipe=work/'jxl-scoped/recipe/recipe.yaml'
         packages.append(build_recipe(recipe,'odm-research-'+name,work/('python-'+name)))
     recipe=staged/'research/recipes/odm-fast-research/recipe.yaml'
-    configure_odm_research_recipe(recipe, reduced_jxl=reduced_jxl, vendor_scope=vendor_scope_crate is not None, openmvs_variant=openmvs_variant)
+    configure_odm_research_recipe(recipe, reduced_jxl=reduced_jxl, vendor_scope=vendor_scope_crate is not None, openmvs_variant=openmvs_variant, orthophoto_candidate=orthophoto_candidate)
     packages.append(build_recipe(recipe,'odm-fast-research',work/'odm',skip_tests=True))
     if len(packages) != 15: raise ScaffoldError('Unexpected private package count')
     return packages
@@ -350,7 +387,9 @@ def validate_runtime_profile(inventory: dict, profile: str) -> None:
         raise ScaffoldError('Reduced runtime contains LZO or librttopo')
 
 
-def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile: str = 'default', reduced_jxl: bool = False, vendor_scope_crate: Path | None = None, openmvs_variant: str = 'historical') -> None:
+def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile: str = 'default', reduced_jxl: bool = False, vendor_scope_crate: Path | None = None, openmvs_variant: str = 'historical', orthophoto_candidate: bool = False, orthophoto_package: Path | None = None, orthophoto_sha256: str | None = None) -> None:
+    if orthophoto_candidate and openmvs_variant != 'tetraflow': raise ScaffoldError('Orthophoto candidate requires TetraFlow')
+    if (orthophoto_package is None) != (orthophoto_sha256 is None) or (orthophoto_package is not None and not orthophoto_candidate): raise ScaffoldError('Anchored candidate requires package, SHA256 and candidate mode')
     if platform.system() != 'Linux' or platform.machine().lower() not in ('x86_64','amd64'): raise ScaffoldError('Private build requires linux-64')
     validate_destination(destination)
     if vendor_scope_crate is not None:
@@ -365,7 +404,7 @@ def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile
     destination.mkdir(mode=0o700)
     try:
         with tempfile.TemporaryDirectory(prefix='odm-private-build-') as tmp:
-            work=Path(tmp); packages=build_packages(work, reduced_jxl=reduced_jxl, vendor_scope_crate=vendor_scope_crate, openmvs_variant=openmvs_variant)
+            work=Path(tmp); packages=build_packages(work, reduced_jxl=reduced_jxl, vendor_scope_crate=vendor_scope_crate, openmvs_variant=openmvs_variant, orthophoto_candidate=orthophoto_candidate, orthophoto_package=orthophoto_package, orthophoto_sha256=orthophoto_sha256)
             info=create_channel(packages,destination/'channel')
             project=work/'project'
             with loopback(destination/'channel',port) as channel:
@@ -398,6 +437,9 @@ def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__); sub=parser.add_subparsers(dest='action',required=True)
     create=sub.add_parser('build'); create.add_argument('--destination',required=True,type=Path); create.add_argument('--port',type=int,default=PORT); create.add_argument('--dataset',type=Path); create.add_argument('--runtime-profile', choices=('default','reduced'), default='default', help='Use reduced libspatialite/libarchive runtime variants')
     create.add_argument('--openmvs-variant', choices=('historical', 'tetraflow'), default='historical', help='Select a private research-only OpenMVS variant')
+    create.add_argument('--orthophoto-candidate', action='store_true', help='Use the unpublished OpenCV 4.13 build 3 candidate (TetraFlow only)')
+    create.add_argument('--orthophoto-package', type=Path, help='Previously retained candidate package outside the repository')
+    create.add_argument('--orthophoto-sha256', help='Independently recorded SHA256 of that candidate package')
     jxl = create.add_mutually_exclusive_group()
     jxl.add_argument('--reduced-jxl', action='store_true', help='Use image-excluded JPEG XL research build; not release approved')
     jxl.add_argument('--vendor-scope-crate', type=Path, help='Use scoped JPEG XL with a verified local jpegxl-src crate; research only')
@@ -407,7 +449,7 @@ def main() -> None:
     summary.add_argument('--bundle', required=True, type=Path)
     summary.add_argument('--manifest-sha256', required=True, help='Independently recorded manifest SHA256')
     args=parser.parse_args()
-    if args.action == 'build': build(args.destination,args.port,args.dataset,runtime_profile=args.runtime_profile,reduced_jxl=args.reduced_jxl or args.vendor_scope_crate is not None,vendor_scope_crate=args.vendor_scope_crate,openmvs_variant=args.openmvs_variant)
+    if args.action == 'build': build(args.destination,args.port,args.dataset,runtime_profile=args.runtime_profile,reduced_jxl=args.reduced_jxl or args.vendor_scope_crate is not None,vendor_scope_crate=args.vendor_scope_crate,openmvs_variant=args.openmvs_variant,orthophoto_candidate=args.orthophoto_candidate,orthophoto_package=args.orthophoto_package,orthophoto_sha256=args.orthophoto_sha256)
     elif args.action == 'replay': replay(args.bundle,dataset=args.dataset,expected_manifest_sha=args.manifest_sha256,test_jxl=args.test_jxl)
     else: print(json.dumps(candidate_summary(args.bundle,args.manifest_sha256),sort_keys=True,indent=2))
 
