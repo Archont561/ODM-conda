@@ -6,7 +6,7 @@ from private_conda_channel import create
 from private_odm_bundle import loopback,PORT
 
 NAME='odm-orthophoto-0.0.0.dev20250225-h873e7db_2.conda'
-DIGEST='c64be4380202cfe6e41cc41ac4ec171d25f2ceaaf45e666a21a2250f3b6ae614'
+DIGEST='c64be4380202cfe6e41cc41ac4ec171d25f2ceaaf45b666a21a2250f3b6ae614'
 with tempfile.TemporaryDirectory(prefix='orthophoto-compat-') as tmp:
  root=Path(tmp); p=root/NAME
  subprocess.run(['gh','release','download','odm-orthophoto-v0.0.0.dev20250225-b2','--repo','Archont561/ODM-conda','--pattern',NAME,'--dir',str(root)],check=True)
