@@ -69,3 +69,9 @@ rights decisions needed to make one honest and runnable are unresolved. The
 new inventory tool is deliberately static and fail-closed on source SHA and
 expected file/marker changes. It does not inspect every code path, install
 packages, or assert feature completeness. Release gates remain unchanged.
+
+The [initial dependency mapping](odm-full-package-dependency-mapping.md)
+identifies the missing dense executable, a concrete dem2mesh/GDAL constraint
+conflict, optional classification model and point-cloud tools, and compares all
+upstream Python requirement names against the fast research recipe. It remains
+an incomplete, static mapping rather than a release solve.
