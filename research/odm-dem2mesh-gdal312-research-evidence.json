@@ -1,0 +1,38 @@
+{
+  "added": [
+    [
+      "dem2mesh",
+      "0.0.0.dev20231207",
+      "research_873e7db_1",
+      "0dac6bca08120c8eb746a35a8f3b313f7e5a88ff85ffb7757408d6e4dfc9aed5",
+      "http://127.0.0.1/linux-64/dem2mesh-0.0.0.dev20231207-research_873e7db_1.conda"
+    ]
+  ],
+  "baseline_inventory_count": 432,
+  "baseline_manifest_sha256": "81da120940a5236657854b51b9713aae0e40dbd11199a51859197837e21c3c7b",
+  "candidate_filename": "dem2mesh-0.0.0.dev20231207-research_873e7db_1.conda",
+  "candidate_sha256": "0dac6bca08120c8eb746a35a8f3b313f7e5a88ff85ffb7757408d6e4dfc9aed5",
+  "depends": [
+    "libgdal-core >=3.12.2,<3.12.3",
+    "libgomp >=14",
+    "libgcc >=14",
+    "libstdcxx >=14",
+    "__glibc >=2.28,<3.0.a0",
+    "_openmp_mutex >=4.5",
+    "libgdal-core >=3.12.2,<3.13.0a0"
+  ],
+  "new_inventory_count": 433,
+  "removed": [],
+  "retention": "candidate package and new lock discarded; old artifact separately subject to expiry",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43527760101",
+  "scope": "disposable research build and re-solve; no rights, source completeness, final release or approval",
+  "validation": [
+    "source build",
+    "packaged fixture",
+    "fresh package retest",
+    "package audit",
+    "anchored baseline locked install and inventory match",
+    "new solve",
+    "installed functional fixture"
+  ]
+}

@@ -76,3 +76,26 @@ solve or rebuilt package is a new candidate, not a replay of the old lock.
 Then develop a dense-capable OpenMVS research build without bypassing source,
 linkage, audit or release safeguards. No publication or owner approval is
 implied by these experiments.
+
+### Disposable GDAL 3.12 dem2mesh experiment
+
+[Run 43527760101](https://github.com/Archont561/ODM-conda/actions/runs/43527760101)
+built a separate `research_873e7db_1` candidate by changing the **staged copy**
+of the recipe's host and run bounds to `libgdal-core >=3.12.2,<3.12.3`.
+The packaged functional test, fresh package retest and standard package audit
+passed. Its generated constraints include both that explicit bound and the
+rattler-generated GDAL ABI bound. No production recipe or gate was changed.
+
+The job downloaded the earlier research bundle and verified its manifest
+against the previously recorded SHA256
+`81da120940a5236657854b51b9713aae0e40dbd11199a51859197837e21c3c7b`.
+It installed the unchanged old lock and matched its 432 package identities,
+then **made a new solve** adding dem2mesh from a temporary channel. The new
+433-record installed inventory had one addition (dem2mesh) and no removed
+records; the installed dem2mesh functional fixture passed in that full-stack
+prefix. The candidate SHA256 was
+`0dac6bca08120c8eb746a35a8f3b313f7e5a88ff85ffb7757408d6e4dfc9aed5`.
+See [bounded evidence](odm-dem2mesh-gdal312-research-evidence.json). The new
+package and lock were discarded, and no artifact was uploaded in this run.
+This is not an ODM mesh pipeline, a byte-for-byte installed-file audit,
+corresponding-source verification, license approval or a final release solve.
