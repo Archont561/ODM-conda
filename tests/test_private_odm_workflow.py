@@ -6,6 +6,7 @@ from common import ScaffoldError
 
 
 def test_workflow_runs_pinned_dataset_and_discards_bundle(tmp_path, monkeypatch):
+    monkeypatch.delenv('ODM_OPENMVS_VARIANT', raising=False)
     commands = []
     built = []
     summary = tmp_path / 'summary'
@@ -22,6 +23,7 @@ def test_workflow_runs_pinned_dataset_and_discards_bundle(tmp_path, monkeypatch)
 
 
 def test_workflow_rejects_wrong_dataset_before_build(tmp_path, monkeypatch):
+    monkeypatch.delenv('ODM_OPENMVS_VARIANT', raising=False)
     summary = tmp_path / 'summary'
     monkeypatch.setenv('GITHUB_STEP_SUMMARY', str(summary))
     monkeypatch.setattr(workflow, 'run', lambda cmd: None)
