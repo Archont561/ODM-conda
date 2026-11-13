@@ -203,3 +203,30 @@ orthophoto build has been used privately, but needs its own production recipe,
 unique identity, reviews, release-gate decisions and final-stack validation
 before publication. Evidence is recorded in
 [`odm-published-orthophoto-compatibility.json`](odm-published-orthophoto-compatibility.json).
+
+### Staged OpenCV 4.13 orthophoto candidate
+
+`scripts/prepare_orthophoto_opencv413_candidate.py --destination /private/new-stage`
+creates a disposable copy outside the repository. It preserves the published b2
+recipe and manifest, changes the copy's host and run constraints to OpenCV 4.13,
+uses build number 3 with the distinct `candidate_opencv413_<hash>_3` string,
+and closes **all** orthophoto release checks in the staged manifest. A future
+production identity must be separately decided and checked for uniqueness before
+publication. This is not an addition to the release workflow.
+
+[Hosted run 43457662447](https://github.com/Archont561/ODM-conda/actions/runs/43457662447)
+built that candidate, ran the recipe's functional tests, retested the package
+in a fresh environment, and passed the existing artifact audit against the staged
+manifest. Bounded metadata is in
+[`odm-orthophoto-opencv413-candidate-evidence.json`](odm-orthophoto-opencv413-candidate-evidence.json).
+The executable directly needs OpenCV `.so.413`; runtime metadata restricts
+OpenCV to 4.13.0. The candidate artifact was discarded and its hash identifies
+only that trial, not a reproducible or retained release artifact.
+
+The staged package's SOURCE.txt points to the *prospective* build 3 release
+source URL; the audit checks the URL's format/identity, not that the source
+bundle exists there. A matching source bundle, complete dependency and rights
+review, owner-controlled gates, a retained final candidate and full final-stack
+solve/replay/Seneca test remain necessary. Previous research-stack integration
+used a different `research_*_2` binary, not this candidate's bytes. Never
+publish this staged candidate merely because its artifact audit passed.
