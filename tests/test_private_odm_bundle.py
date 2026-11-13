@@ -289,3 +289,22 @@ def test_candidate_summary_requires_anchor_and_detects_tampering(tmp_path):
     (bundle/'pixi.lock').write_text('tampered')
     with pytest.raises(ScaffoldError, match='checksum'):
         candidate_summary(bundle, anchor)
+
+
+def test_odm_package_test_uses_private_channel_and_fails_closed(tmp_path, monkeypatch):
+    import private_odm_bundle as mod
+    from common import ScaffoldError
+    channel = tmp_path/'channel'; (channel/'linux-64').mkdir(parents=True)
+    package = channel/'linux-64/odm-fast-research-3.6.2-research_1.conda'
+    package.write_bytes(b'candidate')
+    calls = []
+    monkeypatch.setattr(mod, 'rattler', lambda: 'rattler-build')
+    monkeypatch.setattr(mod, 'run', lambda cmd: calls.append(cmd))
+    mod.test_odm_package(channel, 'http://127.0.0.1:48179', tmp_path/'out')
+    cmd = calls[0]
+    assert cmd[:4] == ['rattler-build', 'test', '--package-file', str(package)]
+    assert cmd[cmd.index('--channel')+1] == 'http://127.0.0.1:48179'
+    assert '--channel-priority' in cmd and 'strict' in cmd
+    package.unlink()
+    with pytest.raises(ScaffoldError, match='exactly one'):
+        mod.test_odm_package(channel, 'http://127.0.0.1:48179', tmp_path/'out')

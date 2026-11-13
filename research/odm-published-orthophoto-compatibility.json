@@ -1,0 +1,15 @@
+{
+  "declared_opencv": [
+    "libopencv >=4.12,<4.13",
+    "libopencv >=4.12.0,<4.12.1.0a0"
+  ],
+  "package": "odm-orthophoto-0.0.0.dev20250225-h873e7db_2.conda",
+  "retest_passed": true,
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43456421499",
+  "schema_version": 1,
+  "scope": "one published orthophoto binary retest and a constrained compatibility solve; not a complete release or rights audit",
+  "sha256": "c64be4380202cfe6e41cc41ac4ec171d25f2ceaaf45b666a21a2250f3b6ae614",
+  "solver_exit_code": 1,
+  "source": "GitHub Release asset, not a live Prefix channel fetch",
+  "tetraflow_host_opencv": "libopencv >=4.13,<4.14"
+}

@@ -50,6 +50,25 @@ requirements:
     - onnxruntime
     - packaging
     - libopenvino >=2026.0
+tests:
+  - package_contents:
+      files:
+        - bin/odm-fast-research
+        - share/odm-conda/odm-fast-research/app/run.py
+        - share/odm-conda/odm-fast-research/app/VERSION
+        - share/odm-conda/odm-fast-research/app/LOCAL-ONLY.txt
+  - script:
+      interpreter: python
+      content: |
+        import subprocess, sys
+        from pathlib import Path
+        launcher = Path(sys.prefix) / 'bin/odm-fast-research'
+        subprocess.run([str(launcher), '--fast-orthophoto', '--help'], check=True)
+        refused = subprocess.run([str(launcher), '--help'], capture_output=True, text=True)
+        assert refused.returncode != 0 and 'fast-orthophoto' in refused.stderr
+    requirements:
+      run:
+        - python >=3.12,<3.13
 about:
   homepage: https://github.com/OpenDroneMap/ODM
   summary: Private fast-orthophoto research candidate; not for distribution

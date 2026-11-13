@@ -380,3 +380,24 @@ the tests now explicitly isolate the default setting. This is not a dispatch
 of the protected workflow itself. Both paths discard source, lock, binaries
 and dataset output; no bundle is retained, no release gate is changed, and no
 artifact is published.
+
+### ODM application package retest
+
+The research recipe now includes package-content and launcher smoke tests. The
+private builder still skips the initial build-time test, because the other
+research packages are not yet available in that build's channels. After all
+15 packages have been assembled into the private loopback channel, it runs
+`rattler-build test` on the exact ODM package against that channel before the
+Pixi solve and relocated replay. The test checks the installed app files,
+`--fast-orthophoto --help`, and rejection of a help invocation without the
+explicit fast-orthophoto scope.
+
+Hosted TetraFlow trial
+[43437225533](https://github.com/Archont561/ODM-conda/actions/runs/43437225533)
+passed the package retest and subsequent relocated replay and Seneca pipeline;
+the retest log was separately inspected in
+[43443830498](https://github.com/Archont561/ODM-conda/actions/runs/43443830498).
+The retest uses a fresh channel solve, not the final replay lock; neither test
+is complete feature, quality, installed-byte, source or rights verification.
+This remains private research. No package, lock, source or dataset output was
+retained or published.

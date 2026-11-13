@@ -155,3 +155,51 @@ attestation or publication approval is implied by these technical steps. The
 owner must choose how to obtain a durable private destination and independent
 manifest-hash record; GitHub's public repository and research workflow are not
 suitable storage for the restricted private bundle.
+
+## Exact published components in a TetraFlow research stack
+
+Hosted trial [43447876789](https://github.com/Archont561/ODM-conda/actions/runs/43447876789)
+substituted the three already-published release binaries for the private
+rebuilds of fpcfilter, dem2points and fastrasterfilter. They were fetched from
+their GitHub Releases and verified against the previously recorded published
+SHA256 values; the trial did **not** fetch them from the live Prefix channel.
+A distinct private ODM package identity pinned their exact build strings, and
+its isolated package test, 432-record relocated locked replay, JPEG XL check,
+Seneca fast-orthophoto pipeline and raster sanity passed. Installation metadata
+in the replay was checked against the original solve and the three selected
+binary SHA256 values. Bounded metadata is in
+[`odm-published-component-integration.json`](odm-published-component-integration.json).
+
+This is evidence for those three exact binaries **within that one ephemeral,
+modified research stack**. It is not a final release solve, broad functional or
+accuracy validation, proof of installed file bytes, source or rights review, or
+a new approval of the other components. The published orthophoto was not tested
+here; this trial continued using the private OpenCV 4.13 orthophoto variant.
+The lock, binaries, data and outputs were discarded. The printed lock and
+inventory hashes cannot substitute for retaining those files, and the work
+needed before publication above remains open.
+
+## Published orthophoto compatibility with the TetraFlow stack
+
+The exact published orthophoto build 2 binary was fetched from its GitHub
+Release (not a live Prefix download), independently matched to SHA256
+`c64be4380202cfe6e41cc41ac4ec171d25f2ceaaf45b666a21a2250f3b6ae614`,
+and passed its own fresh `rattler-build test` in
+[43456421499](https://github.com/Archont561/ODM-conda/actions/runs/43456421499).
+Its package index declares both `libopencv >=4.12,<4.13` and
+`libopencv >=4.12.0,<4.12.1.0a0`. A separate Pixi solve combining this exact
+local binary with `libopencv >=4.13,<4.14` failed; the latter constraint is
+required by the current TetraFlow research recipe. This confirms a dependency
+conflict for that selected stack; it does not establish that every possible
+alternative ODM configuration is incompatible. No full TetraFlow integration
+with the published orthophoto ran, and the artifact was discarded.
+
+Two earlier diagnostic attempts failed before testing: the first used an
+incorrectly transcribed expected SHA256 and stopped at the checksum guard; the
+second matched the correct SHA but assumed one OpenCV constraint and stopped
+when the package declared two. The successful probe preserves both constraints.
+Do not loosen them or overwrite the published artifact. A distinct OpenCV 4.13
+orthophoto build has been used privately, but needs its own production recipe,
+unique identity, reviews, release-gate decisions and final-stack validation
+before publication. Evidence is recorded in
+[`odm-published-orthophoto-compatibility.json`](odm-published-orthophoto-compatibility.json).
