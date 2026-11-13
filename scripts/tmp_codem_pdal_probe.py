@@ -10,7 +10,8 @@ code='''        import json
         for file in sorted((Path(sys.prefix) / 'conda-meta').glob('*.json')):
             obj = json.loads(file.read_text())
             if obj.get('name') in ('hdf5', 'libpdal-core', 'libpdal-hdf', 'libpdal-icebridge'):
-                print('::notice::DEPENDENCY ' + ' '.join(str(obj.get(k, '')) for k in ('name', 'version', 'build')))
+                print('::notice::DEPENDENCY ' + ' '.join(str(obj.get(k, '')) for k in ('name', 'version', 'build')) + ' ' + json.dumps(obj.get('depends', [])))
+        print('::notice::HDFLIBS ' + ' '.join(sorted(p.name for p in (Path(sys.prefix) / 'lib').glob('libhdf5*'))))
         for lib in sorted((Path(sys.prefix) / 'lib').glob('libpdal_plugin_reader_*.so')):
             if lib.name not in ('libpdal_plugin_reader_hdf.so', 'libpdal_plugin_reader_icebridge.so'):
                 continue

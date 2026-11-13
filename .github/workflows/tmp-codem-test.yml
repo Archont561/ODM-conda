@@ -37,3 +37,5 @@ jobs:
 # Host-prefix entrypoint shebangs
 
 # Capture dependency diagnostics only
+
+# Diagnose HDF ABI metadata
