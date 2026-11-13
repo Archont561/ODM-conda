@@ -127,3 +127,24 @@ The discarded Pysolar package SHA256 was
 discarded pygltflib package SHA256 was
 `58a04d0f57324bd183b32e0deb32f1de8ff629aa233c69c0f81800ad142c2f1f`.
 These are individual package tests, not a new integrated final-stack test.
+
+### CODEM source comparison and expanded smoke test
+
+The pinned CODEM 0.26.1 sdist was compared to GitHub tag `v0.26.1`, resolved to
+commit `2264bc062ad827ca0f4558b3d0fb5ad40a90dcb3`; its codeload SHA256 is
+`471a674e93a71615c209950386a59cb1448dc01ec6d25e21c4b83c656ec38f70`.
+All 25 common regular files matched byte-for-byte. The nine sdist-only files
+are generated packaging metadata; the 31 GitHub-only files include demo data,
+images, test datasets and documentation. The shared LICENSE SHA256 is
+`c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4`.
+This establishes a bounded file comparison, not an authorship, notice or
+redistribution review of either archive or its data. Inputs were not retained;
+see [`codem-source-comparison.json`](codem-source-comparison.json).
+
+The recipe adds an offline test of configuration defaults, advertised input
+extensions and installed CLI help, beyond the prior import-only check. It does
+not test registration correctness, actual datasets, interoperability, security
+or all dependencies. The project metadata lists only typing-extensions, while
+the research recipe lists a broader dependency set; the final actual runtime
+closure and corresponding-source/notice requirements remain open. The package
+is still research-only and not release approved.

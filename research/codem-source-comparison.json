@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "scope": "bounded source archive comparison; not rights, full dependency, binary correspondence or release approval",
+  "sdist": {
+    "version": "0.26.1",
+    "sha256": "e5e0f31c0da46f6087ad38e988d0c4351282d67c05f325f96c63a24f76c8dec6",
+    "files": 34
+  },
+  "github_tag": "v0.26.1",
+  "github_commit": "2264bc062ad827ca0f4558b3d0fb5ad40a90dcb3",
+  "github_archive_sha256": "471a674e93a71615c209950386a59cb1448dc01ec6d25e21c4b83c656ec38f70",
+  "github_files": 56,
+  "shared_files": 25,
+  "different_shared_files": 0,
+  "sdist_only_files": 9,
+  "github_only_files": 31,
+  "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+}
