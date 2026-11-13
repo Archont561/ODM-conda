@@ -136,8 +136,11 @@ replayable but do not receive this additional comparison. Inventory metadata
 is not proof of installed file bytes, complete source, distribution rights, or
 legal obligations. Run the documented build on owner-controlled storage to
 actually retain the lock, inventory and private binaries; the automated GitHub
-workflow intentionally discards them. The updated inventory retention path has
-unit tests but has not yet completed a new full hosted source build.
+workflow intentionally discards them. The TetraFlow variant completed another hosted build and relocated replay in
+[43329779932](https://github.com/Archont561/ODM-conda/actions/runs/43329779932);
+that runner discarded its private bundle and retained only
+[bounded trial identity metadata](odm-tetraflow-private-trial-identities.json).
+It is not an owner-retained lock or a release approval.
 
 | Decision | Evidence established | Still needed before release |
 | --- | --- | --- |

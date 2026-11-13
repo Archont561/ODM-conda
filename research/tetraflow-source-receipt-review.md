@@ -337,3 +337,25 @@ owner-controlled private storage; independently preserve the manifest digest.
 Re-run the anchored replay and review the exact lock and inputs before any
 release decision. Do not publish this research bundle or its metadata as a
 substitute for the required source and release reviews.
+
+### Fresh complete private candidate trial
+
+[43329779932](https://github.com/Archont561/ODM-conda/actions/runs/43329779932)
+ran the TetraFlow, reduced-runtime and scoped JPEG XL private builder after the
+stricter ABI constraint parser was added. It completed the private builds,
+selected audits, locked relocated replay, linkage and synthetic JPEG XL checks,
+Seneca fast-orthophoto processing and raster sanity. The application package's
+rattler-build test is skipped by the builder; this does not imply full ODM
+feature support or geographic accuracy. The run retained only the sanitized
+metadata `odm-tetraflow-private-trial-identities.json`: 15 local package
+filenames and hashes, and hashes of the lock, manifest and 438-record installed
+metadata inventory. The binaries, actual lock and inventory, source archives,
+dataset and processing outputs were discarded. A digest of a discarded lock
+is not the lock and cannot reproduce that solve.
+
+This trial is evidence about those exact ephemeral package bytes, not a frozen
+or owner-retained release candidate. Build again on owner-controlled storage,
+record the manifest SHA separately, use the summary command and run anchored
+replay there. Independently review and retain required source and notices and
+validate the exact stack selected for distribution; the research package
+identities and the previous standalone release approvals are not interchangeable.
