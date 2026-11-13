@@ -21,4 +21,11 @@ jobs:
           locked: true
           environments: default agent-tools
       - run: pixi run python -m pytest -q tests/test_private_odm_workflow.py tests/test_multiple_components.py
-      - run: pixi run python scripts/run_private_odm_workflow.py
+      - name: Build and replay
+        run: |
+          set -o pipefail
+          pixi run python scripts/run_private_odm_workflow.py 2>&1 | tee /tmp/odm-variant.log
+      - name: Failure diagnostics
+        if: failure()
+        run: |
+          tail -60 /tmp/odm-variant.log | python3 -c 'import sys; print("::notice::FAILURE "+sys.stdin.read()[-2800:].replace("%", "%25").replace("\n", "%0A"))'
