@@ -32,3 +32,5 @@ jobs:
           python3 -c 'import base64;from pathlib import Path;p=Path("/tmp/codem-test.log");print("::notice::FAILURE64 "+base64.b64encode(p.read_bytes()[-3000:] if p.exists() else b"no log").decode())'
 
 # Test with synthetic existing input paths
+
+# Host-prefix entrypoint shebangs
