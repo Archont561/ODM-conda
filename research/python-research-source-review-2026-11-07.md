@@ -91,3 +91,10 @@ comparison and a mocked JSON response without network access. This is a narrow
 unit smoke test, not a NodeODM integration test or production approval. Before
 production packaging, verify the actual installed files, retained notices and
 license provenance, review dependencies, and test the required NodeODM features.
+
+The stronger PyODM research package test was built and fresh-retested in
+[run 43484130933](https://github.com/Archont561/ODM-conda/actions/runs/43484130933).
+The temporary package SHA256 was
+`efcf10e8d2fd7a284e6dde6cfd735e576b422423850c418feccc70a3597c273b`;
+it was discarded. This separate test does not revalidate the earlier full ODM
+stack or change any release gate.
