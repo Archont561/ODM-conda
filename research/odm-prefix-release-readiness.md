@@ -290,3 +290,48 @@ The resulting 432-record inventory matched on replay. Bounded trial metadata is
 in [`odm-orthophoto-handoff-integration.json`](odm-orthophoto-handoff-integration.json).
 Both hosted trials discarded their inputs and outputs. Their hashes cannot
 reconstruct those files and neither trial is a final retained release candidate.
+
+### Verify a retained orthophoto handoff
+
+After building a handoff in owner-controlled storage, record the SHA256 of its
+`receipt.json` independently, then run `pixi run python
+scripts/verify_private_orthophoto_candidate.py --directory /private/candidate
+--receipt-sha256 <independently-recorded-receipt-sha256>`. The verifier rejects
+unexpected files, unsafe source-archive members and altered manifests; verifies
+package, source, staged recipe and manifest hashes and closed staged release
+gates; checks the candidate identity and OpenCV declaration; and re-runs the
+existing package audit. Its source URL check verifies only its expected format,
+not availability. It does not prove the source inputs were used to build the
+binary, installed byte integrity, complete dependency source, rights, successful
+final integration, or publication approval. Preserve independent records and
+perform the separate replay as described above.
+
+[Hosted rehearsal 43483237797](https://github.com/Archont561/ODM-conda/actions/runs/43483237797)
+built, retested and audited a new candidate and verified its source-input
+handoff. The verifier was supplied the digest calculated in that same job, so
+this exercised the anchor check but was **not an independently anchored owner
+handoff**. All binaries and source files were discarded. The earlier local
+source-only snapshot is not a retained release candidate.
+
+### Remaining path to publish ODM on Prefix
+
+1. Freeze a supported scope and final solve; the tested TetraFlow path is a
+   research alternative, not the historical OpenMVS package listed in the
+   original inventory table. Retain actual binaries, lock, inventory and source
+   inputs in an owner-controlled environment with conda-forge access.
+2. Finish source, notice and rights review for the actual chosen OpenMVS,
+   OpenSfM, Poisson, texturing, RenderDEM, JXL and Python package variants,
+   including their relevant dependency closure. Resolve the documented
+   restricted-source and asset questions rather than assuming exclusion or
+   prior isolated component approvals clear them.
+3. Implement and review production recipes and unique immutable package
+   identities for the selected stack, including an actual ODM release recipe;
+   the existing 15-package research bundle is not registered for release.
+   Test each package and verify corresponding-source offers.
+4. Run a final locked solve, fresh package tests and end-to-end validation on
+   the exact retained release-selected bytes, including published components
+   where chosen. Review intended feature coverage and raster quality separately.
+5. The owner reviews and approves each exact candidate's four release gates,
+   then separately authorizes the merge/tag/release and protected Prefix
+   publication. The current release workflow publishes one registered
+   component per approved release, not the entire research stack in one go.

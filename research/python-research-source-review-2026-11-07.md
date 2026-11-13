@@ -68,3 +68,62 @@ also does not exercise every declared runtime feature.
    provenance, native component gates, final solved closure and owner approval
    described in the [ODM release inventory](odm-prefix-release-readiness.md).
    Prior published component approvals do not cover these research packages.
+
+### PyODM source comparison and offline package test
+
+The PyPI 1.5.12 sdist was compared with the GitHub `v1.5.12` tag resolved
+to commit `65ff9d0eafeef3b7cdedd4bd7915b43f53882219`. The codeload archive
+SHA256 is `d50db3c4acb8cc1c0faa6bc139613ac1a130aed2376ca9ebedda97fd9f24b66e`;
+the sdist hash is pinned in the recipe. All eight common regular files matched
+byte-for-byte. Seven files are sdist-only (generated package metadata and
+`setup.cfg`); sixteen are GitHub-only, including documentation, examples and
+example images. The matched LICENSE has SHA256
+`11dc23c3ed6a92475c80c466dada7b876cf44835272452dc2a0855fa173ac384`
+and an unfilled copyright-holder field; `setup.py` and the sdist metadata name
+“OpenDroneMap Contributors” as author, which does not itself identify every
+copyright holder or establish chain of title. See
+[`pyodm-source-comparison.json`](pyodm-source-comparison.json). The inputs
+were inspected but not retained. The comparison does not review every file,
+clear example-image rights, or establish binary/source correspondence.
+
+The research recipe's package test now exercises URL construction, version
+comparison and a mocked JSON response without network access. This is a narrow
+unit smoke test, not a NodeODM integration test or production approval. Before
+production packaging, verify the actual installed files, retained notices and
+license provenance, review dependencies, and test the required NodeODM features.
+
+The stronger PyODM research package test was built and fresh-retested in
+[run 43484130933](https://github.com/Archont561/ODM-conda/actions/runs/43484130933).
+The temporary package SHA256 was
+`efcf10e8d2fd7a284e6dde6cfd735e576b422423850c418feccc70a3597c273b`;
+it was discarded. This separate test does not revalidate the earlier full ODM
+stack or change any release gate.
+
+### Pysolar source comparison and additional package tests
+
+The pinned Pysolar 0.13 sdist was compared to GitHub tag `0.13`, resolved to
+commit `42a1c3311ac3df1fb906abb9723df12804a73426`; its codeload SHA256 is
+`0e36673c4ab576169d339417a46a6a3485c503fe45b82519c16ec6d2bc5707b3`.
+All 26 common regular files matched byte-for-byte. The sdist adds seven
+generated packaging metadata files; the GitHub archive has 41 additional
+files, including documentation, data and notebooks. The shared COPYING SHA256
+is `864f2c1e94e559ef49f403abe8457ef8b5d7526766018b478ec796e020c5eb36`.
+Sampled Python file headers state GPL version 3 or later and name multiple
+authors; the generic PyPI license field is not a whole-package terms audit.
+See [`pysolar-source-comparison.json`](pysolar-source-comparison.json). Inputs
+were not retained. This comparison does not determine rights or clear the
+additional GitHub-only assets and is not corresponding-source evidence.
+
+The research Pysolar package test exercises equatorial equinox noon and
+midnight altitude as a coarse sanity check. The pygltflib research test
+round-trips a synthetic one-node scene through both glTF and GLB. These are
+small offline smoke tests, not numerical-accuracy, interoperability, complete
+feature, provenance, or release reviews. They do not alter release gates.
+
+Both updated research recipes built and fresh-retested successfully in
+[run 43485451315](https://github.com/Archont561/ODM-conda/actions/runs/43485451315).
+The discarded Pysolar package SHA256 was
+`4ae66cdb3613db99a21cc1b53dd1ff72d3ed2c476fa77cc2f653ccd21648a7bf`; the
+discarded pygltflib package SHA256 was
+`58a04d0f57324bd183b32e0deb32f1de8ff629aa233c69c0f81800ad142c2f1f`.
+These are individual package tests, not a new integrated final-stack test.

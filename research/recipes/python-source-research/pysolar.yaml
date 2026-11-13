@@ -30,7 +30,12 @@ tests:
   - script:
       interpreter: python
       content: |
-        import pysolar
+        from datetime import datetime, timezone
+        from pysolar.solar import get_altitude
+        noon = get_altitude(0.0, 0.0, datetime(2024, 3, 20, 12, tzinfo=timezone.utc))
+        midnight = get_altitude(0.0, 0.0, datetime(2024, 3, 20, 0, tzinfo=timezone.utc))
+        assert 80.0 < noon <= 90.0
+        assert -90.0 <= midnight < -80.0
     requirements:
       run:
         - python >=3.12,<3.13
