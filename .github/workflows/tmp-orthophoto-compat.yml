@@ -30,3 +30,5 @@ jobs:
           python3 -c 'import base64;from pathlib import Path;p=Path("/tmp/orthophoto-compat.log");print("::notice::FAILURE64 "+base64.b64encode(p.read_bytes()[-2500:] if p.exists() else b"no log").decode())'
 
 # Correct published digest
+
+# Preserve multiple resolved OpenCV constraints

@@ -19,7 +19,7 @@ with tempfile.TemporaryDirectory(prefix='orthophoto-compat-') as tmp:
      index=json.load(tar.extractfile(item));break
    else: raise ValueError('missing package index')
  dep=[d for d in index['depends'] if d.startswith('libopencv ')]
- if len(dep)!=1: raise ValueError('unexpected OpenCV dependency')
+ if not dep: raise ValueError('missing OpenCV dependency: '+repr(index['depends']))
  channel=root/'channel'; create([p],channel)
  with loopback(channel,PORT) as url:
   run([rattler(),'test','--package-file',str(p),'--channel',url,'--channel','conda-forge','--channel-priority','strict','--output-dir',str(root/'retest'),'--log-style','plain'])
@@ -29,7 +29,7 @@ with tempfile.TemporaryDirectory(prefix='orthophoto-compat-') as tmp:
   cmd=['pixi','add','--manifest-path',str(project/'pixi.toml'),'odm-orthophoto==0.0.0.dev20250225','libopencv>=4.13,<4.14']
   result=subprocess.run(cmd,text=True,capture_output=True,timeout=600)
   msg=(result.stdout+'\n'+result.stderr)
-  result_data={'package':NAME,'sha256':DIGEST,'declared_opencv':dep[0], 'tetraflow_host_opencv':'libopencv >=4.13,<4.14', 'retest_passed':True,'solver_exit_code':result.returncode,'solver_excerpt':msg[-2000:]}
+  result_data={'package':NAME,'sha256':DIGEST,'declared_opencv':dep, 'tetraflow_host_opencv':'libopencv >=4.13,<4.14', 'retest_passed':True,'solver_exit_code':result.returncode,'solver_excerpt':msg[-2000:]}
   import base64,gzip
   data=base64.b64encode(gzip.compress(json.dumps(result_data,sort_keys=True).encode(),mtime=0)).decode()
   for i in range(0,len(data),1800):print('::notice::ORTHO%03d '%(i//1800)+data[i:i+1800],flush=True)
