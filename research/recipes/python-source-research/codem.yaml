@@ -50,12 +50,20 @@ tests:
         import math
         import subprocess
         import sys
+        import tempfile
         from pathlib import Path
         import codem
         from codem.lib.resources import dsm_filetypes, mesh_filetypes, pcloud_filetypes
         assert codem.__version__ == '0.26.1'
-        cfg = codem.CodemRunConfig(FND_FILE='foundation.tif', AOI_FILE='survey.tif')
-        assert math.isnan(cfg.MIN_RESOLUTION) and cfg.DSM_RANSAC_MAX_ITER == 10000
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            foundation = root / 'foundation.tif'
+            survey = root / 'survey.tif'
+            foundation.touch()
+            survey.touch()
+            cfg = codem.CodemRunConfig(FND_FILE=str(foundation), AOI_FILE=str(survey), OUTPUT_DIR=directory)
+            assert math.isnan(cfg.MIN_RESOLUTION) and cfg.DSM_RANSAC_MAX_ITER == 10000
+            assert (root / 'config.yml').is_file()
         assert '.tif' in dsm_filetypes and '.laz' in pcloud_filetypes and '.ply' in mesh_filetypes
         result = subprocess.run([str(Path(sys.prefix) / 'bin' / 'codem'), '--help'],
                                 capture_output=True, text=True, timeout=60)
