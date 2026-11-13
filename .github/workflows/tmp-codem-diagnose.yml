@@ -22,7 +22,7 @@ jobs:
         run: |
           set -o pipefail
           pixi run rattler-build build --recipe research/recipes/python-source-research/codem.yaml --test skip --target-platform linux-64 --variant-config recipes/variants.yaml --channel conda-forge --channel-priority strict --output-dir /tmp/codem-output --log-style plain 2>&1 | tee /tmp/codem-diagnose.log
-          PYTHONPATH=scripts pixi run python -c 'import base64,json,glob;from pathlib import Path;from package_archive import read_package;p=glob.glob("/tmp/codem-output/linux-64/odm-research-codem-*.conda");assert len(p)==1;i,files=read_package(Path(p[0]));d={"binary_entries":[x for x in files if x.startswith("bin/")],"entrypoint_metadata":[x for x in files if x.endswith("entry_points.txt")],"noarch":i.get("info/link.json",b"").decode(errors="replace")};print("::notice::RESULT64 "+base64.b64encode(json.dumps(d).encode()).decode())'
+          PYTHONPATH=scripts pixi run python -c 'import base64,json,glob;from pathlib import Path;from package_archive import read_package;p=glob.glob("/tmp/codem-output/linux-64/odm-research-codem-*.conda");assert len(p)==1;i,files=read_package(Path(p[0]));d={"binary_entries":[x for x in files if x.startswith("bin/")],"entrypoint_metadata":[x for x in files if x.endswith("entry_points.txt")],"header":files["bin/codem"].decode(errors="replace").splitlines()[:5],"paths_metadata":json.loads(i["info/paths.json"])};print("::notice::RESULT64 "+base64.b64encode(json.dumps({"header":d["header"],"binary_entries":d["binary_entries"],"paths":[x for x in d["paths_metadata"]["paths"] if x["_path"] in d["binary_entries"]]}).encode()).decode())'
       - name: Failure diagnostics
         if: failure()
         run: |
