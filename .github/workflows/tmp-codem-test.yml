@@ -21,6 +21,7 @@ jobs:
       - name: Build and fresh retest
         run: |
           set -o pipefail
+          python3 scripts/tmp_codem_pdal_probe.py
           pixi run rattler-build build --recipe research/recipes/python-source-research/codem.yaml --target-platform linux-64 --variant-config recipes/variants.yaml --channel conda-forge --channel-priority strict --output-dir /tmp/codem-output --log-style plain 2>&1 | tee /tmp/codem-test.log
           package=(/tmp/codem-output/linux-64/odm-research-codem-*.conda)
           test "${#package[@]}" -eq 1 && test -f "${package[0]}"
@@ -34,3 +35,5 @@ jobs:
 # Test with synthetic existing input paths
 
 # Host-prefix entrypoint shebangs
+
+# Capture dependency diagnostics only
