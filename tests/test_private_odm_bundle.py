@@ -331,3 +331,20 @@ def test_recorded_orthophoto_tetraflow_trial_has_candidate_identity():
     assert len(matches) == 1 and '-candidate_opencv413_' in matches[0]['filename']
     assert len(matches[0]['sha256']) == 64
     assert 'not release' in evidence['scope']
+
+
+def test_external_candidate_requires_explicit_anchor_and_mode(tmp_path):
+    from private_odm_bundle import build
+    from common import ScaffoldError
+    with pytest.raises(ScaffoldError, match='requires package'):
+        build(tmp_path/'bundle', 48179, None, openmvs_variant='tetraflow', orthophoto_package=tmp_path/'candidate.conda')
+    assert not (tmp_path/'bundle').exists()
+
+
+def test_external_candidate_validates_digest_before_archive_read(tmp_path):
+    from private_odm_bundle import stage_orthophoto_candidate
+    from common import ScaffoldError
+    package = tmp_path/'candidate.conda'; package.write_bytes(b'not a package')
+    with pytest.raises(ScaffoldError, match='digest'):
+        stage_orthophoto_candidate(package, '0'*64, tmp_path/'work')
+    assert not (tmp_path/'work').exists()

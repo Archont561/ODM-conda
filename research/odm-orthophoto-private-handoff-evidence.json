@@ -1,0 +1,16 @@
+{
+  "package": {
+    "filename": "odm-orthophoto-0.0.0.dev20250225-candidate_opencv413_873e7db_3.conda",
+    "sha256": "68bcd0167d280368bd6dce10b56eda4dd870cc0ce62157c48652b12817383867"
+  },
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43467653475",
+  "schema_version": 1,
+  "scope": "private ephemeral rehearsal; source inputs only, not dependency closure or legal approval; outputs discarded",
+  "source_bundle": {
+    "filename": "source-odm-orthophoto-0.0.0.dev20250225-b3.tar.gz",
+    "sha256": "4c7aa2c8932b606e0ae39ffab017c831af6a7b198211e7435010df8f17a0739f"
+  },
+  "source_manifest_entries": 443,
+  "staged_manifest_sha256": "afc07b58897fe8fe135e3ef3095607717806a8ed25dc1640778502d599a6a56c",
+  "staged_recipe_sha256": "dd5e1f43364a02479e1919ab2d825a57686466afa5dbe3d7ec641cc6a082ad7f"
+}
