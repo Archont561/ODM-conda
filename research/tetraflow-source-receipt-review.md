@@ -359,3 +359,24 @@ record the manifest SHA separately, use the summary command and run anchored
 replay there. Independently review and retain required source and notices and
 validate the exact stack selected for distribution; the research package
 identities and the previous standalone release approvals are not interchangeable.
+
+### Owner-dispatched variant choice
+
+The **Build and test native components** workflow accepts `odm` plus
+`odm_openmvs_variant: tetraflow` for this private candidate. The TetraFlow
+choice uses the reduced runtime and scoped JPEG XL variant, downloads the
+pinned original `jpegxl-src` crate into the temporary runner directory and
+verifies its SHA256 before building. The owner may instead leave the variant
+at `historical`, the unchanged default; its original OpenMVS archive contains
+restricted material and is not cleared for distribution. The choice has no
+effect when the ODM checkbox is unchecked.
+
+A temporary equivalent of the TetraFlow job using the same Python wrapper
+[43391417707](https://github.com/Archont561/ODM-conda/actions/runs/43391417707)
+passed its locked targeted tests, source build, relocated replay and Seneca
+validation. Earlier temporary attempts failed because the targeted tests
+inherited the TetraFlow environment variable where they expected the default;
+the tests now explicitly isolate the default setting. This is not a dispatch
+of the protected workflow itself. Both paths discard source, lock, binaries
+and dataset output; no bundle is retained, no release gate is changed, and no
+artifact is published.
