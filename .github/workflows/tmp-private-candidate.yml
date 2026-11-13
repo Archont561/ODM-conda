@@ -1,0 +1,28 @@
+name: Temporary private candidate handoff
+on:
+  push:
+    branches: [arena/be114771-odm-conda]
+    paths: [.github/workflows/tmp-private-candidate.yml]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default agent-tools
+      - name: Rehearse private handoff and source inventory
+        run: |
+          set -o pipefail
+          pixi run python scripts/tmp_private_candidate_trial.py 2>&1 | tee /tmp/private-candidate.log
+      - name: Failure diagnostics
+        if: failure()
+        run: |
+          python3 -c 'import base64;from pathlib import Path;p=Path("/tmp/private-candidate.log");print("::notice::FAILURE64 "+base64.b64encode(p.read_bytes()[-3000:] if p.exists() else b"no log").decode())'
