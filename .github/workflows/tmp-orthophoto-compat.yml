@@ -1,0 +1,30 @@
+name: Temporary published orthophoto compatibility
+on:
+  push:
+    branches: [arena/e2c792b3-odm-conda]
+    paths: [.github/workflows/tmp-orthophoto-compat.yml]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default agent-tools
+      - name: Check published binary and compatibility
+        run: |
+          set -o pipefail
+          pixi run python scripts/tmp_orthophoto_compat.py 2>&1 | tee /tmp/orthophoto-compat.log
+      - name: Failure diagnostics
+        if: failure()
+        run: |
+          python3 -c 'import base64;from pathlib import Path;p=Path("/tmp/orthophoto-compat.log");print("::notice::FAILURE64 "+base64.b64encode(p.read_bytes()[-2500:] if p.exists() else b"no log").decode())'
