@@ -119,3 +119,11 @@ midnight altitude as a coarse sanity check. The pygltflib research test
 round-trips a synthetic one-node scene through both glTF and GLB. These are
 small offline smoke tests, not numerical-accuracy, interoperability, complete
 feature, provenance, or release reviews. They do not alter release gates.
+
+Both updated research recipes built and fresh-retested successfully in
+[run 43485451315](https://github.com/Archont561/ODM-conda/actions/runs/43485451315).
+The discarded Pysolar package SHA256 was
+`4ae66cdb3613db99a21cc1b53dd1ff72d3ed2c476fa77cc2f653ccd21648a7bf`; the
+discarded pygltflib package SHA256 was
+`58a04d0f57324bd183b32e0deb32f1de8ff629aa233c69c0f81800ad142c2f1f`.
+These are individual package tests, not a new integrated final-stack test.
