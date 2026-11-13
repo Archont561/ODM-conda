@@ -68,3 +68,26 @@ also does not exercise every declared runtime feature.
    provenance, native component gates, final solved closure and owner approval
    described in the [ODM release inventory](odm-prefix-release-readiness.md).
    Prior published component approvals do not cover these research packages.
+
+### PyODM source comparison and offline package test
+
+The PyPI 1.5.12 sdist was compared with the GitHub `v1.5.12` tag resolved
+to commit `65ff9d0eafeef3b7cdedd4bd7915b43f53882219`. The codeload archive
+SHA256 is `d50db3c4acb8cc1c0faa6bc139613ac1a130aed2376ca9ebedda97fd9f24b66e`;
+the sdist hash is pinned in the recipe. All eight common regular files matched
+byte-for-byte. Seven files are sdist-only (generated package metadata and
+`setup.cfg`); sixteen are GitHub-only, including documentation, examples and
+example images. The matched LICENSE has SHA256
+`11dc23c3ed6a92475c80c466dada7b876cf44835272452dc2a0855fa173ac384`
+and an unfilled copyright-holder field; `setup.py` and the sdist metadata name
+“OpenDroneMap Contributors” as author, which does not itself identify every
+copyright holder or establish chain of title. See
+[`pyodm-source-comparison.json`](pyodm-source-comparison.json). The inputs
+were inspected but not retained. The comparison does not review every file,
+clear example-image rights, or establish binary/source correspondence.
+
+The research recipe's package test now exercises URL construction, version
+comparison and a mocked JSON response without network access. This is a narrow
+unit smoke test, not a NodeODM integration test or production approval. Before
+production packaging, verify the actual installed files, retained notices and
+license provenance, review dependencies, and test the required NodeODM features.

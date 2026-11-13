@@ -32,7 +32,22 @@ tests:
   - script:
       interpreter: python
       content: |
-        import pyodm
+        from unittest.mock import patch
+        from pyodm import Node
+        node = Node.from_url('https://example.invalid:443?token=abc', timeout=7)
+        assert (node.host, node.port, node.token, node.timeout) == ('example.invalid', 443, 'abc', 7)
+        assert Node.compare_version('3.6.2', '3.6.1') == 1
+        assert Node.compare_version('invalid', '3.6.1') == -1
+        class Response:
+            status_code = 200
+            headers = {'Content-Type': 'application/json'}
+            def json(self):
+                return {'engine': 'odm', 'version': '3.6.2'}
+        with patch('pyodm.api.requests.get', return_value=Response()) as get:
+            data = node.get('/info', {})
+        assert data['engine'] == 'odm' and data['version'] == '3.6.2'
+        args, kwargs = get.call_args
+        assert args[0] == 'https://example.invalid/info?token=abc' and kwargs['timeout'] == 7
     requirements:
       run:
         - python >=3.12,<3.13
