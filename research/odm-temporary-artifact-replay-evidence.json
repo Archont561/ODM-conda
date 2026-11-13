@@ -1,0 +1,83 @@
+{
+  "artifact_id": 14083906866,
+  "artifact_retention": "1 day from upload; user requested later deletion",
+  "fixture_results": {
+    "formats": [
+      "las",
+      "laz",
+      "hdf",
+      "icebridge"
+    ],
+    "point_count": 3,
+    "scope": "synthetic point roundtrips only; not real-data format coverage, accuracy, security, source rights or release approval"
+  },
+  "inventory_package_count": 432,
+  "inventory_sha256": "b745a0e3ef23a90d3c14b0d7efcc083cbeff5c2714956f608609cb8751b28600",
+  "local_packages": [
+    {
+      "filename": "dem2points-0.0.0.dev20220721-research_873e7db_2.conda",
+      "sha256": "b48a7f24352106f9377ce8bd703e7dc1e0ccb82d62319ff3f3216fd942137d5b"
+    },
+    {
+      "filename": "fastrasterfilter-1.0-research_873e7db_2.conda",
+      "sha256": "870d378139be983e9f72caf63cd3f8f567105574c56beb20f7424957606ada47"
+    },
+    {
+      "filename": "fpcfilter-0.2-research_873e7db_1.conda",
+      "sha256": "620ec41b1425d6ed07d8fd2561a0338b7936ea53862140e68ce3e4f2d762c5fb"
+    },
+    {
+      "filename": "mvs-texturing-odm-0.0.0.dev20250818-research_873e7db_2.conda",
+      "sha256": "ceeb9fd7a54b7b1567dc4665b4f31badd659314597ddf9ed27d0172df1b556fb"
+    },
+    {
+      "filename": "odm-fast-research-3.6.2-research_tetraflow_orthocandidate_b0f4dca_5.conda",
+      "sha256": "d48ac3913528d8c7d41722f6c55219bd51c12635d2ea26e2ae818252e511ebfe"
+    },
+    {
+      "filename": "odm-orthophoto-0.0.0.dev20250225-candidate_opencv413_873e7db_3.conda",
+      "sha256": "c236943a4a58d5ea82b7b7580d1f02e083c462b095accee79b66666aa1b1fb79"
+    },
+    {
+      "filename": "odm-research-codem-0.26.1-research_b0f4dca_1.conda",
+      "sha256": "a4456630392974dd6094f26ad5da0e4f733f50bf23c478daa2ddf03488cc13e9"
+    },
+    {
+      "filename": "odm-research-pillow-jxl-plugin-1.3.4-research_vendor_scope_873e7db_3.conda",
+      "sha256": "3dbffe04ec9d2a116eb150a21c1bbf479802fc7860bec1d8a5e2859f9400493e"
+    },
+    {
+      "filename": "odm-research-pygltflib-1.16.5-research_b0f4dca_1.conda",
+      "sha256": "65afa0f9074f020ad8cb4d3ec462caba93ba6d3e8c8cb587a2803594747a8b31"
+    },
+    {
+      "filename": "odm-research-pyodm-1.5.12-research_b0f4dca_1.conda",
+      "sha256": "2afc93dbe87a56c9755fb2fa83ffd214f8eb2970b0d81e5db5ae42d7ce36f6f3"
+    },
+    {
+      "filename": "odm-research-pysolar-0.13-research_b0f4dca_1.conda",
+      "sha256": "9cd906584d6eb025186c929533841873d14646b5289c5ebdc2d2d314e1c2233b"
+    },
+    {
+      "filename": "openmvs-tetraflow-research-0.0.0.dev20260827-research_873e7db_1.conda",
+      "sha256": "9cede1650d3e6a49df61574eb3742af8765da36c32a53e22ab3d9a33c7830890"
+    },
+    {
+      "filename": "opensfm-scoped-odm-0.5.2-research_873e7db_0.conda",
+      "sha256": "9c28a1b7d4679a4027dbd3256727b4d23c6f996152ae1bafe16e270ef0c38789"
+    },
+    {
+      "filename": "poissonrecon-odm-13.8-research_873e7db_3.conda",
+      "sha256": "ed1532179087f6d0dcdfb24f8d777bf763151407a5c6d2b7abece940a6669fd6"
+    },
+    {
+      "filename": "renderdem-1.0-research_873e7db_1.conda",
+      "sha256": "fea58a0ba3ab848ebbf6058a13b7cbaf25a489ad72d1eb5472fd119f1d0ee580"
+    }
+  ],
+  "lock_sha256": "094b96499f7ea485599712a203a593344ea8bb4064775df85a25ee3b79fb69d1",
+  "manifest_sha256": "81da120940a5236657854b51b9713aae0e40dbd11199a51859197837e21c3c7b",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43518311868",
+  "schema_version": 1,
+  "scope": "temporarily uploaded research bundle; exact manifest anchored and replayed; no final release, source completeness, installed-byte, rights or approval"
+}
