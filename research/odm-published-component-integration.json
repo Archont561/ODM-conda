@@ -1,0 +1,30 @@
+{
+  "dataset_commit": "9220acfdca75cc5e2dd6d27fe48550c5ae0877f2",
+  "inventory_sha256": "66f57d9dd4d8a4dbf3b807ac12646f5282f2172969d7c85616ce1eeb7b869ac1",
+  "lock_sha256": "49ff8b159816998ed835fe322a71a33af844820df67fa264d4797723f1ce6241",
+  "manifest_sha256": "35ca86309a88702db8b89d5f0898c7bbbdff847678e879f5945540e5cc005e45",
+  "records": [
+    {
+      "build": "h873e7db_2",
+      "name": "dem2points",
+      "sha256": "d7876edf091b2990e1b9325e0f6cd0ae2a4e863ab5499edacf267e5d3fd4996f",
+      "version": "0.0.0.dev20220721"
+    },
+    {
+      "build": "h873e7db_2",
+      "name": "fastrasterfilter",
+      "sha256": "2738b09958d6b57360065ca5e68b1bcbe96a6f5c727cd0e3cdba1f8b018096c4",
+      "version": "1.0"
+    },
+    {
+      "build": "h873e7db_1",
+      "name": "fpcfilter",
+      "sha256": "8d3949bf9fdb570e30afbcd91174ee5f80e9b8cd06525a26899642bc5ed1e679",
+      "version": "0.2"
+    }
+  ],
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43447876789",
+  "schema_version": 1,
+  "scope": "ephemeral research integration with three exact previously published binaries; not a release solve, rights or full ODM approval",
+  "total_inventory_count": 432
+}

@@ -155,3 +155,26 @@ attestation or publication approval is implied by these technical steps. The
 owner must choose how to obtain a durable private destination and independent
 manifest-hash record; GitHub's public repository and research workflow are not
 suitable storage for the restricted private bundle.
+
+## Exact published components in a TetraFlow research stack
+
+Hosted trial [43447876789](https://github.com/Archont561/ODM-conda/actions/runs/43447876789)
+substituted the three already-published release binaries for the private
+rebuilds of fpcfilter, dem2points and fastrasterfilter. They were fetched from
+their GitHub Releases and verified against the previously recorded published
+SHA256 values; the trial did **not** fetch them from the live Prefix channel.
+A distinct private ODM package identity pinned their exact build strings, and
+its isolated package test, 432-record relocated locked replay, JPEG XL check,
+Seneca fast-orthophoto pipeline and raster sanity passed. Installation metadata
+in the replay was checked against the original solve and the three selected
+binary SHA256 values. Bounded metadata is in
+[`odm-published-component-integration.json`](odm-published-component-integration.json).
+
+This is evidence for those three exact binaries **within that one ephemeral,
+modified research stack**. It is not a final release solve, broad functional or
+accuracy validation, proof of installed file bytes, source or rights review, or
+a new approval of the other components. The published orthophoto was not tested
+here; this trial continued using the private OpenCV 4.13 orthophoto variant.
+The lock, binaries, data and outputs were discarded. The printed lock and
+inventory hashes cannot substitute for retaining those files, and the work
+needed before publication above remains open.
