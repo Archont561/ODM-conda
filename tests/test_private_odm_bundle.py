@@ -308,3 +308,16 @@ def test_odm_package_test_uses_private_channel_and_fails_closed(tmp_path, monkey
     package.unlink()
     with pytest.raises(ScaffoldError, match='exactly one'):
         mod.test_odm_package(channel, 'http://127.0.0.1:48179', tmp_path/'out')
+
+
+def test_tetraflow_orthophoto_candidate_has_distinct_pinned_identity(tmp_path):
+    from common import ROOT, ScaffoldError
+    from private_odm_bundle import configure_odm_research_recipe
+    recipe = tmp_path/'recipe.yaml'
+    recipe.write_text((ROOT/'research/recipes/odm-fast-research/recipe.yaml').read_text())
+    with pytest.raises(ScaffoldError):
+        configure_odm_research_recipe(recipe, orthophoto_candidate=True)
+    configure_odm_research_recipe(recipe, reduced_jxl=True, vendor_scope=True, openmvs_variant='tetraflow', orthophoto_candidate=True)
+    text = recipe.read_text()
+    assert 'odm-orthophoto ==0.0.0.dev20250225 candidate_opencv413_*_3' in text
+    assert 'string: research_tetraflow_orthocandidate_${{ hash }}_5' in text
