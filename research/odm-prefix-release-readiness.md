@@ -230,3 +230,11 @@ review, owner-controlled gates, a retained final candidate and full final-stack
 solve/replay/Seneca test remain necessary. Previous research-stack integration
 used a different `research_*_2` binary, not this candidate's bytes. Never
 publish this staged candidate merely because its artifact audit passed.
+
+The private bundle builder also accepts `--orthophoto-candidate` with
+`--openmvs-variant tetraflow`; this builds and audits the staged candidate and
+pins `candidate_opencv413_*_3` in a separately identified ODM research
+package. Use the reduced runtime and scoped JPEG XL options from the existing
+TetraFlow trial. A private destination outside the repository lets the operator
+retain and independently anchor the bundle; hosted temporary runners discard it.
+This flag does not open release gates or establish a corresponding-source offer.
