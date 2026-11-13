@@ -7,6 +7,11 @@ on:
         description: "ODM private research build and replay (no artifact upload)"
         type: boolean
         default: false
+      odm_openmvs_variant:
+        description: "ODM research OpenMVS variant (only when ODM is checked)"
+        type: choice
+        options: [historical, tetraflow]
+        default: historical
       dem2mesh:
         description: "dem2mesh (leave all unchecked to build all)"
         type: boolean
@@ -94,6 +99,8 @@ jobs:
           compression-level: 0
           retention-days: 14
   odm-research:
+    env:
+      ODM_OPENMVS_VARIANT: ${{ inputs.odm_openmvs_variant }}
     if: ${{ inputs.odm }}
     runs-on: ubuntu-24.04
     timeout-minutes: 160

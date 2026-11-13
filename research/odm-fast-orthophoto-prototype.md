@@ -633,8 +633,13 @@ access; the bundle does **not** retain all sources, conda-forge packages, build
 tools or transitive dependencies and is not an offline or bit-reproducible build.
 
 The manually dispatched **Build and test native components** workflow has an
-`odm` checkbox for this private research path. It builds and validates in a
-separate job with the pinned Seneca dataset, but deliberately uploads no
+`odm` checkbox and an `odm_openmvs_variant` choice for this private research
+path. Select `tetraflow` with `odm` checked to use the reduced runtime and
+scoped JPEG XL trial; it downloads and checks the pinned original jpegxl-src
+crate. `historical` remains the default and uses the historical OpenMVS source
+archive, which contains restricted materials and is not cleared. The workflow
+builds and validates in a separate job with the pinned Seneca dataset, but
+deliberately uploads no
 packages, source, channel, lock, dataset or outputs; the runner discards them.
 Selecting ODM alone skips the normal component artifact job; selecting ODM and
 component checkboxes runs both jobs. With nothing selected, the existing behavior
