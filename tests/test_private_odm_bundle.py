@@ -321,3 +321,13 @@ def test_tetraflow_orthophoto_candidate_has_distinct_pinned_identity(tmp_path):
     text = recipe.read_text()
     assert 'odm-orthophoto ==0.0.0.dev20250225 candidate_opencv413_*_3' in text
     assert 'string: research_tetraflow_orthocandidate_${{ hash }}_5' in text
+
+
+def test_recorded_orthophoto_tetraflow_trial_has_candidate_identity():
+    from common import ROOT
+    import json
+    evidence = json.loads((ROOT/'research/odm-orthophoto-tetraflow-integration.json').read_text())
+    matches = [p for p in evidence['local_packages'] if p['filename'].startswith('odm-orthophoto-')]
+    assert len(matches) == 1 and '-candidate_opencv413_' in matches[0]['filename']
+    assert len(matches[0]['sha256']) == 64
+    assert 'not release' in evidence['scope']

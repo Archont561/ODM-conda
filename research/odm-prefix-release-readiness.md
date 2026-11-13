@@ -238,3 +238,17 @@ package. Use the reduced runtime and scoped JPEG XL options from the existing
 TetraFlow trial. A private destination outside the repository lets the operator
 retain and independently anchor the bundle; hosted temporary runners discard it.
 This flag does not open release gates or establish a corresponding-source offer.
+
+Hosted [trial 43459923019](https://github.com/Archont561/ODM-conda/actions/runs/43459923019)
+used that candidate mode for a complete private TetraFlow build. It passed the
+candidate build, fresh retest and artifact audit, the assembled ODM package
+test, locked relocated replay, JPEG XL synthetic test, and the pinned Seneca
+pipeline with raster sanity. The lock was checked to select all 15 exact local
+package hashes and the relocated environment's Conda metadata matched the
+original inventory. Bounded metadata including this run's candidate hash is in
+[`odm-orthophoto-tetraflow-integration.json`](odm-orthophoto-tetraflow-integration.json).
+The trial rebuilt a candidate; it did not use the discarded binary from the
+previous standalone trial. The new binary, lock, dataset and outputs were also
+discarded. Package metadata matching is not installed-file byte verification,
+and this result does not replace a retained final candidate, corresponding-source
+bundle, rights review, final release solve or owner approval.
