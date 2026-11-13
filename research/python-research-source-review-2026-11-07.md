@@ -98,3 +98,24 @@ The temporary package SHA256 was
 `efcf10e8d2fd7a284e6dde6cfd735e576b422423850c418feccc70a3597c273b`;
 it was discarded. This separate test does not revalidate the earlier full ODM
 stack or change any release gate.
+
+### Pysolar source comparison and additional package tests
+
+The pinned Pysolar 0.13 sdist was compared to GitHub tag `0.13`, resolved to
+commit `42a1c3311ac3df1fb906abb9723df12804a73426`; its codeload SHA256 is
+`0e36673c4ab576169d339417a46a6a3485c503fe45b82519c16ec6d2bc5707b3`.
+All 26 common regular files matched byte-for-byte. The sdist adds seven
+generated packaging metadata files; the GitHub archive has 41 additional
+files, including documentation, data and notebooks. The shared COPYING SHA256
+is `864f2c1e94e559ef49f403abe8457ef8b5d7526766018b478ec796e020c5eb36`.
+Sampled Python file headers state GPL version 3 or later and name multiple
+authors; the generic PyPI license field is not a whole-package terms audit.
+See [`pysolar-source-comparison.json`](pysolar-source-comparison.json). Inputs
+were not retained. This comparison does not determine rights or clear the
+additional GitHub-only assets and is not corresponding-source evidence.
+
+The research Pysolar package test exercises equatorial equinox noon and
+midnight altitude as a coarse sanity check. The pygltflib research test
+round-trips a synthetic one-node scene through both glTF and GLB. These are
+small offline smoke tests, not numerical-accuracy, interoperability, complete
+feature, provenance, or release reviews. They do not alter release gates.
