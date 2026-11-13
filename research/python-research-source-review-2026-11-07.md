@@ -148,3 +148,35 @@ or all dependencies. The project metadata lists only typing-extensions, while
 the research recipe lists a broader dependency set; the final actual runtime
 closure and corresponding-source/notice requirements remain open. The package
 is still research-only and not release approved.
+
+Hosted build [43486693444](https://github.com/Archont561/ODM-conda/actions/runs/43486693444)
+first failed the configuration smoke test because its paths did not exist; the
+next [43486865507](https://github.com/Archont561/ODM-conda/actions/runs/43486865507)
+exposed a real launcher relocation defect. The package contained `bin/codem`
+and `bin/vcd`, but their pip-generated shebangs pointed to the transient build
+prefix, not the installed prefix. [43487128606](https://github.com/Archont561/ODM-conda/actions/runs/43487128606)
+confirmed that the package path metadata did not request prefix substitution.
+The recipe now rewrites both shebangs to the isolated host prefix before
+packaging, and its fresh-environment tests execute both installed launchers.
+The build and retest passed in
+[43487227062](https://github.com/Archont561/ODM-conda/actions/runs/43487227062);
+the discarded package SHA256 was
+`c812b2d03aae72a01fe60e140d39333b602db7530e6561236d4d6e5a05208264`.
+This does not validate CODEM's registration results or the complete stack.
+
+#### PDAL/HDF warning in a separate CODEM solve
+
+During those tests PDAL logged unresolved `libhdf5_cpp.so.320` for HDF and
+IceBridge reader plugins even though the limited smoke test passed. Diagnostic
+[43487763657](https://github.com/Archont561/ODM-conda/actions/runs/43487763657)
+selected libpdal-core `2.10.2 he6b862a_5`, libpdal-hdf `2.10.2 h960364a_5`,
+libpdal-icebridge `2.10.2 h1c1cec2_5`, and hdf5 `1.14.6 nompi_h19486de_110`;
+`ldd` reported the missing `.320` library for both plugins, while the selected
+HDF5 provided `.310`. In a separate probe
+[43488012759](https://github.com/Archont561/ODM-conda/actions/runs/43488012759),
+a temporary `hdf5 >=2,<3` constraint selected `2.2.0 nompi_hdbb200c_101`;
+`ldd` no longer reported missing libraries for those two plugins. This does not
+prove HDF/IceBridge data work or establish compatibility with the ODM stack's
+GDAL 3.12 selection. No global HDF pin was added: review and validate the
+actual release solve and required plugin coverage before choosing a constraint.
+These diagnostics do not alter release gates; no artifacts were retained.
