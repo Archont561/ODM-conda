@@ -28,4 +28,4 @@ jobs:
       - name: Failure diagnostics
         if: failure()
         run: |
-          tail -60 /tmp/odm-variant.log | python3 -c 'import sys; print("::notice::FAILURE "+sys.stdin.read()[-2800:].replace("%", "%25").replace("\n", "%0A"))'
+          python3 -c 'import base64; from pathlib import Path; print("::notice::FAILURE64 "+base64.b64encode(Path("/tmp/odm-variant.log").read_bytes()[-2000:]).decode())'
