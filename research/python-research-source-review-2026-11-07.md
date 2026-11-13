@@ -180,3 +180,23 @@ prove HDF/IceBridge data work or establish compatibility with the ODM stack's
 GDAL 3.12 selection. No global HDF pin was added: review and validate the
 actual release solve and required plugin coverage before choosing a constraint.
 These diagnostics do not alter release gates; no artifacts were retained.
+
+#### TetraFlow/GDAL 3.12 research-stack linkage follow-up
+
+[Run 43489543154](https://github.com/Archont561/ODM-conda/actions/runs/43489543154)
+built the private TetraFlow stack with the fixed CODEM recipe and candidate
+OpenCV 4.13 orthophoto, fresh-tested its packages and ODM, replayed a relocated
+lock and ran the JPEG XL and Seneca pipeline checks. A separate locked install
+of the same sealed bundle selected GDAL core `3.12.2 he63569f_2`, PDAL core
+`2.10.0 h9d23c72_0`, PDAL HDF and IceBridge plugins `2.10.0 h01cf3b3_0`, and
+HDF5 `1.14.6 nompi_h19486de_110`. `ldd` reported no `not found` entries and
+returned zero for all 17 installed `libpdal_plugin_*.so` files, including those
+two readers. Selected package hashes and bounded linkage observations are in
+[`odm-tetraflow-pdal-linkage-evidence.json`](odm-tetraflow-pdal-linkage-evidence.json).
+This is a **different solve** from the CODEM-only PDAL 2.10.2 diagnostic; it
+does not fix that solve. `ldd` may resolve system libraries and does not test
+late-loaded dependencies or HDF/IceBridge data. The 432-record lock, packages,
+dataset and outputs were discarded. This is not the final release solve,
+installed-byte verification, a complete format or accuracy test, source review
+or owner approval. Validate each required plugin with appropriately cleared
+fixtures against the exact retained release lock before publication.
