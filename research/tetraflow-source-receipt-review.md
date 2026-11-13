@@ -200,3 +200,162 @@ containing links cannot be inventoried by this tool without separate review; do
 not weaken the checks to force them through. Record the output digest separately
 if it will be used as evidence. This is not a source bundle, a closure check or
 release clearance. CGAL, Boost and the other sources remain unverified here.
+
+## Selected sysroot and kernel-header RPM checks
+
+The metadata-only `tetraflow-sysroot-rpm-evidence.json` covers the sysroot and
+kernel-header packages in the single recorded trial inventory, not every
+machine or every build. In hosted runs
+[43323781520](https://github.com/Archont561/ODM-conda/actions/runs/43323781520)
+and [43323995567](https://github.com/Archont561/ODM-conda/actions/runs/43323995567),
+the two selected Conda package archives matched the recorded package hashes;
+their embedded recipes declare the same eight binary AlmaLinux RPM inputs.
+Those eight downloaded binary RPMs matched their respective recipe SHA256 values.
+Their RPM headers name two source RPMs:
+
+| Source RPM named by binary headers | Downloaded SHA256 |
+| --- | --- |
+| glibc-2.28-236.el8_9.13.src.rpm | `471828a3273bc3ea60ce2d3a67a9bb2ef0921ca9152df3cc15c046dde5bb3263` |
+| kernel-4.18.0-513.24.1.el8_9.src.rpm | `4d0d08fc5ff422ac1b959a9d35414c95db9931c58a86776d167ae95dc626169f` |
+
+Both downloaded source RPM hashes matched their entries in the AlmaLinux vault
+primary repository metadata; that primary metadata matched the checksum in the
+retrieved repomd. This is a same-repository consistency check, **not an
+independently authenticated checksum or signature verification**. The RPM
+headers were queried, not their payloads extracted or audited. Their claimed
+source-RPM names do not prove how the binary RPMs or Conda packages were built,
+what sysroot files were used or shipped, or whether the source RPM payloads and
+patches satisfy any obligations. The RPMs and repository metadata were
+transient and discarded; no owner-retained source bundle was created. Source
+closure, signature trust, toolchain patch review, linkage and license review
+remain open, and release gates are unchanged.
+
+### RPM signature check and source package listing
+
+A subsequent hosted check
+[43324898928](https://github.com/Archont561/ODM-conda/actions/runs/43324898928)
+downloaded the same two source and eight binary RPMs, matched the recorded
+hashes, and checked their RPM signatures using an isolated RPM database. All
+ten reported header and package RSA/SHA256 signatures `OK` under key ID
+`ced7258b`. The retrieved AlmaLinux public key had primary fingerprint
+`5E9B8F5617B5066CE92057C3488FCF7C3ABB34F8`, matching the primary fingerprint
+published in [AlmaLinux release notes](https://wiki.almalinux.org/release-notes/8.3.html);
+the retrieved key also contains subkey fingerprint
+`BC5EDDCADF502C077F1582882AE81E8ACED7258B`. The key was retrieved over HTTPS;
+the fingerprint comparison is the stated trust anchor, not a complete
+independent chain-of-custody or legal review. The evidence is recorded in
+`tetraflow-sysroot-signature-evidence.json`.
+
+A filename listing (not extraction or content review) reports 873 entries in
+the glibc source RPM, including `glibc.spec` and 863 names ending in `.patch`
+or `.diff`; the kernel source RPM lists 46 entries, including `kernel.spec`
+and three such patch names. These counts do not establish patch applicability,
+completeness or the contents of nested source archives. The RPM payloads,
+patches and build instructions have not been reviewed or retained. Neither the
+signature checks nor the listings verify which files were used, linked or
+shipped in the trial, or authorize publication.
+
+### Bounded source RPM payload hashing
+
+In [43326206675](https://github.com/Archont561/ODM-conda/actions/runs/43326206675),
+the two source RPMs were downloaded again and matched the previously verified
+RPM hashes. Their cpio payloads were streamed without extraction; the probe
+rejected unsafe paths, duplicate names, links, special files and oversized
+entries, and calculated a SHA256 and size for each regular file. The resulting
+summary, spec hashes, nested archive hashes, selected patch hashes and hashes of
+the full entry and patch manifests are in `tetraflow-srpm-payload-evidence.json`.
+The manifest digest format is documented in that file; the full manifests and
+sources were not retained. Counts match the earlier filename listings: 873
+entries and 863 patch/diff-named files for glibc, 46 entries and three such
+patch files for the kernel. One kernel patch-named file is empty; that alone
+does not determine whether or how it is used.
+
+This is an entry-level integrity inventory, not semantic patch review: nested
+tarballs were hashed but not opened, spec conditionals and build instructions
+were not evaluated, patches were not applied, and actual linkage, corresponding
+source completeness and legal obligations remain unverified. No owner-retained
+source bundle was created and no release approval is implied.
+
+## Batch spec, source-archive and executable observations
+
+The bounded metadata in `tetraflow-batch-review-evidence.json` combines two
+hosted probes. In
+[43327384541](https://github.com/Archont561/ODM-conda/actions/runs/43327384541),
+the checked source RPM spec files and six already-hashed sample patch files
+were read without running the spec or applying patches. The glibc spec has 863
+literal `Patch` declarations and a `%autosetup` directive; the kernel spec has
+three literal patch declarations and a `%setup` directive. The samples record
+diff target names and line counts, not semantic approval or proof that any
+specific conditional patch was applied. All other glibc patches and spec
+conditions still need substantive review.
+
+The nested glibc and kernel tarballs were hash-matched to the earlier RPM-entry
+inventory and listed, not extracted. The listing found respectively 16,881 and
+68,250 regular entries, and one and 36 link entries. No member path contained
+an absolute path, `..`, or backslash; link **targets**, duplicate paths and file
+contents were not audited, and filename-based notice candidates are not a
+complete license inventory. Do not extract these archives as trusted inputs on
+the strength of this observation.
+
+A fresh research build in
+[43326802574](https://github.com/Archont561/ODM-conda/actions/runs/43326802574)
+passed its recipe tests, including the recipe's `ldd` missing-library check
+and synthetic fixtures. `readelf` on that output recorded direct `NEEDED`
+entries including `libc.so.6`, `libgcc_s.so.1`, `libstdc++.so.6`, OpenCV,
+Boost and `libjxl.so.0.11`; its GLIBC symbol-version names range up to
+`GLIBC_2.27`. The five selected compiler, CGAL and sysroot binary package hashes
+matched the earlier trial's recorded inputs, not necessarily the entire solve.
+The new output package hash is
+`ead14ee57f72f6dc85dc8b56aab898f59178302aa5baa61243fec043b5cfe095`;
+it was discarded. Direct ELF entries and a test-environment `ldd` do not prove
+transitive runtime contents, statically linked source inclusion, deployment on
+all target systems, or complete corresponding-source obligations.
+
+No owner-controlled destination or access was provided. The existing private
+bundle commands above can be run by the owner on a suitable host, but that
+bundle is not an offline or source-complete release bundle. Do not publish it
+or infer legal approval from these probes.
+
+### Summarize an owner-retained research candidate
+
+After a private build succeeds and the owner independently records the printed
+manifest digest, a bounded metadata summary can be created without exposing
+local paths or URLs:
+
+```sh
+pixi run python scripts/private_odm_bundle.py summary \
+  --bundle /private/new-odm-bundle --manifest-sha256 <independently-recorded-sha256> \
+  > /private/candidate-summary.json
+```
+
+The command first verifies the anchored manifest and all sealed bundle files,
+requires the sealed inventory, and reports the lock and inventory hashes,
+record count, and local binary filenames and hashes. It does not check
+installed bytes, rebuild, review licenses, freeze a release candidate, or
+retain external Conda packages or sources. Keep both the bundle and summary in
+owner-controlled private storage; independently preserve the manifest digest.
+Re-run the anchored replay and review the exact lock and inputs before any
+release decision. Do not publish this research bundle or its metadata as a
+substitute for the required source and release reviews.
+
+### Fresh complete private candidate trial
+
+[43329779932](https://github.com/Archont561/ODM-conda/actions/runs/43329779932)
+ran the TetraFlow, reduced-runtime and scoped JPEG XL private builder after the
+stricter ABI constraint parser was added. It completed the private builds,
+selected audits, locked relocated replay, linkage and synthetic JPEG XL checks,
+Seneca fast-orthophoto processing and raster sanity. The application package's
+rattler-build test is skipped by the builder; this does not imply full ODM
+feature support or geographic accuracy. The run retained only the sanitized
+metadata `odm-tetraflow-private-trial-identities.json`: 15 local package
+filenames and hashes, and hashes of the lock, manifest and 438-record installed
+metadata inventory. The binaries, actual lock and inventory, source archives,
+dataset and processing outputs were discarded. A digest of a discarded lock
+is not the lock and cannot reproduce that solve.
+
+This trial is evidence about those exact ephemeral package bytes, not a frozen
+or owner-retained release candidate. Build again on owner-controlled storage,
+record the manifest SHA separately, use the summary command and run anchored
+replay there. Independently review and retain required source and notices and
+validate the exact stack selected for distribution; the research package
+identities and the previous standalone release approvals are not interchangeable.

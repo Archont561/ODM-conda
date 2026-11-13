@@ -260,3 +260,32 @@ def test_tetraflow_replay_checks_linkage_and_rejects_missing_library(tmp_path, m
     monkeypatch.setattr(mod.subprocess,'run',lambda *_args,**_kwargs: SimpleNamespace(stdout='libjxl.so => not found',stderr=''))
     with pytest.raises(ScaffoldError,match='Unresolved TetraFlow'):
         mod.replay(bundle)
+
+
+def test_candidate_summary_requires_anchor_and_detects_tampering(tmp_path):
+    import json
+    from common import ScaffoldError, sha256
+    from private_odm_bundle import candidate_summary, seal
+    bundle = tmp_path/'bundle'
+    (bundle/'channel/linux-64').mkdir(parents=True)
+    (bundle/'channel/noarch').mkdir()
+    for name in ('pixi.toml', 'pixi.lock', 'channel/linux-64/repodata.json',
+                 'channel/noarch/repodata.json', 'channel/linux-64/example.conda'):
+        (bundle/name).write_text(name)
+    item = {'name':'example','version':'1','build':'research_1',
+            'sha256':'a'*64,'binary_package_url':'http://127.0.0.1/linux-64/example.conda'}
+    (bundle/'conda-inventory.json').write_text(json.dumps({'packages':[item]}))
+    seal(bundle, 48179)
+    anchor = sha256(bundle/'private-bundle.json')
+    result = candidate_summary(bundle, anchor)
+    assert result['inventory_package_count'] == 1
+    assert result['local_packages'] == [{'filename':'example.conda',
+                                        'sha256':sha256(bundle/'channel/linux-64/example.conda')}]
+    assert str(bundle) not in json.dumps(result)
+    with pytest.raises(ScaffoldError, match='independent manifest'):
+        candidate_summary(bundle, None)
+    with pytest.raises(ScaffoldError, match='manifest checksum'):
+        candidate_summary(bundle, '0'*64)
+    (bundle/'pixi.lock').write_text('tampered')
+    with pytest.raises(ScaffoldError, match='checksum'):
+        candidate_summary(bundle, anchor)
