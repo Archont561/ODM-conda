@@ -365,3 +365,9 @@ input safety, or distribution rights. HDF and IceBridge are diagnostic plugin
 coverage, not a decision that those formats are required in the release. Rerun
 against the exact owner-retained final lock, and determine which real-world
 formats and appropriately cleared fixtures the supported product needs.
+
+The reusable checker was subsequently tightened to reject non-finite outputs;
+the final checker passed a separate narrow GDAL/PDAL solve in
+[43510460660](https://github.com/Archont561/ODM-conda/actions/runs/43510460660).
+That check used the same requested component versions, not the discarded full
+bundle's lock; the earlier full-stack run used the prior checker revision.
