@@ -15,6 +15,17 @@ build:
     content: |
       import os, subprocess, sys
       subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--no-index', '--no-build-isolation', '--prefix', os.environ['PREFIX'], os.environ['SRC_DIR']], check=True)
+      from pathlib import Path
+      prefix = Path(os.environ['PREFIX'])
+      for name in ('codem', 'vcd'):
+          script = prefix / 'bin' / name
+          contents = script.read_bytes()
+          first, separator, rest = contents.partition(b'\n')
+          if not separator or not first.startswith(b'#!') or b'python' not in first:
+              raise RuntimeError(f'Unexpected entrypoint shebang: {name}')
+          # pip runs from the build environment; point scripts at the isolated
+          # host prefix so rattler records and relocates the shebang on install.
+          script.write_bytes(b'#!' + os.fsencode(prefix / 'bin' / 'python') + b'\n' + rest)
 requirements:
   build:
     - python >=3.12,<3.13
@@ -44,10 +55,35 @@ requirements:
     - pyshp
     - setuptools
 tests:
+  - package_contents:
+      files:
+        - bin/codem
+        - bin/vcd
   - script:
       interpreter: python
       content: |
+        import math
+        import subprocess
+        import sys
+        import tempfile
+        from pathlib import Path
         import codem
+        from codem.lib.resources import dsm_filetypes, mesh_filetypes, pcloud_filetypes
+        assert codem.__version__ == '0.26.1'
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            foundation = root / 'foundation.tif'
+            survey = root / 'survey.tif'
+            foundation.touch()
+            survey.touch()
+            cfg = codem.CodemRunConfig(FND_FILE=str(foundation), AOI_FILE=str(survey), OUTPUT_DIR=directory)
+            assert math.isnan(cfg.MIN_RESOLUTION) and cfg.DSM_RANSAC_MAX_ITER == 10000
+            assert (root / 'config.yml').is_file()
+        assert '.tif' in dsm_filetypes and '.laz' in pcloud_filetypes and '.ply' in mesh_filetypes
+        for name in ('codem', 'vcd'):
+            result = subprocess.run([str(Path(sys.prefix) / 'bin' / name), '--help'],
+                                    capture_output=True, text=True, timeout=60)
+            assert result.returncode == 0 and 'usage:' in result.stdout.lower()
     requirements:
       run:
         - python >=3.12,<3.13

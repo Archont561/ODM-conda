@@ -127,3 +127,76 @@ The discarded Pysolar package SHA256 was
 discarded pygltflib package SHA256 was
 `58a04d0f57324bd183b32e0deb32f1de8ff629aa233c69c0f81800ad142c2f1f`.
 These are individual package tests, not a new integrated final-stack test.
+
+### CODEM source comparison and expanded smoke test
+
+The pinned CODEM 0.26.1 sdist was compared to GitHub tag `v0.26.1`, resolved to
+commit `2264bc062ad827ca0f4558b3d0fb5ad40a90dcb3`; its codeload SHA256 is
+`471a674e93a71615c209950386a59cb1448dc01ec6d25e21c4b83c656ec38f70`.
+All 25 common regular files matched byte-for-byte. The nine sdist-only files
+are generated packaging metadata; the 31 GitHub-only files include demo data,
+images, test datasets and documentation. The shared LICENSE SHA256 is
+`c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4`.
+This establishes a bounded file comparison, not an authorship, notice or
+redistribution review of either archive or its data. Inputs were not retained;
+see [`codem-source-comparison.json`](codem-source-comparison.json).
+
+The recipe adds an offline test of configuration defaults, advertised input
+extensions and installed CLI help, beyond the prior import-only check. It does
+not test registration correctness, actual datasets, interoperability, security
+or all dependencies. The project metadata lists only typing-extensions, while
+the research recipe lists a broader dependency set; the final actual runtime
+closure and corresponding-source/notice requirements remain open. The package
+is still research-only and not release approved.
+
+Hosted build [43486693444](https://github.com/Archont561/ODM-conda/actions/runs/43486693444)
+first failed the configuration smoke test because its paths did not exist; the
+next [43486865507](https://github.com/Archont561/ODM-conda/actions/runs/43486865507)
+exposed a real launcher relocation defect. The package contained `bin/codem`
+and `bin/vcd`, but their pip-generated shebangs pointed to the transient build
+prefix, not the installed prefix. [43487128606](https://github.com/Archont561/ODM-conda/actions/runs/43487128606)
+confirmed that the package path metadata did not request prefix substitution.
+The recipe now rewrites both shebangs to the isolated host prefix before
+packaging, and its fresh-environment tests execute both installed launchers.
+The build and retest passed in
+[43487227062](https://github.com/Archont561/ODM-conda/actions/runs/43487227062);
+the discarded package SHA256 was
+`c812b2d03aae72a01fe60e140d39333b602db7530e6561236d4d6e5a05208264`.
+This does not validate CODEM's registration results or the complete stack.
+
+#### PDAL/HDF warning in a separate CODEM solve
+
+During those tests PDAL logged unresolved `libhdf5_cpp.so.320` for HDF and
+IceBridge reader plugins even though the limited smoke test passed. Diagnostic
+[43487763657](https://github.com/Archont561/ODM-conda/actions/runs/43487763657)
+selected libpdal-core `2.10.2 he6b862a_5`, libpdal-hdf `2.10.2 h960364a_5`,
+libpdal-icebridge `2.10.2 h1c1cec2_5`, and hdf5 `1.14.6 nompi_h19486de_110`;
+`ldd` reported the missing `.320` library for both plugins, while the selected
+HDF5 provided `.310`. In a separate probe
+[43488012759](https://github.com/Archont561/ODM-conda/actions/runs/43488012759),
+a temporary `hdf5 >=2,<3` constraint selected `2.2.0 nompi_hdbb200c_101`;
+`ldd` no longer reported missing libraries for those two plugins. This does not
+prove HDF/IceBridge data work or establish compatibility with the ODM stack's
+GDAL 3.12 selection. No global HDF pin was added: review and validate the
+actual release solve and required plugin coverage before choosing a constraint.
+These diagnostics do not alter release gates; no artifacts were retained.
+
+#### TetraFlow/GDAL 3.12 research-stack linkage follow-up
+
+[Run 43489543154](https://github.com/Archont561/ODM-conda/actions/runs/43489543154)
+built the private TetraFlow stack with the fixed CODEM recipe and candidate
+OpenCV 4.13 orthophoto, fresh-tested its packages and ODM, replayed a relocated
+lock and ran the JPEG XL and Seneca pipeline checks. A separate locked install
+of the same sealed bundle selected GDAL core `3.12.2 he63569f_2`, PDAL core
+`2.10.0 h9d23c72_0`, PDAL HDF and IceBridge plugins `2.10.0 h01cf3b3_0`, and
+HDF5 `1.14.6 nompi_h19486de_110`. `ldd` reported no `not found` entries and
+returned zero for all 17 installed `libpdal_plugin_*.so` files, including those
+two readers. Selected package hashes and bounded linkage observations are in
+[`odm-tetraflow-pdal-linkage-evidence.json`](odm-tetraflow-pdal-linkage-evidence.json).
+This is a **different solve** from the CODEM-only PDAL 2.10.2 diagnostic; it
+does not fix that solve. `ldd` may resolve system libraries and does not test
+late-loaded dependencies or HDF/IceBridge data. The 432-record lock, packages,
+dataset and outputs were discarded. This is not the final release solve,
+installed-byte verification, a complete format or accuracy test, source review
+or owner approval. Validate each required plugin with appropriately cleared
+fixtures against the exact retained release lock before publication.
