@@ -1,0 +1,29 @@
+name: Temporary CODEM entrypoint diagnosis
+on:
+  push:
+    branches: [arena/1695ed47-odm-conda]
+    paths: [.github/workflows/tmp-codem-diagnose.yml]
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default agent-tools
+      - name: Inspect package entrypoint metadata
+        run: |
+          set -o pipefail
+          pixi run rattler-build build --recipe research/recipes/python-source-research/codem.yaml --test skip --target-platform linux-64 --variant-config recipes/variants.yaml --channel conda-forge --channel-priority strict --output-dir /tmp/codem-output --log-style plain 2>&1 | tee /tmp/codem-diagnose.log
+          PYTHONPATH=scripts pixi run python -c 'import base64,json,glob;from pathlib import Path;from package_archive import read_package;p=glob.glob("/tmp/codem-output/linux-64/odm-research-codem-*.conda");assert len(p)==1;i,files=read_package(Path(p[0]));d={"binary_entries":[x for x in files if x.startswith("bin/")],"entrypoint_metadata":[x for x in files if x.endswith("entry_points.txt")],"noarch":i.get("info/link.json",b"").decode(errors="replace")};print("::notice::RESULT64 "+base64.b64encode(json.dumps(d).encode()).decode())'
+      - name: Failure diagnostics
+        if: failure()
+        run: |
+          python3 -c 'import base64;from pathlib import Path;p=Path("/tmp/codem-diagnose.log");print("::notice::FAILURE64 "+base64.b64encode(p.read_bytes()[-3000:] if p.exists() else b"no log").decode())'
