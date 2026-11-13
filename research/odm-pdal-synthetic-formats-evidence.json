@@ -1,0 +1,114 @@
+{
+  "dataset_commit": "9220acfdca75cc5e2dd6d27fe48550c5ae0877f2",
+  "fixture_results": {
+    "formats": [
+      "las",
+      "laz",
+      "hdf",
+      "icebridge"
+    ],
+    "point_count": 3,
+    "scope": "synthetic point roundtrips only; not real-data format coverage, accuracy, security, source rights or release approval"
+  },
+  "inventory_package_count": 432,
+  "inventory_sha256": "9bfa73c8b3e75ad29fed246045e91881aa5eb869242b83646807ae3a59a9bab8",
+  "local_packages": [
+    {
+      "filename": "dem2points-0.0.0.dev20220721-research_873e7db_2.conda",
+      "sha256": "4771fa7e1dbba3c3b66511e20cdbd04c3b68da91320a67cdba5fee318bcda033"
+    },
+    {
+      "filename": "fastrasterfilter-1.0-research_873e7db_2.conda",
+      "sha256": "4743e55c2693b7295693a112a4bff7c1bafeda5cb0391e4692257075b000f752"
+    },
+    {
+      "filename": "fpcfilter-0.2-research_873e7db_1.conda",
+      "sha256": "2c4cd51683347a116837e9d24af8152782d38225b6d356353bc2a248ca1f8bb1"
+    },
+    {
+      "filename": "mvs-texturing-odm-0.0.0.dev20250818-research_873e7db_2.conda",
+      "sha256": "4000c49da7268a28c97e663db28851983f1b2732fdeda43b326ff5ff0335355d"
+    },
+    {
+      "filename": "odm-fast-research-3.6.2-research_tetraflow_orthocandidate_b0f4dca_5.conda",
+      "sha256": "405b6c25164f93c73635744f73e9d9307455122e332696148622d9a2f8e1976e"
+    },
+    {
+      "filename": "odm-orthophoto-0.0.0.dev20250225-candidate_opencv413_873e7db_3.conda",
+      "sha256": "ec438840c3ac4d2b695b54c9cb8877041bf939daddf8cf004bf280e89ba39fa5"
+    },
+    {
+      "filename": "odm-research-codem-0.26.1-research_b0f4dca_1.conda",
+      "sha256": "a816fb1cad37bb9811877d95143219e1c2ab807c27f8e354dc87db32610cce63"
+    },
+    {
+      "filename": "odm-research-pillow-jxl-plugin-1.3.4-research_vendor_scope_873e7db_3.conda",
+      "sha256": "c99406ad231bfdc3278a2f0fd7da91c75d8f6b35d3d660c31d93a319dae5c778"
+    },
+    {
+      "filename": "odm-research-pygltflib-1.16.5-research_b0f4dca_1.conda",
+      "sha256": "78b237e8996d024f5d380fc0db4b90966e8393cfda4582512bbf3213bd4df0ec"
+    },
+    {
+      "filename": "odm-research-pyodm-1.5.12-research_b0f4dca_1.conda",
+      "sha256": "41ddc61d3dc99ca110fee62802c2c90b07c1c3603726e703a0ae6de0138c43ec"
+    },
+    {
+      "filename": "odm-research-pysolar-0.13-research_b0f4dca_1.conda",
+      "sha256": "70cc09ddcac97cdee8fa2906cea7a115eb3cc6dbda01055a1214c78dbea66787"
+    },
+    {
+      "filename": "openmvs-tetraflow-research-0.0.0.dev20260827-research_873e7db_1.conda",
+      "sha256": "db54139fd9f42a3eb4905e26dca71c9574e1de2e56c3f1606c09c94ccbb96aaf"
+    },
+    {
+      "filename": "opensfm-scoped-odm-0.5.2-research_873e7db_0.conda",
+      "sha256": "d1def6eaa256eb13eb623dc860831255024baba3b3936f9cffb0bd223f0d7137"
+    },
+    {
+      "filename": "poissonrecon-odm-13.8-research_873e7db_3.conda",
+      "sha256": "ae72c2b30ed474e3d1b352c5e7fb4bd2600af7d17c800e145f6e41851aab9f9c"
+    },
+    {
+      "filename": "renderdem-1.0-research_873e7db_1.conda",
+      "sha256": "cf0f35756c586d816ffb81c9a84c52e4d658b5b63e11e9369d7954a63c1ee5d4"
+    }
+  ],
+  "lock_sha256": "0b88eed8b2816f24dd2bde37fa586ec667025790328359d01e4648cf299baf85",
+  "manifest_sha256": "d6d217434b744c466cd73b6fd80988da32591a71344c40562559b5628b9e92de",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43504605031",
+  "schema_version": 1,
+  "scope": "ephemeral research stack; synthetic formats only; not final release lock, installed-byte verification, source closure or legal approval",
+  "selected_dependencies": [
+    {
+      "build": "nompi_h19486de_110",
+      "name": "hdf5",
+      "sha256": "ac57ce3abbda2a82d6192bc36fbd7fe96e867d84c999ef81a3da034dfd01a995",
+      "version": "1.14.6"
+    },
+    {
+      "build": "he63569f_2",
+      "name": "libgdal-core",
+      "sha256": "564d9e27f9cb3eae53a945a70c25b92f22f74a27b450dc166a255964623b4383",
+      "version": "3.12.2"
+    },
+    {
+      "build": "h9d23c72_0",
+      "name": "libpdal-core",
+      "sha256": "c43a137e3b537f8842b3c850e9a319b9cae0ab59143b4fc7358495892e61d279",
+      "version": "2.10.0"
+    },
+    {
+      "build": "h01cf3b3_0",
+      "name": "libpdal-hdf",
+      "sha256": "eb432d395b2d63baa36835d11ea52ee616e7c923e9c6d8b773002867bf702331",
+      "version": "2.10.0"
+    },
+    {
+      "build": "h01cf3b3_0",
+      "name": "libpdal-icebridge",
+      "sha256": "80741e4056c626968ba9fdf85c58e96804b54585746c9701ee553df36dd5ec6f",
+      "version": "2.10.0"
+    }
+  ]
+}

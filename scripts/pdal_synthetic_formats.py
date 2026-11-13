@@ -8,6 +8,7 @@ accuracy certification, input-fuzzing, or release approval is implied.
 import argparse
 import csv
 import json
+import math
 import os
 import subprocess
 import tempfile
@@ -32,7 +33,8 @@ def check_csv(path: Path) -> None:
     if len(rows) != len(POINTS): raise ValueError(f'Expected {len(POINTS)} points; got {len(rows)}')
     for row, expected in zip(rows, POINTS):
         for name, want in zip(('X', 'Y', 'Z'), expected):
-            if abs(float(row[name]) - want) > 0.001:
+            actual = float(row[name])
+            if not math.isfinite(actual) or abs(actual - want) > 0.001:
                 raise ValueError(f'Unexpected {name} value in synthetic point')
 
 

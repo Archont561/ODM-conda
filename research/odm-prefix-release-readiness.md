@@ -335,3 +335,33 @@ source-only snapshot is not a retained release candidate.
    then separately authorizes the merge/tag/release and protected Prefix
    publication. The current release workflow publishes one registered
    component per approved release, not the entire research stack in one go.
+
+### Synthetic PDAL format checks in the private TetraFlow stack
+
+[Run 43504605031](https://github.com/Archont561/ODM-conda/actions/runs/43504605031)
+built a fresh private candidate stack, retested and replayed it, and ran the
+Seneca and JPEG XL checks. It then installed the **same** sealed lock into a
+separate environment and exercised three generated XYZ points through PDAL
+LAS and LAZ write/read roundtrips and synthetic HDF and IceBridge reads. Each
+output's X/Y/Z values and count were checked; the separate fixture interpreter
+used h5py 3.12.1 and NumPy 1.26.4 without modifying the tested Conda lock.
+The selected GDAL core was 3.12.2, PDAL core and HDF/IceBridge plugins 2.10.0,
+and HDF5 1.14.6. Bounded metadata, hashes and the 432-record inventory count are
+in [`odm-pdal-synthetic-formats-evidence.json`](odm-pdal-synthetic-formats-evidence.json).
+The lock, binaries, inputs and outputs were discarded.
+
+The reusable `scripts/pdal_synthetic_formats.py --prefix /private/installed-prefix`
+requires a **separate** Python with h5py and NumPy to generate the synthetic
+fixtures and calls the PDAL executable from the supplied, trusted prefix. It
+sets that prefix's PROJ database and removes ambient dynamic-library and Python
+paths from PDAL subprocesses. The first preliminary run
+[43504382525](https://github.com/Archont561/ODM-conda/actions/runs/43504382525)
+failed IceBridge because it inherited the wrong PROJ path; correcting the test
+setup yielded [43504478412](https://github.com/Archont561/ODM-conda/actions/runs/43504478412).
+
+This is a small synthetic smoke test, not proof of real-world format coverage,
+all dimensions, coordinate reference correctness, scientific accuracy, malformed
+input safety, or distribution rights. HDF and IceBridge are diagnostic plugin
+coverage, not a decision that those formats are required in the release. Rerun
+against the exact owner-retained final lock, and determine which real-world
+formats and appropriately cleared fixtures the supported product needs.
