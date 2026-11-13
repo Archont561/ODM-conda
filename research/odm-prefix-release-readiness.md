@@ -371,3 +371,33 @@ the final checker passed a separate narrow GDAL/PDAL solve in
 [43510460660](https://github.com/Archont561/ODM-conda/actions/runs/43510460660).
 That check used the same requested component versions, not the discarded full
 bundle's lock; the earlier full-stack run used the prior checker revision.
+
+### User-authorized temporary binary artifact replay
+
+With explicit user authorization to temporarily relax the no-binary-artifact
+restriction, [run 43518311868](https://github.com/Archont561/ODM-conda/actions/runs/43518311868)
+built the private TetraFlow candidate and uploaded **only** the sealed binary
+channel, lock, manifest and inventory as the one-day Actions artifact
+`temporary-odm-research-bundle`. The workflow checked an exact 21-file allowlist
+(15 Conda packages plus six metadata/repodata files), rejected symlinks, and
+did not upload source archives, the dataset or pipeline output. GitHub artifact
+ID is `14083906866`. This repository is public; the artifact is accessible
+under its GitHub access rules until deletion or expiration, and the user plans
+to remove it. It was scheduled to expire at 2026-11-14 22:51:59 UTC; actual
+availability can end sooner.
+
+A separate job downloaded that artifact, verified its bundle manifest SHA256
+`81da120940a5236657854b51b9713aae0e40dbd11199a51859197837e21c3c7b`
+against the build job's output, replayed its unchanged lock and installed
+inventory, passed the JPEG XL fixture, and passed the synthetic LAS/LAZ/HDF/
+IceBridge tests. The build job separately ran Seneca before upload. Metadata is
+in [`odm-temporary-artifact-replay-evidence.json`](odm-temporary-artifact-replay-evidence.json).
+The build-job output is a cross-job integrity anchor, not an independently
+recorded owner trust anchor. An attempted local `gh run download` failed due to
+this sandbox's outbound network; the CI download nevertheless succeeded.
+
+This permission applies to the temporary research binary bundle, not a release
+or a grant to upload source or datasets. The artifact is not a durable private
+release bundle, source offer, dependency-source closure, installed-byte audit,
+legal clearance or owner approval. Its eventual deletion prevents another
+replay unless an authorized owner separately retains the exact files.
