@@ -1,0 +1,54 @@
+{
+  "artifact": "odm-orthophoto-0.0.0.dev20250225-candidate_opencv413_873e7db_3.conda",
+  "audit": {
+    "artifact": "odm-orthophoto-0.0.0.dev20250225-candidate_opencv413_873e7db_3.conda",
+    "component": "odm-orthophoto",
+    "elf_needed": [
+      "libopencv_photo.so.413",
+      "libgdal.so.38",
+      "libopencv_imgcodecs.so.413",
+      "libopencv_imgproc.so.413",
+      "libopencv_core.so.413",
+      "libgomp.so.1",
+      "libpthread.so.0",
+      "libstdc++.so.6",
+      "libm.so.6",
+      "libgcc_s.so.1",
+      "libc.so.6"
+    ],
+    "license": "AGPL-3.0-only AND MIT",
+    "metadata_license_files": 2,
+    "payload_files": 6,
+    "result": "passed",
+    "rpath": "$ORIGIN/../lib",
+    "runtime_dependencies": [
+      "libgdal-core >=3.12.2,<3.12.3",
+      "libgomp >=14",
+      "libopencv >=4.13,<4.14",
+      "libstdcxx >=14",
+      "libgcc >=14",
+      "__glibc >=2.28,<3.0.a0",
+      "_openmp_mutex >=4.5",
+      "libopencv >=4.13.0,<4.13.1.0a0",
+      "libgdal-core >=3.12.2,<3.13.0a0"
+    ],
+    "scope": "Artifact audit only; not a complete license or ODM integration review",
+    "sha256": "4c5915a10b86ab9c6e237a3c3958a7f870414bc92aaf69ec0ad9e4a799b07aef",
+    "source_commit": "55b66d87cc168b8ab287bf10e81d4da0890f84f1"
+  },
+  "depends": [
+    "libgdal-core >=3.12.2,<3.12.3",
+    "libgomp >=14",
+    "libopencv >=4.13,<4.14",
+    "libstdcxx >=14",
+    "libgcc >=14",
+    "__glibc >=2.28,<3.0.a0",
+    "_openmp_mutex >=4.5",
+    "libopencv >=4.13.0,<4.13.1.0a0",
+    "libgdal-core >=3.12.2,<3.13.0a0"
+  ],
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43457662447",
+  "schema_version": 1,
+  "scope": "ephemeral unpublished candidate; no release approval or retained artifact",
+  "sha256": "4c5915a10b86ab9c6e237a3c3958a7f870414bc92aaf69ec0ad9e4a799b07aef"
+}
