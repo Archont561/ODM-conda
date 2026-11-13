@@ -1,0 +1,195 @@
+{
+  "requirements": [
+    {
+      "candidate_name": "beautifulsoup4",
+      "research_run_spec": null,
+      "status": "not-declared-directly",
+      "upstream_name": "beautifulsoup4",
+      "upstream_version": "4.13.4"
+    },
+    {
+      "candidate_name": "edt",
+      "research_run_spec": "edt",
+      "status": "declared-directly",
+      "upstream_name": "edt",
+      "upstream_version": "3.0.0"
+    },
+    {
+      "candidate_name": "exifread",
+      "research_run_spec": null,
+      "status": "not-declared-directly",
+      "upstream_name": "ExifRead",
+      "upstream_version": "3.5.1"
+    },
+    {
+      "candidate_name": "fiona",
+      "research_run_spec": "fiona",
+      "status": "declared-directly",
+      "upstream_name": "Fiona",
+      "upstream_version": "1.10.1"
+    },
+    {
+      "candidate_name": "numpy",
+      "research_run_spec": null,
+      "status": "not-declared-directly",
+      "upstream_name": "numpy",
+      "upstream_version": "2.3.2"
+    },
+    {
+      "candidate_name": "pillow",
+      "research_run_spec": null,
+      "status": "not-declared-directly",
+      "upstream_name": "Pillow",
+      "upstream_version": "11.3.0"
+    },
+    {
+      "candidate_name": "odm-research-pillow-jxl-plugin",
+      "research_run_spec": "odm-research-pillow-jxl-plugin ==1.3.4 research_*_1",
+      "status": "declared-directly",
+      "upstream_name": "pillow-jxl-plugin",
+      "upstream_version": "1.3.4"
+    },
+    {
+      "candidate_name": "vmem",
+      "research_run_spec": null,
+      "status": "not-declared-directly",
+      "upstream_name": "vmem",
+      "upstream_version": "1.0.2"
+    },
+    {
+      "candidate_name": "odm-research-pyodm",
+      "research_run_spec": "odm-research-pyodm ==1.5.12 research_*_1",
+      "status": "declared-directly",
+      "upstream_name": "pyodm",
+      "upstream_version": "1.5.12"
+    },
+    {
+      "candidate_name": "pyproj",
+      "research_run_spec": null,
+      "status": "not-declared-directly",
+      "upstream_name": "pyproj",
+      "upstream_version": "3.7.1"
+    },
+    {
+      "candidate_name": "odm-research-pysolar",
+      "research_run_spec": "odm-research-pysolar ==0.13 research_*_1",
+      "status": "declared-directly",
+      "upstream_name": "Pysolar",
+      "upstream_version": "0.13"
+    },
+    {
+      "candidate_name": "pyyaml",
+      "research_run_spec": null,
+      "status": "not-declared-directly",
+      "upstream_name": "PyYAML",
+      "upstream_version": "6.0.2"
+    },
+    {
+      "candidate_name": "rasterio",
+      "research_run_spec": null,
+      "status": "not-declared-directly",
+      "upstream_name": "rasterio",
+      "upstream_version": "1.4.3"
+    },
+    {
+      "candidate_name": "scikit-learn",
+      "research_run_spec": "scikit-learn",
+      "status": "declared-directly",
+      "upstream_name": "scikit-learn",
+      "upstream_version": "1.7.1"
+    },
+    {
+      "candidate_name": "scikit-image",
+      "research_run_spec": "scikit-image",
+      "status": "declared-directly",
+      "upstream_name": "scikit-image",
+      "upstream_version": "0.25.2"
+    },
+    {
+      "candidate_name": "scipy",
+      "research_run_spec": null,
+      "status": "not-declared-directly",
+      "upstream_name": "scipy",
+      "upstream_version": "1.16.1"
+    },
+    {
+      "candidate_name": "xmltodict",
+      "research_run_spec": null,
+      "status": "not-declared-directly",
+      "upstream_name": "xmltodict",
+      "upstream_version": "0.14.2"
+    },
+    {
+      "candidate_name": "fpdf2",
+      "research_run_spec": null,
+      "status": "not-declared-directly",
+      "upstream_name": "fpdf2",
+      "upstream_version": "2.8.3"
+    },
+    {
+      "candidate_name": "shapely",
+      "research_run_spec": "shapely",
+      "status": "declared-directly",
+      "upstream_name": "Shapely",
+      "upstream_version": "2.1.1"
+    },
+    {
+      "candidate_name": "onnxruntime",
+      "research_run_spec": "onnxruntime",
+      "status": "declared-directly",
+      "upstream_name": "onnxruntime",
+      "upstream_version": "1.22.1"
+    },
+    {
+      "candidate_name": "odm-research-pygltflib",
+      "research_run_spec": "odm-research-pygltflib ==1.16.5 research_*_1",
+      "status": "declared-directly",
+      "upstream_name": "pygltflib",
+      "upstream_version": "1.16.5"
+    },
+    {
+      "candidate_name": "packaging",
+      "research_run_spec": "packaging",
+      "status": "declared-directly",
+      "upstream_name": "packaging",
+      "upstream_version": "25.0"
+    },
+    {
+      "candidate_name": "odm-research-codem",
+      "research_run_spec": "odm-research-codem ==0.26.1 research_*_1",
+      "status": "declared-directly",
+      "upstream_name": "codem",
+      "upstream_version": "0.26.1"
+    },
+    {
+      "candidate_name": "matplotlib",
+      "research_run_spec": null,
+      "status": "not-declared-directly",
+      "upstream_name": "matplotlib",
+      "upstream_version": "3.10.3"
+    },
+    {
+      "candidate_name": "trimesh",
+      "research_run_spec": "trimesh",
+      "status": "declared-directly",
+      "upstream_name": "trimesh",
+      "upstream_version": "4.7.1"
+    },
+    {
+      "candidate_name": "piexif",
+      "research_run_spec": "piexif",
+      "status": "declared-directly",
+      "upstream_name": "piexif",
+      "upstream_version": "1.1.3"
+    },
+    {
+      "candidate_name": "rawpy",
+      "research_run_spec": null,
+      "status": "not-declared-directly",
+      "upstream_name": "rawpy",
+      "upstream_version": "0.25.0"
+    }
+  ],
+  "scope": "name-based research recipe comparison only; not a solve, transitive inventory, version equivalence, or release approval",
+  "source_commit": "47f41f1f2d09f7c15dff33dd3c15ab29c8a97d45"
+}
