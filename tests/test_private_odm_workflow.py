@@ -73,3 +73,13 @@ def test_crate_download_checks_hash_and_redirect(tmp_path, monkeypatch):
     Response.url = 'https://example.com/unsafe'
     with pytest.raises(ScaffoldError, match='redirect'):
         workflow.download_crate(tmp_path/'redirect')
+
+
+def test_crate_download_rejects_oversized_payload(tmp_path, monkeypatch):
+    import io
+    class Response(io.BytesIO):
+        url = workflow.CRATE_URL
+    monkeypatch.setattr(workflow, 'CRATE_LIMIT', 2)
+    monkeypatch.setattr(workflow.urllib.request, 'urlopen', lambda *a, **k: Response(b'longer'))
+    with pytest.raises(ScaffoldError, match='download limit'):
+        workflow.download_crate(tmp_path/'oversized')
