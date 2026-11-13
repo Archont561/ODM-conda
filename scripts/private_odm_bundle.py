@@ -252,6 +252,17 @@ def build_packages(work: Path, *, reduced_jxl: bool = False, vendor_scope_crate:
     return packages
 
 
+def test_odm_package(channel_dir: Path, channel_url: str, output: Path) -> None:
+    """Retest the assembled ODM package against the private local channel."""
+    matches = list((Path(channel_dir)/'linux-64').glob('odm-fast-research-*.conda'))
+    if len(matches) != 1 or matches[0].is_symlink() or not matches[0].is_file():
+        raise ScaffoldError('Expected exactly one private ODM package to test')
+    run([rattler(), 'test', '--package-file', str(matches[0]), '--channel', channel_url,
+         '--channel', 'conda-forge', '--channel-priority', 'strict',
+         '--output-dir', str(output), '--log-style', 'plain'])
+    print('PASS: private ODM package test against the assembled channel', flush=True)
+
+
 def inventory_identities(data: dict) -> list:
     packages=data.get('packages') if isinstance(data, dict) else None
     keys=('name','version','build','sha256','binary_package_url')
@@ -358,6 +369,7 @@ def build(destination: Path, port: int, dataset: Path | None, *, runtime_profile
             info=create_channel(packages,destination/'channel')
             project=work/'project'
             with loopback(destination/'channel',port) as channel:
+                test_odm_package(destination/'channel', channel, work/'odm-retest')
                 run(['pixi','init','--format','pixi','--scm','github','--channel',channel,'--channel','conda-forge','--platform','linux-64',str(project)])
                 configure_runtime_profile(project/'pixi.toml', runtime_profile)
                 run(['pixi','add','--manifest-path',str(project/'pixi.toml'),'odm-fast-research'])

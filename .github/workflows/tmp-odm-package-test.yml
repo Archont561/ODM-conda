@@ -1,0 +1,32 @@
+name: Temporary ODM package retest validation
+on:
+  push:
+    branches: [arena/e2c792b3-odm-conda]
+    paths: [.github/workflows/tmp-odm-package-test.yml]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 160
+    env:
+      ODM_OPENMVS_VARIANT: tetraflow
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default agent-tools
+      - name: Locked unit tests
+        run: pixi run python -m pytest -q tests/test_private_odm_bundle.py tests/test_odm_research_package.py tests/test_private_odm_workflow.py
+      - name: Build and replay
+        run: |
+          set -o pipefail
+          pixi run python scripts/run_private_odm_workflow.py 2>&1 | tee /tmp/odm-package-test.log
+      - name: Failure diagnostics
+        if: failure()
+        run: |
+          python3 -c 'import base64; from pathlib import Path; p=Path("/tmp/odm-package-test.log"); print("::notice::FAILURE64 "+base64.b64encode(p.read_bytes()[-2500:] if p.exists() else b"no build log").decode())'

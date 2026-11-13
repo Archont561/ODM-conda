@@ -72,3 +72,14 @@ def test_packaged_patch_matches_validated_prototype():
     recipe_patch = ROOT / 'research/recipes/odm-fast-research/patches/0001-prefix.patch'
     assert digest(PATCH) == PATCH_SHA256
     assert digest(recipe_patch) == PATCH_SHA256
+
+
+def test_research_recipe_defines_packaged_smoke_and_scope_checks():
+    import yaml
+    from common import ROOT
+    recipe = yaml.safe_load((ROOT/'research/recipes/odm-fast-research/recipe.yaml').read_text())
+    tests = recipe['tests']
+    assert 'bin/odm-fast-research' in tests[0]['package_contents']['files']
+    script = tests[1]['script']['content']
+    assert "'--fast-orthophoto', '--help'" in script
+    assert "refused.returncode != 0" in script
