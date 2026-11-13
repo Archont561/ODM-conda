@@ -1,0 +1,36 @@
+name: Temporary dem2mesh GDAL 3.12 research
+on:
+  push:
+    branches: [arena/4fb8cbff-odm-conda]
+    paths: [.github/workflows/tmp-dem2mesh.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  experiment:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default agent-tools
+      - name: Download previous research bundle
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: temporary-odm-research-bundle
+          path: /tmp/odm-research-bundle
+          run-id: 43518311868
+          github-token: ${{ github.token }}
+      - name: Build, audit and test research candidate
+        run: |
+          set -o pipefail
+          pixi run python scripts/tmp_dem2mesh_trial.py 2>&1 | tee /tmp/trial.log
+      - name: Report failure
+        if: failure()
+        run: |
+          python3 -c 'import base64;from pathlib import Path;p=Path("/tmp/trial.log");print("::notice::FAILURE64 "+base64.b64encode(p.read_bytes()[-4000:] if p.exists() else b"no log; inspect prior steps").decode())'
