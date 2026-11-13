@@ -39,3 +39,5 @@ jobs:
 # Capture dependency diagnostics only
 
 # Diagnose HDF ABI metadata
+
+# Probe HDF 2 compatibility without altering maintained recipe

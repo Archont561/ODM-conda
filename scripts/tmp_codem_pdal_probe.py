@@ -1,6 +1,6 @@
 from pathlib import Path
 p=Path('research/recipes/python-source-research/codem.yaml')
-s=p.read_text();anchor='''    requirements:
+s=p.read_text(); marker='    - python >=3.12,<3.13\n    - typing-extensions\n'; assert s.count(marker)==1; s=s.replace(marker, marker+'    - hdf5 >=2,<3\n'); anchor='''    requirements:
       run:
         - python >=3.12,<3.13
 about:'''
