@@ -1,4 +1,4 @@
-name: Temporary packaged ODM dense integration
+name: Temporary packaged ODM dense diagnostics
 on:
   push:
     branches: [arena/207aff2a-odm-conda]
@@ -32,4 +32,4 @@ jobs:
       - name: Failure diagnostics
         if: failure()
         run: |
-          python3 -c 'import base64;from pathlib import Path;p=Path("/tmp/odm-dense-integration.log");print("::notice::FAILURE64 "+base64.b64encode(p.read_bytes()[-1700:] if p.exists() else b"no log").decode())'
+          python3 -c 'import base64,re;from pathlib import Path;p=Path("/tmp/odm-dense-integration.log");s=p.read_text(errors="replace") if p.exists() else "no log";lines=[re.sub(r"\x1b\[[0-9;]*m","",x) for x in s.splitlines() if re.search(r"FPCFilter|error|failed|finite|invalid|exception|scene_dense|point.?cloud",x,re.I)];print("::notice::FAILURE64 "+base64.b64encode(chr(10).join(lines[-22:]).encode()[-2200:]).decode())'

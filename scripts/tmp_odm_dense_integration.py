@@ -63,6 +63,7 @@ with tempfile.TemporaryDirectory(prefix='odm-dense-integration-') as tmp:
   if len(images)!=35:raise ScaffoldError('missing images')
   projects=root/'projects';dest=projects/'dataset/images';dest.mkdir(parents=True)
   for img in images:shutil.copy2(img,dest/img.name)
+  print('::notice::PACKAGED_REPLAY_PASS '+json.dumps({'package_count':len(identities),'packages':[{'filename':p.name,'sha256':sha256(p)} for p in (dense,dem,odm)],'lock_sha256':sha256(project/'pixi.lock'),'no_binary_overlay':True}),flush=True)
   run([str(prefix/'bin/odm-dense-research'),'--skip-3dmodel','--pc-quality','lowest','--feature-quality','low','--max-concurrency','2','--project-path',str(projects),'dataset'],env=env2)
   dense_output=projects/'dataset/opensfm/undistorted/openmvs/scene_dense_dense_filtered.ply'
   raster=projects/'dataset/odm_orthophoto/odm_orthophoto.tif';report=projects/'dataset/odm_report/report.pdf'
