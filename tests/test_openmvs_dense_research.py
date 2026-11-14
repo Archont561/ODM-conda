@@ -50,3 +50,18 @@ def test_dense_evidence_is_bounded():
     assert data['dense_point_count'] == 28116
     assert 'not full ODM' in data['scope']
     assert 'discarded' in data['outputs']
+
+
+def test_cpu_compat_patch_and_evidence():
+    import json
+    from pathlib import Path
+    from common import sha256
+    root = Path(__file__).resolve().parents[1]
+    patch = root/'research/recipes/openmvs-dense-research/patches/odm-cpu-option.patch'
+    assert sha256(patch) == '4ffb4d97b9373155194275994709cabfe900e1deff8b1d6950bc160f50029953'
+    data = json.loads((root/'research/openmvs-dense-cpucompat-evidence.json').read_text())
+    assert data['odm_stage']['overlay'] is True
+    assert data['odm_stage']['images'] == 35
+    assert 'scene_dense_dense_filtered.ply' in data['odm_stage']['outputs']
+    assert data['cli_policy'] == 'accept only --cuda-device -2; reject -1 and 0; CPU only'
+    assert 'not full ODM' in data['scope']

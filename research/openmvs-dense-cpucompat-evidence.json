@@ -1,0 +1,42 @@
+{
+  "baseline_manifest_sha256": "81da120940a5236657854b51b9713aae0e40dbd11199a51859197837e21c3c7b",
+  "cli_policy": "accept only --cuda-device -2; reject -1 and 0; CPU only",
+  "dense_point_count": 28087,
+  "depends": [
+    "libboost >=1.90,<1.91",
+    "libopencv >=4.13,<4.14",
+    "libjxl >=0.11,<0.12",
+    "tbb >=2023.1,<2024",
+    "mpfr",
+    "gmp",
+    "libgomp >=14",
+    "python >=3.12,<3.13",
+    "libstdcxx >=14",
+    "libgcc >=14",
+    "__glibc >=2.28,<3.0.a0",
+    "_openmp_mutex >=4.5",
+    "gmp >=6.3.0,<7.0a0",
+    "libjxl >=0.11,<1.0a0",
+    "tbb >=2023.1.0",
+    "libzlib >=1.3.2,<2.0a0",
+    "libboost >=1.90.0,<1.91.0a0",
+    "libopencv >=4.13.0,<4.13.1.0a0",
+    "mpfr >=4.2.2,<5.0a0"
+  ],
+  "filename": "openmvs-dense-research-0.0.0.dev20260827-research_cpucompat_873e7db_2.conda",
+  "mode": "ODM invoked directly to end-with openmvs with CPU flag, overlaid binary outside conda metadata",
+  "odm_stage": {
+    "images": 35,
+    "outputs": [
+      "scene_dense.ply",
+      "scene_dense_dense_filtered.ply"
+    ],
+    "overlay": true
+  },
+  "retention": "built package, input datasets, solves, overlay and generated outputs discarded",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43617563581",
+  "scope": "research-only, CPU scene and ODM dense stage with explicit binary overlay, not full ODM, accuracy, rights or release approval",
+  "seneca_commit": "9220acfdca75cc5e2dd6d27fe48550c5ae0877f2",
+  "sha256": "aa74991636322b07119c67a2d7e2ad3802097ce22dfc9b7ca47a0858cc767be3",
+  "standalone_dataset_commit": "8e4c5f31a16e0e329132c8f26e20a8c5d7b47f53"
+}

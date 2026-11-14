@@ -103,4 +103,4 @@ corresponding-source verification, license approval or a final release solve.
 A [CPU dense research follow-up](openmvs-dense-research.md) builds both native
 tools and passed a bounded standalone dense scene test. It found an ODM CLI
 blocker: the CPU-only binary rejects the `--cuda-device -2` flag ODM passes.
-It has not been integrated into a full ODM run and is not release-approved.
+A follow-up CPU-only compatibility patch passed an experimental ODM run through the dense stage with an explicit binary overlay. It is not a complete ODM run, solved release package or release approval.
