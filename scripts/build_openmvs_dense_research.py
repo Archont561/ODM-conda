@@ -55,6 +55,10 @@ def main() -> None:
     prepare_source(source)
     patch = ROOT/'research/recipes/openmvs-tetraflow-research/patches/visibility-ply.patch'
     run(['patch', '--batch', '--fuzz=0', '-p1', '-i', str(patch)], cwd=source)
+    cpu_patch = ROOT/'research/recipes/openmvs-dense-research/patches/odm-cpu-option.patch'
+    if cpu_patch.is_symlink() or not cpu_patch.is_file() or sha256(cpu_patch) != '4ffb4d97b9373155194275994709cabfe900e1deff8b1d6950bc160f50029953':
+        raise ScaffoldError('Unexpected ODM CPU option patch')
+    run(['patch', '--batch', '--fuzz=0', '-p1', '-i', str(cpu_patch)], cwd=source)
     env=os.environ.copy(); env['CONDA_PREFIX']=str(prefix); env['CMAKE_PREFIX_PATH']=str(prefix)
     build=source/'.research-build'; link_map=build/'ReconstructMesh-link.map'
     flags=f"{env.get('LDFLAGS','')} -Wl,-Map={link_map}"

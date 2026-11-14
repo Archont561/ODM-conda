@@ -30,9 +30,9 @@ NOTICE_HASHES = frozenset({
 def verify_index(index: dict) -> None:
     if (not isinstance(index, dict) or index.get('name') != NAME or
             index.get('version') != '0.0.0.dev20260827' or
-            type(index.get('build_number')) is not int or index['build_number'] != 1 or
+            type(index.get('build_number')) is not int or index['build_number'] != 2 or
             index.get('subdir') != 'linux-64' or index.get('license') != 'LicenseRef-Unreviewed' or
-            not re.fullmatch(r'research_[a-z0-9]+_1', str(index.get('build', '')))):
+            not re.fullmatch(r'research_cpucompat_[a-z0-9]+_2', str(index.get('build', '')))):
         raise ScaffoldError('Unexpected TetraFlow research package identity')
     deps = index.get('depends')
     if not isinstance(deps, list) or not all(isinstance(item, str) and item.split() for item in deps):
@@ -81,7 +81,7 @@ def audit(package: Path) -> None:
             for entry in result.stdout.strip().split(':'):
                 if entry and not (entry in ('$ORIGIN', '${ORIGIN}') or entry.startswith(('$ORIGIN/', '${ORIGIN}/'))):
                     raise ScaffoldError('Non-relocatable dense research ELF RPATH')
-    print('PASS: TetraFlow research identity, payload, selected notices and RPATH; not a release audit', flush=True)
+    print('PASS: Dense research identity, payload, selected notices and RPATH; not a release audit', flush=True)
 
 
 def main() -> None:

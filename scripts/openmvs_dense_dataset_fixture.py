@@ -45,7 +45,7 @@ def test_dense(executable: Path, source: Path, directory: Path) -> int:
     output = directory/'dense.mvs'
     command = [str(executable), '-i', str(directory/'scene.mvs'), '-o', str(output),
                '--archive-type', '1', '--resolution-level', '2', '--min-resolution', '320',
-               '--max-threads', '2', '--geometric-iters', '0']
+               '--max-threads', '2', '--cuda-device', '-2', '--geometric-iters', '0']
     completed = subprocess.run(command, cwd=directory, text=True, capture_output=True, timeout=600)
     if completed.returncode != 0:
         raise ValueError(f'Dense reconstruction failed ({completed.returncode}): {completed.stdout[-5000:]} {completed.stderr[-1000:]}')

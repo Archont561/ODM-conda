@@ -1,0 +1,36 @@
+--- a/apps/DensifyPointCloud/DensifyPointCloud.cpp
++++ b/apps/DensifyPointCloud/DensifyPointCloud.cpp
+@@ -78,6 +78,9 @@
+ bool bForceNeighborsFromImages;
+ int nArchiveType;
+ int nProcessPriority;
++#if !defined(_USE_CUDA) && !defined(_USE_METAL)
++int nODMCPUDevice;
++#endif
+ unsigned nMaxThreads;
+ String strConfigFileName;
+ boost::program_options::variables_map vm;
+@@ -117,6 +120,9 @@
+ 			#endif
+ 			), "verbosity level")
+ 		#endif
++		#if !defined(_USE_CUDA) && !defined(_USE_METAL)
++		("cuda-device", boost::program_options::value(&OPT::nODMCPUDevice)->default_value(-2), "ODM compatibility: CPU only (-2); GPU requests are rejected")
++		#endif
+ 		#if defined(_USE_CUDA) || defined(_USE_METAL)
+ 		("gpu-device", boost::program_options::value<std::string>(&SEACAVE::CUDA::desiredDeviceIDs)->default_value("-1"), "GPU device(s) for depth-map estimation (-1 best GPU, -2/cpu/empty CPU, >=0 comma-separated IDs)")
+ 		#endif
+@@ -232,6 +238,13 @@
+ 		return false;
+ 	}
+ 
++	#if !defined(_USE_CUDA) && !defined(_USE_METAL)
++	if (OPT::nODMCPUDevice != -2) {
++		LOG(_T("CPU-only research build: --cuda-device must be -2"));
++		return false;
++	}
++	#endif
++
+ 	// initialize the log file
+ 	OPEN_LOGFILE(MAKE_PATH(APPNAME _T("-")+Util::getUniqueName(0)+_T(".log")).c_str());
+ 
