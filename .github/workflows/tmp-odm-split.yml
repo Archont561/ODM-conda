@@ -39,3 +39,4 @@ jobs:
         if: failure()
         run: |
           python3 -c 'import base64,re;from pathlib import Path;p=Path("/tmp/odm-dense-integration.log");s=p.read_text(errors="replace") if p.exists() else "no log";lines=[re.sub(r"\x1b\[[0-9;]*m","",x) for x in s.splitlines() if re.search(r"FPCFilter|error|failed|finite|invalid|exception|scene_dense|point.?cloud",x,re.I)];print("::notice::FAILURE64 "+base64.b64encode(chr(10).join(lines[-22:]).encode()[-2200:]).decode())'
+# Retry with prefix set for installed module probe.

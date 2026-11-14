@@ -90,7 +90,8 @@ with tempfile.TemporaryDirectory() as d:
  assert p.read_bytes()==b'original'
 print('NEGATIVE_CLASSIFICATION_PROBES_PASS')
 """)
-  run([str(prefix/'bin/python'),'-s','-E',str(probe),str(prefix/'share/odm-conda/odm-dense-research/app')],env=env2)
+  probe_env=env2.copy();probe_env['ODM_CONDA_LOCAL_PREFIX']=str(prefix)
+  run([str(prefix/'bin/python'),'-s','-E',str(probe),str(prefix/'share/odm-conda/odm-dense-research/app')],env=probe_env)
   run([str(prefix/'bin/odm-dense-research'),'--help'],env=env2)
   run([str(prefix/'bin/python'),'-s','-E',str(prefix/'share/odm-conda/dem2mesh/functional_test.py')],env=env2)
   archive=root/'openmvs-old.tar.gz'
