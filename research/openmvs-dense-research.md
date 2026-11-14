@@ -300,3 +300,26 @@ completed, but its annotation quota prevented retention of all reported metrics.
 No trial uploaded packages, model, inputs or outputs. The launcher remains
 restricted; 3D and distributed/ClusterODM merge remain untested. Do not infer
 accuracy, model rights or production release approval from these runs.
+
+#### Controlled raster counterfactual
+
+[43647654147](https://github.com/Archont561/ODM-conda/actions/runs/43647654147)
+replayed 436 package identities in a fresh relocated prefix without source or
+binary overlays and directly exercised the installed ODM orthophoto and DEM
+merge functions. Two synthetic, aligned 24×32 rasters (constant 100 and 200)
+overlap over 16 columns; the combined 32×32 output had all 1,024 pixels covered.
+Disabling either input changed 768 pixels in each product. Equal-weight DEM
+values were 100 and 200 in exclusive areas and 150 throughout overlap. With
+orthophoto alphas 255 and 128, overlap was 150 in one input order but 100 in the
+reverse order (512 pixels changed). A synthetic half-alpha cutline changed 32
+pixels from 150 to 195. The maximum horizontal adjacent step was 50 in both
+outputs for this intentionally different pair of constant inputs.
+
+This validates the specified controlled behavior, **not** real-world seam
+quality: source order affects alpha blending, and a 50-unit step in this
+contrived fixture cannot establish a general acceptable threshold. Inputs were
+aligned, DEM weights were manually supplied, and real distance-map generation,
+geometric accuracy, distributed processing and 3D-model merge were not tested.
+Evidence and the exact lock/package hashes are in
+`odm-raster-counterfactual-evidence.json`; the fixture is
+`scripts/odm_raster_counterfactual_fixture.py`. Data and packages were discarded.

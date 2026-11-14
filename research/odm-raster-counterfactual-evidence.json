@@ -1,0 +1,47 @@
+{
+  "checks": "full synthetic union coverage, source-ablation comparison, exact exclusive and overlap values, reverse-order behavior, synthetic cutline result, maximum adjacent boundary step; packaged ODM merge functions invoked directly",
+  "fixture": "two aligned, synthetic 24x32 rasters at x=0 and x=8 with overlapping columns, EPSG:32617; output 32x32; constants 100 and 200, DEM distances 10, ortho alpha 255 and 128; one synthetic alpha-128 cutline at column 16",
+  "limitations": "Synthetic constant values, aligned pixels, equal DEM weights and manually supplied distance rasters; not actual georeferencing accuracy, realistic seam quality, DEM distance-map generation, 3D or distributed merge. Alpha blending intentionally order dependent; observed 50-unit boundary steps do not prove acceptable real-world quality.",
+  "replay": {
+    "count": 436,
+    "lock_sha256": "82c26dbcf815cd48699e3ac8429b883741df5e9d0717b800ea35ef1a20bf3e7d",
+    "no_binary_overlay": true,
+    "no_source_overlay": true,
+    "odm_package": "odm-dense-research-3.6.2-research_cpu_split_b0f4dca_5.conda",
+    "odm_sha256": "9a0feacaebaad3a853a6a021b58f1ed9236152924c6e2bd3fe34ddcbbc15a7bb"
+  },
+  "report": {
+    "coverage_pixels": 1024,
+    "cutline_changed_pixels": 32,
+    "cutline_value": 195,
+    "dem_ablation_changed_pixels": [
+      768,
+      768
+    ],
+    "dem_exclusive_values": [
+      100.0,
+      200.0
+    ],
+    "dem_max_adjacent_step": 50.0,
+    "dem_overlap_value": 150.0,
+    "ortho_ablation_changed_pixels": [
+      768,
+      768
+    ],
+    "ortho_max_adjacent_step": 50,
+    "ortho_order_changed_pixels": 512,
+    "ortho_overlap_values": [
+      150
+    ],
+    "ortho_reversed_overlap_values": [
+      100
+    ],
+    "shape": [
+      32,
+      32
+    ]
+  },
+  "retention": "private input rasters, model, package and lock discarded; no artifact uploaded",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43647654147",
+  "source_commit": "47f41f1f2d09f7c15dff33dd3c15ab29c8a97d45"
+}
