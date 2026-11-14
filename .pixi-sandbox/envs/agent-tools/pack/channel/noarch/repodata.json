@@ -1,0 +1,26 @@
+{
+  "info": {
+    "subdir": "noarch"
+  },
+  "packages": {},
+  "packages.conda": {
+    "ca-certificates-2026.10.23-hbd8a1cb_0.conda": {
+      "build": "hbd8a1cb_0",
+      "build_number": 0,
+      "depends": [
+        "__unix"
+      ],
+      "license": "ISC",
+      "md5": "3fd02989038a1e1cee627c14c2d73f29",
+      "name": "ca-certificates",
+      "noarch": "generic",
+      "run_exports": {},
+      "sha256": "95619b9c1184be7175392eeb0ee7eeb5ccf25d280951f4225f2d62e725790be3",
+      "size": 130057,
+      "subdir": "noarch",
+      "timestamp": 1792772446739,
+      "version": "2026.10.23"
+    }
+  },
+  "repodata_version": 2
+}
