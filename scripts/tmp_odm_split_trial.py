@@ -126,7 +126,13 @@ print('NEGATIVE_CLASSIFICATION_PROBES_PASS')
   new="remove_always = ['split', 'split_image_groups', 'split_overlap',"
   if source.count(old)!=1:raise ScaffoldError('Unexpected submodel argument code')
   osfm.write_text(source.replace(old,new))
-  print('::notice::TEST_ONLY_SOURCE_OVERLAY: strip split-image-groups from child argv',flush=True)
+  print('::notice::LASMERGE_IN_PREFIX '+json.dumps({'available':bool(shutil.which('lasmerge',path=split_env['PATH']))}),flush=True)
+  pc=app.parent/'opendm/point_cloud.py';pc_source=pc.read_text()
+  before="system.run('lasmerge -i {all_inputs} -o \"{output}\"'.format(**kwargs))"
+  after="system.run('pdal merge {all_inputs} \"{output}\" --writers.las.forward=all'.format(**kwargs))"
+  if pc_source.count(before)!=1:raise ScaffoldError('Unexpected merge code')
+  pc.write_text(pc_source.replace(before,after))
+  print('::notice::TEST_ONLY_SOURCE_OVERLAY: strip child group option and use PDAL merge',flush=True)
   # Direct app invocation is a deliberate scope bypass for this trial only.
   run([str(prefix/'bin/python'),'-s','-E',str(app),'--no-gpu','--split','20','--split-image-groups',str(groups),'--merge','pointcloud','--pc-quality','lowest','--feature-quality','low','--max-concurrency','2','--skip-3dmodel','--skip-report','--project-path',str(projects),'dataset'],env=split_env)
   clouds=sorted((projects/'dataset/submodels').glob('submodel_*/odm_georeferencing/odm_georeferenced_model.laz'))
@@ -141,5 +147,10 @@ print('NEGATIVE_CLASSIFICATION_PROBES_PASS')
   if len(clouds)<2 or not merged.is_file() or merged.stat().st_size<1000:raise ScaffoldError('Expected multiple submodel clouds and merged output')
   info=json.loads(subprocess.check_output([str(prefix/'bin/pdal'),'info','--summary',str(merged)],text=True,env=split_env))
   count=info['summary']['num_points']
-  if count<=0:raise ScaffoldError('Empty merged point cloud')
-  print('::notice::SPLIT_REPORT '+json.dumps({'submodels':len(clouds),'merged_points':count,'images':len(images),'package_count':len(identities),'lock_sha256':sha256(project/'pixi.lock'),'direct_app_scope_bypass':True,'test_only_source_overlay':'strip split_image_groups from submodel argv','no_binary_overlay':True,'scope':'local pointcloud merge only, no 3D model merging, accuracy or release'},sort_keys=True),flush=True)
+  sources=[json.loads(subprocess.check_output([str(prefix/'bin/pdal'),'info','--summary',str(c)],text=True,env=split_env))['summary'] for c in clouds]
+  if count<=0 or count!=sum(src['num_points'] for src in sources):raise ScaffoldError('Merged point count differs from input total')
+  for coord in ('X','Y','Z'):
+   bounds=info['summary']['bounds']; lo=min(src['bounds'][f'min{coord.lower()}'] for src in sources);hi=max(src['bounds'][f'max{coord.lower()}'] for src in sources)
+   if abs(bounds[f'min{coord.lower()}']-lo)>0.01 or abs(bounds[f'max{coord.lower()}']-hi)>0.01:raise ScaffoldError('Merged bounds differ from input union')
+
+  print('::notice::SPLIT_REPORT '+json.dumps({'submodels':len(clouds),'merged_points':count,'images':len(images),'package_count':len(identities),'lock_sha256':sha256(project/'pixi.lock'),'direct_app_scope_bypass':True,'test_only_source_overlay':'strip split_image_groups and replace lasmerge with pdal merge --writers.las.forward=all','no_binary_overlay':True,'scope':'local pointcloud merge only, no 3D model merging, accuracy or release'},sort_keys=True),flush=True)
