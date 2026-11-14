@@ -15,7 +15,7 @@ DIMENSIONS = ('X', 'Y', 'Z', 'Intensity', 'ReturnNumber', 'NumberOfReturns',
               'PointSourceId', 'GpsTime', 'ScanChannel', 'Red', 'Green', 'Blue')
 
 
-def compare_rows(inputs, output, tolerance=0.0011):
+def compare_rows(inputs, output, tolerance=0.0011, allow_reclassification=False):
     """Compare concatenated input order and dimensions, allowing LAS quantization."""
     sentinel = object()
     import itertools
@@ -27,6 +27,10 @@ def compare_rows(inputs, output, tolerance=0.0011):
             a, b = float(left[key]), float(right[key])
             if not math.isfinite(a) or not math.isfinite(b):
                 raise ValueError(f'Nonfinite {key}')
+            if key == 'Classification' and allow_reclassification:
+                if not (a.is_integer() and b.is_integer() and 0 <= a <= 255 and 0 <= b <= 255):
+                    raise ValueError('Invalid Classification')
+                continue
             if abs(a-b) > (tolerance if key in ('X', 'Y', 'Z') else 0):
                 raise ValueError(f'Merged {key} differs')
         count += 1
@@ -52,7 +56,7 @@ def equivalent_crs(wkts):
     return all(refs[0].IsSame(ref) for ref in refs[1:])
 
 
-def validate(pdal, sources, merged, env):
+def validate(pdal, sources, merged, env, allow_reclassification=False):
     pdal, merged = Path(pdal), Path(merged)
     sources = [Path(s) for s in sources]
     if len(sources) < 2 or not all(p.is_file() for p in [*sources, merged]):
@@ -78,12 +82,13 @@ def validate(pdal, sources, merged, env):
         from itertools import chain
         with ExitStack() as stack:
             readers = [csv.DictReader(stack.enter_context(p.open(newline=''))) for p in paths]
-            count = compare_rows(chain.from_iterable(readers[:-1]), readers[-1])
+            count = compare_rows(chain.from_iterable(readers[:-1]), readers[-1], allow_reclassification=allow_reclassification)
     expected = sum(s['num_points'] for s in summaries[:-1])
     if count != expected or count != summaries[-1]['num_points']:
         raise ValueError('Summary count mismatch')
     return {'input_counts': [s['num_points'] for s in summaries[:-1]], 'merged_count': count,
-            'crs_equivalent': True, 'dimensions_checked': list(DIMENSIONS),
+            'crs_equivalent': True, 'dimensions_checked': [d for d in DIMENSIONS if not (allow_reclassification and d == 'Classification')],
+            'classification_reassignment_allowed': allow_reclassification,
             'coordinate_tolerance': 0.0011, 'row_order': 'concatenated inputs'}
 
 
@@ -92,6 +97,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--pdal', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--allow-reclassification', action='store_true', help='Permit valid Classification values to change after ODM classification')
     parser.add_argument('inputs', nargs='+', type=Path)
     args = parser.parse_args()
-    print(json.dumps(validate(args.pdal, args.inputs, args.output, os.environ.copy()), sort_keys=True))
+    print(json.dumps(validate(args.pdal, args.inputs, args.output, os.environ.copy(), allow_reclassification=args.allow_reclassification), sort_keys=True))

@@ -135,7 +135,7 @@ print('NEGATIVE_CLASSIFICATION_PROBES_PASS')
    observed.append({'name':sub.name,'reconstruction':rec.is_file(),'dense_cloud':densefile.is_file(),'cloud':cloud.is_file(),'cloud_bytes':cloud.stat().st_size if cloud.is_file() else 0})
   print('::notice::SUBMODEL_STATUS '+json.dumps({'submodels':observed,'merged_exists':merged.is_file(),'merged_bytes':merged.stat().st_size if merged.is_file() else 0},sort_keys=True),flush=True)
   if len(clouds)<2 or not merged.is_file() or merged.stat().st_size<1000:raise ScaffoldError('Expected multiple submodel clouds and merged output')
-  result=subprocess.check_output([str(prefix/'bin/python'),'-s','-E',str(ROOT/'scripts/odm_split_merge_sanity.py'),'--pdal',str(prefix/'bin/pdal'),'--output',str(merged),*[str(c) for c in clouds]],text=True,env=split_env)
+  result=subprocess.check_output([str(prefix/'bin/python'),'-s','-E',str(ROOT/'scripts/odm_split_merge_sanity.py'),'--pdal',str(prefix/'bin/pdal'),'--output',str(merged),'--allow-reclassification',*[str(c) for c in clouds]],text=True,env=split_env)
   validation=json.loads(result.strip().splitlines()[-1])
   print('::notice::MERGE_VALIDATION '+json.dumps(validation,sort_keys=True),flush=True)
   count=validation['merged_count']
