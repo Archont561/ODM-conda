@@ -1,0 +1,91 @@
+{
+  "dataset_commit": "9220acfdca75cc5e2dd6d27fe48550c5ae0877f2",
+  "limitations": "Only LAS 1.4 point format 7, expected 21 dimensions and 0.001 input scales accepted; row comparison and CRS cover this dataset, not all LAS metadata, geometry accuracy or general inputs. No orthophoto, DEM, 3D or remote cluster merge was verified.",
+  "negative_pipeline": {
+    "cause": "corrupt LAS input",
+    "original_output_preserved": true,
+    "returncode": 1
+  },
+  "replay": {
+    "lock_sha256": "1ae932286c616b107e07434f59a1ca4657ed10644d3932496ca448f422cca7bf",
+    "no_binary_overlay": true,
+    "package_count": 436,
+    "packages": [
+      {
+        "filename": "openmvs-dense-research-0.0.0.dev20260827-research_cpucompat_873e7db_3.conda",
+        "sha256": "1de891076fda88695a4e1de7851d22b4be6e5457a682e911a70dc09d74a07d15"
+      },
+      {
+        "filename": "dem2mesh-0.0.0.dev20231207-research_873e7db_1.conda",
+        "sha256": "1c5a64075eab4e597557ee23661b7e8f314d6eb762a86ba9a6698b1998a6db3b"
+      },
+      {
+        "filename": "openpointclass-research-0.0.0.dev20250823-research_873e7db_1.conda",
+        "sha256": "a3ce4b8019e754192d79b1e2b2229e6047323e85864c7423f84a598bcfd41569"
+      },
+      {
+        "filename": "odm-dense-research-3.6.2-research_cpu_split_b0f4dca_4.conda",
+        "sha256": "754c212f31e49dcbcb9ee982a6215a3becf5f083cfb6ea965f2e41fbfa421056"
+      }
+    ],
+    "standalone_dense_points": 28302
+  },
+  "retention": "packages, lock, model, input datasets and outputs discarded; no artifacts uploaded",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43637992510",
+  "scope": "private CPU research; packaged split point-cloud path invoked through direct app bypass of unsupported launcher; no source or binary overlays after lock replay",
+  "split": {
+    "direct_app_scope_bypass": true,
+    "images": 35,
+    "lock_sha256": "1ae932286c616b107e07434f59a1ca4657ed10644d3932496ca448f422cca7bf",
+    "merged_points": 85889,
+    "no_binary_overlay": true,
+    "package_count": 436,
+    "scope": "local pointcloud merge only, no 3D model merging, accuracy or release",
+    "source_overlay": false,
+    "submodels": 2
+  },
+  "synthetic_fixture": {
+    "existing_output_preserved": true,
+    "point_count": 20,
+    "rejected": [
+      "format",
+      "extra",
+      "precision",
+      "crs",
+      "range"
+    ]
+  },
+  "validation": {
+    "coordinate_tolerance": 0.0011,
+    "crs_equivalent": true,
+    "dimensions_checked": [
+      "X",
+      "Y",
+      "Z",
+      "Intensity",
+      "ReturnNumber",
+      "NumberOfReturns",
+      "ScanDirectionFlag",
+      "EdgeOfFlightLine",
+      "Classification",
+      "Synthetic",
+      "KeyPoint",
+      "Withheld",
+      "Overlap",
+      "ScanAngleRank",
+      "UserData",
+      "PointSourceId",
+      "GpsTime",
+      "ScanChannel",
+      "Red",
+      "Green",
+      "Blue"
+    ],
+    "input_counts": [
+      45166,
+      40723
+    ],
+    "merged_count": 85889,
+    "row_order": "concatenated inputs"
+  }
+}

@@ -78,3 +78,14 @@ def test_duplicate_inputs_and_mismatched_crs(trial, monkeypatch):
     monkeypatch.setattr(merge, '_same_crs', lambda wkts: False)
     with pytest.raises(ValueError, match='Input CRS'): merge.merge([a,b], out)
     assert not out.exists()
+
+
+def test_hosted_evidence_is_scoped():
+    import json
+    path = Path(__file__).resolve().parents[1]/'research/odm-packaged-split-merge-evidence.json'
+    data = json.loads(path.read_text())
+    assert data['split']['merged_points'] == 85889
+    assert data['validation']['input_counts'] == [45166, 40723]
+    assert not data['split']['source_overlay'] and data['split']['direct_app_scope_bypass']
+    assert data['negative_pipeline']['returncode'] != 0 and data['negative_pipeline']['original_output_preserved']
+    assert data['synthetic_fixture']['rejected'] == ['format', 'extra', 'precision', 'crs', 'range']

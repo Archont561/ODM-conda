@@ -209,3 +209,29 @@ extra dimensions, other scales/coordinate ranges, distributed processing,
 DEM/orthophoto/3D merging, geometric accuracy or release. The launcher continues
 to reject split. Next create a bounded fail-closed research implementation and
 exercise negative failures and wider LAS schemas/CRS before enabling it.
+
+#### Packaged, restricted research implementation
+
+Build 4 of the private dense research recipe now strips `--split-image-groups`
+from submodel arguments, uses a narrow PDAL point-cloud merge, and propagates
+merge errors. The merge checks that at least two distinct inputs use the tested
+LAS 1.4 format 7 dimension set and 0.001 scales, have finite representable
+bounds and equivalent CRS; it checks output count, bounds, schema and CRS before
+atomically replacing an output. Other inputs are rejected, not silently coerced.
+It does not promise preservation of arbitrary LAS header metadata.
+
+[43637992510](https://github.com/Archont561/ODM-conda/actions/runs/43637992510)
+built and retested the research packages, replayed 436 locked package identities
+in a relocated prefix, and invoked the **installed app directly** (the launcher
+still rejects split). There were no post-replay source or binary overlays. Two
+submodels produced 45,166 and 40,723 points; all 85,889 merged rows were checked
+for the 21 listed dimensions, coordinate tolerance 0.0011 and equivalent CRS.
+A corrupt input on merge-stage rerun returned exit 1 and preserved the previous
+merged output. A generated fixture rejected incompatible point format, extra
+dimension, input scale, CRS and excessive coordinate span without changing an
+existing output. See `odm-packaged-split-merge-evidence.json`.
+
+These are point-cloud-only tests on one real and a small synthetic fixture; they
+do not establish correctness for general LAS metadata, geometric accuracy,
+3D/DEM/orthophoto merge or distributed processing. Split is not exposed through
+the research launcher yet. Rights, production recipe and release gates remain.
