@@ -3,7 +3,7 @@
   "limits": "One 35-image dataset and point-cloud merge only; checks corresponding rows for 21 listed dimensions, coordinate tolerance 0.0011 and CRS equivalence; no geometric accuracy, arbitrary LAS attributes, all possible scale/offset ranges, orthophoto/DEM merge, cluster or model merge. Failure propagation overlay was not fault-injected in this run.",
   "method": "Direct invocation of installed ODM app after locked replay; temporary source overlay strips explicit split-image-groups from child argv, replaces lasmerge with PDAL using 0.001 scales and automatic offsets, and raises on merge exceptions. This is not an unmodified packaged run.",
   "pdal_error_run": "https://github.com/Archont561/ODM-conda/actions/runs/43634979874",
-  "previous_error": "PDAL writers.las could not convert scaled Y value 4545328570 to int32; forwarding conflicting LAS offsets was insufficient",
+  "previous_error": "PDAL writers.las could not convert scaled Y value 4545328570 to int32; forward=all did not yield a safe offset for this output",
   "replay": {
     "lock_sha256": "686c8e468352bb11189a187008f9c01eb03bc878629ca2351675c504cc387112",
     "no_binary_overlay": true,
