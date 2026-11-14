@@ -25,4 +25,4 @@ jobs:
       - name: Failure report
         if: failure()
         run: |
-          python3 -c 'import base64;from pathlib import Path;p=Path("/tmp/dense.log");print("::notice::FAILURE64 "+base64.b64encode(p.read_bytes()[-4000:] if p.exists() else b"no log").decode())'
+          python3 -c 'import base64;from pathlib import Path;p=Path("/tmp/dense.log");print("::notice::FAILURE64 "+base64.b64encode(p.read_bytes()[-1700:] if p.exists() else b"no log").decode())'
