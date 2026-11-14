@@ -77,3 +77,4 @@ jobs:
 # Reserve annotation slots for all three sampled raster products.
 # Include overlapping-source value comparisons.
 # Verify explicit cutline alpha and boundary step.
+# Include in-process remote task mock.
