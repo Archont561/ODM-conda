@@ -147,8 +147,8 @@ print('NEGATIVE_CLASSIFICATION_PROBES_PASS')
   if len(input_ortho)<2 or len(input_dsm)<2 or not ortho.is_file() or not dsm.is_file():raise ScaffoldError('Missing expected merged rasters or inputs')
   info=json.loads(subprocess.check_output([str(prefix/'bin/gdalinfo'),'-json','-stats',str(ortho)],env=rasterenv,text=True));validate_raster(info)
   dsm_info=json.loads(subprocess.check_output([str(prefix/'bin/gdalinfo'),'-json','-stats',str(dsm)],env=rasterenv,text=True))
-  if not dsm_info.get('coordinateSystem') or len(dsm_info.get('bands',[]))!=1 or dsm_info['size'][0]<=0 or dsm_info['size'][1]<=0 or dsm_info['bands'][0].get('computedMin') is None:raise ScaffoldError('Invalid DSM structure')
-  print('::notice::MERGED_RASTER_CHECK '+json.dumps({'ortho_dimensions':info['size'],'dsm_dimensions':dsm_info['size'],'dsm_min':dsm_info['bands'][0]['computedMin'],'dsm_max':dsm_info['bands'][0]['computedMax']},sort_keys=True),flush=True)
+  if not dsm_info.get('coordinateSystem') or len(dsm_info.get('bands',[]))!=1 or dsm_info['size'][0]<=0 or dsm_info['size'][1]<=0 or dsm_info['bands'][0].get('minimum') is None:raise ScaffoldError('Invalid DSM structure')
+  print('::notice::MERGED_RASTER_CHECK '+json.dumps({'ortho_dimensions':info['size'],'dsm_dimensions':dsm_info['size'],'dsm_min':dsm_info['bands'][0]['minimum'],'dsm_max':dsm_info['bands'][0]['maximum']},sort_keys=True),flush=True)
   # Corrupt one input and rerun only the merge stage: installed app must fail
   # without replacing the successful output. Inputs and outputs are disposable.
   original_hash=sha256(merged); clouds[0].write_bytes(b'not a LAS file')

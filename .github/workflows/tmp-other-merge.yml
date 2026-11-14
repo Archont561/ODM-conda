@@ -72,3 +72,4 @@ jobs:
 # Test bounded PDAL merge with automatic offsets and fail-visible overlay.
 # Test installed build-4 merge without source overlay.
 # Include synthetic schema, CRS, precision and range rejection tests.
+# Test build-5 metadata guard and correct DSM stats keys.

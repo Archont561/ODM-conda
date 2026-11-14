@@ -16,6 +16,14 @@ with tempfile.TemporaryDirectory() as d:
  def concise(p):
   data=metadata(p);keys=['filesource_id','global_encoding','project_id','system_id','software_id','creation_doy','creation_year']
   return {**{k:data.get(k) for k in keys},'vlrs':{k:{kk:vv for kk,vv in v.items() if kk not in ('data','data_base64')} for k,v in data.items() if k.startswith('vlr_') and isinstance(v,dict)}}
- flags={'global_encoding':1,'filesource_id':42,'project_id':'01234567-89ab-cdef-0123-456789abcdef','system_id':'EXPERIMENT','software_id':'EXPERIMENT','creation_doy':7,'creation_year':2021,'vlrs':[{'user_id':'private-test','record_id':42,'description':'synthetic','data':'Zm9v'}]}
- a=create('a',flags);b=create('b',flags);out=root/'merged.laz';base=create('base',{});print('::notice::BASE_METADATA '+json.dumps(concise(base),sort_keys=True),flush=True);merge([a,b],out)
- print('::notice::METADATA_RESULT '+json.dumps({'input':concise(a),'output':concise(out)},sort_keys=True),flush=True)
+ a=create('a',{});b=create('b',{});out=root/'merged.laz';merge([a,b],out);original=out.read_bytes()
+ custom={'user_id':'private-test','record_id':42,'description':'synthetic','data':'Zm9v'}
+ cases={'gps_encoding':{'global_encoding':1},'source_id':{'filesource_id':42},'project_id':{'project_id':'01234567-89ab-cdef-0123-456789abcdef'},'system_id':{'system_id':'EXPERIMENT'},'software_id':{'software_id':'EXPERIMENT'},'custom_vlr':{'vlrs':[custom]},'custom_evlr':{'vlrs':[{**custom,'evlr':True}]}}
+ rejected={}
+ for key,flags in cases.items():
+  candidate=create(key,flags)
+  try:merge([a,candidate],out,rerun=True)
+  except ValueError as e: rejected[key]=str(e)
+  else: raise AssertionError(key+' silently accepted')
+  if out.read_bytes()!=original:raise AssertionError(key+' modified existing output')
+ print('::notice::METADATA_GUARD '+json.dumps({'rejected':rejected,'existing_output_preserved':True,'baseline_input':concise(a),'output':concise(out)},sort_keys=True),flush=True)

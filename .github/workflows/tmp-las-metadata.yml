@@ -24,3 +24,4 @@ jobs:
           pixi add --manifest-path /tmp/metadata-env/pixi.toml 'pdal==2.10.0' 'gdal==3.12.2' 'python>=3.12,<3.13'
           /tmp/metadata-env/.pixi/envs/default/bin/python -s -E scripts/tmp_las_metadata_trial.py
 # Capture VLR identifiers.
+# Verify safe rejection of generated metadata variants.
