@@ -323,3 +323,16 @@ geometric accuracy, distributed processing and 3D-model merge were not tested.
 Evidence and the exact lock/package hashes are in
 `odm-raster-counterfactual-evidence.json`; the fixture is
 `scripts/odm_raster_counterfactual_fixture.py`. Data and packages were discarded.
+
+#### Generated DEM distance maps
+
+In [43650035119](https://github.com/Archont561/ODM-conda/actions/runs/43650035119),
+the installed ODM implementation generated GDAL proximity maps for two synthetic,
+aligned 24×24 DEMs with nodata borders and differently positioned holes. Both
+maps matched an independent SciPy Euclidean distance transform. The merged
+24×32 grid had 660 valid and 108 nodata pixels; 300 pixels overlapped and 200
+had unequal weights. Every valid output matched the independently calculated
+weighted average (maximum error 0). This tests a controlled geometry, not
+misaligned rasters, other nodata conventions, realistic seam quality or accuracy.
+The fixture is `scripts/odm_dem_distance_fixture.py`; report, replay identity and
+limits are recorded in `odm-distance-remote-mock-evidence.json`.

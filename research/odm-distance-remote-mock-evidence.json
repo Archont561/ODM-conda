@@ -1,0 +1,36 @@
+{
+  "commit_tested": "256b476",
+  "distance": {
+    "max_distance": 7.280109882354736,
+    "max_weighted_error": 0.0,
+    "nodata_pixels": 108,
+    "overlap_pixels": 300,
+    "shape": [
+      24,
+      32
+    ],
+    "unequal_weight_pixels": 200,
+    "valid_pixels": 660
+  },
+  "limitations": "Generated aligned constant DEMs with nodata border and small holes; validates GDAL proximity against scipy EDT and weighted merge for this geometry, not distance-map reuse, varied resolutions, misalignment, nodata conventions, real-world seam quality or accuracy. Remote fixture invokes installed ToolchainTask.process_remote with an in-process fake node/task and generated placeholder files, not actual PyODM HTTP, ClusterODM scheduling, worker ODM, executor scheduling/retry/cleanup, network safety or distributed integration.",
+  "odm_upstream_commit": "47f41f1f2d09f7c15dff33dd3c15ab29c8a97d45",
+  "remote_mock": {
+    "failure": {
+      "requested_outputs": 6,
+      "seed_members": 7
+    },
+    "success": {
+      "requested_outputs": 6,
+      "seed_members": 7
+    }
+  },
+  "replay": {
+    "count": 436,
+    "lock_sha256": "29ee88801529808576e193d9d1379fbb879a91907f7399d63513451af5750fff",
+    "no_binary_overlay": true,
+    "no_source_overlay": true,
+    "odm_package": "odm-dense-research-3.6.2-research_cpu_split_b0f4dca_5.conda",
+    "odm_sha256": "ef63b16b8249913217cee287fc224c25c5a5fca2952a3ff5b6160ae10eb46083"
+  },
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43650035119"
+}

@@ -38,3 +38,18 @@ rejects `--sm-cluster` and split/DTM. Self-hosted runner testing remains skipped
    Avoid uploading unreviewed source, models or datasets to public artifacts.
 
 No general release, network safety, or license approval is implied.
+
+## In-process task mock (not integration)
+
+[43650035119](https://github.com/Archont561/ODM-conda/actions/runs/43650035119)
+exercised the installed `ToolchainTask.process_remote` with a fake Python node
+and fake task, synthetic seed files and no network. The fixture checked seed ZIP
+members and requested outputs, a success callback and completion marker, plus an
+injected task failure, saved error output and absence of a completion marker.
+Both cases created exactly one fake task. The mock replaces submodel argument
+generation and does not exercise actual PyODM HTTP, ClusterODM, a worker engine,
+executor scheduling/retries/cleanup, archive extraction security, or distributed
+merge. It does not establish protocol compatibility. The launcher restrictions
+remain unchanged. Reproduce with `scripts/odm_remote_mock_fixture.py` in the
+installed private package environment; metrics and replay identity are in
+`odm-distance-remote-mock-evidence.json`.
