@@ -118,6 +118,15 @@ print('NEGATIVE_CLASSIFICATION_PROBES_PASS')
   groups.write_text(''.join(f'{image.name} first\n' for image in images[:25])+''.join(f'{image.name} second\n' for image in images[10:]))
   split_env=env2.copy();split_env.update({'ODM_NO_GPU':'1','ODM_CONDA_LOCAL_PREFIX':str(prefix),'PYTHONNOUSERSITE':'1','PROJ_DATA':str(prefix/'share/proj'),'PROJ_LIB':str(prefix/'share/proj'),'PATH':str(prefix/'bin')+os.pathsep+os.defpath})
   app=prefix/'share/odm-conda/odm-dense-research/app/run.py'
+  # TEST-ONLY source overlay: do not forward the grouping control to children.
+  # The pinned upstream list must match exactly; fail rather than editing another version.
+  osfm=app.parent/'opendm/osfm.py'
+  source=osfm.read_text()
+  old="remove_always = ['split', 'split_overlap',"
+  new="remove_always = ['split', 'split_image_groups', 'split_overlap',"
+  if source.count(old)!=1:raise ScaffoldError('Unexpected submodel argument code')
+  osfm.write_text(source.replace(old,new))
+  print('::notice::TEST_ONLY_SOURCE_OVERLAY: strip split-image-groups from child argv',flush=True)
   # Direct app invocation is a deliberate scope bypass for this trial only.
   run([str(prefix/'bin/python'),'-s','-E',str(app),'--no-gpu','--split','20','--split-image-groups',str(groups),'--merge','pointcloud','--pc-quality','lowest','--feature-quality','low','--max-concurrency','2','--skip-3dmodel','--skip-report','--project-path',str(projects),'dataset'],env=split_env)
   clouds=sorted((projects/'dataset/submodels').glob('submodel_*/odm_georeferencing/odm_georeferenced_model.laz'))
@@ -126,4 +135,4 @@ print('NEGATIVE_CLASSIFICATION_PROBES_PASS')
   info=json.loads(subprocess.check_output([str(prefix/'bin/pdal'),'info','--summary',str(merged)],text=True,env=split_env))
   count=info['summary']['num_points']
   if count<=0:raise ScaffoldError('Empty merged point cloud')
-  print('::notice::SPLIT_REPORT '+json.dumps({'submodels':len(clouds),'merged_points':count,'images':len(images),'package_count':len(identities),'lock_sha256':sha256(project/'pixi.lock'),'direct_app_scope_bypass':True,'no_binary_overlay':True,'scope':'local pointcloud merge only, no 3D model merging, accuracy or release'},sort_keys=True),flush=True)
+  print('::notice::SPLIT_REPORT '+json.dumps({'submodels':len(clouds),'merged_points':count,'images':len(images),'package_count':len(identities),'lock_sha256':sha256(project/'pixi.lock'),'direct_app_scope_bypass':True,'test_only_source_overlay':'strip split_image_groups from submodel argv','no_binary_overlay':True,'scope':'local pointcloud merge only, no 3D model merging, accuracy or release'},sort_keys=True),flush=True)

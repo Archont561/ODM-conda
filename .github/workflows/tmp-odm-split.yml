@@ -53,3 +53,4 @@ jobs:
               print(f'::notice::FATAL_CONTEXT_{n//2500} {data[n:n+2500]}')
           print(f'::notice::FATAL_CONTEXT_STATS {len(hits)} matching lines; first index {i}; total {len(lines)}')
           PYCODE
+# Controlled child argument intervention.
