@@ -1,0 +1,74 @@
+name: Temporary split output research
+on:
+  push:
+    branches: [arena/c17bf0f2-odm-conda]
+    paths: [.github/workflows/tmp-other-merge.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  research:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 170
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default agent-tools
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: temporary-odm-research-bundle
+          path: /tmp/odm-research-bundle
+          run-id: 43518311868
+          github-token: ${{ github.token }}
+      - name: Download model privately on runner
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -m 700 /tmp/opc-model
+          gh release download v1.1.3 --repo uav4geo/OpenPointClass --pattern vehicles-vegetation-buildings.zip --dir /tmp/opc-model
+      - name: Build, solve, replay and process
+        run: |
+          set -o pipefail
+          pixi run python scripts/tmp_other_merge_trial.py 2>&1 | tee /tmp/odm-dense-integration.log
+      - name: Capture first fatal submodel context
+        if: failure()
+        run: |
+          python3 - <<'PYCODE'
+          import base64, re
+          from pathlib import Path
+          p = Path('/tmp/odm-dense-integration.log')
+          text = p.read_text(errors='replace').split('PACKAGED_REPLAY_PASS')[-1] if p.exists() else 'no log'
+          lines = [re.sub(r'\x1b\[[0-9;]*m', '', x) for x in text.splitlines()]
+          patterns = (r'^Traceback \(most recent call last\):', r'^\s*\[ERROR\]', r'(^| )FATAL:', r'^[A-Za-z_][\w.]*Error:', r'^terminate called')
+          hits = [i for i,x in enumerate(lines) if any(re.search(pat,x) for pat in patterns)]
+          i = hits[0] if hits else len(lines)-1
+          context = '\n'.join(lines[max(0,i-35):min(len(lines),i+75)])[-10500:]
+          data = base64.b64encode(context.encode()).decode()
+          for n in range(0,len(data),2500):
+              print(f'::notice::FATAL_CONTEXT_{n//2500} {data[n:n+2500]}')
+          print(f'::notice::FATAL_CONTEXT_STATS {len(hits)} matching lines; first index {i}; total {len(lines)}')
+          PYCODE
+# Controlled child argument intervention.
+      - name: Split progress summary
+        if: failure()
+        run: |
+          python3 - <<'PYCODE'
+          import base64, re
+          from pathlib import Path
+          p=Path('/tmp/odm-dense-integration.log')
+          text=p.read_text(errors='replace').split('PACKAGED_REPLAY_PASS')[-1] if p.exists() else ''
+          lines=[re.sub(r'\x1b\[[0-9;]*m','',x) for x in text.splitlines()]
+          picked=[x for x in lines if re.search(r'\[WARNING\]|\[ERROR\]|split into|Processing submodel|Reconstructing |merge point cloud|No .*found|Skipping',x,re.I)]
+          data=base64.b64encode(('\n'.join(picked[-65:]))[-10500:].encode()).decode()
+          for i in range(0,len(data),2500): print(f'::notice::PROGRESS_{i//2500} {data[i:i+2500]}')
+          PYCODE
+# Controlled merge backend intervention.
+# Capture independent PDAL probes before temporary cleanup.
+# Test bounded PDAL merge with automatic offsets and fail-visible overlay.
+# Test installed build-4 merge without source overlay.
+# Include synthetic schema, CRS, precision and range rejection tests.
