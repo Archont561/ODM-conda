@@ -10,9 +10,10 @@ source:
     - patches/0001-prefix.patch
     - patches/0002-external-model-cache.patch
     - patches/0003-classification-fail-closed.patch
+    - patches/0004-research-split-pointcloud.patch
 build:
-  number: 3
-  string: research_cpu_classify_${{ hash }}_3
+  number: 4
+  string: research_cpu_split_${{ hash }}_4
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:

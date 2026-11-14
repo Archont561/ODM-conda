@@ -23,6 +23,7 @@ def install(source: Path, prefix: Path) -> None:
     try:
         shutil.copytree(source, destination/'app', ignore=shutil.ignore_patterns(
             '.source_info.json', 'build_env.sh', 'conda_build.sh', 'conda_build.log', '__pycache__', '*.pyc'))
+        shutil.copy2(ROOT/'scripts/odm_research_merge.py', destination/'app/opendm/conda_research_merge.py')
         (destination/'app/LOCAL-ONLY.txt').write_text('Private CPU dense research only; not release or redistribution approval.\n')
         for name in ('odm_dense_research_launcher.py', 'odm_local_prototype.py', 'common.py', 'source_graph.py'):
             shutil.copy2(ROOT/'scripts'/name, destination/name)
