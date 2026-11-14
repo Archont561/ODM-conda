@@ -186,3 +186,26 @@ this does not validate a PDAL replacement. More detail and boundaries are in
 package, and split remains unsupported. Next capture the PDAL command's first
 error; test any replacement for count, coordinates, attributes and CRS, and make
 merge failures visible instead of accepting ODM's success exit alone.
+
+#### PDAL offset diagnosis and bounded merge experiment
+
+[43634979874](https://github.com/Archont561/ODM-conda/actions/runs/43634979874)
+captured the earlier PDAL error: a scaled Y coordinate exceeded the LAS signed
+32-bit range. An independent probe using automatic scales and offsets succeeded;
+that probe alone did not validate data preservation.
+
+In [43635826329](https://github.com/Archont561/ODM-conda/actions/runs/43635826329),
+a temporary **source overlay after package replay**, not a packaged fix, removed
+the recursive child grouping argument, used PDAL with fixed 0.001 coordinate
+scales and automatic offsets, and changed the merge exception handler to raise.
+Two submodels yielded 40,634 and 36,836 points; the merged cloud had 77,470.
+Every row was compared in input order for 21 listed dimensions (coordinates
+within 0.0011, other tested values equal), and GDAL reported equivalent CRS.
+The explicit merge-failure handler was not fault-injected in that run. Results
+and exact constraints are in `odm-split-merge-experiment-evidence.json`.
+
+This is one point-cloud experiment, not validated support for general inputs,
+extra dimensions, other scales/coordinate ranges, distributed processing,
+DEM/orthophoto/3D merging, geometric accuracy or release. The launcher continues
+to reject split. Next create a bounded fail-closed research implementation and
+exercise negative failures and wider LAS schemas/CRS before enabling it.
