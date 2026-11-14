@@ -1,0 +1,35 @@
+name: Temporary packaged ODM dense integration
+on:
+  push:
+    branches: [arena/207aff2a-odm-conda]
+    paths: [.github/workflows/tmp-odm-dense-integration.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  research:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 170
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default agent-tools
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: temporary-odm-research-bundle
+          path: /tmp/odm-research-bundle
+          run-id: 43518311868
+          github-token: ${{ github.token }}
+      - name: Build, solve, replay and process
+        run: |
+          set -o pipefail
+          pixi run python scripts/tmp_odm_dense_integration.py 2>&1 | tee /tmp/odm-dense-integration.log
+      - name: Failure diagnostics
+        if: failure()
+        run: |
+          python3 -c 'import base64;from pathlib import Path;p=Path("/tmp/odm-dense-integration.log");print("::notice::FAILURE64 "+base64.b64encode(p.read_bytes()[-1700:] if p.exists() else b"no log").decode())'
