@@ -1,0 +1,50 @@
+--- a/opendm/osfm.py
++++ b/opendm/osfm.py
+@@ -657,7 +657,7 @@
+         reading the contents of --boundary
+     """
+     assure_always = ['orthophoto_cutline', 'dem_euclidean_map', 'skip_3dmodel', 'skip_report']
+-    remove_always = ['split', 'split_overlap', 'rerun_from', 'rerun', 'gcp', 'end_with', 'sm_cluster', 'rerun_all', 'pc_csv', 'pc_las', 'pc_ept', 'tiles', 'copy-to', 'cog']
++    remove_always = ['split', 'split_image_groups', 'split_overlap', 'rerun_from', 'rerun', 'gcp', 'end_with', 'sm_cluster', 'rerun_all', 'pc_csv', 'pc_las', 'pc_ept', 'tiles', 'copy-to', 'cog']
+     read_json_always = ['cameras', 'boundary']
+ 
+     argv = sys.argv
+--- a/opendm/point_cloud.py
++++ b/opendm/point_cloud.py
+@@ -188,22 +188,10 @@
+ 
+ 
+ def merge(input_point_cloud_files, output_file, rerun=False):
+-    num_files = len(input_point_cloud_files)
+-    if num_files == 0:
+-        log.ODM_WARNING("No input point cloud files to process")
+-        return
++    # Restricted private research path: validates schema/CRS and fails closed.
++    from opendm.conda_research_merge import merge as research_merge
++    research_merge(input_point_cloud_files, output_file, rerun=rerun)
+ 
+-    if io.file_exists(output_file):
+-        log.ODM_WARNING("Removing previous point cloud: %s" % output_file)
+-        os.remove(output_file)
+-
+-    kwargs = {
+-        'all_inputs': " ".join(map(double_quote, input_point_cloud_files)),
+-        'output': output_file
+-    }
+-
+-    system.run('lasmerge -i {all_inputs} -o "{output}"'.format(**kwargs))
+-   
+ 
+ def fast_merge_ply(input_point_cloud_files, output_file):
+     # Assumes that all input files share the same header/content format
+--- a/stages/splitmerge.py
++++ b/stages/splitmerge.py
+@@ -224,7 +224,7 @@
+                         point_cloud.merge(all_point_clouds, tree.odm_georeferencing_model_laz, rerun=self.rerun())
+                         point_cloud.post_point_cloud_steps(args, tree, self.rerun())
+                     except Exception as e:
+-                        log.ODM_WARNING("Could not merge point cloud: %s (skipping)" % str(e))
++                        raise RuntimeError("Research point-cloud merge failed") from e
+                 else:
+                     log.ODM_WARNING("Found merged point cloud in %s" % tree.odm_georeferencing_model_laz)
+                 

@@ -1,0 +1,97 @@
+{
+  "dataset_commit": "9220acfdca75cc5e2dd6d27fe48550c5ae0877f2",
+  "limits": "One 35-image dataset and point-cloud merge only; checks corresponding rows for 21 listed dimensions, coordinate tolerance 0.0011 and CRS equivalence; no geometric accuracy, arbitrary LAS attributes, all possible scale/offset ranges, orthophoto/DEM merge, cluster or model merge. Failure propagation overlay was not fault-injected in this run.",
+  "method": "Direct invocation of installed ODM app after locked replay; temporary source overlay strips explicit split-image-groups from child argv, replaces lasmerge with PDAL using 0.001 scales and automatic offsets, and raises on merge exceptions. This is not an unmodified packaged run.",
+  "pdal_error_run": "https://github.com/Archont561/ODM-conda/actions/runs/43634979874",
+  "previous_error": "PDAL writers.las could not convert scaled Y value 4545328570 to int32; forward=all did not yield a safe offset for this output",
+  "replay": {
+    "lock_sha256": "686c8e468352bb11189a187008f9c01eb03bc878629ca2351675c504cc387112",
+    "no_binary_overlay": true,
+    "package_count": 436,
+    "packages": [
+      {
+        "filename": "openmvs-dense-research-0.0.0.dev20260827-research_cpucompat_873e7db_3.conda",
+        "sha256": "ae28327bf923b6916f9837c657a62d5cadf0c6061b5e4738e06560a05ea2d9a7"
+      },
+      {
+        "filename": "dem2mesh-0.0.0.dev20231207-research_873e7db_1.conda",
+        "sha256": "31d9b4769f9d5b14b2d32a6d175713bf2648d64b8bc9f89b86ad81c8e2b14c4a"
+      },
+      {
+        "filename": "openpointclass-research-0.0.0.dev20250823-research_873e7db_1.conda",
+        "sha256": "7f5ed30816d77e6f23f9a6b01249216239fd0974582efef529bd34d84e7eeb77"
+      },
+      {
+        "filename": "odm-dense-research-3.6.2-research_cpu_classify_b0f4dca_3.conda",
+        "sha256": "1f70beed57358c10834ed95264206f0c3de33a77758d1d4495fbdce6e1b20551"
+      }
+    ],
+    "standalone_dense_points": 27940
+  },
+  "retention": "Model, dataset, lock, packages and outputs discarded; no artifacts uploaded.",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43635826329",
+  "split": {
+    "direct_app_scope_bypass": true,
+    "images": 35,
+    "lock_sha256": "686c8e468352bb11189a187008f9c01eb03bc878629ca2351675c504cc387112",
+    "merged_points": 77470,
+    "no_binary_overlay": true,
+    "package_count": 436,
+    "scope": "local pointcloud merge only, no 3D model merging, accuracy or release",
+    "submodels": 2,
+    "test_only_source_overlay": "strip child split groups; PDAL fixed scales/auto offsets; propagate merge errors"
+  },
+  "submodel_status": {
+    "merged_bytes": 396584,
+    "merged_exists": true,
+    "submodels": [
+      {
+        "cloud": true,
+        "cloud_bytes": 213671,
+        "dense_cloud": true,
+        "name": "submodel_0000",
+        "reconstruction": true
+      },
+      {
+        "cloud": true,
+        "cloud_bytes": 183663,
+        "dense_cloud": true,
+        "name": "submodel_0001",
+        "reconstruction": true
+      }
+    ]
+  },
+  "validation": {
+    "coordinate_tolerance": 0.0011,
+    "crs_equivalent": true,
+    "dimensions_checked": [
+      "X",
+      "Y",
+      "Z",
+      "Intensity",
+      "ReturnNumber",
+      "NumberOfReturns",
+      "ScanDirectionFlag",
+      "EdgeOfFlightLine",
+      "Classification",
+      "Synthetic",
+      "KeyPoint",
+      "Withheld",
+      "Overlap",
+      "ScanAngleRank",
+      "UserData",
+      "PointSourceId",
+      "GpsTime",
+      "ScanChannel",
+      "Red",
+      "Green",
+      "Blue"
+    ],
+    "input_counts": [
+      40634,
+      36836
+    ],
+    "merged_count": 77470,
+    "row_order": "concatenated inputs"
+  }
+}

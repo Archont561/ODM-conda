@@ -99,3 +99,14 @@ See [bounded evidence](odm-dem2mesh-gdal312-research-evidence.json). The new
 package and lock were discarded, and no artifact was uploaded in this run.
 This is not an ODM mesh pipeline, a byte-for-byte installed-file audit,
 corresponding-source verification, license approval or a final release solve.
+
+A [CPU dense research follow-up](openmvs-dense-research.md) builds both native
+tools and passed a bounded standalone dense scene test. It found an ODM CLI
+blocker: the CPU-only binary rejects the `--cuda-device -2` flag ODM passes.
+A follow-up CPU-only compatibility patch passed an experimental ODM run through the dense stage with an explicit binary overlay. It is not a complete ODM run, solved release package or release approval.
+
+A subsequent [packaged dense orthophoto integration](openmvs-dense-research.md#packaged-cpu-dense-orthophoto-integration)
+solved and replayed the private ODM, dense OpenMVS and dem2mesh packages without
+an overlay. A targeted PLY compatibility patch restores real per-point view
+counts required by FPCFilter. This validates one CPU dense orthophoto path with
+3D model generation skipped; broader feature and release gates remain open.

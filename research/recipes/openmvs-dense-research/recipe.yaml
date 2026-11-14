@@ -1,0 +1,91 @@
+# Private experimental upstream alternative; not an approved distribution.
+schema_version: 1
+package:
+  name: openmvs-dense-research
+  version: "0.0.0.dev20260827"
+source:
+  - url: https://codeload.github.com/OpenDroneMap/openMVS/tar.gz/0aebb63a7dc72f2831615b441fdf2f474d7a0ea0
+    sha256: 4701b4490c8036bc548f23b949d871bd2c133386051aad051d1f3de912b26014
+  - url: https://codeload.github.com/eigenteam/eigen-git-mirror/tar.gz/7176ae16238ded7fb5ed30a7f5215825b3abd134
+    sha256: a14492af4d1451a686caadbfd5047ca1216b8c66e71f0e8385afc4bb3ecdc7a3
+    target_directory: _external/eigen
+build:
+  number: 3
+  string: research_cpucompat_${{ hash }}_3
+  skip: target_platform != "linux-64"
+  script:
+    file: ../../../scripts/build_openmvs_dense_research.py
+    interpreter: python
+requirements:
+  build:
+    - python >=3.12,<3.13
+    - cmake >=3.31,<3.32
+    - ninja >=1.11,<2
+    - patch
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+  host:
+    - libboost-devel >=1.90,<1.91
+    - cgal-cpp
+    - nanoflann
+    - libopencv >=4.13,<4.14
+    - libjxl >=0.11,<0.12
+    - tbb-devel >=2023.1,<2024
+    - mpfr
+    - gmp
+    - zlib
+    - libgomp >=14
+  run:
+    - libboost >=1.90,<1.91
+    - libopencv >=4.13,<4.14
+    - libjxl >=0.11,<0.12
+    - tbb >=2023.1,<2024
+    - mpfr
+    - gmp
+    - libgomp >=14
+    - python >=3.12,<3.13
+tests:
+  - package_contents:
+      files:
+        - bin/DensifyPointCloud
+        - bin/ReconstructMesh
+        - share/odm-conda/openmvs-dense-research/openmvs_synthetic_fixture.py
+  - script:
+      interpreter: python
+      content: |
+        import runpy, subprocess, sys
+        from pathlib import Path
+        fixture = Path(sys.prefix) / 'share/odm-conda/openmvs-dense-research'
+        sys.path.insert(0, str(fixture))
+        dense = Path(sys.prefix) / 'bin/DensifyPointCloud'
+        linkage = subprocess.run(['ldd', str(dense)], capture_output=True, text=True, check=True)
+        assert 'not found' not in linkage.stdout, linkage.stdout
+        help_result = subprocess.run([str(dense), '--help'], capture_output=True, text=True, timeout=60)
+        assert 'DensifyPointCloud' in help_result.stdout + help_result.stderr
+        for requested in ('-1', '0'):
+            rejected = subprocess.run([str(dense), '--cuda-device', requested, '--help'], capture_output=True, text=True, timeout=60)
+            assert rejected.returncode != 0 and 'must be -2' in rejected.stdout + rejected.stderr
+        cpu_help = subprocess.run([str(dense), '--cuda-device', '-2', '--help'], capture_output=True, text=True, timeout=60)
+        assert 'must be -2' not in cpu_help.stdout + cpu_help.stderr
+        linkage = subprocess.run(['ldd', str(Path(sys.prefix) / 'bin/ReconstructMesh')], capture_output=True, text=True, check=True)
+        assert 'not found' not in linkage.stdout, linkage.stdout
+        sys.argv = [str(fixture / 'openmvs_synthetic_fixture.py'), '--executable', str(Path(sys.prefix) / 'bin/ReconstructMesh')]
+        runpy.run_path(sys.argv[0], run_name='__main__')
+        sys.argv = [str(fixture / 'openmvs_tetraflow_weights_fixture.py'), str(Path(sys.prefix) / 'bin/ReconstructMesh')]
+        runpy.run_path(sys.argv[0], run_name='__main__')
+        sys.argv = [str(fixture / 'openmvs_odm_cleanup_fixture.py'), str(Path(sys.prefix) / 'bin/ReconstructMesh')]
+        runpy.run_path(sys.argv[0], run_name='__main__')
+    requirements:
+      run:
+        - python >=3.12,<3.13
+about:
+  homepage: https://github.com/OpenDroneMap/openMVS
+  summary: Private CPU dense-capable research build, not validated for ODM or redistribution
+  license: LicenseRef-Unreviewed
+  license_file:
+    - LICENSE
+    - COPYRIGHT.md
+    - _external/eigen/COPYING.MPL2
+    - _external/eigen/COPYING.README
+    - libs/Math/LMFit/COPYING

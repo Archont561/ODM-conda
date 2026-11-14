@@ -1,0 +1,55 @@
+{
+  "baseline_manifest_sha256": "81da120940a5236657854b51b9713aae0e40dbd11199a51859197837e21c3c7b",
+  "checks": "fresh package retest; relocated lock replay; installed-module exception and missing-output fault injection preserves input; non-ground classification maximum; OBJ structure and raster sanity; not classification accuracy",
+  "classification_model_sha256": "2960ef1036bb66c42ec908fb5160f396062a9baf5a7ca9a08ba4644976d798c2",
+  "classification_stats": {
+    "average": 2.003391802,
+    "count": 41276,
+    "maximum": 6,
+    "minimum": 1,
+    "name": "Classification",
+    "position": 0,
+    "stddev": 0.1286867129,
+    "variance": 0.01656027009
+  },
+  "dataset_commit": "9220acfdca75cc5e2dd6d27fe48550c5ae0877f2",
+  "dense_bytes": 1160110,
+  "images": 35,
+  "lock_sha256": "6f93be086e3c337ea7b9f9f5409fc55e84581d5e169916d75db7b54df9743f06",
+  "mesh_bytes": 1033188,
+  "model": {
+    "materials": 1,
+    "texture_coordinates": 24980,
+    "textures": 3,
+    "triangles": 46296,
+    "vertices": 27187
+  },
+  "no_binary_overlay": true,
+  "orthophoto_bytes": 3968716,
+  "package_count": 436,
+  "packages": [
+    {
+      "filename": "openmvs-dense-research-0.0.0.dev20260827-research_cpucompat_873e7db_3.conda",
+      "sha256": "1c921851dcac7f5394873dd0df2fc6671e1d1f49fcedfec2d2e010793463aef1"
+    },
+    {
+      "filename": "dem2mesh-0.0.0.dev20231207-research_873e7db_1.conda",
+      "sha256": "8cdf06ec747abcda06ddb8077edfffb06a9395f4fae2a32fa89882f4171802e9"
+    },
+    {
+      "filename": "openpointclass-research-0.0.0.dev20250823-research_873e7db_1.conda",
+      "sha256": "924dde2c03ea273b51ae14998a49f4bf6b099df1c32f00fd2112c0397f19923a"
+    },
+    {
+      "filename": "odm-dense-research-3.6.2-research_cpu_classify_b0f4dca_3.conda",
+      "sha256": "04f6e2e61132763b587f06e4e69ed0a30ebba02428a475e7fd09cb2e7b288f68"
+    }
+  ],
+  "pipeline": "CPU dense 3D and orthophoto with --pc-classify; explicit hash-checked external model; mesh octree depth 8; mesh size 100000",
+  "relocated_locked_replay": true,
+  "report_bytes": 2639316,
+  "retention": "new packages, lock, model, datasets and outputs discarded; no artifacts uploaded",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43624514505",
+  "scope": "private research only; not full ODM features, classification accuracy, rights, or release",
+  "standalone_dense_points": 27831
+}
