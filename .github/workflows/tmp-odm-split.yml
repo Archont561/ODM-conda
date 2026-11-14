@@ -43,4 +43,4 @@ jobs:
       - name: First error context
         if: failure()
         run: |
-          python3 -c 'import base64,re;from pathlib import Path;p=Path("/tmp/odm-dense-integration.log");s=p.read_text(errors="replace") if p.exists() else "";lines=s.splitlines();matches=[i for i,x in enumerate(lines) if re.search(r"\[ERROR\]|Traceback|failed|exception",x,re.I)];i=matches[0] if matches else max(0,len(lines)-30); print("::notice::FIRSTERROR64 "+base64.b64encode(chr(10).join(lines[max(0,i-15):i+25]).encode()[-7000:]).decode())'
+          python3 -c 'import base64,re;from pathlib import Path;p=Path("/tmp/odm-dense-integration.log");s=p.read_text(errors="replace") if p.exists() else "";s=s.split("PACKAGED_REPLAY_PASS")[-1];lines=s.splitlines();matches=[i for i,x in enumerate(lines) if re.search(r"\[ERROR\]|Traceback|segmentation|failed",x,re.I)];i=matches[0] if matches else max(0,len(lines)-30); print("::notice::FIRSTERROR64 "+base64.b64encode(chr(10).join(lines[max(0,i-15):i+25]).encode()[-7000:]).decode())'
