@@ -99,3 +99,8 @@ See [bounded evidence](odm-dem2mesh-gdal312-research-evidence.json). The new
 package and lock were discarded, and no artifact was uploaded in this run.
 This is not an ODM mesh pipeline, a byte-for-byte installed-file audit,
 corresponding-source verification, license approval or a final release solve.
+
+A [CPU dense research follow-up](openmvs-dense-research.md) builds both native
+tools and passed a bounded standalone dense scene test. It found an ODM CLI
+blocker: the CPU-only binary rejects the `--cuda-device -2` flag ODM passes.
+It has not been integrated into a full ODM run and is not release-approved.

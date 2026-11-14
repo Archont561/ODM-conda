@@ -24,3 +24,29 @@ def test_mesh_link_map_requires_reconstruction(tmp_path):
         verify_dense_link_map(path, 'ReconstructMesh')
     path.write_text(path.read_text() + ' SceneReconstruct.cpp.o')
     assert len(verify_dense_link_map(path, 'ReconstructMesh')) == 64
+
+
+def test_dense_ply_validation_rejects_bad_and_accepts_bounded_fixture(tmp_path):
+    import struct
+    from openmvs_dense_dataset_fixture import validate_dense_ply
+
+    path = tmp_path/'cloud.ply'
+    header = b'ply\nformat binary_little_endian 1.0\nelement vertex 100\nend_header\n'
+    path.write_bytes(header + struct.pack('<3f', 1, 2, 3)*100)
+    assert validate_dense_ply(path) == 100
+    path.write_bytes(header + struct.pack('<3f', float('nan'), 2, 3)*100)
+    with pytest.raises(ValueError, match='nonfinite'):
+        validate_dense_ply(path)
+    path.write_bytes(header + b'broken')
+    with pytest.raises(ValueError, match='Truncated'):
+        validate_dense_ply(path)
+
+
+def test_dense_evidence_is_bounded():
+    import json
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    data = json.loads((root/'research/openmvs-dense-research-evidence.json').read_text())
+    assert data['dense_point_count'] == 28116
+    assert 'not full ODM' in data['scope']
+    assert 'discarded' in data['outputs']
