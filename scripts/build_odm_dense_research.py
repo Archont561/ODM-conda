@@ -11,7 +11,7 @@ def install(source: Path, prefix: Path) -> None:
     source, prefix = Path(source).resolve(), Path(prefix).resolve()
     if source == prefix or not source.is_dir() or not prefix.is_dir():
         raise ScaffoldError('Invalid source or prefix')
-    if not (source/'run.py').is_file() or not (source/'VERSION').is_file() or not (source/'opendm/context.py').is_file() or 'ODM_CONDA_LOCAL_PREFIX' not in (source/'opendm/context.py').read_text():
+    if not (source/'run.py').is_file() or not (source/'VERSION').is_file() or not (source/'opendm/context.py').is_file() or 'ODM_CONDA_LOCAL_PREFIX' not in (source/'opendm/context.py').read_text() or not (source/'opendm/ai.py').is_file() or 'ODM_CONDA_MODEL_ROOT' not in (source/'opendm/ai.py').read_text():
         raise ScaffoldError('Missing patched ODM application')
     if any(path.is_symlink() for path in source.rglob('*')):
         raise ScaffoldError('Unexpected symlink in ODM source')

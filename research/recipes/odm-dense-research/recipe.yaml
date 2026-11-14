@@ -8,9 +8,10 @@ source:
   sha256: 5bdf8fe81b9ca47714e8a474139fd206b8090ac4315c2f530a58fcaef29cde5e
   patches:
     - patches/0001-prefix.patch
+    - patches/0002-external-model-cache.patch
 build:
-  number: 1
-  string: research_cpu_dense_${{ hash }}_1
+  number: 2
+  string: research_cpu_classify_${{ hash }}_2
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:
@@ -31,6 +32,7 @@ requirements:
     - opensfm-scoped-odm ==0.5.2 research_*
     - openmvs-dense-research ==0.0.0.dev20260827 research_cpucompat_*_3
     - dem2mesh ==0.0.0.dev20231207 research_*_1
+    - openpointclass-research ==0.0.0.dev20250823 research_*_1
     - poissonrecon-odm ==13.8 research_*
     - fpcfilter ==0.2 research_*
     - dem2points ==0.0.0.dev20220721 research_*

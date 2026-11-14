@@ -1,0 +1,34 @@
+--- a/opendm/ai.py
++++ b/opendm/ai.py
+@@ -27,10 +27,18 @@
+ def get_model(namespace, url, version, name = "model.onnx"):
+     version = version.replace(".", "_")
+ 
+-    base_dir = os.path.join(os.path.dirname(__file__), "..")
+-    if sys.platform == 'win32':
+-        base_dir = os.path.join(os.getenv('PROGRAMDATA'),"ODM")
+-    base_dir = os.path.join(os.path.abspath(base_dir), "storage", "models")
++    # Private Conda research: an explicit external model cache prevents
++    # writing model data into the installed package prefix.
++    research_root = os.environ.get('ODM_CONDA_MODEL_ROOT')
++    if research_root:
++        if not os.path.isabs(research_root):
++            raise ValueError('ODM_CONDA_MODEL_ROOT must be absolute')
++        base_dir = research_root
++    else:
++        base_dir = os.path.join(os.path.dirname(__file__), "..")
++        if sys.platform == 'win32':
++            base_dir = os.path.join(os.getenv('PROGRAMDATA'),"ODM")
++        base_dir = os.path.join(os.path.abspath(base_dir), "storage", "models")
+     
+     namespace_dir = os.path.join(base_dir, namespace)
+     versioned_dir = os.path.join(namespace_dir, version)
+@@ -41,6 +49,8 @@
+     # Check if we need to download it
+     model_file = os.path.join(versioned_dir, name)
+     if not os.path.isfile(model_file):
++        if research_root:
++            raise ValueError("Required research model is unavailable; download disabled")
+         log.ODM_INFO("Downloading AI model from %s ..." % url)
+ 
+         last_update = 0
