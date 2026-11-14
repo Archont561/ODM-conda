@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+"""Private LAS metadata guard fixture; run with the PDAL/GDAL prefix Python."""
 import json,os,subprocess,sys,tempfile
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))

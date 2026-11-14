@@ -1,0 +1,109 @@
+{
+  "dataset_commit": "9220acfdca75cc5e2dd6d27fe48550c5ae0877f2",
+  "limitations": "2 DSM and 2 feathered orthophoto files existed; merged orthophoto passed metadata/statistics sanity, merged DSM had CRS, single band, positive dimensions and finite min/max. Existence of source rasters is not proof both contributed; no pixel, footprint union, seam, geometric accuracy, classification accuracy, 3D or remote cluster validation. Run bypassed launcher, rights and publication unresolved.",
+  "negative_rerun": {
+    "cause": "corrupt LAS input",
+    "original_output_preserved": true,
+    "returncode": 1
+  },
+  "pipeline": "35 Seneca images; local --split 20 --split-image-groups with two overlapping groups, --merge all --dsm; installed app direct invocation, no source or binary overlay",
+  "pointcloud_validation": {
+    "coordinate_tolerance": 0.0011,
+    "crs_equivalent": true,
+    "dimensions_checked": [
+      "X",
+      "Y",
+      "Z",
+      "Intensity",
+      "ReturnNumber",
+      "NumberOfReturns",
+      "ScanDirectionFlag",
+      "EdgeOfFlightLine",
+      "Classification",
+      "Synthetic",
+      "KeyPoint",
+      "Withheld",
+      "Overlap",
+      "ScanAngleRank",
+      "UserData",
+      "PointSourceId",
+      "GpsTime",
+      "ScanChannel",
+      "Red",
+      "Green",
+      "Blue"
+    ],
+    "input_counts": [
+      40870,
+      40964
+    ],
+    "merged_count": 81834,
+    "row_order": "concatenated inputs"
+  },
+  "raster_checks": {
+    "dsm_dimensions": [
+      2868,
+      2697
+    ],
+    "dsm_max": 223.751,
+    "dsm_min": 214.947,
+    "ortho_dimensions": [
+      2869,
+      2697
+    ]
+  },
+  "rasters": {
+    "dsm": true,
+    "input_dsms": 2,
+    "input_orthos": 2,
+    "ortho": true
+  },
+  "replay": {
+    "lock_sha256": "7ce22eb6c4bc662f3d33b007a539a6b8b3962bbca0630c31a0df07452de9743f",
+    "no_binary_overlay": true,
+    "package_count": 436,
+    "packages": [
+      {
+        "filename": "openmvs-dense-research-0.0.0.dev20260827-research_cpucompat_873e7db_3.conda",
+        "sha256": "2c8d3ce4cff48b85826c0eb9ce9fcf9b03c4fbbd560dcf6f89f22e1b9428c23e"
+      },
+      {
+        "filename": "dem2mesh-0.0.0.dev20231207-research_873e7db_1.conda",
+        "sha256": "e4ecd796b35d16e62cdea32c445c7c92f5c2158a29f3660e36a581b3a261dbf2"
+      },
+      {
+        "filename": "openpointclass-research-0.0.0.dev20250823-research_873e7db_1.conda",
+        "sha256": "d6e3923d7694df996729650fa37101977d076753eed3ce27c258779e3feb1537"
+      },
+      {
+        "filename": "odm-dense-research-3.6.2-research_cpu_split_b0f4dca_5.conda",
+        "sha256": "a8e91687c0b09ccf758944fd6cb3c8080f2c0a1e55e710f3d44b1385c67c25f0"
+      }
+    ],
+    "standalone_dense_points": 28458
+  },
+  "retention": "New builds, locked environment, model, inputs and outputs discarded; no artifact uploaded.",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43641892010",
+  "split": {
+    "direct_app_scope_bypass": true,
+    "images": 35,
+    "lock_sha256": "7ce22eb6c4bc662f3d33b007a539a6b8b3962bbca0630c31a0df07452de9743f",
+    "merged_points": 81834,
+    "no_binary_overlay": true,
+    "package_count": 436,
+    "scope": "local pointcloud merge only, no 3D model merging, accuracy or release",
+    "source_overlay": false,
+    "submodels": 2
+  },
+  "synthetic": {
+    "existing_output_preserved": true,
+    "point_count": 20,
+    "rejected": [
+      "format",
+      "extra",
+      "precision",
+      "crs",
+      "range"
+    ]
+  }
+}

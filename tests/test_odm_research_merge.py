@@ -99,3 +99,13 @@ def test_hosted_evidence_is_scoped():
     assert not data['split']['source_overlay'] and data['split']['direct_app_scope_bypass']
     assert data['negative_pipeline']['returncode'] != 0 and data['negative_pipeline']['original_output_preserved']
     assert data['synthetic_fixture']['rejected'] == ['format', 'extra', 'precision', 'crs', 'range']
+
+
+def test_raster_evidence_scope():
+    import json
+    path = Path(__file__).resolve().parents[1]/'research/odm-split-raster-metadata-evidence.json'
+    data = json.loads(path.read_text())
+    assert data['rasters'] == {'dsm': True, 'input_dsms': 2, 'input_orthos': 2, 'ortho': True}
+    assert data['split']['direct_app_scope_bypass'] and not data['split']['source_overlay']
+    assert data['pointcloud_validation']['merged_count'] == 81834
+    assert 'not proof both contributed' in data['limitations']

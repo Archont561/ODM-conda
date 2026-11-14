@@ -235,3 +235,36 @@ These are point-cloud-only tests on one real and a small synthetic fixture; they
 do not establish correctness for general LAS metadata, geometric accuracy,
 3D/DEM/orthophoto merge or distributed processing. Split is not exposed through
 the research launcher yet. Rights, production recipe and release gates remain.
+
+#### LAS metadata and raster merge follow-up
+
+[43641416170](https://github.com/Archont561/ODM-conda/actions/runs/43641416170)
+found a real build-4 limitation: merging generated inputs with GPS-time global
+encoding 17, a nonzero file-source ID, a project ID and a custom VLR silently
+produced default header values and dropped the VLR. Build 4 must **not** be
+considered metadata-preserving for such inputs.
+
+Build 5 fails closed unless the header has the observed PDAL defaults (global
+encoding 16, zero source ID, nil project ID, PDAL system/software ID) and VLR
+identifiers are limited to the recognized WKT and compression records. CRS,
+schema and coordinate guards still apply. Creation date, software version and
+recognized VLR contents may be rewritten; arbitrary metadata preservation is
+not claimed. [43641891994](https://github.com/Archont561/ODM-conda/actions/runs/43641891994)
+independently verified rejection of changed GPS encoding, source/project/system/
+software IDs, custom VLR and custom EVLR while retaining the old output. It
+used the checked-out research module and freshly solved PDAL/GDAL, not an
+installed build-5 package. `scripts/odm_las_metadata_fixture.py` reproduces this
+fixture when run with a suitable research prefix Python.
+
+[43641892010](https://github.com/Archont561/ODM-conda/actions/runs/43641892010)
+built and retested build 5 and used a relocated 436-identity replay, without
+source/binary overlay. Direct app invocation (launcher bypass) processed 35
+images as two submodels with `--merge all --dsm`. The point-cloud merge preserved
+81,834 rows for the 21 checked dimensions, and a corrupt-input rerun failed and
+preserved its prior output. Two input DSMs and two feathered orthophotos existed;
+merged orthophoto metadata/statistics and basic DSM metadata/statistics checks
+passed. Existence alone does not prove both input rasters contributed: pixel,
+footprint-union, seam and geographic accuracy tests remain. Details, package
+identities and scope are in `odm-split-raster-metadata-evidence.json`.
+The launcher still rejects split; distributed processing, DTM and 3D-model merge
+remain unverified. Nothing was uploaded or approved for release.
