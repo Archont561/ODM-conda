@@ -75,3 +75,4 @@ jobs:
 # Test build-5 metadata guard and correct DSM stats keys.
 # ODM classifies after merge; permit classification changes explicitly.
 # Reserve annotation slots for all three sampled raster products.
+# Include overlapping-source value comparisons.
