@@ -11,6 +11,8 @@ def test_exclusive_matching_and_overlap():
     assert [v['exclusive_samples'] for v in result['inputs']]==[2,2]
     assert [v['within_tolerance_fraction'] for v in result['inputs']]==[1.,1.]
     assert result['overlap_output_samples']==4
+    assert result['overlap_comparison']['source_difference_above_tolerance_samples']==4
+    assert result['overlap_comparison']['differs_from_first_fraction']==1.0
     assert result['overlap_adjacent_max_band_p95']==0
     out[0,0,0]=1
     assert summarize([a,b],masks,out,np.ones((2,4),bool),.01)['inputs'][0]['within_tolerance_fraction']==.5

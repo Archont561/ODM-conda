@@ -32,7 +32,18 @@ def summarize(inputs, masks, output, outmask, tolerance):
         b=np.take(overlap, range(1, overlap.shape[axis-1]), axis=axis-1)
         delta=np.max(np.abs(np.diff(values,axis=axis)),axis=0)
         samples.extend(delta[a & b].tolist())
-    return {'inputs':results,'overlap_output_samples':int(overlap.sum()),
+    comparable=overlap & np.isfinite(inputs[0]).all(axis=0) & np.isfinite(inputs[1]).all(axis=0)
+    if comparable.any():
+        v0=inputs[0][:,comparable].astype('float64');v1=inputs[1][:,comparable].astype('float64');vout=output[:,comparable].astype('float64')
+        separation=np.max(np.abs(v0-v1),axis=0)
+        diff0=np.max(np.abs(vout-v0),axis=0);diff1=np.max(np.abs(vout-v1),axis=0)
+        distinct=separation>tolerance
+        overlap_comparison={'source_difference_above_tolerance_samples':int(distinct.sum()),
+            'closer_to_second_fraction':float(np.mean(diff1[distinct]<diff0[distinct])) if distinct.any() else None,
+            'differs_from_first_fraction':float(np.mean(diff0[distinct]>tolerance)) if distinct.any() else None}
+    else:
+        overlap_comparison={'source_difference_above_tolerance_samples':0,'closer_to_second_fraction':None,'differs_from_first_fraction':None}
+    return {'inputs':results,'overlap_comparison':overlap_comparison,'overlap_output_samples':int(overlap.sum()),
             'output_valid_samples':int(usable.sum()), 'tolerance':tolerance,
             'overlap_adjacent_max_band_p95':float(np.percentile(samples,95)) if samples else None}
 
