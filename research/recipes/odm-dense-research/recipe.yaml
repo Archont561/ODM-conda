@@ -9,9 +9,10 @@ source:
   patches:
     - patches/0001-prefix.patch
     - patches/0002-external-model-cache.patch
+    - patches/0003-classification-fail-closed.patch
 build:
-  number: 2
-  string: research_cpu_classify_${{ hash }}_2
+  number: 3
+  string: research_cpu_classify_${{ hash }}_3
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:

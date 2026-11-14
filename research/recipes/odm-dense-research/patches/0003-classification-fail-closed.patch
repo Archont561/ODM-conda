@@ -1,0 +1,25 @@
+--- a/opendm/opc.py
++++ b/opendm/opc.py
+@@ -18,14 +18,17 @@
+         if model is not None:
+             run('pcclassify "%s" "%s" "%s" -u -s 2,64' % (point_cloud, tmp_output, model), env_vars={'OMP_NUM_THREADS': max_threads})
+             
+-            if os.path.isfile(tmp_output):
+-                os.remove(point_cloud)
+-                os.rename(tmp_output, point_cloud)
++            if os.path.isfile(tmp_output) and os.path.getsize(tmp_output) > 0:
++                os.replace(tmp_output, point_cloud)
+             else:
+-                log.ODM_WARNING("Cannot classify using OpenPointClass (no output generated)")
++                raise RuntimeError("OpenPointClass produced no nonempty output")
+         else:
+-            log.ODM_WARNING("Cannot download/access model from %s" % (model_url))
++            raise RuntimeError("Cannot download/access OpenPointClass model")
+ 
+     except Exception as e:
++        # Research launcher uses an explicit offline model cache. Classification
++        # must not appear successful or write its completion marker on failure.
++        if os.environ.get('ODM_CONDA_MODEL_ROOT'):
++            raise
+         log.ODM_WARNING("Cannot classify using OpenPointClass: %s" % str(e))
+ 
