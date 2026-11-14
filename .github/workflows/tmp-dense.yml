@@ -1,4 +1,4 @@
-name: Temporary dense OpenMVS research
+name: Temporary dense OpenMVS research with scene
 on:
   push:
     branches: [arena/207aff2a-odm-conda]
