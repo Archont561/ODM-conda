@@ -14,7 +14,7 @@ from odm_local_prototype import check_imports, check_prefix
 MODEL_SHA256 = '2960ef1036bb66c42ec908fb5160f396062a9baf5a7ca9a08ba4644976d798c2'
 
 UNSUPPORTED = ('--fast-orthophoto', '--pc-rectify', '--dtm',
-               '--split', '--sm-cluster', '--3d-tiles', '--pc-ept', '--pc-copc')
+               '--split', '--split-image-groups', '--sm-cluster', '--3d-tiles', '--pc-ept', '--pc-copc')
 
 
 def validate_args(args: list[str]) -> None:

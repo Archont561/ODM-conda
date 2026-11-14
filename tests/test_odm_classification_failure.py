@@ -96,3 +96,13 @@ def test_missing_model_fails(opc, tmp_path):
     with pytest.raises(RuntimeError, match='model'):
         opc.classify(str(cloud))
     assert cloud.read_bytes() == b'original'
+
+
+def test_hosted_evidence():
+    import json
+    evidence = json.loads((ROOT/'research/odm-classification-failure-integration-evidence.json').read_text())
+    assert evidence['classification_stats']['count'] == 41276
+    assert evidence['classification_stats']['maximum'] == 6
+    assert evidence['no_binary_overlay'] and evidence['relocated_locked_replay']
+    assert 'fault injection' in evidence['checks']
+    assert 'discarded' in evidence['retention']

@@ -23,7 +23,7 @@ def test_dense_research_installer_and_relocation(tmp_path):
 
 def test_scope_rejections():
     validate_args(['--help'])
-    for flag in ('--dtm', '--fast-orthophoto', '--split=100', '--sm-cluster'):
+    for flag in ('--dtm', '--fast-orthophoto', '--split=100', '--split-image-groups=groups.txt', '--sm-cluster'):
         with pytest.raises(ScaffoldError, match='outside'):
             validate_args([flag])
 

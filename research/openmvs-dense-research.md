@@ -134,6 +134,31 @@ For explicit `--pc-classify`, the private launcher requires
 `ODM_RESEARCH_MODEL_ROOT` to be an absolute external directory containing the
 observed model at `openpointclass/v1_0_0/model.bin`; it checks the model hash
 and disables automatic download in this explicit research path. No model is
-packaged. This is not a general offline/security boundary, and upstream may log
-and swallow classifier failures. Model rights, full source/license review,
-classification accuracy and production distribution remain unresolved.
+packaged. This is not a general offline/security boundary. Upstream normally
+catches classifier failures; build 3 propagates them when this explicit offline
+model root is set and preserves the original input if the command fails or its
+output is missing or empty. [Run 43624514505](https://github.com/Archont561/ODM-conda/actions/runs/43624514505)
+retested build 3 with installed-module fault injection and a complete 35-image
+classification pipeline (41,276 points, classification range 1–6). Fault
+injection was at module level, not a full-pipeline injected crash. See
+`odm-classification-failure-integration-evidence.json`. Model rights, full
+source/license review, classification accuracy and production distribution remain
+unresolved.
+
+### Split/merge exploratory test
+
+The private launcher continues to reject explicit split and image-group flags;
+the restriction is not an exhaustive security boundary. In
+[43624514478](https://github.com/Archont561/ODM-conda/actions/runs/43624514478),
+a direct invocation of the installed app deliberately bypassed that restriction
+to try local split/point-cloud merge on the 35-image Seneca set, with two
+overlapping explicit groups. The relocated package replay passed, but processing
+stopped with an upstream reconstruction error before a verified merge. A repeat
+[43626013062](https://github.com/Archont561/ODM-conda/actions/runs/43626013062)
+also failed; the precise reconstruction cause has not been isolated. Diagnostic
+run [43627528100](https://github.com/Archont561/ODM-conda/actions/runs/43627528100)
+failed too, and its first-error extraction accidentally captured normal feature
+matching failures instead of the fatal cause. These are not split/merge passes.
+The trial data, packages and lock were discarded. Next investigate the first
+fatal submodel error with bounded logs, use a verified splitting fixture, and
+validate at least two input clouds and the merged output before enabling split.
