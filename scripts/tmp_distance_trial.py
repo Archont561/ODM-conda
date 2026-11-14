@@ -100,7 +100,7 @@ print('NEGATIVE_CLASSIFICATION_PROBES_PASS')
   app=prefix/'share/odm-conda/odm-dense-research/app'
   runenv=env2.copy();runenv.update({'ODM_CONDA_LOCAL_PREFIX':str(prefix),'PROJ_DATA':str(prefix/'share/proj'),'PROJ_LIB':str(prefix/'share/proj'),'PATH':str(prefix/'bin')+os.pathsep+os.defpath})
   result=subprocess.check_output([str(prefix/'bin/python'),'-s','-E',str(ROOT/'scripts/odm_dem_distance_fixture.py'),str(prefix),str(app)],env=runenv,text=True)
-  print('::notice::DISTANCE_REPORT '+result.strip().splitlines()[-1],flush=True)
+  print('::notice::DISTANCE_REPORT '+next(line.split('FIXTURE_JSON ',1)[1] for line in result.splitlines() if 'FIXTURE_JSON ' in line),flush=True)
   result=subprocess.check_output([str(prefix/'bin/python'),'-s','-E',str(ROOT/'scripts/odm_remote_mock_fixture.py'),str(prefix),str(app)],env=runenv,text=True)
   print('::notice::REMOTE_MOCK_REPORT '+result.strip().splitlines()[-1],flush=True)
   print('::notice::REPLAY_REPORT '+json.dumps({'count':len(identities),'lock_sha256':sha256(project/'pixi.lock'),'odm_package':odm.name,'odm_sha256':sha256(odm),'no_binary_overlay':True,'no_source_overlay':True},sort_keys=True),flush=True)

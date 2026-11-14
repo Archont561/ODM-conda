@@ -75,4 +75,4 @@ def run(prefix, app):
 
 
 if __name__ == '__main__':
-    print(json.dumps(run(Path(sys.argv[1]).resolve(), Path(sys.argv[2]).resolve()), sort_keys=True))
+    print('FIXTURE_JSON ' + json.dumps(run(Path(sys.argv[1]).resolve(), Path(sys.argv[2]).resolve()), sort_keys=True), flush=True)
