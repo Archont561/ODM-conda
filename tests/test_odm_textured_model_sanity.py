@@ -21,3 +21,14 @@ def test_valid_textured_triangle_and_invalid_data(tmp_path):
     (tmp_path/'model.mtl').write_text('map_Kd ../secret\n')
     with pytest.raises(ValueError, match='Unsafe'):
         validate(model)
+
+
+def test_3d_evidence_scope():
+    import json
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    data = json.loads((root/'research/odm-dense-3d-integration-evidence.json').read_text())
+    assert data['relocated_locked_replay'] and data['no_binary_overlay']
+    assert data['images'] == 35 and data['model']['triangles'] == 46442
+    assert data['model']['textures'] == 3 and '3D model enabled' in data['pipeline']
+    assert 'not full ODM' in data['scope'] and 'discarded' in data['retention']

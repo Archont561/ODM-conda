@@ -92,3 +92,22 @@ source completeness, rights or final release. The research packages, new lock,
 input datasets and outputs were discarded and not uploaded. The old artifact
 was used only as an anchored source of preexisting binary packages, not as the
 new solve or a final owner-retained release.
+
+## Packaged CPU 3D model follow-up
+
+[Run 43620723254](https://github.com/Archont561/ODM-conda/actions/runs/43620723254)
+rebuilt the three research packages, solved and replayed a relocated 435-package
+lock without a binary overlay, and ran the packaged ODM launcher on 35 Seneca
+images with **3D model generation enabled** (`--mesh-octree-depth 8`,
+`--mesh-size 100000`). It completed the CPU dense reconstruction, 3D Poisson
+mesh, texturing, orthophoto and report pipeline. Bounded checks found a 3D OBJ
+with 27,035 vertices, 46,442 triangular faces, 25,038 texture coordinates, one
+material file and three nonempty referenced textures; coordinates were finite
+and face vertex/UV indices valid. Orthophoto raster sanity also passed. Texture
+image decoding, scientific/geometric accuracy, GPU and other ODM modes were not
+established. The independently installed test-scene dense PLY had 28,009 finite
+points with nonzero view counts. [Evidence](odm-dense-3d-integration-evidence.json)
+records the exact disposable package identities and lock hash. These are fresh
+builds, not the previous run's retained bytes. The new lock, packages, dataset
+and outputs were discarded; no artifacts were uploaded. Rights, source
+completeness and all owner release gates remain open.

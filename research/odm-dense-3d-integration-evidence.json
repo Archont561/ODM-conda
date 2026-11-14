@@ -1,0 +1,40 @@
+{
+  "baseline_manifest_sha256": "81da120940a5236657854b51b9713aae0e40dbd11199a51859197837e21c3c7b",
+  "checks": "fresh package retest; relocated locked replay; finite OBJ coordinates and valid triangle UV indices; material and nonempty texture paths; orthophoto raster sanity",
+  "dataset_commit": "9220acfdca75cc5e2dd6d27fe48550c5ae0877f2",
+  "dense_bytes": 1182538,
+  "images": 35,
+  "lock_sha256": "eb64134dffbd424107c3948ecfa43d55dffa707f292160270d196b8fb02fdb7e",
+  "mesh_bytes": 1027412,
+  "model": {
+    "materials": 1,
+    "texture_coordinates": 25038,
+    "textures": 3,
+    "triangles": 46442,
+    "vertices": 27035
+  },
+  "no_binary_overlay": true,
+  "orthophoto_bytes": 5011038,
+  "package_count": 435,
+  "packages": [
+    {
+      "filename": "openmvs-dense-research-0.0.0.dev20260827-research_cpucompat_873e7db_3.conda",
+      "sha256": "692c9247c744a1beb571346f6aaa2cefc341f8f918a5ff8c547835221b89ddfe"
+    },
+    {
+      "filename": "dem2mesh-0.0.0.dev20231207-research_873e7db_1.conda",
+      "sha256": "09961ea4ed2152b70495254f9167f83a64c213869fc2ba6dacd6bcbf7ca1411c"
+    },
+    {
+      "filename": "odm-dense-research-3.6.2-research_cpu_dense_b0f4dca_1.conda",
+      "sha256": "af7033e9a6f5ddd596124a32afdc7cd14639655a6428864d1f01e09e2f8bbd36"
+    }
+  ],
+  "pipeline": "CPU dense 3D and orthophoto; mesh octree depth 8; mesh size 100000; 3D model enabled",
+  "relocated_locked_replay": true,
+  "report_bytes": 2521892,
+  "retention": "new packages, lock, datasets and outputs discarded; no artifacts uploaded",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43620723254",
+  "scope": "private CPU dense 3D and orthophoto research; not full ODM features, accuracy, rights or release",
+  "standalone_dense_points": 28009
+}
