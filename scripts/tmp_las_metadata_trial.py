@@ -15,7 +15,7 @@ with tempfile.TemporaryDirectory() as d:
   return json.loads(subprocess.check_output([str(pdal),'info','--summary',str(p)],text=True))['summary']['metadata']
  def concise(p):
   data=metadata(p);keys=['filesource_id','global_encoding','project_id','system_id','software_id','creation_doy','creation_year']
-  return {**{k:data.get(k) for k in keys},'vlr_keys':[k for k in data if 'vlr' in k.lower()]}
+  return {**{k:data.get(k) for k in keys},'vlrs':{k:{kk:vv for kk,vv in v.items() if kk not in ('data','data_base64')} for k,v in data.items() if k.startswith('vlr_') and isinstance(v,dict)}}
  flags={'global_encoding':1,'filesource_id':42,'project_id':'01234567-89ab-cdef-0123-456789abcdef','system_id':'EXPERIMENT','software_id':'EXPERIMENT','creation_doy':7,'creation_year':2021,'vlrs':[{'user_id':'private-test','record_id':42,'description':'synthetic','data':'Zm9v'}]}
- a=create('a',flags);b=create('b',flags);out=root/'merged.laz';merge([a,b],out)
+ a=create('a',flags);b=create('b',flags);out=root/'merged.laz';base=create('base',{});print('::notice::BASE_METADATA '+json.dumps(concise(base),sort_keys=True),flush=True);merge([a,b],out)
  print('::notice::METADATA_RESULT '+json.dumps({'input':concise(a),'output':concise(out)},sort_keys=True),flush=True)
