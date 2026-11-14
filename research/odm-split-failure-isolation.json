@@ -1,0 +1,27 @@
+{
+  "scope": "Private research; direct app invocation bypassed the split launcher restriction. No merge was validated and no release approval is implied.",
+  "dataset_commit": "9220acfdca75cc5e2dd6d27fe48550c5ae0877f2",
+  "image_count": 35,
+  "groups": "Two explicit overlapping groups, each with 25 images, 15 shared",
+  "unmodified_run": {
+    "url": "https://github.com/Archont561/ODM-conda/actions/runs/43630323149",
+    "result": "failed before merge; child projects recursively split until OpenSfM create_tracks raised OSError errno 40 too many levels of symbolic links",
+    "source_analysis": "ODM get_submodel_argv removes split but forwards explicit split_image_groups. ODMSplitStage treats the forwarded groups file as a reason to split each child.",
+    "package_replay": "436 identities, relocated locked replay before direct invocation"
+  },
+  "strip_child_option_experiment": {
+    "url": "https://github.com/Archont561/ODM-conda/actions/runs/43632509764",
+    "source_overlay": "After replay, removed split_image_groups from child arguments in the installed application. This was a temporary source modification, not a packaged fix.",
+    "result": "Two submodels produced reconstructed, dense and georeferenced point-cloud files; no merged cloud. ODM warned that point-cloud merge returned 127 but still exited successfully.",
+    "submodel_cloud_bytes": [215905, 216487],
+    "merge_command": "Upstream point_cloud.merge invokes lasmerge; the separate subsequent experiment confirmed lasmerge absent from PATH."
+  },
+  "pdal_merge_experiment": {
+    "url": "https://github.com/Archont561/ODM-conda/actions/runs/43633295453",
+    "source_overlay": "After replay, removed split_image_groups from child arguments and replaced lasmerge with pdal merge --writers.las.forward=all in the installed application.",
+    "lasmerge_in_path": false,
+    "result": "Two submodel clouds existed; PDAL merge returned 1 and left a zero-byte merged file. ODM logged a warning and still exited successfully; trial output guard failed.",
+    "unresolved": "The specific PDAL merge error and metadata/scale/CRS compatibility are not isolated. No PDAL alternative was validated."
+  },
+  "retention": "Temporary workflows and scripts removed after trials; runner inputs, model, packages, lock and outputs discarded; no artifact uploaded."
+}

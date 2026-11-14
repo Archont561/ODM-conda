@@ -162,3 +162,27 @@ matching failures instead of the fatal cause. These are not split/merge passes.
 The trial data, packages and lock were discarded. Next investigate the first
 fatal submodel error with bounded logs, use a verified splitting fixture, and
 validate at least two input clouds and the merged output before enabling split.
+
+#### Isolated causes (follow-up)
+
+[43630323149](https://github.com/Archont561/ODM-conda/actions/runs/43630323149)
+captured the first fatal traceback: repeated nested submodels eventually caused
+OpenSfM `create_tracks` to fail with `OSError: [Errno 40] Too many levels of
+symbolic links`. The pinned ODM `get_submodel_argv` removes `--split` but does
+not remove explicit `--split-image-groups`; each child receives that option and
+is split again. This is a finding for this explicit-groups trial, not a claim
+that every split configuration has the same problem.
+
+In a **temporary source-overlay** experiment,
+[43632509764](https://github.com/Archont561/ODM-conda/actions/runs/43632509764)
+removed that child argument: two submodels produced point clouds, but merging
+failed with exit 127, which ODM caught and logged while exiting successfully.
+Upstream invokes `lasmerge`; its absence from PATH was confirmed in the next
+run. A second overlay replacing it with PDAL merge
+([43633295453](https://github.com/Archont561/ODM-conda/actions/runs/43633295453))
+returned exit 1 and left an empty output. Its underlying error was not captured;
+this does not validate a PDAL replacement. More detail and boundaries are in
+`odm-split-failure-isolation.json`. The overlays were not incorporated into the
+package, and split remains unsupported. Next capture the PDAL command's first
+error; test any replacement for count, coordinates, attributes and CRS, and make
+merge failures visible instead of accepting ODM's success exit alone.
