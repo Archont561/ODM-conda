@@ -29,7 +29,7 @@ requirements:
     - odm-research-pygltflib ==1.16.5 research_*_1
     - odm-research-codem ==0.26.1 research_*_1
     - opensfm-scoped-odm ==0.5.2 research_*
-    - openmvs-dense-research ==0.0.0.dev20260827 research_cpucompat_*_2
+    - openmvs-dense-research ==0.0.0.dev20260827 research_cpucompat_*_3
     - dem2mesh ==0.0.0.dev20231207 research_*_1
     - poissonrecon-odm ==13.8 research_*
     - fpcfilter ==0.2 research_*

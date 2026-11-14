@@ -1,0 +1,82 @@
+diff -urN a/apps/DensifyPointCloud/DensifyPointCloud.cpp b/apps/DensifyPointCloud/DensifyPointCloud.cpp
+--- a/apps/DensifyPointCloud/DensifyPointCloud.cpp	2026-11-14 17:13:27.660504728 +0000
++++ b/apps/DensifyPointCloud/DensifyPointCloud.cpp	2026-11-14 17:13:27.680504943 +0000
+@@ -462,7 +462,10 @@
+ 		scene.PointCloudFilter(OPT::thFilterPointCloud);
+ 		const String baseFileName(MAKE_PATH_SAFE(Util::getFileFullName(OPT::strOutputFileName))+_T("_filtered"));
+ 		scene.Save(baseFileName+_T(".mvs"), (ARCHIVE_TYPE)OPT::nArchiveType);
+-		scene.pointcloud.Save(baseFileName+_T(".ply"));
++		if (!scene.pointcloud.SaveODMPLY(baseFileName+_T(".ply"))) {
++			VERBOSE("error: cannot save ODM PLY with valid view counts");
++			return EXIT_FAILURE;
++		}
+ 		return EXIT_SUCCESS;
+ 	}
+ 	if (OPT::nExportNumViews && scene.pointcloud.IsValid()) {
+@@ -544,7 +547,10 @@
+ 
+ 	// save the final point-cloud
+ 	const String baseFileName(MAKE_PATH_SAFE(Util::getFileFullName(OPT::strOutputFileName)));
+-	scene.pointcloud.Save(baseFileName+_T(".ply"), (ARCHIVE_TYPE)OPT::nArchiveType == ARCHIVE_MVS);
++	if (!scene.pointcloud.SaveODMPLY(baseFileName+_T(".ply"))) {
++		VERBOSE("error: cannot save ODM PLY with valid view counts");
++		return EXIT_FAILURE;
++	}
+ 	#if TD_VERBOSE != TD_VERBOSE_OFF
+ 	if (VERBOSITY_LEVEL > 2)
+ 		scene.ExportCamerasMLP(baseFileName+_T(".mlp"), baseFileName+_T(".ply"));
+diff -urN a/libs/MVS/PointCloud.cpp b/libs/MVS/PointCloud.cpp
+--- a/libs/MVS/PointCloud.cpp	2026-11-14 17:13:27.656504685 +0000
++++ b/libs/MVS/PointCloud.cpp	2026-11-14 17:13:27.680504943 +0000
+@@ -676,6 +676,39 @@
+ 	return true;
+ }
+ 
++// ODM research export: scalar view counts, while the regular SavePLY
++// remains unchanged and can preserve full view-index/weight lists.
++bool PointCloud::SaveODMPLY(const String& fileName) const
++{
++    if (IsEmpty() || colors.size() != points.size() || normals.size() != points.size() || pointViews.size() != points.size())
++        return false;
++    for (const auto& views : pointViews) {
++        if (views.empty() || views.size() > 255)
++            return false;
++    }
++    ASSERT(!fileName.empty());
++    Util::ensureFolder(fileName);
++    using namespace PointCloudInternal;
++    PLY ply;
++    if (!ply.write(fileName, 1, BasicPLY::elem_names, PLY::BINARY_LE))
++        return false;
++    BasicPLY::Vertex::InitSaveProps(ply, (int)points.size(), true, true, false, false, false);
++    const PLY::PlyProperty viewCount = {"views", PLY::Uint8, PLY::Uint8, offsetof(BasicPLY::Vertex,views.num), 0, 0, 0, 0};
++    ply.describe_property(BasicPLY::elem_names[0], viewCount);
++    if (!ply.header_complete())
++        return false;
++    BasicPLY::Vertex vertex;
++    FOREACH(i, points) {
++        vertex.p = points[i];
++        vertex.c = colors[i];
++        vertex.n = normals[i];
++        vertex.views.num = static_cast<uint8_t>(pointViews[i].size());
++        ply.put_element(&vertex);
++    }
++    ASSERT(ply.get_current_element_count() == (int)points.size());
++    return true;
++}
++
+ // save the dense point-cloud as PLY file
+ template <typename T>
+ void ExtendBufferGLTF(const T* src, size_t size, tinygltf::Buffer& dst, size_t& byte_offset, size_t& byte_length) {
+diff -urN a/libs/MVS/PointCloud.h b/libs/MVS/PointCloud.h
+--- a/libs/MVS/PointCloud.h	2026-11-14 17:13:27.652504642 +0000
++++ b/libs/MVS/PointCloud.h	2026-11-14 17:13:27.680504943 +0000
+@@ -115,6 +115,8 @@
+ 	bool LoadGLTF(const String& fileName, bool bBinary);
+ 	bool Save(const String& fileName, bool bViews=false, bool bLegacyTypes=false, bool bBinary=true) const;
+ 	bool SavePLY(const String& fileName, bool bViews=false, bool bLegacyTypes=false, bool bBinary=true) const;
++	// ODM CPU research export: exact per-point view counts for FPCFilter.
++	bool SaveODMPLY(const String& fileName) const;
+ 	bool SaveGLTF(const String& fileName, bool bBinary) const;
+ 	bool SavePotree(const String& dirName) const;
+ 	bool SaveNViews(const String& fileName, uint32_t minViews, bool bLegacyTypes=false, bool bBinary=true) const;

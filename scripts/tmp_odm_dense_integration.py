@@ -1,4 +1,4 @@
-import json, os, re, shutil, subprocess, sys, tempfile
+import json, os, re, shutil, subprocess, sys, tempfile, tarfile, urllib.request
 from pathlib import Path
 from common import ROOT, ScaffoldError, rattler, run, sha256
 from private_odm_bundle import build_recipe, loopback, private_identity, verify, inventory_identities
@@ -6,6 +6,8 @@ from private_conda_channel import create
 from prepare_opencv413_research import prepare
 from package_archive import read_package
 from inventory_conda_environment import inventory
+from openmvs_pointcloud_fixture import DATASET_FILES, verify_dataset
+from openmvs_dense_dataset_fixture import test_dense
 
 BUNDLE=Path('/tmp/odm-research-bundle')
 ANCHOR='81da120940a5236657854b51b9713aae0e40dbd11199a51859197837e21c3c7b'
@@ -57,13 +59,26 @@ with tempfile.TemporaryDirectory(prefix='odm-dense-integration-') as tmp:
   if (relocated/'pixi.lock').read_bytes()!=(project/'pixi.lock').read_bytes():raise ScaffoldError('Lock changed on replay')
   run([str(prefix/'bin/odm-dense-research'),'--help'],env=env2)
   run([str(prefix/'bin/python'),'-s','-E',str(prefix/'share/odm-conda/dem2mesh/functional_test.py')],env=env2)
+  archive=root/'openmvs-old.tar.gz'
+  urllib.request.urlretrieve('https://codeload.github.com/OpenDroneMap/openMVS/tar.gz/8e4c5f31a16e0e329132c8f26e20a8c5d7b47f53',archive)
+  if sha256(archive)!='949d420d4506ccd0189574252c8214acce666de837e400e44682e8ddc13e666b':raise ScaffoldError('scene archive mismatch')
+  scene_dataset=root/'scene-data';scene_dataset.mkdir()
+  with tarfile.open(archive,'r:gz') as tar:
+   for name in DATASET_FILES:
+    member=tar.getmember('openMVS-8e4c5f31a16e0e329132c8f26e20a8c5d7b47f53/apps/Tests/data/'+name)
+    if not member.isfile() or member.size>10*1024*1024:raise ScaffoldError('invalid scene member')
+    target=scene_dataset/name;target.parent.mkdir(parents=True,exist_ok=True)
+    with tar.extractfile(member) as src,target.open('wb') as dst:shutil.copyfileobj(src,dst)
+  verify_dataset(scene_dataset);scene=root/'fixture-scene';scene.mkdir()
+  dense_points=test_dense(prefix/'bin/DensifyPointCloud',scene_dataset,scene)
+  print('::notice::DENSE_PLY_VALIDATED '+str(dense_points),flush=True)
   dataset=root/'seneca';run(['git','init',str(dataset)]);run(['git','-C',str(dataset),'fetch','--depth=1','https://github.com/OpenDroneMap/odm_data_seneca.git','9220acfdca75cc5e2dd6d27fe48550c5ae0877f2']);run(['git','-C',str(dataset),'checkout','--detach','FETCH_HEAD'])
   if subprocess.check_output(['git','-C',str(dataset),'rev-parse','HEAD'],text=True).strip()!='9220acfdca75cc5e2dd6d27fe48550c5ae0877f2':raise ScaffoldError('dataset mismatch')
   images=sorted((dataset/'images').glob('*.jpg'))[:35]
   if len(images)!=35:raise ScaffoldError('missing images')
   projects=root/'projects';dest=projects/'dataset/images';dest.mkdir(parents=True)
   for img in images:shutil.copy2(img,dest/img.name)
-  print('::notice::PACKAGED_REPLAY_PASS '+json.dumps({'package_count':len(identities),'packages':[{'filename':p.name,'sha256':sha256(p)} for p in (dense,dem,odm)],'lock_sha256':sha256(project/'pixi.lock'),'no_binary_overlay':True}),flush=True)
+  print('::notice::PACKAGED_REPLAY_PASS '+json.dumps({'package_count':len(identities),'packages':[{'filename':p.name,'sha256':sha256(p)} for p in (dense,dem,odm)],'lock_sha256':sha256(project/'pixi.lock'),'no_binary_overlay':True,'standalone_dense_points':dense_points}),flush=True)
   run([str(prefix/'bin/odm-dense-research'),'--skip-3dmodel','--pc-quality','lowest','--feature-quality','low','--max-concurrency','2','--project-path',str(projects),'dataset'],env=env2)
   dense_output=projects/'dataset/opensfm/undistorted/openmvs/scene_dense_dense_filtered.ply'
   raster=projects/'dataset/odm_orthophoto/odm_orthophoto.tif';report=projects/'dataset/odm_report/report.pdf'
@@ -71,5 +86,5 @@ with tempfile.TemporaryDirectory(prefix='odm-dense-integration-') as tmp:
   rasterenv=env2.copy();rasterenv['PROJ_DATA']=rasterenv['PROJ_LIB']=str(prefix/'share/proj');rasterenv['PATH']=str(prefix/'bin')+os.pathsep+os.defpath
   from odm_raster_sanity import validate
   raster_json=subprocess.check_output([str(prefix/'bin/gdalinfo'),'-json','-stats',str(raster)],text=True,env=rasterenv);validate(json.loads(raster_json))
-  result={'scope':'private CPU dense orthophoto research; not full ODM, accuracy, rights or release','baseline_manifest_sha256':ANCHOR,'package_count':len(identities),'packages':[{ 'filename':p.name,'sha256':sha256(p)} for p in (dense,dem,odm)],'lock_sha256':sha256(project/'pixi.lock'),'images':len(images),'dense_bytes':dense_output.stat().st_size,'orthophoto_bytes':raster.stat().st_size,'report_bytes':report.stat().st_size,'relocated_locked_replay':True,'no_binary_overlay':True}
+  result={'scope':'private CPU dense orthophoto research; not full ODM, accuracy, rights or release','baseline_manifest_sha256':ANCHOR,'package_count':len(identities),'packages':[{ 'filename':p.name,'sha256':sha256(p)} for p in (dense,dem,odm)],'lock_sha256':sha256(project/'pixi.lock'),'images':len(images),'dense_bytes':dense_output.stat().st_size,'orthophoto_bytes':raster.stat().st_size,'report_bytes':report.stat().st_size,'relocated_locked_replay':True,'no_binary_overlay':True,'standalone_dense_points':dense_points}
   print('::notice::INTEGRATION_REPORT '+json.dumps(result,sort_keys=True),flush=True)

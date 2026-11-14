@@ -31,8 +31,16 @@ def validate_dense_ply(path: Path) -> int:
     count = int(matches[0][1])
     if not 100 <= count <= 2_000_000:
         raise ValueError(f'Unexpected dense point count: {count}')
-    if len(body) < count * 12 or not all(math.isfinite(x) for x in struct.unpack_from('<3f', body)):
-        raise ValueError('Truncated or nonfinite dense point data')
+    expected = ['property float32 x', 'property float32 y', 'property float32 z',
+                'property uint8 red', 'property uint8 green', 'property uint8 blue',
+                'property float32 nx', 'property float32 ny', 'property float32 nz', 'property uint8 views']
+    properties = [line for line in lines if line.startswith('property ')]
+    if properties != expected or len(body) != count * 28:
+        raise ValueError('Unexpected dense properties or truncated point data')
+    for offset in range(0, len(body), 28):
+        row = struct.unpack_from('<3f3B3fB', body, offset)
+        if not all(math.isfinite(x) for x in (*row[:3], *row[6:9])) or row[9] == 0:
+            raise ValueError('Nonfinite coordinates/normals or missing views')
     return count
 
 

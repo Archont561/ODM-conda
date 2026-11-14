@@ -1,4 +1,4 @@
-name: Temporary packaged ODM dense diagnostics
+name: Temporary packaged ODM dense PLY compatibility
 on:
   push:
     branches: [arena/207aff2a-odm-conda]

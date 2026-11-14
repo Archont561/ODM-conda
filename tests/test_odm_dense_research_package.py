@@ -33,7 +33,7 @@ def test_dense_recipe_dependency_contract():
     recipe = yaml.safe_load((root/'research/recipes/odm-dense-research/recipe.yaml').read_text())
     assert recipe['package']['name'] == 'odm-dense-research'
     deps = recipe['requirements']['run']
-    assert 'openmvs-dense-research ==0.0.0.dev20260827 research_cpucompat_*_2' in deps
+    assert 'openmvs-dense-research ==0.0.0.dev20260827 research_cpucompat_*_3' in deps
     assert 'dem2mesh ==0.0.0.dev20231207 research_*_1' in deps
     assert not any(dep.startswith('openmvs-tetraflow-research') for dep in deps)
     assert recipe['about']['license'] == 'LicenseRef-Unreviewed'

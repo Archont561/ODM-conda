@@ -14,6 +14,7 @@ from openmvs_dense_link_map import verify_dense_link_map
 PINNED = {
     'apps/DensifyPointCloud/CMakeLists.txt': '8c83b89f770db9935c5ec086e6637e2b1acad602bf16b282f4a4a99e776dba95',
     'apps/DensifyPointCloud/DensifyPointCloud.cpp': 'b3b0ed0685bf4e2940fa05302fae3e7ab13bb33e5d2945fe8731a223168ab6a3',
+    'libs/MVS/PointCloud.h': '0a4b42dfa250600de10b7b3bf0a0630fab7a3a2032617e54ac6020b12514bb09',
     'libs/MVS/SceneDensify.cpp': 'e629b39ec6a6943d9610bafd2e028191757fef21ada5151a4964d50747a35d9b',
     'apps/ReconstructMesh/ReconstructMesh.cpp': 'df9536d2f40eb11910bec63469550b198ec9dd5e73f9756aa7227e743748a410',
     'libs/MVS/PointCloud.cpp': '20b1bcf9695f83bfd7436728b32a51318b9f880e60410e642ba82c30054a154a',
@@ -59,6 +60,10 @@ def main() -> None:
     if cpu_patch.is_symlink() or not cpu_patch.is_file() or sha256(cpu_patch) != '4ffb4d97b9373155194275994709cabfe900e1deff8b1d6950bc160f50029953':
         raise ScaffoldError('Unexpected ODM CPU option patch')
     run(['patch', '--batch', '--fuzz=0', '-p1', '-i', str(cpu_patch)], cwd=source)
+    ply_patch = ROOT/'research/recipes/openmvs-dense-research/patches/odm-dense-ply.patch'
+    if ply_patch.is_symlink() or not ply_patch.is_file() or sha256(ply_patch) != '124c2cefce29a7f78875e2b3928ac8d46da2c34b96d098b648924f99adc8d660':
+        raise ScaffoldError('Unexpected ODM dense PLY patch')
+    run(['patch', '--batch', '--fuzz=0', '-p1', '-i', str(ply_patch)], cwd=source)
     env=os.environ.copy(); env['CONDA_PREFIX']=str(prefix); env['CMAKE_PREFIX_PATH']=str(prefix)
     build=source/'.research-build'; link_map=build/'ReconstructMesh-link.map'
     flags=f"{env.get('LDFLAGS','')} -Wl,-Map={link_map}"
