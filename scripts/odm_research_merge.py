@@ -14,6 +14,8 @@ DIMENSIONS = frozenset(('X', 'Y', 'Z', 'Intensity', 'ReturnNumber', 'NumberOfRet
     'Withheld', 'Overlap', 'ScanAngleRank', 'UserData', 'PointSourceId', 'GpsTime',
     'ScanChannel', 'Red', 'Green', 'Blue'))
 SCALE = 0.001
+ALLOWED_VLRS = {('LASF_Projection', 2112), ('liblas', 2112), ('laszip encoded', 22204)}
+NIL_UUID = '00000000-0000-0000-0000-000000000000' 
 
 
 def _summary(pdal, path, env):
@@ -27,6 +29,18 @@ def _checked(s):
     dims = frozenset(x.strip() for x in s['dimensions'].split(','))
     if dims != DIMENSIONS or metadata['major_version'] != 1 or metadata['minor_version'] != 4 or metadata['dataformat_id'] != 7:
         raise ValueError('Unsupported LAS schema; research merge accepts only LAS 1.4 format 7 without extra dimensions')
+    # PDAL's default merge does not preserve custom VLRs or non-default LAS
+    # header values. In particular, global-encoding bit 0 changes GPS-time
+    # interpretation. Reject rather than silently rewrite meaningful metadata.
+    if (metadata.get('global_encoding') != 16 or metadata.get('filesource_id') != 0
+            or str(metadata.get('project_id', '')).lower() != NIL_UUID
+            or metadata.get('system_id') != 'PDAL'
+            or not str(metadata.get('software_id', '')).startswith('PDAL ')):
+        raise ValueError('Unsupported LAS header metadata')
+    vlrs = [value for key, value in metadata.items() if key.startswith('vlr_')]
+    if (not vlrs or any(not isinstance(v, dict) or (v.get('user_id'), v.get('record_id')) not in ALLOWED_VLRS for v in vlrs)
+            or not any((v.get('user_id'), v.get('record_id')) == ('LASF_Projection', 2112) for v in vlrs)):
+        raise ValueError('Unsupported or missing LAS VLR metadata')
     if not s['num_points'] or any(not math.isclose(float(metadata['scale_'+a]), SCALE, rel_tol=0, abs_tol=1e-12) for a in 'xyz'):
         raise ValueError('Empty cloud or unsupported input precision')
     bounds = s['bounds']

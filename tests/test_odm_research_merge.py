@@ -10,7 +10,10 @@ def sample(count=2):
     return {'num_points': count, 'dimensions': ', '.join(sorted(merge.DIMENSIONS)),
             'bounds': {'minx': 300000., 'maxx': 300010., 'miny': 4545000., 'maxy': 4545010., 'minz': 200., 'maxz': 210.},
             'metadata': {'major_version': 1, 'minor_version': 4, 'dataformat_id': 7,
-                         'scale_x': .001, 'scale_y': .001, 'scale_z': .001, 'spatialreference': 'fixture'}}
+                         'scale_x': .001, 'scale_y': .001, 'scale_z': .001, 'spatialreference': 'fixture',
+                         'global_encoding': 16, 'filesource_id': 0, 'project_id': merge.NIL_UUID,
+                         'system_id': 'PDAL', 'software_id': 'PDAL 2.10',
+                         'vlr_0': {'user_id': 'LASF_Projection', 'record_id': 2112}}}
 
 
 @pytest.fixture
@@ -60,6 +63,13 @@ def test_invalid_output_does_not_replace(trial, monkeypatch):
 
 @pytest.mark.parametrize('mutate', [
     lambda s: s['metadata'].update(dataformat_id=3),
+    lambda s: s['metadata'].update(global_encoding=17),
+    lambda s: s['metadata'].update(filesource_id=42),
+    lambda s: s['metadata'].update(project_id='01234567-89AB-CDEF-0123-456789ABCDEF'),
+    lambda s: s['metadata'].update(system_id='OTHER'),
+    lambda s: s['metadata'].update(software_id='OTHER'),
+    lambda s: s['metadata'].update(vlr_1={'user_id': 'private-test', 'record_id': 42}),
+    lambda s: s['metadata'].pop('vlr_0'),
     lambda s: s.update(dimensions=s['dimensions']+', ExtraDimension'),
     lambda s: s['metadata'].update(scale_x=.01),
     lambda s: s['metadata'].update(spatialreference=''),
@@ -89,3 +99,13 @@ def test_hosted_evidence_is_scoped():
     assert not data['split']['source_overlay'] and data['split']['direct_app_scope_bypass']
     assert data['negative_pipeline']['returncode'] != 0 and data['negative_pipeline']['original_output_preserved']
     assert data['synthetic_fixture']['rejected'] == ['format', 'extra', 'precision', 'crs', 'range']
+
+
+def test_raster_evidence_scope():
+    import json
+    path = Path(__file__).resolve().parents[1]/'research/odm-split-raster-metadata-evidence.json'
+    data = json.loads(path.read_text())
+    assert data['rasters'] == {'dsm': True, 'input_dsms': 2, 'input_orthos': 2, 'ortho': True}
+    assert data['split']['direct_app_scope_bypass'] and not data['split']['source_overlay']
+    assert data['pointcloud_validation']['merged_count'] == 81834
+    assert 'not proof both contributed' in data['limitations']

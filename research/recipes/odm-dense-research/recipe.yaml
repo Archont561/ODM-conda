@@ -12,8 +12,8 @@ source:
     - patches/0003-classification-fail-closed.patch
     - patches/0004-research-split-pointcloud.patch
 build:
-  number: 4
-  string: research_cpu_split_${{ hash }}_4
+  number: 5
+  string: research_cpu_split_${{ hash }}_5
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:

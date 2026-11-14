@@ -235,3 +235,104 @@ These are point-cloud-only tests on one real and a small synthetic fixture; they
 do not establish correctness for general LAS metadata, geometric accuracy,
 3D/DEM/orthophoto merge or distributed processing. Split is not exposed through
 the research launcher yet. Rights, production recipe and release gates remain.
+
+#### LAS metadata and raster merge follow-up
+
+[43641416170](https://github.com/Archont561/ODM-conda/actions/runs/43641416170)
+found a real build-4 limitation: merging generated inputs with GPS-time global
+encoding 17, a nonzero file-source ID, a project ID and a custom VLR silently
+produced default header values and dropped the VLR. Build 4 must **not** be
+considered metadata-preserving for such inputs.
+
+Build 5 fails closed unless the header has the observed PDAL defaults (global
+encoding 16, zero source ID, nil project ID, PDAL system/software ID) and VLR
+identifiers are limited to the recognized WKT and compression records. CRS,
+schema and coordinate guards still apply. Creation date, software version and
+recognized VLR contents may be rewritten; arbitrary metadata preservation is
+not claimed. [43641891994](https://github.com/Archont561/ODM-conda/actions/runs/43641891994)
+independently verified rejection of changed GPS encoding, source/project/system/
+software IDs, custom VLR and custom EVLR while retaining the old output. It
+used the checked-out research module and freshly solved PDAL/GDAL, not an
+installed build-5 package. `scripts/odm_las_metadata_fixture.py` reproduces this
+fixture when run with a suitable research prefix Python.
+
+[43641892010](https://github.com/Archont561/ODM-conda/actions/runs/43641892010)
+built and retested build 5 and used a relocated 436-identity replay, without
+source/binary overlay. Direct app invocation (launcher bypass) processed 35
+images as two submodels with `--merge all --dsm`. The point-cloud merge preserved
+81,834 rows for the 21 checked dimensions, and a corrupt-input rerun failed and
+preserved its prior output. Two input DSMs and two feathered orthophotos existed;
+merged orthophoto metadata/statistics and basic DSM metadata/statistics checks
+passed. Existence alone does not prove both input rasters contributed: pixel,
+footprint-union, seam and geographic accuracy tests remain. Details, package
+identities and scope are in `odm-split-raster-metadata-evidence.json`.
+The launcher still rejects split; distributed processing, DTM and 3D-model merge
+remain unverified. Nothing was uploaded or approved for release.
+
+#### Raster contribution and DTM sampling
+
+[43645580804](https://github.com/Archont561/ODM-conda/actions/runs/43645580804)
+used the packaged build-5 app directly after a relocated 436-identity replay
+without overlays. A 35-image local two-submodel run requested `--merge all
+--dsm --dtm --pc-classify` with an explicit external model. It produced two
+input DTMs and a merged DTM, as well as DSM and orthophoto outputs. Since ODM
+classifies the *merged* cloud after concatenation, classification values were
+allowed to change; the other 20 listed point dimensions were checked row by
+row and CRS was equivalent. This does not establish classification accuracy.
+
+A bounded nearest-neighbor grid sampled the outputs and both input rasters.
+For each product, each input had exclusive valid merged samples whose values
+mostly matched that input within the stated thresholds. For example, orthophoto
+had 63,109 / 3,706 exclusive samples, matching within 12 DN for 100% / 91.3%;
+DTM had 63,202 / 3,709, matching within 0.1 units for 100% / 99.9%.
+The overlap values also differed from the first input for some samples where
+inputs differed. This is evidence of contributions at sampled locations, not
+proof of full-resolution footprint union or a counterfactual blend test. The
+reported overlap adjacent-pixel percentiles include actual image/terrain texture:
+they are **not seam-specific quality measurements**. Full statistics, package
+lock hash and limitations are in `odm-raster-contribution-evidence.json`.
+
+A prior [43644044169](https://github.com/Archont561/ODM-conda/actions/runs/43644044169)
+completed the ODM pipeline but its trial incorrectly demanded that
+classification remain unchanged; the corrected check explicitly allows valid
+reclassification. Another [43644839205](https://github.com/Archont561/ODM-conda/actions/runs/43644839205)
+completed, but its annotation quota prevented retention of all reported metrics.
+No trial uploaded packages, model, inputs or outputs. The launcher remains
+restricted; 3D and distributed/ClusterODM merge remain untested. Do not infer
+accuracy, model rights or production release approval from these runs.
+
+#### Controlled raster counterfactual
+
+[43647654147](https://github.com/Archont561/ODM-conda/actions/runs/43647654147)
+replayed 436 package identities in a fresh relocated prefix without source or
+binary overlays and directly exercised the installed ODM orthophoto and DEM
+merge functions. Two synthetic, aligned 24×32 rasters (constant 100 and 200)
+overlap over 16 columns; the combined 32×32 output had all 1,024 pixels covered.
+Disabling either input changed 768 pixels in each product. Equal-weight DEM
+values were 100 and 200 in exclusive areas and 150 throughout overlap. With
+orthophoto alphas 255 and 128, overlap was 150 in one input order but 100 in the
+reverse order (512 pixels changed). A synthetic half-alpha cutline changed 32
+pixels from 150 to 195. The maximum horizontal adjacent step was 50 in both
+outputs for this intentionally different pair of constant inputs.
+
+This validates the specified controlled behavior, **not** real-world seam
+quality: source order affects alpha blending, and a 50-unit step in this
+contrived fixture cannot establish a general acceptable threshold. Inputs were
+aligned, DEM weights were manually supplied, and real distance-map generation,
+geometric accuracy, distributed processing and 3D-model merge were not tested.
+Evidence and the exact lock/package hashes are in
+`odm-raster-counterfactual-evidence.json`; the fixture is
+`scripts/odm_raster_counterfactual_fixture.py`. Data and packages were discarded.
+
+#### Generated DEM distance maps
+
+In [43650035119](https://github.com/Archont561/ODM-conda/actions/runs/43650035119),
+the installed ODM implementation generated GDAL proximity maps for two synthetic,
+aligned 24×24 DEMs with nodata borders and differently positioned holes. Both
+maps matched an independent SciPy Euclidean distance transform. The merged
+24×32 grid had 660 valid and 108 nodata pixels; 300 pixels overlapped and 200
+had unequal weights. Every valid output matched the independently calculated
+weighted average (maximum error 0). This tests a controlled geometry, not
+misaligned rasters, other nodata conventions, realistic seam quality or accuracy.
+The fixture is `scripts/odm_dem_distance_fixture.py`; report, replay identity and
+limits are recorded in `odm-distance-remote-mock-evidence.json`.

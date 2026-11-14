@@ -33,3 +33,14 @@ def test_recorded_experiment_is_scoped():
     assert data['split']['direct_app_scope_bypass']
     assert 'temporary source overlay' in data['method']
     assert 'not fault-injected' in data['limits']
+
+
+def test_reclassification_is_explicit_and_still_validated():
+    a, b = row(), row()
+    b['Classification'] = '5'
+    with pytest.raises(ValueError, match='Classification differs'):
+        compare_rows([a], [b])
+    assert compare_rows([a], [b], allow_reclassification=True) == 1
+    b['Classification'] = '256'
+    with pytest.raises(ValueError, match='Invalid Classification'):
+        compare_rows([a], [b], allow_reclassification=True)
