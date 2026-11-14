@@ -74,3 +74,4 @@ jobs:
 # Include synthetic schema, CRS, precision and range rejection tests.
 # Test build-5 metadata guard and correct DSM stats keys.
 # ODM classifies after merge; permit classification changes explicitly.
+# Reserve annotation slots for all three sampled raster products.
