@@ -71,3 +71,13 @@ def test_classification_requires_anchored_external_model(tmp_path, monkeypatch):
     model.unlink(); model.symlink_to('/etc/passwd')
     with pytest.raises(ScaffoldError, match='unsafe'):
         launcher.checked_model_root(str(tmp_path))
+
+
+def test_dense_recipe_carries_zero_elevation_fix():
+    root = Path(__file__).resolve().parents[1]
+    recipe = yaml.safe_load((root/'research/recipes/odm-dense-research/recipe.yaml').read_text())
+    assert recipe['build']['number'] == 6
+    assert recipe['build']['string'].endswith('_6')
+    assert 'patches/0005-dem-zero-elevation.patch' in recipe['source']['patches']
+    patch = (root/'research/recipes/odm-dense-research/patches/0005-dem-zero-elevation.patch').read_text()
+    assert 'dstarr[distsum[tuple(indices)] == 0.0] = src_nodata' in patch

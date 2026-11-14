@@ -30,7 +30,8 @@ computed their weighted average.
 
 **Observed defect:** in this source version, `dstarr[dstarr == 0.0] = src_nodata`
 converts legitimate zero-height results to nodata, including the 176 pixels
-exclusive to the zero-valued raster. This diagnostic did not patch or fix ODM.
+exclusive to the zero-valued raster. The initial diagnostic did not patch ODM;
+the private research recipe fix and its limited verification are described below.
 The offset cases are not general proof of correct alignment: they use constant
 values, common resolution/CRS, only horizontal offsets, simple bordered shapes,
 and one output block. Other nodata conventions, tiling, varied surfaces and
@@ -39,9 +40,10 @@ production-ready DEM merging from these results.
 
 Reproduce after obtaining and hash-verifying the upstream archive:
 `ODM_TEST_SOURCE=/path/to/extracted/ODM PYTHONPATH=/path/to/deps python -m pytest -q tests/test_odm_dem_alignment_probe.py`.
-This optional regression captures current behavior including the defect, not a
-correctness endorsement. A future fix should change its expected zero-height
-case and verify installed package behavior.
+The regression first confirms the defect in pristine upstream source, then
+applies all five research recipe patches, runs the repository's installer into a
+temporary prefix, and probes the copied application. The installer copy is not
+a built or solved Conda package.
 
 ## PyODM loopback HTTP mock
 
@@ -56,3 +58,25 @@ exercise scheduler/fallback/retries/disconnections/authentication/hostile
 archives, or establish compatibility/security. The server is a test fake, not a
 service implementation. The normal locked repository environment lacks PyODM,
 so this optional test is skipped there; it ran separately with local dependencies.
+
+## Private research fix and local verification
+
+Research recipe build 6 applies `0005-dem-zero-elevation.patch`: it marks nodata
+from zero accumulated contribution weight, rather than testing the elevation
+value. The coverage mask follows the same nearest-neighbor indices as the output
+for the merger's low-distance interpolation path. The restricted launcher and
+release gates are unchanged; upstream ODM and other recipes are not modified.
+
+Against the verified upstream archive, the optional regression applied all five
+patches and copied the patched application using `build_odm_dense_research.install`.
+The same probe was then run against the copied app, with synthetic precomputed
+maps and stubbed ODM command/system/io/log imports. The zero-valued-source case
+preserved all 660 expected valid pixels (baseline 484); an equal-weight -100/100
+case preserved 660 (baseline 548). All seven reference cases matched. A separate
+artificial low-distance interpolation case preserved all 484 valid zeros including
+the interpolated center, while retaining nodata borders (baseline lost all 484).
+This is source/installer-copy verification, **not** a built, solved, relocated,
+or installed Conda package test and not a real DEM or full pipeline test. The
+previous temporary binary artifact is no longer available; a fresh private build
+and full replay are still needed before treating build 6 as packaged evidence.
+No result establishes general merge quality or release readiness.

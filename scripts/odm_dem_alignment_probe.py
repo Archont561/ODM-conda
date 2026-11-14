@@ -48,6 +48,7 @@ def run(app):
                                         (8.25, -9999.0, (100.0, 200.0)),
                                         (8.75, -9999.0, (100.0, 200.0)),
                                         (8.0, -9999.0, (0.0, 200.0)),
+                                        (8.0, -9999.0, (-100.0, 100.0)),
                                         (8.0, 0.0, (100.0, 200.0)),
                                         (8.0, -9999.0, (100.0, -9999.0))]:
             paths = []; sources = []
@@ -86,6 +87,34 @@ def run(app):
             except Exception as exc:
                 results.append({'offset': offset, 'nodata': nodata, 'values': list(values),
                                 'error': f'{type(exc).__name__}: {exc}'})
+        # Exercise the merger's special nearest-neighbor path where both
+        # distances are < 1.0. These artificial weights isolate the branch;
+        # they do not assert how ODM generates such distance maps.
+        paths = []
+        for i in range(2):
+            data = np.zeros((24, 24), dtype='float32')
+            data[0, :] = data[-1, :] = -9999
+            data[:, 0] = data[:, -1] = -9999
+            weights = np.where(data == -9999, 0, 10).astype('float32')
+            weights[12, 12] = 0.1
+            path = root / f'interpolation-{i}.tif'
+            distance = root / f'interpolation-{i}.euclideand.tif'
+            profile = dict(driver='GTiff', width=24, height=24, count=1, dtype='float32',
+                           nodata=-9999, crs='EPSG:32617', transform=from_origin(0, 24, 1, 1))
+            with rasterio.open(path, 'w', **profile) as dst: dst.write(data, 1)
+            profile['nodata'] = 0
+            with rasterio.open(distance, 'w', **profile) as dst: dst.write(weights, 1)
+            paths.append(str(path))
+        output = root / 'interpolation-merged.tif'
+        merge(paths, str(output), {'TILED': 'NO'})
+        with rasterio.open(output) as src:
+            result = src.read(1)
+        expected = np.zeros((24, 24), dtype='float32')
+        expected[0, :] = expected[-1, :] = -9999
+        expected[:, 0] = expected[:, -1] = -9999
+        results.append({'case': 'interpolation_zero', 'different_pixels': int(np.count_nonzero(result != expected)),
+                        'output_valid': int(np.count_nonzero(result != -9999)),
+                        'center_value': float(result[12, 12])})
     return results
 
 
