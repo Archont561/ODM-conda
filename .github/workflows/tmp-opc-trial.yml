@@ -1,0 +1,34 @@
+name: Temporary OpenPointClass research test
+on:
+  push:
+    branches: [arena/207aff2a-odm-conda]
+    paths: [.github/workflows/tmp-opc-trial.yml]
+permissions:
+  contents: read
+jobs:
+  research:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: prefix-dev/setup-pixi@ad1da6449d9e506fd127fd67ab2d054a769f6a94
+        with:
+          pixi-version: v0.82.0
+          locked: true
+          environments: default agent-tools
+      - name: Download model privately on runner
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -m 700 /tmp/opc-model
+          gh release download v1.1.3 --repo uav4geo/OpenPointClass --pattern vehicles-vegetation-buildings.zip --dir /tmp/opc-model
+      - name: Build and test classifier
+        run: |
+          set -o pipefail
+          pixi run python scripts/tmp_openpointclass_trial.py 2>&1 | tee /tmp/opc.log
+      - name: Failure diagnostics
+        if: failure()
+        run: |
+          python3 -c 'import base64;from pathlib import Path;p=Path("/tmp/opc.log");print("::notice::FAILURE64 "+base64.b64encode(p.read_bytes()[-1900:] if p.exists() else b"no log").decode())'

@@ -1,0 +1,69 @@
+# Private research only; upstream model and source rights are unresolved.
+schema_version: 1
+package:
+  name: openpointclass-research
+  version: "0.0.0.dev20250823"
+source:
+  - url: https://codeload.github.com/uav4geo/OpenPointClass/tar.gz/dd6a560a1d43cb709f7b220b19a436e25a889e3e
+    sha256: 3dbcb6a08be2a8a4df37fa0301dbaaf48fe946295d60f0ab7a2b1f89bc4e5341
+  - url: https://codeload.github.com/microsoft/LightGBM/tar.gz/e4231205a3bac13662a81db9433ddaea8924fbce
+    sha256: 23142b8b0317e31f04de923fb640d0deeee8229152009fcfa22577c73fb7fc64
+    target_directory: _external/lightgbm
+  - url: https://codeload.github.com/fmtlib/fmt/tar.gz/b6f4ceaed0a0a24ccf575fab6c56dd50ccf6f1a9
+    sha256: de3061d275cb5c09c30dd809fcb425dce5bfd1dededcb272231263c95de05c61
+    target_directory: _external/lightgbm/external_libs/fmt
+  - url: https://codeload.github.com/lemire/fast_double_parser/tar.gz/ace60646c02dc54c57f19d644e49a61e7e7758ec
+    sha256: f438dc0a1025059ad1a930dbf6cb73c154b409473761ed1229b6efddcb0530fe
+    target_directory: _external/lightgbm/external_libs/fast_double_parser
+build:
+  number: 1
+  string: research_${{ hash }}_1
+  skip: target_platform != "linux-64"
+  script:
+    file: ../../../scripts/build_openpointclass_research.py
+    interpreter: python
+requirements:
+  build:
+    - python >=3.12,<3.13
+    - cmake >=3.31,<3.32
+    - ninja >=1.11,<2
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+  host:
+    - eigen >=3.4,<3.5
+    - libpdal-core >=2.10.0,<2.10.1
+    - libgdal-core >=3.12.2,<3.12.3
+    - libgomp >=14
+  run:
+    - libpdal-core >=2.10.0,<2.10.1
+    - libgdal-core >=3.12.2,<3.12.3
+    - libgomp >=14
+tests:
+  - package_contents:
+      files:
+        - bin/pcclassify
+        - share/odm-conda/openpointclass-research/SOURCE.txt
+  - script:
+      interpreter: python
+      content: |
+        import subprocess, sys
+        from pathlib import Path
+        binary = Path(sys.prefix)/'bin/pcclassify'
+        result = subprocess.run([str(binary), '--help'], capture_output=True, text=True, check=True)
+        assert 'classification model' in result.stdout.lower()
+        linked = subprocess.run(['ldd', str(binary)], capture_output=True, text=True, check=True)
+        assert 'not found' not in linked.stdout + linked.stderr
+    requirements:
+      run:
+        - python >=3.12,<3.13
+about:
+  homepage: https://github.com/uav4geo/OpenPointClass
+  summary: Private GBT classification research only; rights unresolved
+  license: LicenseRef-Unreviewed
+  license_file:
+    - LICENSE
+    - vendor/ethz/LICENSE
+    - _external/lightgbm/LICENSE
+    - _external/lightgbm/external_libs/fmt/LICENSE.rst
+    - _external/lightgbm/external_libs/fast_double_parser/LICENSE
