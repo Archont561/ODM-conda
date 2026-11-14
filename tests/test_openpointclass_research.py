@@ -35,3 +35,14 @@ def test_classification_fixture_requires_changed_finite_points(tmp_path):
     csvfile.write_text('X,Y,Z,Classification\n1,2,3,1\n')
     with pytest.raises(ValueError, match='No points classified'):
         check_output(csvfile, 1)
+
+
+def test_recorded_integration_is_bounded():
+    import json
+    root = Path(__file__).resolve().parents[1]
+    evidence = json.loads((root/'research/odm-classification-integration-evidence.json').read_text())
+    assert evidence['classification_stats']['count'] == 37333
+    assert evidence['classification_stats']['maximum'] == 6
+    assert evidence['no_binary_overlay'] and evidence['relocated_locked_replay']
+    assert evidence['classification_model_sha256_verified_before_run'] == '2960ef1036bb66c42ec908fb5160f396062a9baf5a7ca9a08ba4644976d798c2'
+    assert 'incorrect' not in evidence['report_correction'] or 'annotation' in evidence['report_correction']

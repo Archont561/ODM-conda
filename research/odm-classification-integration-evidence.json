@@ -1,0 +1,57 @@
+{
+  "baseline_manifest_sha256": "81da120940a5236657854b51b9713aae0e40dbd11199a51859197837e21c3c7b",
+  "checks": "fresh package retest, relocated lock replay, non-ground classification maximum, OBJ structure, raster sanity; not classification accuracy or per-class counts",
+  "classification_model_sha256_verified_before_run": "2960ef1036bb66c42ec908fb5160f396062a9baf5a7ca9a08ba4644976d798c2",
+  "classification_stats": {
+    "average": 2.007044706,
+    "count": 37333,
+    "maximum": 6,
+    "minimum": 1,
+    "name": "Classification",
+    "position": 0,
+    "stddev": 0.1681186545,
+    "variance": 0.02826388199
+  },
+  "dataset_commit": "9220acfdca75cc5e2dd6d27fe48550c5ae0877f2",
+  "dense_bytes": 1054382,
+  "images": 35,
+  "lock_sha256": "f6a058a8b2613cb3d02e7ce8addde4d725c004abd6eca1b220494253b2160e17",
+  "mesh_bytes": 1260822,
+  "model": {
+    "materials": 1,
+    "texture_coordinates": 31061,
+    "textures": 2,
+    "triangles": 58955,
+    "vertices": 33176
+  },
+  "no_binary_overlay": true,
+  "orthophoto_bytes": 2175958,
+  "package_count": 436,
+  "packages": [
+    {
+      "filename": "openmvs-dense-research-0.0.0.dev20260827-research_cpucompat_873e7db_3.conda",
+      "sha256": "e3cbb2d4e05fbec9d930450f62e1d013a9277fc7439f6b20d9846289b9c4dd46"
+    },
+    {
+      "filename": "dem2mesh-0.0.0.dev20231207-research_873e7db_1.conda",
+      "sha256": "d709a9c2a82258c6655153e067f975acb619603136ca86c58a8e560e6099d9d3"
+    },
+    {
+      "filename": "openpointclass-research-0.0.0.dev20250823-research_873e7db_1.conda",
+      "sha256": "5fe35169b70adebee61363a49d587a9559e677e5000701ea77d957e0d6dcd942"
+    },
+    {
+      "filename": "odm-dense-research-3.6.2-research_cpu_classify_b0f4dca_2.conda",
+      "sha256": "59dd746a9fb049ebb7c3f6f54e6dd1a3b4a0e6511dc9f3232f0707698d294cdc"
+    }
+  ],
+  "pipeline": "CPU dense 3D and orthophoto with --pc-classify; explicit hash-checked external model; mesh octree depth 8; mesh size 100000",
+  "relocated_locked_replay": true,
+  "report_bytes": 3359119,
+  "report_correction": "The workflow annotation model_sha256 erroneously hashes the textured OBJ because the local model variable was overwritten. The classifier model hash was independently asserted before pipeline launch.",
+  "retention": "new packages, lock, model, datasets and outputs discarded; no artifacts uploaded",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43622341689",
+  "scope": "private research only; not full ODM features, classification accuracy, rights, or release",
+  "standalone_dense_points": 28181,
+  "textured_obj_sha256_reported_as_model_sha256": "87e7faa3c638f4c857bdf45fdb1c01a854058880a6279c0f3709c9236e9c9f48"
+}

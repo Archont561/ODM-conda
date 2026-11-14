@@ -111,3 +111,29 @@ records the exact disposable package identities and lock hash. These are fresh
 builds, not the previous run's retained bytes. The new lock, packages, dataset
 and outputs were discarded; no artifacts were uploaded. Rights, source
 completeness and all owner release gates remain open.
+
+### Private classification integration
+
+[Run 43622003039](https://github.com/Archont561/ODM-conda/actions/runs/43622003039)
+built the research OpenPointClass with staged, pinned LightGBM sources and no
+build-time fetch. The installed classifier processed 2,500 synthetic LAZ points
+(301 class 1, 2,199 class 3); this is a smoke test, not an accuracy measurement.
+
+[Run 43622341689](https://github.com/Archont561/ODM-conda/actions/runs/43622341689)
+built and retested the classifier and CPU dense packages, replayed a relocated
+436-package lock without a binary overlay, then processed 35 Seneca images with
+`--pc-classify`. PDAL reported 37,333 output points, classification minimum 1
+and maximum 6; the run also validated raster and textured OBJ structure. The
+pipeline checks classification output rather than relying on ODM's exit status:
+upstream catches OpenPointClass errors. See
+`odm-classification-integration-evidence.json` for package identities, limits,
+and a correction to an incorrectly labelled hash in the workflow annotation.
+The locked environment, binaries, model, input and outputs were discarded.
+
+For explicit `--pc-classify`, the private launcher requires
+`ODM_RESEARCH_MODEL_ROOT` to be an absolute external directory containing the
+observed model at `openpointclass/v1_0_0/model.bin`; it checks the model hash
+and disables automatic download in this explicit research path. No model is
+packaged. This is not a general offline/security boundary, and upstream may log
+and swallow classifier failures. Model rights, full source/license review,
+classification accuracy and production distribution remain unresolved.
