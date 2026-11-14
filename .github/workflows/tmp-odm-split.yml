@@ -69,3 +69,4 @@ jobs:
           PYCODE
 # Controlled merge backend intervention.
 # Capture independent PDAL probes before temporary cleanup.
+# Test bounded PDAL merge with automatic offsets and fail-visible overlay.

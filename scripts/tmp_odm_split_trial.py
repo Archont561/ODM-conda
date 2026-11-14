@@ -129,10 +129,14 @@ print('NEGATIVE_CLASSIFICATION_PROBES_PASS')
   print('::notice::LASMERGE_IN_PREFIX '+json.dumps({'available':bool(shutil.which('lasmerge',path=split_env['PATH']))}),flush=True)
   pc=app.parent/'opendm/point_cloud.py';pc_source=pc.read_text()
   before="system.run('lasmerge -i {all_inputs} -o \"{output}\"'.format(**kwargs))"
-  after="system.run('pdal merge {all_inputs} \"{output}\" --writers.las.forward=all'.format(**kwargs))"
+  after="system.run('pdal merge {all_inputs} \"{output}\" --writers.las.scale_x=0.001 --writers.las.scale_y=0.001 --writers.las.scale_z=0.001 --writers.las.offset_x=auto --writers.las.offset_y=auto --writers.las.offset_z=auto'.format(**kwargs))"
   if pc_source.count(before)!=1:raise ScaffoldError('Unexpected merge code')
   pc.write_text(pc_source.replace(before,after))
-  print('::notice::TEST_ONLY_SOURCE_OVERLAY: strip child group option and use PDAL merge',flush=True)
+  stage=app.parent/'stages/splitmerge.py';stage_source=stage.read_text()
+  warning='log.ODM_WARNING("Could not merge point cloud: %s (skipping)" % str(e))'
+  if stage_source.count(warning)!=1:raise ScaffoldError('Unexpected merge exception handling')
+  stage.write_text(stage_source.replace(warning, 'raise RuntimeError("Point-cloud merge failed") from e'))
+  print('::notice::TEST_ONLY_SOURCE_OVERLAY: child group option, PDAL fixed precision and automatic offsets, propagate merge errors',flush=True)
   # Direct app invocation is a deliberate scope bypass for this trial only.
   run([str(prefix/'bin/python'),'-s','-E',str(app),'--no-gpu','--split','20','--split-image-groups',str(groups),'--merge','pointcloud','--pc-quality','lowest','--feature-quality','low','--max-concurrency','2','--skip-3dmodel','--skip-report','--project-path',str(projects),'dataset'],env=split_env)
   clouds=sorted((projects/'dataset/submodels').glob('submodel_*/odm_georeferencing/odm_georeferenced_model.laz'))
@@ -144,23 +148,9 @@ print('NEGATIVE_CLASSIFICATION_PROBES_PASS')
    rec=sub/'opensfm/reconstruction.json'; densefile=sub/'opensfm/undistorted/openmvs/scene_dense_dense_filtered.ply'; cloud=sub/'odm_georeferencing/odm_georeferenced_model.laz'
    observed.append({'name':sub.name,'reconstruction':rec.is_file(),'dense_cloud':densefile.is_file(),'cloud':cloud.is_file(),'cloud_bytes':cloud.stat().st_size if cloud.is_file() else 0})
   print('::notice::SUBMODEL_STATUS '+json.dumps({'submodels':observed,'merged_exists':merged.is_file(),'merged_bytes':merged.stat().st_size if merged.is_file() else 0},sort_keys=True),flush=True)
-  # Independently capture the PDAL CLI error before temporary files disappear.
-  for label, flags in [('original',['--writers.las.forward=all']),('auto',['--writers.las.scale_x=auto','--writers.las.scale_y=auto','--writers.las.scale_z=auto','--writers.las.offset_x=auto','--writers.las.offset_y=auto','--writers.las.offset_z=auto'])]:
-   target=root/('probe-'+label+'.laz')
-   cmd=[str(prefix/'bin/pdal'),'merge',*[str(c) for c in clouds],str(target),*flags]
-   proc=subprocess.run(cmd,text=True,capture_output=True,env=split_env,timeout=120)
-   print('::notice::PDAL_PROBE '+json.dumps({'variant':label,'returncode':proc.returncode,'stdout':proc.stdout[-2000:],'stderr':proc.stderr[-2000:],'output_bytes':target.stat().st_size if target.exists() else None},sort_keys=True),flush=True)
-   if proc.returncode==0 and target.is_file() and target.stat().st_size>1000:
-    probe_info=json.loads(subprocess.check_output([str(prefix/'bin/pdal'),'info','--summary',str(target)],text=True,env=split_env))['summary']
-    sources=[json.loads(subprocess.check_output([str(prefix/'bin/pdal'),'info','--summary',str(c)],text=True,env=split_env))['summary'] for c in clouds]
-    print('::notice::PDAL_SUMMARIES '+json.dumps({'variant':label,'output':probe_info,'inputs':sources},sort_keys=True),flush=True)
   if len(clouds)<2 or not merged.is_file() or merged.stat().st_size<1000:raise ScaffoldError('Expected multiple submodel clouds and merged output')
-  info=json.loads(subprocess.check_output([str(prefix/'bin/pdal'),'info','--summary',str(merged)],text=True,env=split_env))
-  count=info['summary']['num_points']
-  sources=[json.loads(subprocess.check_output([str(prefix/'bin/pdal'),'info','--summary',str(c)],text=True,env=split_env))['summary'] for c in clouds]
-  if count<=0 or count!=sum(src['num_points'] for src in sources):raise ScaffoldError('Merged point count differs from input total')
-  for coord in ('X','Y','Z'):
-   bounds=info['summary']['bounds']; lo=min(src['bounds'][f'min{coord.lower()}'] for src in sources);hi=max(src['bounds'][f'max{coord.lower()}'] for src in sources)
-   if abs(bounds[f'min{coord.lower()}']-lo)>0.01 or abs(bounds[f'max{coord.lower()}']-hi)>0.01:raise ScaffoldError('Merged bounds differ from input union')
-
-  print('::notice::SPLIT_REPORT '+json.dumps({'submodels':len(clouds),'merged_points':count,'images':len(images),'package_count':len(identities),'lock_sha256':sha256(project/'pixi.lock'),'direct_app_scope_bypass':True,'test_only_source_overlay':'strip split_image_groups and replace lasmerge with pdal merge --writers.las.forward=all','no_binary_overlay':True,'scope':'local pointcloud merge only, no 3D model merging, accuracy or release'},sort_keys=True),flush=True)
+  result=subprocess.check_output([str(prefix/'bin/python'),'-s','-E',str(ROOT/'scripts/odm_split_merge_sanity.py'),'--pdal',str(prefix/'bin/pdal'),'--output',str(merged),*[str(c) for c in clouds]],text=True,env=split_env)
+  validation=json.loads(result.strip().splitlines()[-1])
+  print('::notice::MERGE_VALIDATION '+json.dumps(validation,sort_keys=True),flush=True)
+  count=validation['merged_count']
+  print('::notice::SPLIT_REPORT '+json.dumps({'submodels':len(clouds),'merged_points':count,'images':len(images),'package_count':len(identities),'lock_sha256':sha256(project/'pixi.lock'),'direct_app_scope_bypass':True,'test_only_source_overlay':'strip child split groups; PDAL fixed scales/auto offsets; propagate merge errors','no_binary_overlay':True,'scope':'local pointcloud merge only, no 3D model merging, accuracy or release'},sort_keys=True),flush=True)
