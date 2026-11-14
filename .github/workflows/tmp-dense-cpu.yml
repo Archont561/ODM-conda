@@ -1,4 +1,4 @@
-name: Temporary CPU dense ODM stage
+name: Temporary CPU dense ODM stage output check
 on:
   push:
     branches: [arena/207aff2a-odm-conda]

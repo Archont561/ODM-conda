@@ -60,7 +60,7 @@ with tempfile.TemporaryDirectory(prefix='dense-trial-') as tmp:
     app=prefix/'share/odm-conda/odm-fast-research/app/run.py'
     command=[str(prefix/'bin/python'),'-s','-E',str(app),'--end-with','openmvs','--no-gpu','--pc-quality','lowest','--feature-quality','low','--max-concurrency','2','--project-path',str(projects),'dataset']
     run(command,env=env)
-    outputs=list((projects/'dataset/openmvs').glob('*.ply'))
+    outputs=list((projects/'dataset/opensfm/undistorted/openmvs').glob('*.ply'))
     if not outputs or not any(p.stat().st_size>1000 for p in outputs):raise ValueError('ODM produced no dense PLY')
     print('::notice::ODM_DENSE_STAGE_PASS '+json.dumps({'images':len(images),'outputs':[p.name for p in outputs],'overlay':True}),flush=True)
     report={'dense_point_count':count,'filename':package.name,'sha256':sha256(package),'depends':idx['depends'],'scope':'research-only, CPU scene and ODM dense stage with explicit binary overlay, not full ODM, accuracy, rights or release approval'}
