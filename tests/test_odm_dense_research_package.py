@@ -37,3 +37,17 @@ def test_dense_recipe_dependency_contract():
     assert 'dem2mesh ==0.0.0.dev20231207 research_*_1' in deps
     assert not any(dep.startswith('openmvs-tetraflow-research') for dep in deps)
     assert recipe['about']['license'] == 'LicenseRef-Unreviewed'
+
+
+def test_dense_integration_evidence_and_patch():
+    import json
+    from common import sha256
+    root = Path(__file__).resolve().parents[1]
+    patch = root/'research/recipes/openmvs-dense-research/patches/odm-dense-ply.patch'
+    assert sha256(patch) == '124c2cefce29a7f78875e2b3928ac8d46da2c34b96d098b648924f99adc8d660'
+    data = json.loads((root/'research/odm-dense-package-integration-evidence.json').read_text())
+    assert data['no_binary_overlay'] and data['relocated_locked_replay']
+    assert data['images'] == 35 and data['package_count'] == 435
+    assert data['standalone_dense_points'] == 27942
+    assert 'skip-3dmodel' in data['pipeline'] and 'not full ODM' in data['scope']
+    assert len(data['packages']) == 3 and 'discarded' in data['retention']

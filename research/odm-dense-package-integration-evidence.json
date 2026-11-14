@@ -1,0 +1,33 @@
+{
+  "baseline_manifest_sha256": "81da120940a5236657854b51b9713aae0e40dbd11199a51859197837e21c3c7b",
+  "dataset_commit": "9220acfdca75cc5e2dd6d27fe48550c5ae0877f2",
+  "dense_bytes": 1152242,
+  "first_pipeline_failure_run": "https://github.com/Archont561/ODM-conda/actions/runs/43619163842",
+  "images": 35,
+  "lock_sha256": "a143930c7c8374bf3f449cb8aed59853a1c6fec4be2e08eaeb82f1dc5dd27281",
+  "no_binary_overlay": true,
+  "orthophoto_bytes": 5001480,
+  "package_count": 435,
+  "packages": [
+    {
+      "filename": "openmvs-dense-research-0.0.0.dev20260827-research_cpucompat_873e7db_3.conda",
+      "sha256": "7fa68645071b269febf81908235daf0db7025b3064237ee6dfd2c7d03e6d4408"
+    },
+    {
+      "filename": "dem2mesh-0.0.0.dev20231207-research_873e7db_1.conda",
+      "sha256": "f0ef2afdad90f8e9bdd65e44319a41815f14fc77c25a193dcad380d0062ff8bd"
+    },
+    {
+      "filename": "odm-dense-research-3.6.2-research_cpu_dense_b0f4dca_1.conda",
+      "sha256": "50b90009b1835e350d8445ab65c98b2f429ee967509bd68461170729e906f690"
+    }
+  ],
+  "pipeline": "CPU dense orthophoto with --skip-3dmodel; complete to report",
+  "prior_failure": "FPCFilter rejected PLY missing scalar views before build-3 targeted PLY export patch",
+  "relocated_locked_replay": true,
+  "report_bytes": 2803015,
+  "retention": "new packages, lock, datasets and outputs discarded; no artifacts uploaded",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43619978302",
+  "scope": "private CPU dense orthophoto research; not full ODM, accuracy, rights or release",
+  "standalone_dense_points": 27942
+}

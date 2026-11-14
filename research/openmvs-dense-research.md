@@ -56,3 +56,39 @@ package, overlay, downloaded datasets and outputs were discarded; no artifact
 was uploaded. The initial stage test `43617157159` checked the wrong output
 directory and failed its output assertion; the successful run checks the
 upstream-defined location.
+
+## Packaged CPU dense orthophoto integration
+
+A distinct private [`odm-dense-research` recipe](recipes/odm-dense-research/recipe.yaml)
+now requires both `openmvs-dense-research` build 3 and the private GDAL 3.12
+`dem2mesh` candidate. Its relocatable launcher forces CPU, performs bounded
+prefix/import checks, and rejects selected unsupported options. The restriction
+list is not exhaustive and is not a security boundary. Neither package is a
+production release or a complete ODM feature contract.
+
+Initial packaged [run 43619163842](https://github.com/Archont561/ODM-conda/actions/runs/43619163842)
+solved and replayed 435 package identities without an overlay, but the ODM run
+failed in FPCFilter: the new OpenMVS PLY lacked the scalar `views` field that
+FPCFilter expects. The historical ODM OpenMVS fork wrote per-point view counts;
+the new upstream writer no longer emits them on that path.
+
+Build 3 adds a pinned, targeted ODM PLY export: it writes actual per-point
+view counts for the DensifyPointCloud dense and filtered outputs; it fails if
+colors, normals or view data are missing, or any point has zero or more than
+255 views. It does not replace general OpenMVS PLY serialization. It preserves
+existing mesh tests and source/link/payload audits. No values are fabricated.
+
+[Run 43619978302](https://github.com/Archont561/ODM-conda/actions/runs/43619978302)
+built and fresh-retested the dense OpenMVS, dem2mesh and ODM research packages,
+solved them together, installed a relocated copy of the unchanged new lock and
+matched all 435 Conda identities. No binary overlay was used. The standalone
+upstream-scene test validated all 27,942 PLY records for finite coordinates and
+normals and nonzero view counts. The packaged launcher then completed a CPU
+dense **orthophoto** pipeline on 35 Seneca images with `--skip-3dmodel`,
+producing a dense PLY, orthophoto and report; the orthophoto passed existing
+raster sanity checks. See [integration evidence](odm-dense-package-integration-evidence.json).
+This does not test full 3D models, all ODM features, GPU, scientific accuracy,
+source completeness, rights or final release. The research packages, new lock,
+input datasets and outputs were discarded and not uploaded. The old artifact
+was used only as an anchored source of preexisting binary packages, not as the
+new solve or a final owner-retained release.
