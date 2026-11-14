@@ -268,3 +268,35 @@ footprint-union, seam and geographic accuracy tests remain. Details, package
 identities and scope are in `odm-split-raster-metadata-evidence.json`.
 The launcher still rejects split; distributed processing, DTM and 3D-model merge
 remain unverified. Nothing was uploaded or approved for release.
+
+#### Raster contribution and DTM sampling
+
+[43645580804](https://github.com/Archont561/ODM-conda/actions/runs/43645580804)
+used the packaged build-5 app directly after a relocated 436-identity replay
+without overlays. A 35-image local two-submodel run requested `--merge all
+--dsm --dtm --pc-classify` with an explicit external model. It produced two
+input DTMs and a merged DTM, as well as DSM and orthophoto outputs. Since ODM
+classifies the *merged* cloud after concatenation, classification values were
+allowed to change; the other 20 listed point dimensions were checked row by
+row and CRS was equivalent. This does not establish classification accuracy.
+
+A bounded nearest-neighbor grid sampled the outputs and both input rasters.
+For each product, each input had exclusive valid merged samples whose values
+mostly matched that input within the stated thresholds. For example, orthophoto
+had 63,109 / 3,706 exclusive samples, matching within 12 DN for 100% / 91.3%;
+DTM had 63,202 / 3,709, matching within 0.1 units for 100% / 99.9%.
+The overlap values also differed from the first input for some samples where
+inputs differed. This is evidence of contributions at sampled locations, not
+proof of full-resolution footprint union or a counterfactual blend test. The
+reported overlap adjacent-pixel percentiles include actual image/terrain texture:
+they are **not seam-specific quality measurements**. Full statistics, package
+lock hash and limitations are in `odm-raster-contribution-evidence.json`.
+
+A prior [43644044169](https://github.com/Archont561/ODM-conda/actions/runs/43644044169)
+completed the ODM pipeline but its trial incorrectly demanded that
+classification remain unchanged; the corrected check explicitly allows valid
+reclassification. Another [43644839205](https://github.com/Archont561/ODM-conda/actions/runs/43644839205)
+completed, but its annotation quota prevented retention of all reported metrics.
+No trial uploaded packages, model, inputs or outputs. The launcher remains
+restricted; 3D and distributed/ClusterODM merge remain untested. Do not infer
+accuracy, model rights or production release approval from these runs.

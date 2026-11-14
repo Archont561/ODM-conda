@@ -22,3 +22,14 @@ def test_no_exclusive_is_not_false_proof():
     data=np.ones((1,2,2));mask=np.ones((2,2),bool)
     result=summarize([data,data],[mask,mask],data,mask,.1)
     assert all(x['exclusive_samples']==0 and x['within_tolerance_fraction'] is None for x in result['inputs'])
+
+
+def test_recorded_evidence_is_sampled_not_full_validation():
+    import json
+    from pathlib import Path
+    evidence=json.loads((Path(__file__).resolve().parents[1]/'research/odm-raster-contribution-evidence.json').read_text())
+    assert set(evidence['rasters']) == {'ortho','dsm','dtm'}
+    assert evidence['dtm']['input_count'] == 2
+    assert evidence['replay']['direct_app_scope_bypass'] and not evidence['replay']['source_overlay']
+    assert all(all(x['exclusive_samples']>0 for x in v['inputs']) for v in evidence['rasters'].values())
+    assert 'not seam-specific' in evidence['limitations']

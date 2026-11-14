@@ -1,0 +1,118 @@
+{
+  "dataset_commit": "9220acfdca75cc5e2dd6d27fe48550c5ae0877f2",
+  "dtm": {
+    "input_count": 2,
+    "merged_bytes": 4774022
+  },
+  "limitations": "No counterfactual merge, proof of full-resolution union, seam quality or geographic accuracy; no assertion of classification accuracy. Adjacent-gradient percentiles include genuine texture and are not seam-specific. Two-input data only; direct-app launcher bypass. Distributed and 3D-model merges not tested; rights unresolved.",
+  "method": "nearest-neighbor samples on a maximum 512-pixel-side grid aligned to each merged raster. Exclusive samples compare output to the only covering source; overlap comparisons and adjacent gradients are descriptive. Comparison is restricted to valid merged pixels.",
+  "pipeline": "35 Seneca images, two overlapping manually specified groups, --merge all --dsm --dtm --pc-classify, external hash-checked model and CPU; direct invocation bypassing launcher",
+  "rasters": {
+    "dsm": {
+      "grid": [
+        512,
+        464
+      ],
+      "inputs": [
+        {
+          "exclusive_samples": 63202,
+          "median_absolute_max_band_difference": 0.0,
+          "within_tolerance_fraction": 0.9999841777158951
+        },
+        {
+          "exclusive_samples": 3709,
+          "median_absolute_max_band_difference": 0.0,
+          "within_tolerance_fraction": 0.9975734699379887
+        }
+      ],
+      "kind": "dem",
+      "limitations": "Sampling only; overlaps and thresholds do not prove visual, geometric or seam quality.",
+      "method": "nearest-neighbor samples on merged grid",
+      "output_valid_samples": 108740,
+      "overlap_adjacent_max_band_p95": 0.1261268615722655,
+      "overlap_comparison": {
+        "closer_to_second_fraction": 0.45660377358490567,
+        "differs_from_first_fraction": 0.4638078902229846,
+        "source_difference_above_tolerance_samples": 2915
+      },
+      "overlap_output_samples": 41816,
+      "product": "dsm",
+      "tolerance": 0.1
+    },
+    "dtm": {
+      "grid": [
+        512,
+        464
+      ],
+      "inputs": [
+        {
+          "exclusive_samples": 63202,
+          "median_absolute_max_band_difference": 0.0,
+          "within_tolerance_fraction": 1.0
+        },
+        {
+          "exclusive_samples": 3709,
+          "median_absolute_max_band_difference": 0.0,
+          "within_tolerance_fraction": 0.998651927743327
+        }
+      ],
+      "kind": "dem",
+      "limitations": "Sampling only; overlaps and thresholds do not prove visual, geometric or seam quality.",
+      "method": "nearest-neighbor samples on merged grid",
+      "output_valid_samples": 108740,
+      "overlap_adjacent_max_band_p95": 0.12014541625976549,
+      "overlap_comparison": {
+        "closer_to_second_fraction": 0.4460377358490566,
+        "differs_from_first_fraction": 0.46679245283018866,
+        "source_difference_above_tolerance_samples": 2650
+      },
+      "overlap_output_samples": 41816,
+      "product": "dtm",
+      "tolerance": 0.1
+    },
+    "ortho": {
+      "grid": [
+        512,
+        464
+      ],
+      "inputs": [
+        {
+          "exclusive_samples": 63109,
+          "median_absolute_max_band_difference": 0.0,
+          "within_tolerance_fraction": 1.0
+        },
+        {
+          "exclusive_samples": 3706,
+          "median_absolute_max_band_difference": 2.0,
+          "within_tolerance_fraction": 0.9125742039935241
+        }
+      ],
+      "kind": "ortho",
+      "limitations": "Sampling only; overlaps and thresholds do not prove visual, geometric or seam quality.",
+      "method": "nearest-neighbor samples on merged grid",
+      "output_valid_samples": 108686,
+      "overlap_adjacent_max_band_p95": 37.0,
+      "overlap_comparison": {
+        "closer_to_second_fraction": 0.5676843035240994,
+        "differs_from_first_fraction": 0.5073132423677236,
+        "source_difference_above_tolerance_samples": 10187
+      },
+      "overlap_output_samples": 41852,
+      "product": "ortho",
+      "tolerance": 12
+    }
+  },
+  "replay": {
+    "direct_app_scope_bypass": true,
+    "images": 35,
+    "lock_sha256": "9986097268974e48feb6b5c939ad9e49ccaf4d2949d580a37473c66b8aeda1fa",
+    "merged_points": 77204,
+    "no_binary_overlay": true,
+    "package_count": 436,
+    "scope": "local pointcloud and sampled raster outputs, accuracy and rights unreviewed",
+    "source_overlay": false,
+    "submodels": 2
+  },
+  "retention": "New packages, lock, model, inputs and outputs discarded; no artifacts uploaded.",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43645580804"
+}
