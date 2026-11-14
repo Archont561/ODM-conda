@@ -26,11 +26,10 @@ no artifact was uploaded. See [evidence](openmvs-dense-research-evidence.json).
 ODM's pinned `stages/openmvs.py` always passes `--cuda-device -2` for CPU.
 [Run 43613861226](https://github.com/Archont561/ODM-conda/actions/runs/43613861226)
 showed this CPU-only candidate rejects `--cuda-device` as unrecognised, so it
-**cannot yet be substituted into the ODM stack**. The successful standalone
-test omits the flag; it does not fix ODM or prove ODM dense processing works.
-A future candidate must deliberately resolve the CLI contract and test the
-actual ODM invocation and a real dense end-to-end dataset; do not silently
-ignore options or claim GPU support. Full release source, licensing, model,
+**could not be substituted into the ODM stack**. That earlier standalone
+test omitted the flag; it did not fix ODM or prove ODM dense processing works.
+The subsequent CPU-only compatibility experiment is described below. A complete
+end-to-end dataset, packaged integration and GPU support remain unvalidated. Full release source, licensing, model,
 compatibility and owner gates remain open.
 
 
