@@ -131,6 +131,13 @@ print('NEGATIVE_CLASSIFICATION_PROBES_PASS')
   run([str(prefix/'bin/python'),'-s','-E',str(app),'--no-gpu','--split','20','--split-image-groups',str(groups),'--merge','pointcloud','--pc-quality','lowest','--feature-quality','low','--max-concurrency','2','--skip-3dmodel','--skip-report','--project-path',str(projects),'dataset'],env=split_env)
   clouds=sorted((projects/'dataset/submodels').glob('submodel_*/odm_georeferencing/odm_georeferenced_model.laz'))
   merged=projects/'dataset/odm_georeferencing/odm_georeferenced_model.laz'
+  subroot=projects/'dataset/submodels'
+  subdirs=sorted(x for x in subroot.glob('submodel_*') if x.is_dir())
+  observed=[]
+  for sub in subdirs:
+   rec=sub/'opensfm/reconstruction.json'; densefile=sub/'opensfm/undistorted/openmvs/scene_dense_dense_filtered.ply'; cloud=sub/'odm_georeferencing/odm_georeferenced_model.laz'
+   observed.append({'name':sub.name,'reconstruction':rec.is_file(),'dense_cloud':densefile.is_file(),'cloud':cloud.is_file(),'cloud_bytes':cloud.stat().st_size if cloud.is_file() else 0})
+  print('::notice::SUBMODEL_STATUS '+json.dumps({'submodels':observed,'merged_exists':merged.is_file(),'merged_bytes':merged.stat().st_size if merged.is_file() else 0},sort_keys=True),flush=True)
   if len(clouds)<2 or not merged.is_file() or merged.stat().st_size<1000:raise ScaffoldError('Expected multiple submodel clouds and merged output')
   info=json.loads(subprocess.check_output([str(prefix/'bin/pdal'),'info','--summary',str(merged)],text=True,env=split_env))
   count=info['summary']['num_points']
