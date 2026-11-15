@@ -1,0 +1,42 @@
+{
+  "distance_fixture": {
+    "max_distance": 7.280109882354736,
+    "max_weighted_error": 0.0,
+    "nodata_pixels": 108,
+    "overlap_pixels": 300,
+    "shape": [
+      24,
+      32
+    ],
+    "unequal_weight_pixels": 200,
+    "valid_pixels": 660
+  },
+  "limitations": "Generated 8x8 aligned rasters and manually precomputed maps for zero/cancellation/low-distance interpolation; separate generated-distance fixture uses 24x24 synthetic rasters. Not a real dataset, full ODM pipeline, arbitrary nodata, seam quality, distributed processing, production readiness, licensing or release approval. Full lock and package discarded, so hashes alone are not a retained reproducible environment.",
+  "method": "Rebuilt baseline research dependencies in the same ephemeral runner; built and retested build 6; solved and installed then replayed the same lock in a fresh prefix, comparing 436 package identities and exact lock bytes; ran fixtures through relocated prefix Python with installed ODM modules and no overlays.",
+  "replay": {
+    "count": 436,
+    "lock_sha256": "4dff1f5af270c8937ae20594d19421112587dd6b506e2b5eeece92cb95d48e62",
+    "no_binary_overlay": true,
+    "no_source_overlay": true,
+    "odm_package": "odm-dense-research-3.6.2-research_cpu_split_b0f4dca_6.conda",
+    "odm_sha256": "42364c8b2beff339db610a26222bb9799ba72c8ca70ac77cee6df1423e9dc414"
+  },
+  "retention": "No sources, models, datasets or binary packages uploaded; ephemeral runner outputs discarded.",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43657926454",
+  "scope": "private linux-64 ODM dense research build 6; no publication",
+  "tested_commit": "1511be6",
+  "zero_fixture": {
+    "cancellation": {
+      "nodata_pixels": 28,
+      "valid_zero_pixels": 36
+    },
+    "interpolated_zero": {
+      "nodata_pixels": 28,
+      "valid_zero_pixels": 36
+    },
+    "zero": {
+      "nodata_pixels": 28,
+      "valid_zero_pixels": 36
+    }
+  }
+}

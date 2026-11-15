@@ -1,0 +1,14 @@
+--- a/opendm/dem/merge.py
++++ b/opendm/dem/merge.py
+@@ -168,7 +168,10 @@
+                                                 return_indices=True)
+             dstarr = dstarr[tuple(indices)]
+ 
+-            dstarr[dstarr == 0.0] = src_nodata
++            # A zero elevation is valid; use source coverage rather than the
++            # blended value. Follow the same nearest-neighbor remapping as the
++            # output so interpolation cannot detach values from their mask.
++            dstarr[distsum[tuple(indices)] == 0.0] = src_nodata
+ 
+             dstrast.write(dstarr, window=dst_window)
+ 

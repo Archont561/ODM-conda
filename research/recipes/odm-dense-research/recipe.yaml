@@ -11,9 +11,10 @@ source:
     - patches/0002-external-model-cache.patch
     - patches/0003-classification-fail-closed.patch
     - patches/0004-research-split-pointcloud.patch
+    - patches/0005-dem-zero-elevation.patch
 build:
-  number: 5
-  string: research_cpu_split_${{ hash }}_5
+  number: 6
+  string: research_cpu_split_${{ hash }}_6
   skip: target_platform != "linux-64"
   python:
     skip_pyc_compilation:
