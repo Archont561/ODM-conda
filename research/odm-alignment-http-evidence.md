@@ -75,8 +75,25 @@ preserved all 660 expected valid pixels (baseline 484); an equal-weight -100/100
 case preserved 660 (baseline 548). All seven reference cases matched. A separate
 artificial low-distance interpolation case preserved all 484 valid zeros including
 the interpolated center, while retaining nodata borders (baseline lost all 484).
-This is source/installer-copy verification, **not** a built, solved, relocated,
-or installed Conda package test and not a real DEM or full pipeline test. The
-previous temporary binary artifact is no longer available; a fresh private build
-and full replay are still needed before treating build 6 as packaged evidence.
-No result establishes general merge quality or release readiness.
+That first regression was source/installer-copy verification, not a Conda
+package test. Subsequent packaged verification is documented below. No result
+establishes general merge quality or release readiness.
+
+### Build 6 packaged replay
+
+[Hosted run 43657926454](https://github.com/Archont561/ODM-conda/actions/runs/43657926454)
+rebuilt the private dependencies and `odm-dense-research` build 6, retested the
+package, solved a fresh environment and replayed its identical lock and all 436
+package identities in a second relocated prefix. Tests called the installed ODM
+modules with no source or binary overlay. Each of three synthetic 8×8 cases
+(zero-valued sources, -100/100 cancellation, and artificially low-distance
+interpolation) preserved all 36 valid zero pixels and 28 nodata border pixels.
+A separate installed generated-distance test matched independently calculated
+weights over 660 valid pixels. See `odm-zero-elevation-package-evidence.json`.
+
+This is not an end-to-end dataset run, real seam or accuracy validation, generic
+nodata proof, source-rights clearance or release approval. The private packages,
+lock and inputs were discarded; their recorded hashes alone cannot reproduce the
+solve. The first rebuild attempt [43656702342](https://github.com/Archont561/ODM-conda/actions/runs/43656702342)
+failed before ODM build because the temporary build path caused pip to emit a
+CODEM shell shebang rejected by its recipe; the successful run used a shorter path.
