@@ -79,7 +79,7 @@ class RangeFile(io.RawIOBase):
   if size<0:size=self.size-self.pos
   size=min(size,self.size-self.pos)
   if size==0:return b''
-  if size>20_000_000 or self.total+size>120_000_000:raise ValueError('range budget exceeded')
+  if size>20_000_000 or self.total+size>220_000_000:raise ValueError('range budget exceeded')
   end=self.pos+size-1
   req=urllib.request.Request(self.url,headers={'Range':f'bytes={self.pos}-{end}','User-Agent':'ODM-conda research inspection/1.0','Accept-Encoding':'identity'})
   with urllib.request.urlopen(req,timeout=60) as res:
@@ -113,7 +113,7 @@ try:
   samples=[]
   for i in sorted(set(round(j*(len(entries)-1)/9) for j in range(10))):
    item=entries[i]
-   if item.file_size>12_000_000:raise ValueError('oversized image')
+   if item.file_size>20_000_000:raise ValueError('oversized image')
    with Image.open(io.BytesIO(z.read(item))) as im:
     gps=im.getexif().get_ifd(ExifTags.IFD.GPSInfo)
     if not all(x in gps for x in (1,2,3,4)):samples.append({'index':i,'gps':False});continue
