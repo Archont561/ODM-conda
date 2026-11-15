@@ -1,0 +1,57 @@
+{
+  "dataset": {
+    "commit": "9220acfdca75cc5e2dd6d27fe48550c5ae0877f2",
+    "images": 35,
+    "repository": "https://github.com/OpenDroneMap/odm_data_seneca",
+    "rights": "Repository asserts CC0; authority and downstream rights remain unverified."
+  },
+  "limitations": "Original Seneca DSM heights were positive; zeros deliberately injected and are not evidence for naturally zero-elevation terrain or geographic accuracy. Single exclusive patch, one dataset and no overlap-zero case in this real-derived trial; no general seam-quality, distributed, 3D-model, production or licensing claim. Direct-app split bypass does not enable restricted launcher.",
+  "method": "Two explicitly grouped overlapping image subsets, installed research app invoked directly bypassing launcher split restriction; no classification; DSM merge from real-derived submodel DSMs. Independently copy both DSMs, insert 8x8 zero patch into one safely exclusive valid region, generate fresh proximity maps and compare unmodified versus modified merges at all 64 mapped pixels.",
+  "pipeline": {
+    "classification": false,
+    "direct_app_scope_bypass": true,
+    "dsm_dimensions": [
+      2865,
+      2153
+    ],
+    "dsm_inputs": 2,
+    "dsm_max": 234.926,
+    "dsm_min": 213.636,
+    "images": 35,
+    "merged_points": 84987,
+    "ortho_dimensions": [
+      2865,
+      2153
+    ],
+    "submodels": 2
+  },
+  "replay": {
+    "count": 436,
+    "lock_sha256": "4deffbca3cc973f93e9ead2b3351b0dcc6660e2b3424e04be30ad24e357bdd64",
+    "no_binary_overlay": true,
+    "no_source_overlay": true,
+    "odm_package": "odm-dense-research-3.6.2-research_cpu_split_b0f4dca_6.conda",
+    "odm_sha256": "c0b00e717ec0c510f600de7276b688dccdc4a7fdb894d7e47e9974e0478d4965"
+  },
+  "retention": "No images, rasters, binary packages, source, or lock uploaded; ephemeral runner discarded. Hashes alone do not retain a reproducible solve.",
+  "run": "https://github.com/Archont561/ODM-conda/actions/runs/43712848391",
+  "tested_commit": "6030122",
+  "zero_intervention": {
+    "input_count": 2,
+    "intervention": "8x8 zero patch in an exclusive interior region of copied real-derived DEM; original unmodified",
+    "original_output_range": [
+      217.5119171142578,
+      217.5230255126953
+    ],
+    "original_patch_range": [
+      217.5119171142578,
+      217.5230255126953
+    ],
+    "output_shape": [
+      2153,
+      2865
+    ],
+    "patch_pixels": 64,
+    "preserved_zero_pixels": 64
+  }
+}
