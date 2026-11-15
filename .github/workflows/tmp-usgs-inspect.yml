@@ -13,9 +13,12 @@ jobs:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
           persist-credentials: false
+      - name: Install isolated image inspection dependencies
+        run: python3 -m pip install --user pillow==11.3.0 pyproj==3.7.2
       - name: Inspect public USGS metadata and bounded GCP archive
         run: python3 scripts/tmp_usgs_inspect.py
 # Summarize near-zero points by survey.
 # Test selective HTTP range access and EXIF.
 # Reserve annotation capacity for archive access results.
 # Probe server range responses independently.
+# Probe ZIP directory and ten images via bounded verified HTTP ranges.
