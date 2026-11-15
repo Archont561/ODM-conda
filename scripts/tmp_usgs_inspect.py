@@ -33,3 +33,21 @@ for name in ('20170712_MadeiraBeachFL_UAS_Imagery.zip','20170712_MadeiraBeachFL_
             report={'name':name,'status':response.status,'url':response.geturl(),'content_length':response.headers.get('Content-Length'),'accept_ranges':response.headers.get('Accept-Ranges'),'etag':response.headers.get('ETag')}
     except Exception as e:report={'name':name,'error':str(e)}
     print('::notice::ARCHIVE_HEAD '+json.dumps(report,sort_keys=True),flush=True)
+
+# Summarize surveyed checkpoints by flight, without uploading GCP files.
+with zipfile.ZipFile(io.BytesIO(data)) as z:
+ for item in z.infolist():
+  if not item.filename.endswith('_GCPs.txt'): continue
+  rows=[]; kind=None
+  for line in z.read(item).decode('utf-8-sig').splitlines():
+   text=line.strip()
+   if text.startswith('#'):
+    if 'Check Points' in text:kind='check'
+    elif 'Control Points' in text:kind='control'
+    continue
+   fields=text.split()
+   if len(fields)>=4:
+    try: rows.append((fields[0],float(fields[1]),float(fields[2]),float(fields[3]),kind))
+    except ValueError:pass
+  near=[x for x in rows if abs(x[3])<=0.25]
+  print('::notice::SURVEY '+json.dumps({'file':item.filename,'rows':len(rows),'near_zero':len(near),'near_zero_checks':sum(1 for x in near if x[4]=='check'),'closest_abs_height':min((abs(x[3]) for x in rows),default=None),'types':sorted(set(str(x[4]) for x in rows))},sort_keys=True),flush=True)

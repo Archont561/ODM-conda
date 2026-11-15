@@ -15,3 +15,4 @@ jobs:
           persist-credentials: false
       - name: Inspect public USGS metadata and bounded GCP archive
         run: python3 scripts/tmp_usgs_inspect.py
+# Summarize near-zero points by survey.
