@@ -19,3 +19,4 @@ jobs:
         run: python3 scripts/tmp_usgs_inspect.py
 # Summarize near-zero points by survey.
 # Test selective HTTP range access and EXIF.
+# Reserve annotation capacity for archive access results.

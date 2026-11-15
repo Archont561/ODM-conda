@@ -24,7 +24,7 @@ with zipfile.ZipFile(io.BytesIO(data)) as z:
         text=z.read(item).decode('utf-8-sig',errors='replace')
         lines=text.splitlines()
         files.append({'name':item.filename,'bytes':item.file_size,'sha256':hashlib.sha256(z.read(item)).hexdigest(),'first_lines':lines[:3], 'line_count':len(lines)})
-print('::notice::GCP_INSPECTION '+json.dumps({'archive_sha256':hashlib.sha256(data).hexdigest(),'url':url,'files':files},sort_keys=True),flush=True)
+print('::notice::GCP_INSPECTION '+json.dumps({'archive_sha256':hashlib.sha256(data).hexdigest(),'file_count':len(files)},sort_keys=True),flush=True)
 for name in ('20170712_MadeiraBeachFL_UAS_Imagery.zip','20170712_MadeiraBeachFL_SfMProducts.zip'):
     url=(base+name if 'Imagery' in name else 'https://coastal.er.usgs.gov/data-release/doi-P9L474WC/data/'+name)
     request=urllib.request.Request(url,method='HEAD',headers={'User-Agent':'ODM-conda research inspection/1.0'})
@@ -50,6 +50,7 @@ with zipfile.ZipFile(io.BytesIO(data)) as z:
     try: rows.append((fields[0],float(fields[1]),float(fields[2]),float(fields[3]),kind))
     except ValueError:pass
   near=[x for x in rows if abs(x[3])<=0.25]
+  if item.filename != '20170816_GCPs.txt': continue
   print('::notice::SURVEY '+json.dumps({'file':item.filename,'rows':len(rows),'near_zero':len(near),'near_zero_checks':sum(1 for x in near if x[4]=='check'),'closest_abs_height':min((abs(x[3]) for x in rows),default=None),'types':sorted(set(str(x[4]) for x in rows))},sort_keys=True),flush=True)
 # Assess whether HTTP range access is real before attempting a 7.56 GB survey.
 from remotezip import RemoteZip
