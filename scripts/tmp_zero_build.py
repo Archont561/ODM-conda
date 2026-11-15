@@ -12,11 +12,11 @@ from openmvs_pointcloud_fixture import DATASET_FILES, verify_dataset
 from openmvs_dense_dataset_fixture import test_dense
 
 port=48179
-with tempfile.TemporaryDirectory(prefix='odm-dense-integration-') as tmp:
+with tempfile.TemporaryDirectory(prefix='z-', dir='/tmp') as tmp:
  root=Path(tmp)
  crate=root/'jpegxl.crate'; download_crate(crate)
  baseline=root/'baseline'; baseline.mkdir()
- work=root/'baseline-work'; work.mkdir()
+ work=root/'b'; work.mkdir()
  packages=build_packages(work, reduced_jxl=True, vendor_scope_crate=crate,
                          openmvs_variant='tetraflow', orthophoto_candidate=True)
  keep=baseline/'linux-64'; keep.mkdir()

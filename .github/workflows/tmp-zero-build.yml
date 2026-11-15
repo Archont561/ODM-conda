@@ -33,3 +33,4 @@ jobs:
           encoded=base64.b64encode(text).decode()
           for i in range(0,len(encoded),2200): print(f'::notice::FAILURE_{i//2200} {encoded[i:i+2200]}')
           PYCODE
+# Keep build path short for pip entrypoint shebangs.
