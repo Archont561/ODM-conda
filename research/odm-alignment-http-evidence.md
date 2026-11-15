@@ -97,3 +97,53 @@ lock and inputs were discarded; their recorded hashes alone cannot reproduce the
 solve. The first rebuild attempt [43656702342](https://github.com/Archont561/ODM-conda/actions/runs/43656702342)
 failed before ODM build because the temporary build path caused pip to emit a
 CODEM shell shebang rejected by its recipe; the successful run used a shorter path.
+
+### Real imagery, controlled zero intervention
+
+[Hosted run 43712848391](https://github.com/Archont561/ODM-conda/actions/runs/43712848391)
+rebuilt build 6 and replayed 436 package identities in a fresh prefix without
+source or binary overlays. Invoking the installed app directly (deliberately
+bypassing the launcher's split restriction), it processed 35 Seneca images in
+two overlapping groups without classification, producing two point clouds,
+84,987 merged points, two DSM inputs and a merged 2865×2153 DSM and orthophoto.
+The unmodified merged DSM range was 213.636–234.926, so this is **not a natural
+zero-elevation site**.
+
+For a controlled counterfactual, copies of the two real-derived DSMs were
+merged using fresh generated proximity maps. One 8×8 patch in a safely exclusive
+valid region was changed from approximately 217.512–217.523 to zero; all 64
+mapped output pixels remained valid zeros. The comparison merge of unmodified
+copies remained nonzero. This exercises a real-derived geometry and surrounding
+values with an artificial intervention, not real zero terrain, overlap-zero
+behavior, accuracy, general seam quality, distributed processing or a 3D merge.
+The fixture is `scripts/odm_real_dem_zero_fixture.py`; run identity, scope and
+rights caveats are recorded in `odm-real-data-zero-evidence.json`. The imagery,
+rasters, packages and lock were discarded, not uploaded. Dataset rights remain
+unverified and the restricted launcher is unchanged.
+
+### SRTM-format zero values in overlap
+
+[Hosted run 43718084794](https://github.com/Archont561/ODM-conda/actions/runs/43718084794)
+rebuilt and retested the private ODM research package, then replayed 436 matching
+package identities in a relocated prefix without overlays. The installed DEM
+merger generated distance maps and merged two overlapping, aligned crops of the
+same unmodified `N10W110.hgt` raster sample. Except for adding nodata borders,
+the samples were not altered. All 64,516 valid output pixels matched the
+original crop, including 64,042 zeros (31,530 in overlap) and 474 positive
+pixels. This is an SRTM-format raster, **not** a drone-image reconstruction.
+Both crops come from the same raster, so this does not validate two independent
+submodels or conflicting source values. The grid is geographic EPSG:4326.
+
+The raster was retrieved from Rasterio commit
+[`124e23f4060678460f39a0d838ac8c83b6fe2fe7`](https://github.com/rasterio/rasterio/tree/124e23f4060678460f39a0d838ac8c83b6fe2fe7/tests/data),
+archive SHA-256 `7c668fd7868fbf8addcad0b1f993259d3d4f65f9f8990099e67e31fb1f595362`.
+Its test-data README asserts CC0 1.0 for test images, and its introducing commit
+calls it a small SRTM 3 file. Neither attribution authority, original provenance
+nor rights were independently cleared or owner-approved. Zero-valued ocean or
+background cells are not proof of measured natural zero-elevation land. The
+fixture does not establish geometric accuracy, real seam quality, general DEM
+handling or release readiness. The inputs, packages and lock were discarded;
+`odm-srtm-zero-overlap-evidence.json` retains metrics and limitations, not data.
+The earlier attempt [43716283877](https://github.com/Archont561/ODM-conda/actions/runs/43716283877)
+passed build/replay but failed before the SRTM test because a GitHub CLI binary
+response was rejected as invalid UTF-8; the successful retry decoded API base64.
