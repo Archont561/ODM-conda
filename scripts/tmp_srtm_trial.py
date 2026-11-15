@@ -1,4 +1,4 @@
-import json, os, re, shutil, subprocess, sys, tempfile, tarfile, urllib.request, zipfile
+import base64, json, os, re, shutil, subprocess, sys, tempfile, tarfile, urllib.request, zipfile
 from collections import Counter
 from pathlib import Path
 from common import ROOT, ScaffoldError, rattler, run, sha256
@@ -104,7 +104,7 @@ print('NEGATIVE_CLASSIFICATION_PROBES_PASS')
   print('::notice::DISTANCE_REPORT '+next(line.split('FIXTURE_JSON ',1)[1] for line in result.splitlines() if 'FIXTURE_JSON ' in line),flush=True)
   print('::notice::REPLAY_REPORT '+json.dumps({'count':len(identities),'lock_sha256':sha256(project/'pixi.lock'),'odm_package':odm.name,'odm_sha256':sha256(odm),'no_binary_overlay':True,'no_source_overlay':True},sort_keys=True),flush=True)
   sample=root/'srtm.zip'
-  with sample.open('wb') as output:
-   subprocess.run(['gh','api','-H','Accept: application/vnd.github.raw+json','repos/rasterio/rasterio/contents/tests/data/N10W110.hgt.zip?ref=124e23f4060678460f39a0d838ac8c83b6fe2fe7'],stdout=output,check=True)
+  encoded=subprocess.check_output(['gh','api','repos/rasterio/rasterio/contents/tests/data/N10W110.hgt.zip?ref=124e23f4060678460f39a0d838ac8c83b6fe2fe7','--jq','.content'],text=True)
+  sample.write_bytes(base64.b64decode(encoded))
   result=subprocess.check_output([str(prefix/'bin/python'),'-s','-E',str(ROOT/'scripts/odm_srtm_zero_overlap_fixture.py'),str(prefix),str(app),str(sample)],env=runenv,text=True)
   print('::notice::SRTM_REPORT '+next(line.split('FIXTURE_JSON ',1)[1] for line in result.splitlines() if 'FIXTURE_JSON ' in line),flush=True)

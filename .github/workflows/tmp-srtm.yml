@@ -36,3 +36,4 @@ jobs:
           for i in range(0,len(encoded),2200): print(f'::notice::FAILURE_{i//2200} {encoded[i:i+2200]}')
           PYCODE
 # Keep build path short for pip entrypoint shebangs.
+# Retrieve API content using base64 rather than a binary CLI response.
