@@ -120,3 +120,30 @@ The fixture is `scripts/odm_real_dem_zero_fixture.py`; run identity, scope and
 rights caveats are recorded in `odm-real-data-zero-evidence.json`. The imagery,
 rasters, packages and lock were discarded, not uploaded. Dataset rights remain
 unverified and the restricted launcher is unchanged.
+
+### SRTM-format zero values in overlap
+
+[Hosted run 43718084794](https://github.com/Archont561/ODM-conda/actions/runs/43718084794)
+rebuilt and retested the private ODM research package, then replayed 436 matching
+package identities in a relocated prefix without overlays. The installed DEM
+merger generated distance maps and merged two overlapping, aligned crops of the
+same unmodified `N10W110.hgt` raster sample. Except for adding nodata borders,
+the samples were not altered. All 64,516 valid output pixels matched the
+original crop, including 64,042 zeros (31,530 in overlap) and 474 positive
+pixels. This is an SRTM-format raster, **not** a drone-image reconstruction.
+Both crops come from the same raster, so this does not validate two independent
+submodels or conflicting source values. The grid is geographic EPSG:4326.
+
+The raster was retrieved from Rasterio commit
+[`124e23f4060678460f39a0d838ac8c83b6fe2fe7`](https://github.com/rasterio/rasterio/tree/124e23f4060678460f39a0d838ac8c83b6fe2fe7/tests/data),
+archive SHA-256 `7c668fd7868fbf8addcad0b1f993259d3d4f65f9f8990099e67e31fb1f595362`.
+Its test-data README asserts CC0 1.0 for test images, and its introducing commit
+calls it a small SRTM 3 file. Neither attribution authority, original provenance
+nor rights were independently cleared or owner-approved. Zero-valued ocean or
+background cells are not proof of measured natural zero-elevation land. The
+fixture does not establish geometric accuracy, real seam quality, general DEM
+handling or release readiness. The inputs, packages and lock were discarded;
+`odm-srtm-zero-overlap-evidence.json` retains metrics and limitations, not data.
+The earlier attempt [43716283877](https://github.com/Archont561/ODM-conda/actions/runs/43716283877)
+passed build/replay but failed before the SRTM test because a GitHub CLI binary
+response was rejected as invalid UTF-8; the successful retry decoded API base64.
