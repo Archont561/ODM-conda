@@ -13,6 +13,9 @@ jobs:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
           persist-credentials: false
+      - name: Install temporary bounded archive inspector
+        run: python3 -m pip install --user remotezip==0.12.6 pillow==11.3.0
       - name: Inspect public USGS metadata and bounded GCP archive
         run: python3 scripts/tmp_usgs_inspect.py
 # Summarize near-zero points by survey.
+# Test selective HTTP range access and EXIF.
