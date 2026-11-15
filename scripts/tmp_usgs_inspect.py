@@ -52,21 +52,13 @@ with zipfile.ZipFile(io.BytesIO(data)) as z:
   near=[x for x in rows if abs(x[3])<=0.25]
   if item.filename != '20170816_GCPs.txt': continue
   print('::notice::SURVEY '+json.dumps({'file':item.filename,'rows':len(rows),'near_zero':len(near),'near_zero_checks':sum(1 for x in near if x[4]=='check'),'closest_abs_height':min((abs(x[3]) for x in rows),default=None),'types':sorted(set(str(x[4]) for x in rows))},sort_keys=True),flush=True)
-# Assess whether HTTP range access is real before attempting a 7.56 GB survey.
-from remotezip import RemoteZip
+# Verify the two ranges needed to access ZIP entries without a multi-GB transfer.
 image_url=base+'20170816_MadeiraBeachFL_UAS_Imagery.zip'
-try:
-    with RemoteZip(image_url, initial_buffer_size=131072, timeout=90) as z:
-        entries=[i for i in z.infolist() if not i.is_dir()]
-        images=[i for i in entries if i.filename.lower().endswith(('.jpg','.jpeg'))]
-        print('::notice::IMAGE_ZIP '+json.dumps({'total_members':len(entries),'jpeg_count':len(images),'jpeg_first':images[0].filename if images else None,'jpeg_last':images[-1].filename if images else None,'max_size':max((i.file_size for i in images),default=None)},sort_keys=True),flush=True)
-        if images:
-            first=images[len(images)//2]
-            if first.file_size>20_000_000:raise ValueError('Oversized image')
-            image=z.read(first)
-            from PIL import Image, ExifTags
-            with Image.open(io.BytesIO(image)) as im:
-                exif=im.getexif(); gps=exif.get_ifd(ExifTags.IFD.GPSInfo)
-                print('::notice::IMAGE_SAMPLE '+json.dumps({'name':first.filename,'sha256':hashlib.sha256(image).hexdigest(),'size':len(image),'dimensions':list(im.size),'gps_tags':sorted(map(str,gps.keys()))},sort_keys=True),flush=True)
-except Exception as exc:
-    print('::notice::RANGE_ERROR '+json.dumps({'type':type(exc).__name__,'error':str(exc)},sort_keys=True),flush=True)
+for byte_range in ('bytes=0-63','bytes=-64'):
+ request=urllib.request.Request(image_url,headers={'Range':byte_range,'User-Agent':'ODM-conda research inspection/1.0'})
+ try:
+  with urllib.request.urlopen(request,timeout=25) as response:
+   payload=response.read(64)
+   result={'range':byte_range,'status':response.status,'content_range':response.headers.get('Content-Range'),'content_length':response.headers.get('Content-Length'),'sample_bytes':len(payload)}
+ except Exception as exc: result={'range':byte_range,'error':type(exc).__name__+': '+str(exc)}
+ print('::notice::RANGE_CHECK '+json.dumps(result,sort_keys=True),flush=True)
